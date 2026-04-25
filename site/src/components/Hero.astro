@@ -1,0 +1,56 @@
+---
+import type { SpaceContent } from '@/types';
+
+export interface Props {
+  space: SpaceContent;
+}
+
+const { space } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const heroSrc = space.hero.src.startsWith('http')
+  ? space.hero.src
+  : `${base}${space.hero.src}`;
+const pos = space.hero.position ?? '50% 50%';
+const indexLabel = space.index === 0 ? 'Front-of-House' : `Space ${String(space.index).padStart(2, '0')} of 07`;
+---
+
+<section
+  data-block="hero"
+  class="relative isolate w-full overflow-hidden bg-dark-bg text-on-dark"
+  style="height: clamp(540px, 80vh, 880px);"
+>
+  <img
+    src={heroSrc}
+    alt={space.hero.alt}
+    class="absolute inset-0 h-full w-full object-cover"
+    style={`object-position: ${pos}; filter: brightness(0.62) contrast(1.05);`}
+    loading="eager"
+    decoding="async"
+  />
+  <div
+    class="absolute inset-0"
+    style="background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.85) 100%);"
+  ></div>
+
+  <div class="relative mx-auto flex h-full max-w-[1320px] flex-col justify-between px-6 py-10 md:px-12 md:py-14">
+    <div class="flex items-center justify-between gap-6">
+      <span class="kicker eyebrow--on-dark text-red" data-editable>{space.eyebrow}</span>
+      <span class="eyebrow eyebrow--on-dark hidden md:inline">{indexLabel}</span>
+    </div>
+
+    <div class="max-w-[26ch]">
+      <h1
+        class="display text-on-dark"
+        style="font-size: clamp(48px, 8vw, 132px);"
+        data-editable
+      >
+        {space.title}
+      </h1>
+      {space.tagline && (
+        <p class="lede mt-4 text-on-dark/85" style="font-size: clamp(18px, 2vw, 26px);" data-editable>
+          — {space.tagline}
+        </p>
+      )}
+    </div>
+  </div>
+</section>

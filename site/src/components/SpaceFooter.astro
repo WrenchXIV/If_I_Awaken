@@ -1,0 +1,63 @@
+---
+import type { SpaceContent } from '@/types';
+import { neighbors, SPACE_MANIFEST } from '@/lib/spaces';
+
+export interface Props {
+  space: SpaceContent;
+}
+
+const { space } = Astro.props;
+const { prev, next } = neighbors(space.id);
+const prevEntry = prev ? SPACE_MANIFEST[prev] : null;
+const nextEntry = next ? SPACE_MANIFEST[next] : null;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<footer data-block="footer" class="bg-paper">
+  <div class="mx-auto max-w-[1320px] px-6 py-12 md:px-12 md:py-16">
+    <div class="flex flex-col items-stretch justify-between gap-6 border-t-2 border-ink pt-8 md:flex-row md:items-end">
+      <div>
+        {prevEntry ? (
+          <a href={`${base}${prevEntry.href}`} class="group inline-flex flex-col gap-1">
+            <span class="eyebrow">← Previous</span>
+            <span class="display text-ink group-hover:text-red" style="font-size: 26px;">
+              {prevEntry.title}
+            </span>
+          </a>
+        ) : (
+          <a href={`${base}/`} class="group inline-flex flex-col gap-1">
+            <span class="eyebrow">← Master plan</span>
+            <span class="display text-ink group-hover:text-red" style="font-size: 26px;">
+              The whole journey
+            </span>
+          </a>
+        )}
+      </div>
+
+      <div class="md:text-right">
+        {nextEntry ? (
+          <a href={`${base}${nextEntry.href}`} class="group inline-flex flex-col gap-1 md:items-end">
+            <span class="eyebrow">Next →</span>
+            <span class="display text-ink group-hover:text-red" style="font-size: 26px;">
+              {nextEntry.title}
+            </span>
+          </a>
+        ) : (
+          <a href={`${base}/`} class="group inline-flex flex-col gap-1 md:items-end">
+            <span class="eyebrow">Return →</span>
+            <span class="display text-ink group-hover:text-red" style="font-size: 26px;">
+              Back to master plan
+            </span>
+          </a>
+        )}
+      </div>
+    </div>
+
+    {space.status && (
+      <div class="mt-10 flex items-center justify-between text-xs uppercase tracking-[0.28em] text-ink/55">
+        <span>If I Awaken in Los Angeles · Interactive Tour</span>
+        <span>{space.status}</span>
+      </div>
+    )}
+  </div>
+</footer>

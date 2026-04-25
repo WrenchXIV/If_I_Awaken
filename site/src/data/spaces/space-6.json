@@ -1,0 +1,270 @@
+{
+  "id": "space-6",
+  "index": 6,
+  "eyebrow": "If I Awaken in Los Angeles · Space 06 of 06",
+  "title": "The Stage",
+  "tagline": "a classical finale",
+  "summary": "After five immersive neighborhood environments, audiences arrive at the only space in the show that looks like a theater. A classical proscenium — matte black frame, warm walnut deck, black velour with a white scrim reveal — sits inside a raw warehouse shell. The tour guide opens solo; the company gathers beat by beat; a full-ensemble finale lands before a flat-line bow.",
+  "callout": "<p>Audience exits Space 5 through the NE corner and ramps down into the <strong>mid-house cross-aisle</strong> of the amphitheater. Three rows descend ahead of them toward the stage (R1 at –2 ft, in the old dock pit); five rows ascend behind them to R8 at +32\". Every seat is within ~30 ft of the stage edge. The stage itself is deliberately neutral — a <strong>matte black proscenium</strong> wraps the existing steel columns into a 44 × 24 ft portal, the deck is <strong>warm walnut hardwood</strong> raised 2 ft over the dock pit, a full-width <strong>black velour traveler</strong> closes the back with a <strong>white bobbinet scrim</strong> waiting behind it for the finale. Nothing on the stage references LA or any earlier space.</p> <p>The design move is the <strong>contrast</strong>: a pristine classical stage sitting inside a raw brick warehouse, brick walls left exposed on both audience sides. The seven-beat arc runs <em>tour guide solo → band arrives → poets arrive → dancers arrive → final number (velour opens, scrim ignites) → bow</em>. The scrim reveal is Space 6's only capital-R reveal — everything else is restraint so that reveal can land.</p>",
+  "hero": {
+    "src": "/images/Space_6-image1.jpg",
+    "alt": "The Stage",
+    "position": "50% 55%"
+  },
+  "meta": [
+    {
+      "label": "Footprint",
+      "value": "~45 × 55 ft"
+    },
+    {
+      "label": "Ceiling",
+      "value": "15 ft ground · 19 ft over pit"
+    },
+    {
+      "label": "Seating",
+      "value": "Option B · 152 pax (144 + 8 ADA)"
+    },
+    {
+      "label": "Stage",
+      "value": "45 × 19 ft · +2 ft · walnut deck"
+    },
+    {
+      "label": "Cast",
+      "value": "Tour Guide · band · poets · dancers"
+    },
+    {
+      "label": "Duration",
+      "value": "~28–35 minutes"
+    }
+  ],
+  "plan": {
+    "svg": "<svg class=\"plan-svg\" viewBox=\"-80 -80 760 760\" xmlns=\"http://www.w3.org/2000/svg\">\n          <defs>\n            <pattern id=\"s6grid\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\">\n              <path d=\"M 40 0 L 0 0 0 40\" fill=\"none\" stroke=\"#1f1a16\" stroke-width=\"0.5\"></path>\n            </pattern>\n            <pattern id=\"s6pit\" patternUnits=\"userSpaceOnUse\" width=\"10\" height=\"10\" patternTransform=\"rotate(45)\">\n              <rect width=\"10\" height=\"10\" fill=\"#6a4838\" fill-opacity=\"0.18\"></rect>\n              <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"10\" stroke=\"#6a4838\" stroke-width=\"0.7\" opacity=\"0.5\"></line>\n            </pattern>\n            <marker id=\"s6arrow\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n              <path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#d4a24c\"></path>\n            </marker>\n          </defs>\n\n          <!-- Outer warehouse hint -->\n          <rect x=\"-80\" y=\"-80\" width=\"760\" height=\"760\" fill=\"#0a0806\"></rect>\n\n          <!-- Space 6 boundary -->\n          <rect x=\"40\" y=\"40\" width=\"560\" height=\"560\" fill=\"url(#s6grid)\" stroke=\"#3a2e22\" stroke-width=\"1.5\"></rect>\n          <text x=\"52\" y=\"62\" fill=\"#3a2e22\" font-family=\"JetBrains Mono\" font-size=\"11\" letter-spacing=\"3\">SPACE 06 · THE STAGE · OPTION B LOCKED</text>\n\n          <!-- Scale: 80 px = 10 ft -->\n          <g transform=\"translate(60,560)\">\n            <line x1=\"0\" y1=\"0\" x2=\"80\" y2=\"0\" stroke=\"#a89b82\" stroke-width=\"1.2\"></line>\n            <line x1=\"0\" y1=\"-4\" x2=\"0\" y2=\"4\" stroke=\"#a89b82\"></line>\n            <line x1=\"80\" y1=\"-4\" x2=\"80\" y2=\"4\" stroke=\"#a89b82\"></line>\n            <text x=\"40\" y=\"-8\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" text-anchor=\"middle\">10 FT</text>\n          </g>\n\n          <!-- North arrow -->\n          <g transform=\"translate(560,80)\">\n            <circle cx=\"0\" cy=\"0\" r=\"20\" fill=\"none\" stroke=\"#a89b82\" stroke-width=\"0.8\"></circle>\n            <line x1=\"0\" y1=\"-14\" x2=\"0\" y2=\"14\" stroke=\"#a89b82\" stroke-width=\"0.8\"></line>\n            <polygon points=\"0,-14 -5,-7 5,-7\" fill=\"#a89b82\"></polygon>\n            <text x=\"0\" y=\"-22\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" text-anchor=\"middle\">N</text>\n          </g>\n\n          <!-- Dock pit (at north edge, under stage) -->\n          <g>\n            <rect x=\"60\" y=\"60\" width=\"520\" height=\"140\" fill=\"url(#s6pit)\"></rect>\n            <rect x=\"60\" y=\"60\" width=\"520\" height=\"140\" fill=\"none\" stroke=\"#6a4838\" stroke-width=\"1.5\"></rect>\n            <text x=\"320\" y=\"85\" fill=\"#8a6858\" font-family=\"JetBrains Mono\" font-size=\"10\" letter-spacing=\"2\" text-anchor=\"middle\">DOCK PIT · –4 FT · UNDER-STAGE CROSSOVER</text>\n          </g>\n\n          <!-- Stage footprint -->\n          <g data-id=\"stage\" data-draggable=\"true\">\n            <rect x=\"60\" y=\"60\" width=\"520\" height=\"220\" fill=\"#4a6a8a\" fill-opacity=\"0.2\" stroke=\"#4a6a8a\" stroke-width=\"1.8\"></rect>\n            <line x1=\"60\" y1=\"200\" x2=\"580\" y2=\"200\" stroke=\"#4a6a8a\" stroke-width=\"0.6\" stroke-dasharray=\"3,3\" opacity=\"0.6\"></line>\n            <text x=\"320\" y=\"140\" fill=\"#4a6a8a\" font-family=\"Playfair Display\" font-size=\"28\" font-style=\"italic\" text-anchor=\"middle\" font-weight=\"700\">STAGE</text>\n            <text x=\"320\" y=\"168\" fill=\"#4a6a8a\" font-family=\"JetBrains Mono\" font-size=\"10\" letter-spacing=\"2\" text-anchor=\"middle\">+2 FT · 45 × 19 FT · WALNUT DECK</text>\n          </g>\n\n          <!-- Wings SL/SR (black legs) -->\n          <rect x=\"56\" y=\"60\" width=\"8\" height=\"220\" fill=\"#1a0f0a\" stroke=\"#3a2a1a\" stroke-width=\"0.6\"></rect>\n          <rect x=\"576\" y=\"60\" width=\"8\" height=\"220\" fill=\"#1a0f0a\" stroke=\"#3a2a1a\" stroke-width=\"0.6\"></rect>\n          <text x=\"48\" y=\"170\" fill=\"#6a5040\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\" transform=\"rotate(-90 48 170)\">SL WING</text>\n          <text x=\"592\" y=\"170\" fill=\"#6a5040\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\" transform=\"rotate(-90 592 170)\">SR WING</text>\n\n          <!-- Back wall / scenic wall covering roller door -->\n          <rect x=\"60\" y=\"48\" width=\"520\" height=\"12\" fill=\"#1a0f0a\" stroke=\"#3a2a1a\" stroke-width=\"1\"></rect>\n          <text x=\"320\" y=\"40\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1.5\" text-anchor=\"middle\">BLACK VELOUR TRAVELER · 12 FT · SCRIM BEHIND</text>\n\n          <!-- Proscenium column wraps -->\n          <rect x=\"60\" y=\"260\" width=\"28\" height=\"20\" fill=\"#1a0f0a\" stroke=\"#3a2a1a\" stroke-width=\"0.8\"></rect>\n          <rect x=\"552\" y=\"260\" width=\"28\" height=\"20\" fill=\"#1a0f0a\" stroke=\"#3a2a1a\" stroke-width=\"0.8\"></rect>\n          <text x=\"74\" y=\"254\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"middle\">COL</text>\n          <text x=\"566\" y=\"254\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"middle\">COL</text>\n\n          <!-- Apron buffer -->\n          <rect x=\"60\" y=\"280\" width=\"520\" height=\"30\" fill=\"#a89b82\" fill-opacity=\"0.05\" stroke=\"#a89b82\" stroke-width=\"0.5\" stroke-dasharray=\"2,3\" opacity=\"0.5\"></rect>\n          <text x=\"320\" y=\"300\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" opacity=\"0.75\">APRON · 3 FT</text>\n\n          <!-- Lower tier (descending) shaded -->\n          <rect x=\"85\" y=\"310\" width=\"470\" height=\"100\" fill=\"#6a4838\" fill-opacity=\"0.1\" stroke=\"#6a4838\" stroke-width=\"0.5\" stroke-dasharray=\"3,3\"></rect>\n          <text x=\"70\" y=\"360\" fill=\"#6a4838\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\" opacity=\"0.8\" transform=\"rotate(-90 70 360)\">↓ DESCEND</text>\n\n          <!-- Aisles (lower tier) -->\n          <rect x=\"60\" y=\"310\" width=\"25\" height=\"100\" fill=\"#d4a24c\" fill-opacity=\"0.05\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n          <rect x=\"555\" y=\"310\" width=\"25\" height=\"100\" fill=\"#d4a24c\" fill-opacity=\"0.05\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n          <rect x=\"300\" y=\"310\" width=\"40\" height=\"100\" fill=\"#d4a24c\" fill-opacity=\"0.07\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n\n          <!-- R1 (lowest, –2 ft) -->\n          <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n            <rect x=\"90\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"112\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"134\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            <rect x=\"342\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"496\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"518\" y=\"314\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n          </g>\n          <text x=\"78\" y=\"325\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R1</text>\n          <text x=\"562\" y=\"325\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"start\">–2 FT</text>\n\n          <!-- R2 -->\n          <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n            <rect x=\"90\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"112\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"134\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            <rect x=\"342\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"496\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"518\" y=\"346\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n          </g>\n          <text x=\"78\" y=\"357\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R2</text>\n          <text x=\"562\" y=\"357\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"start\">–16\"</text>\n\n          <!-- R3 -->\n          <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n            <rect x=\"90\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"112\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"134\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            <rect x=\"342\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"496\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"518\" y=\"378\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n          </g>\n          <text x=\"78\" y=\"389\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R3</text>\n          <text x=\"562\" y=\"389\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"start\">–8\"</text>\n\n          <!-- Entry cross-aisle -->\n          <g data-id=\"entry-aisle\" data-draggable=\"true\">\n            <rect x=\"60\" y=\"410\" width=\"520\" height=\"42\" fill=\"#d4a24c\" fill-opacity=\"0.15\" stroke=\"#d4a24c\" stroke-width=\"1.2\"></rect>\n            <text x=\"320\" y=\"436\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"11\" letter-spacing=\"2\" text-anchor=\"middle\">ENTRY CROSS-AISLE · 0 FT · MID-HOUSE</text>\n          </g>\n\n          <!-- Upper tier (ascending) shaded -->\n          <rect x=\"85\" y=\"452\" width=\"470\" height=\"148\" fill=\"#8a6a48\" fill-opacity=\"0.06\" stroke=\"#8a6a48\" stroke-width=\"0.5\" stroke-dasharray=\"3,3\"></rect>\n          <text x=\"70\" y=\"526\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\" opacity=\"0.8\" transform=\"rotate(-90 70 526)\">↑ ASCEND</text>\n\n          <rect x=\"60\" y=\"452\" width=\"25\" height=\"148\" fill=\"#d4a24c\" fill-opacity=\"0.05\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n          <rect x=\"555\" y=\"452\" width=\"25\" height=\"148\" fill=\"#d4a24c\" fill-opacity=\"0.05\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n          <rect x=\"300\" y=\"452\" width=\"40\" height=\"148\" fill=\"#d4a24c\" fill-opacity=\"0.07\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n\n          <!-- R4 -->\n          <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n            <rect x=\"90\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"112\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"134\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            <rect x=\"342\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"496\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"518\" y=\"456\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n          </g>\n          <text x=\"78\" y=\"467\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R4</text>\n          <text x=\"562\" y=\"467\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"start\">+8\"</text>\n\n          <!-- R5 with ADA -->\n          <g>\n            <rect x=\"90\" y=\"486\" width=\"40\" height=\"20\" fill=\"#4ac6b0\" fill-opacity=\"0.35\" stroke=\"#4ac6b0\" stroke-width=\"0.8\"></rect>\n            <text x=\"110\" y=\"499\" fill=\"#4ac6b0\" font-family=\"JetBrains Mono\" font-size=\"6\" text-anchor=\"middle\" font-weight=\"700\">WC+COMP</text>\n            <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n              <rect x=\"134\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n              <rect x=\"342\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"488\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            </g>\n            <rect x=\"496\" y=\"486\" width=\"40\" height=\"20\" fill=\"#4ac6b0\" fill-opacity=\"0.35\" stroke=\"#4ac6b0\" stroke-width=\"0.8\"></rect>\n            <text x=\"516\" y=\"499\" fill=\"#4ac6b0\" font-family=\"JetBrains Mono\" font-size=\"6\" text-anchor=\"middle\" font-weight=\"700\">WC+COMP</text>\n          </g>\n          <text x=\"78\" y=\"499\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R5</text>\n\n          <!-- R6 -->\n          <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n            <rect x=\"90\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"112\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"134\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            <rect x=\"342\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"496\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"518\" y=\"516\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n          </g>\n          <text x=\"78\" y=\"527\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R6</text>\n          <text x=\"562\" y=\"527\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"start\">+20\"</text>\n\n          <!-- R7 -->\n          <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n            <rect x=\"90\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"112\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"134\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            <rect x=\"342\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"496\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"518\" y=\"548\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n          </g>\n          <text x=\"78\" y=\"559\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R7</text>\n          <text x=\"562\" y=\"559\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"start\">+26\"</text>\n\n          <!-- R8 with ADA -->\n          <g>\n            <rect x=\"90\" y=\"578\" width=\"40\" height=\"20\" fill=\"#4ac6b0\" fill-opacity=\"0.35\" stroke=\"#4ac6b0\" stroke-width=\"0.8\"></rect>\n            <text x=\"110\" y=\"591\" fill=\"#4ac6b0\" font-family=\"JetBrains Mono\" font-size=\"6\" text-anchor=\"middle\" font-weight=\"700\">WC+COMP</text>\n            <g fill=\"#6a3838\" fill-opacity=\"0.85\" stroke=\"#3a1818\" stroke-width=\"0.4\">\n              <rect x=\"134\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"156\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"178\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"200\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"222\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"244\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"266\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n              <rect x=\"342\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"364\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"386\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"408\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"430\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"452\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect><rect x=\"474\" y=\"580\" width=\"18\" height=\"16\" rx=\"1.5\"></rect>\n            </g>\n            <rect x=\"496\" y=\"578\" width=\"40\" height=\"20\" fill=\"#4ac6b0\" fill-opacity=\"0.35\" stroke=\"#4ac6b0\" stroke-width=\"0.8\"></rect>\n            <text x=\"516\" y=\"591\" fill=\"#4ac6b0\" font-family=\"JetBrains Mono\" font-size=\"6\" text-anchor=\"middle\" font-weight=\"700\">WC+COMP</text>\n          </g>\n          <text x=\"78\" y=\"591\" fill=\"#8a6a48\" font-family=\"JetBrains Mono\" font-size=\"8\" text-anchor=\"end\">R8</text>\n\n          <!-- Entry arrow from Space 5 SW -->\n          <path d=\"M 10 610 Q 30 530 75 435\" stroke=\"#d4a24c\" stroke-width=\"1.8\" marker-end=\"url(#s6arrow)\" opacity=\"0.85\" fill=\"none\"></path>\n          <text x=\"5\" y=\"590\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1.5\" text-anchor=\"start\">FROM SPACE 5</text>\n          <text x=\"5\" y=\"604\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"start\" opacity=\"0.8\">RAMP TO CROSS-AISLE</text>\n\n          <!-- Dimension callouts -->\n          <g opacity=\"0.6\">\n            <line x1=\"40\" y1=\"30\" x2=\"600\" y2=\"30\" stroke=\"#a89b82\" stroke-width=\"0.5\"></line>\n            <text x=\"320\" y=\"22\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1\" text-anchor=\"middle\">45 FT</text>\n          </g>\n          <g opacity=\"0.6\">\n            <line x1=\"28\" y1=\"40\" x2=\"28\" y2=\"600\" stroke=\"#a89b82\" stroke-width=\"0.5\"></line>\n            <text x=\"18\" y=\"320\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1\" text-anchor=\"middle\" transform=\"rotate(-90 18 320)\">55 FT</text>\n          </g>\n        </svg>",
+    "legend": [
+      {
+        "color": "#4a6a8a",
+        "label": "Stage",
+        "note": "+2 ft over dock pit · 19 ft deep · walnut"
+      },
+      {
+        "color": "#1a0f0a",
+        "label": "Velour + wings",
+        "note": "Black traveler · scrim behind · SL/SR legs"
+      },
+      {
+        "color": "#6a4838",
+        "label": "Lower tier (descending)",
+        "note": "R1–R3 · R1 dips to –2 ft"
+      },
+      {
+        "color": "#d4a24c",
+        "label": "Entry cross-aisle",
+        "note": "Ground · mid-house · 4 ft wide"
+      },
+      {
+        "color": "#8a6a48",
+        "label": "Upper tier (ascending)",
+        "note": "R4–R8 · rises to +32\""
+      },
+      {
+        "color": "#4ac6b0",
+        "label": "ADA",
+        "note": "4 WC + 4 companion · R5 upper + R8 back"
+      }
+    ]
+  },
+  "perspectives": [
+    {
+      "src": "/images/Space_6-image2.jpg",
+      "alt": "The Stage — perspective 1"
+    },
+    {
+      "src": "/images/Space_6-image3.jpg",
+      "alt": "The Stage — perspective 2"
+    },
+    {
+      "src": "/images/Space_6-image4.jpg",
+      "alt": "The Stage — perspective 3"
+    }
+  ],
+  "beats": [
+    {
+      "number": "01",
+      "title": "Arrival · finding seats",
+      "body": "Audience exits Space 5, ramps down into the <em>mid-house cross-aisle</em>, and either descends toward R1–R3 or ascends toward R4–R8. The stage is empty. Black velour closed. The room deliberately shifts register from the immersive neighborhoods they've been walking through — for the first time tonight, they are sitting, and they are looking at a theater.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "House warm"
+        },
+        {
+          "kind": "sound",
+          "label": "Ambient low, sparse"
+        },
+        {
+          "kind": "move",
+          "label": "Audience loading"
+        }
+      ]
+    },
+    {
+      "number": "02",
+      "title": "Tour guide solo",
+      "body": "House goes to black. A single followspot picks up the <em>Tour Guide</em> entering center stage through a gap in the velour. He stands alone on the warm walnut deck in front of the black drape. Solo opening — monologue, song, or hybrid (writer to define). The most intimate moment of the show: one person, one light, 150 people listening. Everything the production has been building toward arrives here.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Single followspot · tight warm"
+        },
+        {
+          "kind": "sound",
+          "label": "Solo voice · unaccompanied"
+        },
+        {
+          "kind": "perf",
+          "label": "Tour Guide alone"
+        }
+      ]
+    },
+    {
+      "number": "03",
+      "title": "Band arrives · sound layers in",
+      "body": "One by one, the five band members enter from SL and SR wings. Bassist first — a quiet line under the tour guide. Then drums. Piano. Horns. Each instrument takes an upstage position as a special blooms. The stage picture expands from <em>one to six</em>; the sound gains shape around the solo voice.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Stage wash warms · individual specials"
+        },
+        {
+          "kind": "sound",
+          "label": "Bass → drums → piano → horns"
+        },
+        {
+          "kind": "move",
+          "label": "SL/SR wing entrances"
+        },
+        {
+          "kind": "perf",
+          "label": "5-piece jazz band"
+        }
+      ]
+    },
+    {
+      "number": "04",
+      "title": "Poets arrive · voices return",
+      "body": "Poets from earlier spaces arrive one at a time via different paths — some through the audience aisles, some from the wings, one from upstage through the velour itself. Each gets a spoken moment — a line or fragment carried from their home space — before joining the picture. Language becomes the content. The audience hears <em>voices they recognize from rooms they walked through an hour ago</em>.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Individual specials on each speaker"
+        },
+        {
+          "kind": "sound",
+          "label": "Band under · poets speak in sequence"
+        },
+        {
+          "kind": "move",
+          "label": "Audience aisles · wings · through velour"
+        },
+        {
+          "kind": "perf",
+          "label": "4–5 poets from earlier spaces"
+        }
+      ]
+    },
+    {
+      "number": "05",
+      "title": "Dancers arrive · bodies fill the room",
+      "body": "The dancers arrive last. They enter <em>through the velour</em> — the first time anything has passed through the drape since the tour guide. Their bodies fill the space that words and music have been holding. Movement takes over from language. The band lifts into something more rhythmic. The stage is nearly full; the whole company is gathering.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Full wash · movement pickups · velour edge-lit"
+        },
+        {
+          "kind": "sound",
+          "label": "Rhythm forward · tempo up"
+        },
+        {
+          "kind": "move",
+          "label": "Through the velour"
+        },
+        {
+          "kind": "perf",
+          "label": "Dance ensemble"
+        }
+      ]
+    },
+    {
+      "number": "06",
+      "title": "Final number · velour opens · scrim ignites",
+      "body": "<em>The velour opens.</em> Behind it, the white scrim lights from behind — deep, luminous, seemingly infinite. The stage suddenly has depth. Full ensemble plays, sings, moves. The biggest sound of the show. The biggest picture. This is the only moment in Space 6 where the design <em>does</em> something — everything else has been restraint. The reveal lands because nothing has been revealed before it.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Full stage · scrim back-lit · golden"
+        },
+        {
+          "kind": "sound",
+          "label": "Full band + voices · loudest of show"
+        },
+        {
+          "kind": "move",
+          "label": "Velour opens · scrim revealed"
+        },
+        {
+          "kind": "perf",
+          "label": "Full company · ~20"
+        }
+      ]
+    },
+    {
+      "number": "07",
+      "title": "Bow · no hierarchy",
+      "body": "Full company spreads across the 45 ft stage in a single line — tour guide, poets, dancers, musicians — <em>no hierarchy</em>. One bow together. Lights hold for applause, then slowly fade. The scrim stays lit behind them until the last moment, then goes out with everything else. House up. The show is over. Company exits through velour gap; audience egresses via the rear walkway.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Hold on applause · slow fade · scrim last"
+        },
+        {
+          "kind": "sound",
+          "label": "Out · applause only"
+        },
+        {
+          "kind": "perf",
+          "label": "Full company · single line"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "locked": [
+      "Seating — Option B amphitheater bowl, mid-house entry, 3 rows descending + 5 rows ascending",
+      "Stage — 45 × 19 ft at +2 ft, built over dock pit, 6 ft under-stage clear for crossover",
+      "Proscenium — matte black frame wrapping existing steel columns, 44 × 24 ft opening",
+      "Stage deck — warm walnut hardwood, matte/satin finish",
+      "Back-wall system — black velour traveler (12 ft, motorized) + white bobbinet scrim behind for finale reveal",
+      "Side masking — standard black legs SL and SR (3 pairs, 14 ft)",
+      "House walls — raw brick stays exposed and untreated on both audience sides",
+      "Roller door treatment — covered by scenic back wall, not used as show element",
+      "Beat arc — 7 beats from tour-guide solo through full-company bow; scrim reveal is the single capital-R reveal",
+      "Capacity — 152 positions: 144 fixed + 4 WC + 4 companion at R5 upper and R8 back",
+      "Entry/exit — SW corner ramp from Space 5 to mid-house cross-aisle; rear walkway egress after bow"
+    ],
+    "stillOpen": [
+      "Site survey — measured drawings required; all dimensions best-guess from one photo",
+      "Column positions — if inside seating footprint, rows shift; if at stage edges (ideal), wrap as proscenium",
+      "Chair specification — theatrical bench vs upholstered fixed seat; espresso leather or walnut ply; must not upstage the room",
+      "House lighting plot — pipe grid positions, followspot locations, house wash, aisle lights, emergency egress",
+      "Acoustic treatment — absorption on ceiling above audience and rear wall to tame brick/hard-deck reverb",
+      "Under-stage program — 675 sq ft of backstage to allocate: crossover, pre-set, quick-change, instrument storage",
+      "Scrim reveal mechanics — velour track timing, scrim backlight color/intensity, cue integration with final number",
+      "Audience-aisle entry paths for poets — check against sightlines and ADA routes",
+      "Tour-guide solo content — monologue, song, or hybrid (director/writer)",
+      "Poet fragment selection — which line from each earlier space (writer)",
+      "Dance choreography — movement language to be set (choreographer TBD)"
+    ]
+  },
+  "audio": null,
+  "status": "v06"
+}

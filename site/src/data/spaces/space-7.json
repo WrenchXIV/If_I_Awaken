@@ -1,0 +1,202 @@
+{
+  "id": "space-7",
+  "index": 7,
+  "eyebrow": "If I Awaken in Los Angeles · Space 07 of 07 · Egress",
+  "title": "The Real LA",
+  "tagline": "Space 1, reborn",
+  "summary": "The audience walks back through the corridor where the show began — but Hollywood Boulevard is gone. The 110-ft LED wall now shows the audience itself, composed into a living mural of LA that breathes and reorganizes as people move through. The show's final argument made visual: the city was never the sign on the hill. It was the people in this room.",
+  "callout": "<p>The audience exits Space 6 after the bow and re-enters the same corridor they walked through 100 minutes ago. Same dimensions, same LED wall, same Walk of Fame stars on the floor. But the content has been completely overwritten. The Hollywood Sign is gone. The Walk of Fame celebrities are gone. The dancers-as-tourists are gone. <strong>The wall now shows the audience itself</strong> — every face captured during the show, composed into an enormous, slowly-shifting mural of Los Angeles. The audience enters at the north end, walks the length of the wall, and exits through a <strong>doorway in the middle of the east wall</strong> into the lobby and gift shop.</p> <p>The mural never settles. Every 30 seconds it reorganizes — a skyline made of faces, then a beach, then a freeway at dusk, then a neighborhood block, then a mountain range — always built from the same audience portraits, always rearranging. Three words hold underneath, slowly fading in and out: <em>This is Los Angeles.</em> The audience walks through, looks for themselves, photographs the wall, photographs themselves in front of it. The corridor is otherwise empty. No performers. No Tour Guide. No music — just the residual hum of the band's last chord from Space 6, slowly fading. The city does the talking.</p>",
+  "hero": {
+    "src": "/images/Space_7-image1.jpg",
+    "alt": "The Real LA",
+    "position": "50% 55%"
+  },
+  "meta": [
+    {
+      "label": "Footprint",
+      "value": "~62 × 110 ft corridor"
+    },
+    {
+      "label": "LED wall",
+      "value": "110 ft × 14 ft (existing)"
+    },
+    {
+      "label": "Audience",
+      "value": "~150 people, egress wave"
+    },
+    {
+      "label": "Dwell",
+      "value": "~3–8 min per person"
+    },
+    {
+      "label": "Cast in room",
+      "value": "None · audience is alone"
+    },
+    {
+      "label": "Duration",
+      "value": "~10–12 min total egress"
+    }
+  ],
+  "plan": {
+    "svg": "<svg class=\"plan-svg\" viewBox=\"-80 -80 600 760\" xmlns=\"http://www.w3.org/2000/svg\">\n          <defs>\n            <pattern id=\"s7grid\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\">\n              <path d=\"M 40 0 L 0 0 0 40\" fill=\"none\" stroke=\"#1f1a16\" stroke-width=\"0.5\"></path>\n            </pattern>\n            <linearGradient id=\"ledMosaic\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">\n              <stop offset=\"0%\" stop-color=\"#c84a4a\" stop-opacity=\"0.55\"></stop>\n              <stop offset=\"20%\" stop-color=\"#d4a24c\" stop-opacity=\"0.55\"></stop>\n              <stop offset=\"40%\" stop-color=\"#4a8a6a\" stop-opacity=\"0.55\"></stop>\n              <stop offset=\"60%\" stop-color=\"#6a8aca\" stop-opacity=\"0.55\"></stop>\n              <stop offset=\"80%\" stop-color=\"#c878a8\" stop-opacity=\"0.55\"></stop>\n              <stop offset=\"100%\" stop-color=\"#d4a24c\" stop-opacity=\"0.55\"></stop>\n            </linearGradient>\n            <marker id=\"s7arrow\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n              <path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#d4a24c\"></path>\n            </marker>\n          </defs>\n\n          <!-- Outer warehouse hint -->\n          <rect x=\"-80\" y=\"-80\" width=\"600\" height=\"760\" fill=\"#0a0806\"></rect>\n\n          <!-- Space 7 boundary (same as Space 1: ~62 ft wide × 110 ft long) -->\n          <rect x=\"40\" y=\"40\" width=\"360\" height=\"600\" fill=\"url(#s7grid)\" stroke=\"#3a2e22\" stroke-width=\"1.5\"></rect>\n          <text x=\"52\" y=\"62\" fill=\"#3a2e22\" font-family=\"JetBrains Mono\" font-size=\"11\" letter-spacing=\"3\">SPACE 07 · THE REAL LA · LIVING MOSAIC</text>\n          <text x=\"52\" y=\"78\" fill=\"#3a2e22\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"2\">SAME CORRIDOR AS SPACE 01 · CONTENT INVERTED</text>\n\n          <!-- Scale -->\n          <g transform=\"translate(60,610)\">\n            <line x1=\"0\" y1=\"0\" x2=\"80\" y2=\"0\" stroke=\"#a89b82\" stroke-width=\"1.2\"></line>\n            <line x1=\"0\" y1=\"-4\" x2=\"0\" y2=\"4\" stroke=\"#a89b82\"></line>\n            <line x1=\"80\" y1=\"-4\" x2=\"80\" y2=\"4\" stroke=\"#a89b82\"></line>\n            <text x=\"40\" y=\"-8\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" text-anchor=\"middle\">10 FT</text>\n          </g>\n\n          <!-- North arrow -->\n          <g transform=\"translate(380,80)\">\n            <circle cx=\"0\" cy=\"0\" r=\"20\" fill=\"none\" stroke=\"#a89b82\" stroke-width=\"0.8\"></circle>\n            <line x1=\"0\" y1=\"-14\" x2=\"0\" y2=\"14\" stroke=\"#a89b82\" stroke-width=\"0.8\"></line>\n            <polygon points=\"0,-14 -5,-7 5,-7\" fill=\"#a89b82\"></polygon>\n            <text x=\"0\" y=\"-22\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" text-anchor=\"middle\">N</text>\n          </g>\n\n          <!-- LED Wall (west wall, full length of corridor) -->\n          <rect x=\"60\" y=\"100\" width=\"20\" height=\"500\" fill=\"url(#ledMosaic)\" stroke=\"#d4a24c\" stroke-width=\"1.5\"></rect>\n          <rect x=\"60\" y=\"100\" width=\"20\" height=\"500\" fill=\"none\" stroke=\"#d4a24c\" stroke-width=\"0.6\" stroke-dasharray=\"3,3\" opacity=\"0.7\"></rect>\n\n          <!-- Mosaic tile hints inside the wall -->\n          <g opacity=\"0.7\">\n            <rect x=\"62\" y=\"110\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect><rect x=\"70\" y=\"110\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect>\n            <rect x=\"62\" y=\"122\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect><rect x=\"70\" y=\"122\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect>\n            <rect x=\"62\" y=\"134\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect><rect x=\"70\" y=\"134\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect>\n            <rect x=\"62\" y=\"146\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect><rect x=\"70\" y=\"146\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect>\n            <rect x=\"62\" y=\"158\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect><rect x=\"70\" y=\"158\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect>\n            <rect x=\"62\" y=\"170\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect><rect x=\"70\" y=\"170\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect>\n            <rect x=\"62\" y=\"220\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect><rect x=\"70\" y=\"220\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect>\n            <rect x=\"62\" y=\"232\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect><rect x=\"70\" y=\"232\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect>\n            <rect x=\"62\" y=\"244\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect><rect x=\"70\" y=\"244\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect>\n            <rect x=\"62\" y=\"280\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect><rect x=\"70\" y=\"280\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect>\n            <rect x=\"62\" y=\"292\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect><rect x=\"70\" y=\"292\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect>\n            <rect x=\"62\" y=\"340\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect><rect x=\"70\" y=\"340\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect>\n            <rect x=\"62\" y=\"352\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect><rect x=\"70\" y=\"352\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect>\n            <rect x=\"62\" y=\"400\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect><rect x=\"70\" y=\"400\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect>\n            <rect x=\"62\" y=\"412\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect><rect x=\"70\" y=\"412\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect>\n            <rect x=\"62\" y=\"460\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect><rect x=\"70\" y=\"460\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect>\n            <rect x=\"62\" y=\"472\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect><rect x=\"70\" y=\"472\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect>\n            <rect x=\"62\" y=\"510\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect><rect x=\"70\" y=\"510\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect>\n            <rect x=\"62\" y=\"522\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect><rect x=\"70\" y=\"522\" width=\"6\" height=\"8\" fill=\"#d4a24c\"></rect>\n            <rect x=\"62\" y=\"560\" width=\"6\" height=\"8\" fill=\"#4a8a6a\"></rect><rect x=\"70\" y=\"560\" width=\"6\" height=\"8\" fill=\"#6a8aca\"></rect>\n            <rect x=\"62\" y=\"572\" width=\"6\" height=\"8\" fill=\"#c878a8\"></rect><rect x=\"70\" y=\"572\" width=\"6\" height=\"8\" fill=\"#c84a4a\"></rect>\n          </g>\n\n          <text x=\"50\" y=\"350\" fill=\"#d4a24c\" font-family=\"Playfair Display\" font-size=\"14\" font-style=\"italic\" text-anchor=\"middle\" font-weight=\"700\" transform=\"rotate(-90 50 350)\">LED MOSAIC WALL</text>\n          <text x=\"32\" y=\"350\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" transform=\"rotate(-90 32 350)\">110 FT × 14 FT · NOW SHOWS THE AUDIENCE</text>\n\n          <!-- Walk of Fame stars on floor (now blank/inverted) -->\n          <g opacity=\"0.4\">\n            <polygon points=\"200,180 204,192 216,192 207,200 211,212 200,205 189,212 193,200 184,192 196,192\" fill=\"none\" stroke=\"#d4a24c\" stroke-width=\"1\"></polygon>\n            <text x=\"200\" y=\"225\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"7\" text-anchor=\"middle\">BLANK</text>\n            <polygon points=\"200,290 204,302 216,302 207,310 211,322 200,315 189,322 193,310 184,302 196,302\" fill=\"none\" stroke=\"#d4a24c\" stroke-width=\"1\"></polygon>\n            <text x=\"200\" y=\"335\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"7\" text-anchor=\"middle\">BLANK</text>\n            <polygon points=\"200,400 204,412 216,412 207,420 211,432 200,425 189,432 193,420 184,412 196,412\" fill=\"none\" stroke=\"#d4a24c\" stroke-width=\"1\"></polygon>\n            <text x=\"200\" y=\"445\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"7\" text-anchor=\"middle\">BLANK</text>\n            <polygon points=\"200,510 204,522 216,522 207,530 211,542 200,535 189,542 193,530 184,522 196,522\" fill=\"none\" stroke=\"#d4a24c\" stroke-width=\"1\"></polygon>\n            <text x=\"200\" y=\"555\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"7\" text-anchor=\"middle\">BLANK</text>\n          </g>\n\n          <!-- Viewing zone (against the wall, full length) -->\n          <g opacity=\"0.6\">\n            <rect x=\"100\" y=\"120\" width=\"80\" height=\"460\" fill=\"#d4a24c\" fill-opacity=\"0.04\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"3,3\"></rect>\n            <text x=\"140\" y=\"200\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1.5\" text-anchor=\"middle\" opacity=\"0.85\" transform=\"rotate(-90 140 200)\">VIEWING ZONE · LINGER + PHOTOGRAPH</text>\n          </g>\n\n          <!-- Primary flow path: enters north → walks length of wall → exits east at mid-corridor -->\n          <g opacity=\"0.55\">\n            <rect x=\"240\" y=\"120\" width=\"60\" height=\"220\" fill=\"#a89b82\" fill-opacity=\"0.03\" stroke=\"#a89b82\" stroke-width=\"0.4\" stroke-dasharray=\"2,3\"></rect>\n            <text x=\"270\" y=\"230\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" opacity=\"0.7\" transform=\"rotate(-90 270 230)\">FLOW LANE</text>\n          </g>\n\n          <!-- South portion (below exit) — quieter, can also serve as overflow viewing -->\n          <g opacity=\"0.5\">\n            <rect x=\"100\" y=\"400\" width=\"200\" height=\"180\" fill=\"#a89b82\" fill-opacity=\"0.025\" stroke=\"#a89b82\" stroke-width=\"0.4\" stroke-dasharray=\"2,3\"></rect>\n            <text x=\"200\" y=\"490\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" opacity=\"0.65\">OVERFLOW VIEWING · SOUTH HALF OF WALL</text>\n          </g>\n\n          <!-- Audience figures - looking at wall, distributed full length -->\n          <g fill=\"#6a4838\" opacity=\"0.85\">\n            <circle cx=\"125\" cy=\"160\" r=\"6\"></circle><circle cx=\"155\" cy=\"180\" r=\"6\"></circle><circle cx=\"135\" cy=\"220\" r=\"6\"></circle>\n            <circle cx=\"160\" cy=\"270\" r=\"6\"></circle><circle cx=\"125\" cy=\"310\" r=\"6\"></circle>\n            <circle cx=\"130\" cy=\"430\" r=\"6\"></circle><circle cx=\"160\" cy=\"470\" r=\"6\"></circle><circle cx=\"135\" cy=\"510\" r=\"6\"></circle>\n            <circle cx=\"155\" cy=\"550\" r=\"6\"></circle><circle cx=\"125\" cy=\"580\" r=\"6\"></circle>\n          </g>\n          <!-- phones up -->\n          <g fill=\"none\" stroke=\"#f0c674\" stroke-width=\"0.8\" opacity=\"0.7\">\n            <rect x=\"121\" y=\"148\" width=\"8\" height=\"6\" rx=\"1\"></rect>\n            <rect x=\"151\" y=\"168\" width=\"8\" height=\"6\" rx=\"1\"></rect>\n            <rect x=\"156\" y=\"258\" width=\"8\" height=\"6\" rx=\"1\"></rect>\n            <rect x=\"156\" y=\"458\" width=\"8\" height=\"6\" rx=\"1\"></rect>\n            <rect x=\"151\" y=\"538\" width=\"8\" height=\"6\" rx=\"1\"></rect>\n          </g>\n\n          <!-- Flow audience moving toward mid-east exit -->\n          <g fill=\"#3a2818\" opacity=\"0.6\">\n            <circle cx=\"270\" cy=\"180\" r=\"5\"></circle><circle cx=\"275\" cy=\"240\" r=\"5\"></circle><circle cx=\"280\" cy=\"300\" r=\"5\"></circle>\n            <circle cx=\"295\" cy=\"345\" r=\"5\"></circle><circle cx=\"320\" cy=\"345\" r=\"5\"></circle><circle cx=\"350\" cy=\"345\" r=\"5\"></circle>\n          </g>\n\n          <!-- Entry from Space 6 (north end) -->\n          <path d=\"M 220 70 L 220 105\" stroke=\"#d4a24c\" stroke-width=\"1.8\" marker-end=\"url(#s7arrow)\" opacity=\"0.9\"></path>\n          <text x=\"220\" y=\"55\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"10\" letter-spacing=\"1.5\" text-anchor=\"middle\">FROM SPACE 6</text>\n          <text x=\"220\" y=\"40\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"middle\" opacity=\"0.8\">POST-BOW · EGRESS BEGINS</text>\n\n          <!-- Suggested flow path: north entry → down corridor along wall → curve to mid-east exit -->\n          <path d=\"M 220 110 Q 220 220 245 320 Q 280 350 365 350\" stroke=\"#d4a24c\" stroke-width=\"1\" stroke-dasharray=\"4,4\" fill=\"none\" opacity=\"0.55\"></path>\n\n          <!-- Exit to lobby/gift shop (mid-east wall) -->\n          <path d=\"M 380 350 L 430 350\" stroke=\"#d4a24c\" stroke-width=\"1.8\" marker-end=\"url(#s7arrow)\" opacity=\"0.9\"></path>\n          <text x=\"445\" y=\"345\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"10\" letter-spacing=\"1.5\" text-anchor=\"start\">TO LOBBY</text>\n          <text x=\"445\" y=\"358\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"start\" opacity=\"0.8\">GIFT SHOP · STREET</text>\n\n          <!-- East wall (opposite LED) — split around the exit doorway -->\n          <rect x=\"380\" y=\"100\" width=\"8\" height=\"220\" fill=\"#3a2e22\"></rect>\n          <rect x=\"380\" y=\"380\" width=\"8\" height=\"220\" fill=\"#3a2e22\"></rect>\n          <!-- exit doorway gap from y=320 to y=380 -->\n          <text x=\"395\" y=\"200\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" transform=\"rotate(-90 395 200)\">EAST WALL · NORTH</text>\n          <text x=\"395\" y=\"500\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" transform=\"rotate(-90 395 500)\">EAST WALL · SOUTH</text>\n          <!-- Doorway threshold marker -->\n          <g>\n            <line x1=\"380\" y1=\"320\" x2=\"388\" y2=\"320\" stroke=\"#d4a24c\" stroke-width=\"2\"></line>\n            <line x1=\"380\" y1=\"380\" x2=\"388\" y2=\"380\" stroke=\"#d4a24c\" stroke-width=\"2\"></line>\n            <rect x=\"382\" y=\"320\" width=\"4\" height=\"60\" fill=\"#d4a24c\" fill-opacity=\"0.08\" stroke=\"#d4a24c\" stroke-width=\"0.4\" stroke-dasharray=\"2,2\"></rect>\n            <text x=\"395\" y=\"355\" fill=\"#d4a24c\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"start\" opacity=\"0.85\">DOORWAY</text>\n          </g>\n\n          <!-- South end of corridor: dead end (no exit here) -->\n          <line x1=\"40\" y1=\"640\" x2=\"400\" y2=\"640\" stroke=\"#3a2e22\" stroke-width=\"1.5\"></line>\n          <text x=\"220\" y=\"624\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1.5\" text-anchor=\"middle\" opacity=\"0.7\">SOUTH END · DEAD END · NO EGRESS</text>\n\n          <!-- Dim ambient lighting -->\n          <g opacity=\"0.3\">\n            <circle cx=\"220\" cy=\"180\" r=\"35\" fill=\"#d4a24c\" fill-opacity=\"0.04\"></circle>\n            <circle cx=\"220\" cy=\"350\" r=\"35\" fill=\"#d4a24c\" fill-opacity=\"0.04\"></circle>\n            <circle cx=\"220\" cy=\"520\" r=\"35\" fill=\"#d4a24c\" fill-opacity=\"0.04\"></circle>\n          </g>\n\n          <!-- Dimensions -->\n          <g opacity=\"0.6\">\n            <line x1=\"40\" y1=\"32\" x2=\"400\" y2=\"32\" stroke=\"#a89b82\" stroke-width=\"0.5\"></line>\n            <text x=\"220\" y=\"24\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1\" text-anchor=\"middle\">62 FT</text>\n          </g>\n          <g opacity=\"0.6\">\n            <line x1=\"28\" y1=\"40\" x2=\"28\" y2=\"640\" stroke=\"#a89b82\" stroke-width=\"0.5\"></line>\n            <text x=\"18\" y=\"340\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1\" text-anchor=\"middle\" transform=\"rotate(-90 18 340)\">110 FT</text>\n          </g>\n        </svg>",
+    "legend": [
+      {
+        "color": "linear-gradient(180deg,#c84a4a,#d4a24c,#4a8a6a,#6a8aca,#c878a8)",
+        "label": "LED Mosaic Wall",
+        "note": "Same wall as Space 1 · 110 × 14 ft · audience faces compose LA"
+      },
+      {
+        "color": "#d4a24c",
+        "label": "Walk of Fame stars",
+        "note": "Now blank · existing brass star plates retained"
+      },
+      {
+        "color": "#d4a24c",
+        "label": "Viewing zone",
+        "note": "Full length of wall · audience lingers and photographs"
+      },
+      {
+        "color": "#a89b82",
+        "label": "Flow lane + exit",
+        "note": "Mid-east-wall doorway to lobby · audience curves out at mid-corridor"
+      },
+      {
+        "color": "#6a4838",
+        "label": "Audience · viewing",
+        "note": "Phones up, photographing, finding themselves"
+      },
+      {
+        "color": "#3a2818",
+        "label": "Audience · moving to exit",
+        "note": "Curving toward the mid-east doorway"
+      }
+    ]
+  },
+  "perspectives": [
+    {
+      "src": "/images/Space_7-image2.jpg",
+      "alt": "The Real LA — perspective 1"
+    }
+  ],
+  "beats": [
+    {
+      "number": "01",
+      "title": "Re-entry · the room remembered",
+      "body": "The first audience members round the corner from Space 6 and re-enter the corridor. <em>They recognize the room.</em> Same proportions, same Walk of Fame stars on the floor, same massive west wall. For a half-second they expect the Hollywood content — the Sign, the cycling landmarks, the opening they walked in to. Instead, the wall is something else entirely. Recognition flickers into surprise. They slow down without realizing they've slowed down.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Wall pre-lit · soft amber spill"
+        },
+        {
+          "kind": "sound",
+          "label": "Band's last chord, slowly fading"
+        },
+        {
+          "kind": "move",
+          "label": "Audience exits Space 6"
+        }
+      ]
+    },
+    {
+      "number": "02",
+      "title": "The skyline forms",
+      "body": "The wall holds its first composition: the LA skyline, downtown towers and hills, rendered entirely from audience portraits arranged like mosaic tiles. From across the corridor it reads as a recognizable cityscape; up close, individual faces resolve. The text underneath, in slow Playfair italic: <em>this is los angeles.</em> It holds. The audience starts walking the length of the wall, scanning. <em>Where am I?</em>",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "First mosaic configuration · LA skyline"
+        },
+        {
+          "kind": "sound",
+          "label": "Last chord still fading · ambient hush"
+        }
+      ]
+    },
+    {
+      "number": "03",
+      "title": "The mural breathes",
+      "body": "Every 30 seconds the mosaic <em>reorganizes</em>. The skyline dissolves; the same audience faces drift into a new composition — a beach with surfers, then a freeway at dusk with brake-light streams, then a residential neighborhood with palm trees and bungalows, then a mountain ridgeline. Each composition holds for 30 seconds before the next morph. The audience never sees the same image twice in a single egress window. The text underneath cycles too — sometimes <em>this is los angeles</em>, sometimes just <em>los angeles</em>, sometimes blank.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Reconfigure to beach · 30-sec hold"
+        },
+        {
+          "kind": "light",
+          "label": "Reconfigure to freeway · 30-sec hold"
+        },
+        {
+          "kind": "light",
+          "label": "Reconfigure to neighborhood · 30-sec hold"
+        }
+      ]
+    },
+    {
+      "number": "04",
+      "title": "Finding yourself · photographing the wall",
+      "body": "The audience naturally arranges itself in two streams. Some walk the full length of the wall scanning for their face — they stop, point, laugh, photograph the wall, photograph themselves in front of it, show their friends. Others move along the east side of the corridor, taking it in but heading for the exit. The wall is photographable from every angle: the macro mural, the micro tile, the selfie. People <em>linger.</em> The corridor is full of soft phone-screen glow and quiet conversation. The Walk of Fame stars on the floor are dim, brass outlines only — they no longer demand attention.",
+      "tags": [
+        {
+          "kind": "move",
+          "label": "Audience pauses · phones up · selfies"
+        },
+        {
+          "kind": "perf",
+          "label": "No performers · the audience is the show"
+        }
+      ]
+    },
+    {
+      "number": "05",
+      "title": "Exit · turning out into the lobby",
+      "body": "The audience reaches the <em>middle of the corridor</em> and turns right through the doorway in the east wall — into the lobby and gift shop. The exit is mid-wall, not at the end, so the audience naturally walks <em>past</em> half the mural before turning out, then sees the south half of the mural as they pivot toward the doorway. Some keep walking south first to take in the full length of the wall before doubling back to the exit. The wall does not fade — it keeps cycling for the next person, and the next. The band's last chord has finally dissolved entirely; the room is silent except for the soft murmur of the audience itself. The lobby is calm and warmly lit. Front doors open onto the street. The audience steps out of the warehouse and back into the actual city of LA — the one the show has been telling them about. The closing image of the show is not on a screen. It is the city outside the door.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Wall continues · no fade-out"
+        },
+        {
+          "kind": "sound",
+          "label": "Band's chord finally gone · ambient room tone"
+        },
+        {
+          "kind": "move",
+          "label": "Mid-corridor turn · east wall doorway to lobby"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "locked": [
+      "Same physical corridor as Space 1 — no new build, content overwrite only",
+      "LED wall is the centerpiece · existing 110 ft × 14 ft LED wall reused",
+      "Display direction: Living Mosaic — audience portraits compose images of LA that reorganize every 30 seconds",
+      "Compositions cycle through multiple LA images: skyline, beach, freeway, neighborhood, mountains (final list TBD)",
+      "Subtitle text holds and fades: \"This is Los Angeles.\"",
+      "No performers in the corridor on egress — audience experiences it alone",
+      "Tour Guide is not present (removes performance frame; audience owns the moment)",
+      "Walk of Fame stars on floor remain physical but dimmed — brass outlines only, no celebrity names lit",
+      "Sound: band's last chord from Space 6 finale slowly fading, then silence",
+      "Audience moves at their own pace — viewers stop near wall, pass-through lane on east side",
+      "Total dwell ~3–8 min per person; total egress window ~10–12 min",
+      "Transition to lobby/gift shop/street is direct and unmarked — no curtain call, no \"exit through gift shop\" framing"
+    ],
+    "stillOpen": [
+      "How audience photos are captured — to be designed separately as a tech workstream (red carpet, in-show capture, etc.)",
+      "Final list of LA compositions the mural cycles through — needs creative direction (skyline + how many others?)",
+      "Composition transition style — hard cut, dissolve, slow drift of tiles into new positions, or hybrid",
+      "Subtitle text variants — \"this is los angeles\" only, or rotating phrases (e.g., neighborhood names, show lines, blank intervals)",
+      "Whether the Tour Guide makes a silent presence at the corridor exit (handshake, nod) or is fully absent",
+      "Ambient sound — sustained band chord, ambient room tone, or full silence?",
+      "Walk of Fame star treatment — fully dim, faintly uplit, or replaced with audience names rotating?",
+      "Lobby/gift shop content — does it echo the mural (printed mural, photo download station) or stay neutral?",
+      "Photo delivery to audience — QR code, email, web gallery (tech workstream)",
+      "Consent / opt-out flow for audience photos (legal + production workstream)",
+      "What happens for audience members who don't appear in the mosaic (opted out, missed by capture) — placeholder tiles? Skip and move on?",
+      "Show-night reset — does the wall reset at end of night, or do photos accumulate across multiple shows?"
+    ]
+  },
+  "audio": null,
+  "status": "v01"
+}

@@ -1,0 +1,55 @@
+---
+import type { DesignState } from '@/types';
+
+export interface Props {
+  state: DesignState;
+}
+
+const { state } = Astro.props;
+---
+
+<section data-block="design-state" class="border-b border-[var(--rule)] bg-dark-bg text-on-dark">
+  <div class="mx-auto max-w-[1320px] px-6 py-16 md:px-12 md:py-24">
+    <header class="mb-12 flex items-end justify-between gap-6 border-b border-[var(--on-dark-rule)] pb-4">
+      <div>
+        <span class="kicker eyebrow--on-dark">Section 04 — Design state</span>
+        <h2 class="display mt-2 text-on-dark" style="font-size: clamp(34px, 4vw, 56px);" data-editable>
+          Locked &amp; still open
+        </h2>
+      </div>
+      <span class="eyebrow eyebrow--on-dark hidden md:inline">As of v06 · April 2026</span>
+    </header>
+
+    <div class="grid gap-12 md:grid-cols-2 md:gap-16">
+      <div data-block="design-state-locked">
+        <span class="kicker text-red">Locked</span>
+        <ul class="mt-6 space-y-3 border-t border-[var(--on-dark-rule)] pt-5">
+          {state.locked.map((item) => (
+            <li class="flex items-start gap-3 text-on-dark/85" data-block="locked-item">
+              <span
+                class="mt-1.5 inline-block h-1.5 w-3 flex-shrink-0 bg-red"
+                aria-hidden="true"
+              ></span>
+              <span style="font-size: 16px; line-height: 1.5;" data-editable set:html={item} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div data-block="design-state-open">
+        <span class="kicker eyebrow--on-dark" style="color: rgba(244,239,230,0.85);">Still open</span>
+        <ul class="mt-6 space-y-3 border-t border-[var(--on-dark-rule)] pt-5">
+          {state.stillOpen.map((item) => (
+            <li class="flex items-start gap-3 text-on-dark/75" data-block="open-item">
+              <span
+                class="mt-1.5 inline-block h-1.5 w-3 flex-shrink-0 border border-on-dark/50"
+                aria-hidden="true"
+              ></span>
+              <span style="font-size: 16px; line-height: 1.5;" data-editable set:html={item} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,299 @@
+---
+// Editor overlay — renders the floating toolbar when ?edit=1 (and password-gated).
+// Edits are stored in localStorage keyed by location.pathname.
+// Save = "Export changes" downloads JSON the user can share back for committing.
+---
+
+<div
+  id="editor-toolbar"
+  class="pointer-events-none fixed bottom-6 right-6 z-50 hidden flex-col items-end gap-3"
+  data-edit-toolbar
+>
+  <div class="pointer-events-auto flex items-center gap-3 rounded-full border border-red bg-paper/95 px-4 py-2 shadow-lg backdrop-blur">
+    <span class="kicker text-red">Edit mode</span>
+    <button
+      type="button"
+      data-edit-export
+      class="rounded bg-red px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-paper hover:bg-red-deep"
+    >
+      Export changes
+    </button>
+    <button
+      type="button"
+      data-edit-reset
+      class="rounded border border-ink px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-ink hover:bg-ink hover:text-paper"
+    >
+      Reset
+    </button>
+    <button
+      type="button"
+      data-edit-exit
+      class="rounded border border-[var(--rule)] px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-ink/70 hover:text-ink"
+    >
+      Exit
+    </button>
+  </div>
+  <div
+    data-edit-status
+    class="pointer-events-auto rounded border border-[var(--rule)] bg-paper/95 px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-ink/65 backdrop-blur"
+  >
+    Click any text to edit · Hover a block for the delete handle
+  </div>
+</div>
+
+<dialog
+  id="editor-gate"
+  class="rounded border-2 border-red bg-paper p-0 text-ink backdrop:bg-ink/70"
+  data-edit-gate
+>
+  <form method="dialog" class="flex w-[min(420px,90vw)] flex-col gap-4 p-8">
+    <span class="kicker text-red">Editor sign-in</span>
+    <h2 class="display" style="font-size: 32px;">Enter password</h2>
+    <p class="text-sm text-ink/70">
+      The tour is read-only by default. Enter the editor password to make changes; they are saved
+      to this browser only and exported as JSON for committing.
+    </p>
+    <input
+      type="password"
+      name="password"
+      autocomplete="off"
+      autofocus
+      class="rounded border border-[var(--rule)] bg-paper-dim px-3 py-2 font-mono text-sm focus:border-red focus:outline-none"
+    />
+    <div class="flex justify-end gap-2">
+      <button
+        type="button"
+        value="cancel"
+        data-edit-gate-cancel
+        class="rounded border border-[var(--rule)] px-3 py-1.5 text-xs uppercase tracking-[0.22em] text-ink/70 hover:text-ink"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        value="ok"
+        class="rounded bg-red px-4 py-1.5 text-xs uppercase tracking-[0.22em] text-paper hover:bg-red-deep"
+      >
+        Unlock
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  // Editor flow:
+  //   1) Visit any page with ?edit=1 in the URL.
+  //   2) A password dialog appears. The hashed password is checked against EDITOR_HASH below.
+  //   3) On success, html[data-edit="1"] is set, [data-editable] becomes contenteditable,
+  //      a delete-X handle appears on every [data-block]. Edits are written to localStorage.
+  //   4) "Export changes" downloads a JSON file; user shares it back for committing.
+
+  // Public-safe SHA-256 of the editor password. To rotate, run:
+  //   echo -n 'your-password' | shasum -a 256
+  // and replace the constant below. Current password: "awaken" (placeholder — rotate before going public).
+  const EDITOR_HASH = 'cdd35a708cf7fbc0a70f4d0f7ec42dcc269a97e1894726d8e175a2d830d336cd';
+
+  async function sha256(str: string): Promise<string> {
+    const buf = new TextEncoder().encode(str);
+    const hash = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  const STORAGE_PREFIX = 'tour:edits:';
+
+  function storageKey() {
+    return STORAGE_PREFIX + window.location.pathname;
+  }
+
+  function loadEdits(): Record<string, any> {
+    try {
+      return JSON.parse(localStorage.getItem(storageKey()) ?? '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function saveEdits(edits: Record<string, any>) {
+    localStorage.setItem(storageKey(), JSON.stringify(edits));
+  }
+
+  function applyEdits(edits: Record<string, any>) {
+    document.querySelectorAll<HTMLElement>('[data-editable]').forEach((el, i) => {
+      const k = `text:${selector(el, i)}`;
+      if (edits[k] !== undefined) el.innerHTML = edits[k];
+    });
+    document.querySelectorAll<HTMLElement>('[data-block]').forEach((el) => {
+      const k = `del:${el.dataset.block}`;
+      if (edits[k]) el.dataset.deleted = '1';
+    });
+  }
+
+  function selector(el: HTMLElement, fallback: number): string {
+    const block = el.closest('[data-block]')?.getAttribute('data-block') ?? 'page';
+    const peers = Array.from(
+      el.closest('[data-block]')?.querySelectorAll('[data-editable]') ?? [el]
+    );
+    const i = peers.indexOf(el);
+    return `${block}#${i}`;
+  }
+
+  function enterEditMode() {
+    document.documentElement.dataset.edit = '1';
+    document.querySelectorAll<HTMLElement>('[data-editable]').forEach((el) => {
+      el.contentEditable = 'true';
+      el.spellcheck = true;
+    });
+    document.querySelectorAll<HTMLElement>('[data-block]').forEach((el) => {
+      if (el.querySelector(':scope > [data-block-controls]')) return;
+      const ctrl = document.createElement('div');
+      ctrl.dataset.blockControls = '';
+      ctrl.className =
+        'absolute right-2 top-2 z-10 flex gap-1 opacity-0 group-hover:opacity-100 hover:opacity-100';
+      ctrl.style.pointerEvents = 'auto';
+      ctrl.style.opacity = '0';
+      ctrl.innerHTML = `
+        <button type="button" data-block-delete title="Delete this block"
+          style="background:#C9242A;color:#F4EFE6;font-family:Inter,sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 8px;border:0;cursor:pointer;border-radius:2px;">
+          Delete
+        </button>
+        <button type="button" data-block-restore title="Restore this block"
+          style="background:#111;color:#F4EFE6;font-family:Inter,sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 8px;border:0;cursor:pointer;border-radius:2px;">
+          Restore
+        </button>
+      `;
+      const wrapper = document.createElement('div');
+      wrapper.style.position = 'absolute';
+      wrapper.style.top = '8px';
+      wrapper.style.right = '8px';
+      wrapper.style.zIndex = '20';
+      wrapper.appendChild(ctrl);
+      el.appendChild(wrapper);
+
+      el.addEventListener('mouseenter', () => (ctrl.style.opacity = '1'));
+      el.addEventListener('mouseleave', () => (ctrl.style.opacity = '0'));
+
+      ctrl.querySelector<HTMLButtonElement>('[data-block-delete]')?.addEventListener('click', () => {
+        const edits = loadEdits();
+        edits[`del:${el.dataset.block}`] = true;
+        saveEdits(edits);
+        el.dataset.deleted = '1';
+      });
+      ctrl.querySelector<HTMLButtonElement>('[data-block-restore]')?.addEventListener('click', () => {
+        const edits = loadEdits();
+        delete edits[`del:${el.dataset.block}`];
+        saveEdits(edits);
+        delete el.dataset.deleted;
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-editable]').forEach((el, i) => {
+      el.addEventListener('blur', () => {
+        const edits = loadEdits();
+        edits[`text:${selector(el, i)}`] = el.innerHTML;
+        saveEdits(edits);
+      });
+    });
+
+    const tb = document.querySelector<HTMLElement>('[data-edit-toolbar]');
+    if (tb) {
+      tb.classList.remove('hidden');
+      tb.classList.add('flex');
+    }
+  }
+
+  function exitEditMode() {
+    delete document.documentElement.dataset.edit;
+    const url = new URL(window.location.href);
+    url.searchParams.delete('edit');
+    window.location.href = url.toString();
+  }
+
+  function exportEdits() {
+    const edits = loadEdits();
+    const blob = new Blob([JSON.stringify(edits, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const slug = window.location.pathname.replace(/\W+/g, '-').replace(/^-|-$/g, '') || 'home';
+    a.href = url;
+    a.download = `edits-${slug}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetEdits() {
+    if (!confirm('Discard all edits on this page?')) return;
+    localStorage.removeItem(storageKey());
+    window.location.reload();
+  }
+
+  async function checkPassword(input: string): Promise<boolean> {
+    return (await sha256(input)) === EDITOR_HASH;
+  }
+
+  async function maybeStart() {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('edit')) {
+      // Still apply prior edits if present (so saved state preserves between sessions).
+      applyEdits(loadEdits());
+      return;
+    }
+
+    const sessionUnlocked = sessionStorage.getItem('tour:editorUnlocked') === '1';
+    if (sessionUnlocked) {
+      applyEdits(loadEdits());
+      enterEditMode();
+      return;
+    }
+
+    const dlg = document.querySelector<HTMLDialogElement>('#editor-gate');
+    if (!dlg) return;
+
+    const cancelBtn = dlg.querySelector<HTMLButtonElement>('[data-edit-gate-cancel]');
+    cancelBtn?.addEventListener('click', () => {
+      dlg.close('cancel');
+      const url = new URL(window.location.href);
+      url.searchParams.delete('edit');
+      window.location.href = url.toString();
+    });
+
+    dlg.showModal();
+    dlg.addEventListener(
+      'close',
+      async () => {
+        if (dlg.returnValue === 'cancel') return;
+        const formData = new FormData(dlg.querySelector('form')!);
+        const pw = String(formData.get('password') ?? '');
+        const ok = await checkPassword(pw);
+        if (ok) {
+          sessionStorage.setItem('tour:editorUnlocked', '1');
+          applyEdits(loadEdits());
+          enterEditMode();
+        } else {
+          alert('Wrong password.');
+          const url = new URL(window.location.href);
+          url.searchParams.delete('edit');
+          window.location.href = url.toString();
+        }
+      },
+      { once: true }
+    );
+  }
+
+  function bindToolbar() {
+    document.querySelector('[data-edit-export]')?.addEventListener('click', exportEdits);
+    document.querySelector('[data-edit-reset]')?.addEventListener('click', resetEdits);
+    document.querySelector('[data-edit-exit]')?.addEventListener('click', exitEditMode);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      bindToolbar();
+      maybeStart();
+    });
+  } else {
+    bindToolbar();
+    maybeStart();
+  }
+</script>

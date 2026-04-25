@@ -1,0 +1,26 @@
+---
+import type { MetaStat } from '@/types';
+export interface Props {
+  meta: MetaStat[];
+}
+const { meta } = Astro.props;
+---
+
+<section data-block="meta" class="border-b-2 border-ink bg-paper-dim">
+  <div class="mx-auto max-w-[1320px] px-6 py-8 md:px-12 md:py-10">
+    <div class="grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
+      {meta.map((stat) => (
+        <div class="border-l border-[var(--rule-strong)] pl-4">
+          <div class="stat-lbl mb-2" data-editable>{stat.label}</div>
+          <div
+            class="font-display text-ink"
+            style="font-size: clamp(18px, 1.6vw, 22px); line-height: 1.15; font-weight: 600;"
+            data-editable
+          >
+            {stat.value}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

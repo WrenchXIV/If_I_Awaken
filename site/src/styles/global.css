@@ -1,0 +1,241 @@
+/* If I Awaken in Los Angeles — Tour
+   Global stylesheet. Design tokens lifted from site-deck v6 (cinema brand). */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #111111;
+  --paper: #F4EFE6;
+  --paper-dim: #E8E1D3;
+  --red: #C9242A;
+  --red-deep: #9E1B21;
+  --rule: rgba(17, 17, 17, 0.18);
+  --rule-strong: rgba(17, 17, 17, 0.45);
+
+  --dark-bg: #0c0c0c;
+  --on-dark: #F4EFE6;
+  --on-dark-mute: rgba(244, 239, 230, 0.75);
+  --on-dark-rule: rgba(244, 239, 230, 0.25);
+
+  --blueprint-bg: #0a0908;
+  --blueprint-gold: #d4a24c;
+  --blueprint-gold-bright: #f0c674;
+  --blueprint-ink: rgba(244, 239, 230, 0.92);
+  --blueprint-ink-dim: rgba(244, 239, 230, 0.55);
+  --blueprint-rule: rgba(212, 162, 76, 0.28);
+
+  --f-display: 'Oswald', Impact, Haettenschweiler, sans-serif;
+  --f-body: 'Inter', system-ui, sans-serif;
+  --f-serif: 'Playfair Display', Georgia, serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--paper);
+  }
+
+  ::selection {
+    background: var(--red);
+    color: var(--paper);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  /* Eyebrow — small uppercase Inter label, muted ink */
+  .eyebrow {
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 17, 0.55);
+  }
+
+  .eyebrow--on-dark {
+    color: rgba(244, 239, 230, 0.65);
+  }
+
+  /* Kicker — Oswald uppercase red, the "section label" treatment */
+  .kicker {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  /* Display — Oswald big titles */
+  .display {
+    font-family: var(--f-display);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  /* Lede — Playfair italic for opening pullquote-style copy */
+  .lede {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  /* Hairline rule — section dividers */
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .rule-strong {
+    border: 0;
+    border-top: 2px solid var(--ink);
+  }
+
+  /* Stat block — large Oswald number + small label */
+  .stat-num {
+    font-family: var(--f-display);
+    font-weight: 700;
+    line-height: 0.92;
+    color: var(--red);
+  }
+  .stat-lbl {
+    font-family: var(--f-body);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 17, 0.6);
+  }
+
+  /* Blueprint inset — the SVG plan view container, dark-mode by intent */
+  .blueprint {
+    background: var(--blueprint-bg);
+    color: var(--blueprint-ink);
+    border: 1px solid var(--blueprint-rule);
+  }
+
+  .blueprint .label,
+  .blueprint .meta {
+    font-family: var(--f-mono);
+    color: var(--blueprint-ink-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Plan frame — let the SVG dictate its own aspect ratio via viewBox */
+  .plan-frame {
+    padding: 16px;
+  }
+  .plan-frame > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 78vh;
+  }
+
+  /* Beat tag pill */
+  .beat-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--f-body);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    background: transparent;
+    line-height: 1;
+  }
+
+  .beat-tag__kind { font-weight: 700; }
+  .beat-tag__label {
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    margin-left: 6px;
+    color: var(--ink);
+  }
+
+  .beat-tag--light  { color: var(--red); border-color: var(--red); }
+  .beat-tag--sound  { color: #6E4F2E; border-color: rgba(110, 79, 46, 0.45); }
+  .beat-tag--move   { color: #2E7D5F; border-color: rgba(46, 125, 95, 0.45); }
+  .beat-tag--perf   { color: #8A5AB0; border-color: rgba(138, 90, 176, 0.45); }
+  .beat-tag--wall,
+  .beat-tag--floor,
+  .beat-tag--dancers { color: var(--red-deep); border-color: rgba(158, 27, 33, 0.45); }
+}
+
+/* Reveal-on-scroll utility — used for beat fades */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Edit mode visual treatment */
+html[data-edit='1'] [data-editable]:hover {
+  outline: 1px dashed var(--red);
+  outline-offset: 4px;
+}
+
+html[data-edit='1'] [data-editable][contenteditable='true']:focus {
+  outline: 2px solid var(--red);
+  outline-offset: 4px;
+}
+
+html[data-edit='1'] [data-block] {
+  position: relative;
+}
+
+html[data-edit='1'] [data-block]::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 1px dashed transparent;
+  pointer-events: none;
+  transition: border-color 0.15s ease;
+}
+
+html[data-edit='1'] [data-block]:hover::before {
+  border-color: rgba(201, 36, 42, 0.4);
+}
+
+html[data-edit='1'] [data-block][data-deleted='1'] {
+  opacity: 0.25;
+  filter: grayscale(0.8);
+}

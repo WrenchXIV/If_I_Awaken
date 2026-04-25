@@ -1,0 +1,314 @@
+{
+  "id": "space-2",
+  "index": 2,
+  "eyebrow": "If I Awaken in Los Angeles · Scenic Design",
+  "title": "Boyle Heights · Chicano LA",
+  "tagline": null,
+  "summary": "A warehouse tianguis. Scenic elements grow larger as they move out from a central Courtyard ringed with stone tables. Audience arrives through the market. Youth sings from the band stage, elder walks in from the mural wall, they meet in the middle.",
+  "callout": "<div class=\"callout-label\">The spatial move</div> <h3>A courtyard with a horizon</h3> <p>Audience enters from the bottom-right, led by the Tour Guide through a row of tianguis stalls until they land in The Courtyard — a central plaza ringed by six stone tables (round pink-stone tops on green pedestals). The band stage sits to their north; the south mural wall is their horizon. Scenic graduates outward — smallest in the center, largest at the edges — so sight lines from the Courtyard stay clean. During the youth poem, audience faces north (band stage); during the elder poem, they turn 180° to face south (mural wall). The elder walks forward through the scenic elements he names and ends his poem in the middle of the Courtyard, surrounded by the audience, with the Youth Poet joining him there.</p>",
+  "hero": {
+    "src": "/images/Space_2-image2.jpg",
+    "alt": "Boyle Heights · Chicano LA",
+    "position": "50% 55%"
+  },
+  "meta": [
+    {
+      "label": "Footprint",
+      "value": "~62 × 62 ft"
+    },
+    {
+      "label": "Ceiling",
+      "value": "13–15 ft (exposed warehouse)"
+    },
+    {
+      "label": "Audience",
+      "value": "150 per show"
+    },
+    {
+      "label": "Band Stage",
+      "value": "20 ft dia · 3 ft up · 5-piece jazz"
+    },
+    {
+      "label": "Scenic grammar",
+      "value": "Facades · full-scale props · open sight lines"
+    },
+    {
+      "label": "Live in room",
+      "value": "Tour Guide · Youth Poet · Elder Poet · Band"
+    }
+  ],
+  "plan": {
+    "svg": "<svg class=\"plan-svg\" id=\"planSvg\" viewBox=\"-80 -80 760 760\" xmlns=\"http://www.w3.org/2000/svg\">\n        <defs>\n          <linearGradient id=\"muralGrad\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\">\n            <stop offset=\"0%\" stop-color=\"#e07856\" stop-opacity=\"0.6\"></stop>\n            <stop offset=\"50%\" stop-color=\"#c85f38\" stop-opacity=\"0.8\"></stop>\n            <stop offset=\"100%\" stop-color=\"#e07856\" stop-opacity=\"0.6\"></stop>\n          </linearGradient>\n          <marker id=\"arrowG\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\">\n            <polygon points=\"0 0, 8 4, 0 8\" fill=\"#f0c674\"></polygon>\n          </marker>\n          <marker id=\"arrowBig\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\">\n            <polygon points=\"0 0, 8 4, 0 8\" fill=\"#f0c674\"></polygon>\n          </marker>\n        </defs>\n\n        <!-- Space 2 boundary (NOT draggable) -->\n        <rect x=\"40\" y=\"40\" width=\"560\" height=\"560\" fill=\"#1a0f08\" stroke=\"#e07856\" stroke-width=\"1.5\" stroke-dasharray=\"4,4\"></rect>\n\n        <!-- South mural wall (NOT draggable) -->\n        <rect x=\"40\" y=\"40\" width=\"560\" height=\"14\" fill=\"url(#muralGrad)\"></rect>\n        <text x=\"320\" y=\"33\" fill=\"#e07856\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"3\" text-anchor=\"middle\">SOUTH MURAL WALL (HYBRID STREET-ART / TROMPE-L'OEIL)</text>\n\n        <!-- Direction marker (NOT draggable) -->\n        <text x=\"560\" y=\"100\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\">N</text>\n        <line x1=\"560\" y1=\"104\" x2=\"560\" y2=\"120\" stroke=\"#5a5245\" stroke-width=\"0.5\"></line>\n\n        <!-- Entry (NOT draggable) -->\n        <path d=\"M 630 570 L 605 570\" stroke=\"#f0c674\" stroke-width=\"2\" fill=\"none\" marker-end=\"url(#arrowG)\"></path>\n        <text x=\"625\" y=\"560\" fill=\"#f0c674\" font-family=\"JetBrains Mono\" font-size=\"9\" letter-spacing=\"1\" text-anchor=\"end\">ENTRY (TUNNEL)</text>\n\n        <!-- Scale (NOT draggable) -->\n        <line x1=\"60\" y1=\"615\" x2=\"140\" y2=\"615\" stroke=\"#5a5245\" stroke-width=\"1\"></line>\n        <line x1=\"60\" y1=\"612\" x2=\"60\" y2=\"618\" stroke=\"#5a5245\" stroke-width=\"1\"></line>\n        <line x1=\"140\" y1=\"612\" x2=\"140\" y2=\"618\" stroke=\"#5a5245\" stroke-width=\"1\"></line>\n        <text x=\"100\" y=\"630\" fill=\"#5a5245\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\">≈ 10 ft</text>\n\n        <!-- ===== DRAGGABLE ELEMENTS ===== -->\n\n        <!-- The Courtyard -->\n        <g data-draggable=\"\" data-id=\"plaza\" transform=\"translate(320,340)\">\n          <title>The Courtyard · widened for 150 pax</title>\n          <circle cx=\"0\" cy=\"0\" r=\"135\" fill=\"#2a1a10\" stroke=\"#a89b82\" stroke-width=\"1\" stroke-dasharray=\"3,4\" opacity=\"0.8\"></circle>\n          <text x=\"0\" y=\"5\" fill=\"#a89b82\" font-family=\"Playfair Display\" font-size=\"16\" font-style=\"italic\" text-anchor=\"middle\">The Courtyard</text>\n          <text x=\"0\" y=\"22\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"2\" text-anchor=\"middle\">~150 PAX</text>\n        </g>\n\n        <!-- Band stage · 20 ft diameter · center at Space 2 NW corner (1/4 overlaps Space 2) -->\n        <g data-draggable=\"\" data-id=\"bandStage\" transform=\"translate(40,40)\">\n          <title>Band stage · 20 ft diameter · 3 ft elevated · shared with spaces 3/4/5</title>\n          <circle cx=\"0\" cy=\"0\" r=\"80\" fill=\"#2a2018\" stroke=\"#f0c674\" stroke-width=\"2\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"40\" fill=\"none\" stroke=\"#f0c674\" stroke-width=\"0.5\" stroke-dasharray=\"2,3\" opacity=\"0.7\"></circle>\n        </g>\n\n        <!-- Band stage label (draggable separately) -->\n        <g data-draggable=\"\" data-id=\"bandStageLabel\" transform=\"translate(40,-22)\">\n          <title>Band stage label</title>\n          <text x=\"0\" y=\"0\" fill=\"#f0c674\" font-family=\"JetBrains Mono\" font-size=\"11\" letter-spacing=\"2\" text-anchor=\"middle\">BAND STAGE</text>\n          <text x=\"0\" y=\"14\" fill=\"#f0c674\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"1\" text-anchor=\"middle\" opacity=\"0.7\">20 FT · 5-PC JAZZ</text>\n        </g>\n\n        <!-- Tianguis stone tables (6) ringing The Courtyard -->\n        <!-- Positioned hexagonally around plaza center (320, 340) at radius ~85 -->\n        <!-- Gaps at north and south preserve sight lines to band stage and mural -->\n        <g data-draggable=\"\" data-id=\"table1\" transform=\"translate(405,340)\">\n          <title>Tianguis stone table · seats 4–6</title>\n          <circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"#a89070\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"11\" fill=\"#c8a078\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"3.5\" fill=\"#4a6a4a\" opacity=\"0.75\"></circle>\n        </g>\n        <g data-draggable=\"\" data-id=\"table2\" transform=\"translate(362,414)\">\n          <title>Tianguis stone table · seats 4–6</title>\n          <circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"#a89070\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"11\" fill=\"#c8a078\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"3.5\" fill=\"#4a6a4a\" opacity=\"0.75\"></circle>\n        </g>\n        <g data-draggable=\"\" data-id=\"table3\" transform=\"translate(278,414)\">\n          <title>Tianguis stone table · seats 4–6</title>\n          <circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"#a89070\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"11\" fill=\"#c8a078\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"3.5\" fill=\"#4a6a4a\" opacity=\"0.75\"></circle>\n        </g>\n        <g data-draggable=\"\" data-id=\"table4\" transform=\"translate(235,340)\">\n          <title>Tianguis stone table · seats 4–6</title>\n          <circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"#a89070\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"11\" fill=\"#c8a078\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"3.5\" fill=\"#4a6a4a\" opacity=\"0.75\"></circle>\n        </g>\n        <g data-draggable=\"\" data-id=\"table5\" transform=\"translate(278,266)\">\n          <title>Tianguis stone table · seats 4–6</title>\n          <circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"#a89070\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"11\" fill=\"#c8a078\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"3.5\" fill=\"#4a6a4a\" opacity=\"0.75\"></circle>\n        </g>\n        <g data-draggable=\"\" data-id=\"table6\" transform=\"translate(362,266)\">\n          <title>Tianguis stone table · seats 4–6</title>\n          <circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"#a89070\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"11\" fill=\"#c8a078\"></circle>\n          <circle cx=\"0\" cy=\"0\" r=\"3.5\" fill=\"#4a6a4a\" opacity=\"0.75\"></circle>\n        </g>\n\n        <!-- Projection billboards -->\n        <g data-draggable=\"\" data-id=\"billboard1\" transform=\"translate(242.5,179)\">\n          <title>Projection billboard (for youth poem)</title>\n          <rect x=\"-27.5\" y=\"-14\" width=\"55\" height=\"28\" fill=\"#1a1208\" stroke=\"#6ec6ff\" stroke-width=\"1.5\"></rect>\n          <rect x=\"-24.5\" y=\"-11\" width=\"49\" height=\"22\" fill=\"none\" stroke=\"#6ec6ff\" stroke-width=\"0.5\" stroke-dasharray=\"2,2\"></rect>\n          <text x=\"0\" y=\"5\" fill=\"#6ec6ff\" font-family=\"JetBrains Mono\" font-size=\"6\" letter-spacing=\"1\" text-anchor=\"middle\">BILLBOARD</text>\n        </g>\n        <g data-draggable=\"\" data-id=\"billboard2\" transform=\"translate(397.5,179)\">\n          <title>Projection billboard (for youth poem)</title>\n          <rect x=\"-27.5\" y=\"-14\" width=\"55\" height=\"28\" fill=\"#1a1208\" stroke=\"#6ec6ff\" stroke-width=\"1.5\"></rect>\n          <rect x=\"-24.5\" y=\"-11\" width=\"49\" height=\"22\" fill=\"none\" stroke=\"#6ec6ff\" stroke-width=\"0.5\" stroke-dasharray=\"2,2\"></rect>\n          <text x=\"0\" y=\"5\" fill=\"#6ec6ff\" font-family=\"JetBrains Mono\" font-size=\"6\" letter-spacing=\"1\" text-anchor=\"middle\">BILLBOARD</text>\n        </g>\n\n        <!-- Paletero cart -->\n        <g data-draggable=\"\" data-id=\"paletero\" transform=\"translate(175,330)\">\n          <title>Paletero cart</title>\n          <rect x=\"-14\" y=\"-8\" width=\"28\" height=\"16\" fill=\"#e89ab0\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <circle cx=\"-8\" cy=\"10\" r=\"3\" fill=\"#3a2818\"></circle>\n          <circle cx=\"8\" cy=\"10\" r=\"3\" fill=\"#3a2818\"></circle>\n          <text x=\"0\" y=\"-12\" fill=\"#e89ab0\" font-family=\"JetBrains Mono\" font-size=\"7\" text-anchor=\"middle\">PALETERO</text>\n        </g>\n\n        <!-- Payphone -->\n        <g data-draggable=\"\" data-id=\"payphone\" transform=\"translate(465,330)\">\n          <title>Payphone</title>\n          <rect x=\"-6\" y=\"-16\" width=\"12\" height=\"22\" fill=\"#4a3a2a\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <rect x=\"-4\" y=\"-14\" width=\"8\" height=\"6\" fill=\"#1a1208\"></rect>\n          <text x=\"0\" y=\"-20\" fill=\"#a89b82\" font-family=\"JetBrains Mono\" font-size=\"7\" text-anchor=\"middle\">PAYPHONE</text>\n        </g>\n\n        <!-- Taco stand -->\n        <g data-draggable=\"\" data-id=\"tacoStand\" transform=\"translate(135,220)\">\n          <title>Taco stand</title>\n          <rect x=\"-22\" y=\"-14\" width=\"44\" height=\"28\" fill=\"#c85f38\"></rect>\n          <polygon points=\"-22,-14 22,-14 28,-22 -28,-22\" fill=\"#8a4a30\"></polygon>\n          <rect x=\"-18\" y=\"-10\" width=\"36\" height=\"6\" fill=\"#1a1208\"></rect>\n          <text x=\"0\" y=\"22\" fill=\"#c85f38\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"middle\">TACO STAND</text>\n        </g>\n\n        <!-- Bus bench -->\n        <g data-draggable=\"\" data-id=\"busBench\" transform=\"translate(505,220)\">\n          <title>Bus bench (Spanish-language ads)</title>\n          <rect x=\"-26\" y=\"-4\" width=\"52\" height=\"8\" fill=\"#2a3a7a\"></rect>\n          <rect x=\"-26\" y=\"-18\" width=\"52\" height=\"14\" fill=\"#d4a24c\"></rect>\n          <text x=\"0\" y=\"-8\" fill=\"#0a0908\" font-family=\"JetBrains Mono\" font-size=\"5\" letter-spacing=\"0.5\" text-anchor=\"middle\">SE HABLA ESPAÑOL</text>\n          <text x=\"0\" y=\"22\" fill=\"#2a3a7a\" font-family=\"JetBrains Mono\" font-size=\"7\" letter-spacing=\"1\" text-anchor=\"middle\">BUS BENCH</text>\n        </g>\n\n        <!-- Lowrider -->\n        <g data-draggable=\"\" data-id=\"lowrider\" transform=\"translate(320,490)\">\n          <title>Lowrider</title>\n          <ellipse cx=\"0\" cy=\"8\" rx=\"55\" ry=\"5\" fill=\"#000\" opacity=\"0.5\"></ellipse>\n          <path d=\"M -50 0 Q -50 -16 -40 -18 L 40 -18 Q 50 -16 50 0 Z\" fill=\"#8a2a2a\"></path>\n          <path d=\"M -40 -18 L -20 -26 L 20 -26 L 40 -18\" fill=\"#6a1a1a\"></path>\n          <circle cx=\"-28\" cy=\"6\" r=\"7\" fill=\"#0a0908\"></circle>\n          <circle cx=\"28\" cy=\"6\" r=\"7\" fill=\"#0a0908\"></circle>\n          <circle cx=\"-28\" cy=\"6\" r=\"4\" fill=\"#d4a24c\"></circle>\n          <circle cx=\"28\" cy=\"6\" r=\"4\" fill=\"#d4a24c\"></circle>\n          <text x=\"0\" y=\"26\" fill=\"#c8583a\" font-family=\"JetBrains Mono\" font-size=\"8\" letter-spacing=\"2\" text-anchor=\"middle\">LOWRIDER</text>\n        </g>\n\n        <!-- Tianguis stalls (5) · vendors played by the 5 dancers in costume -->\n        <g data-draggable=\"\" data-id=\"stall1\" transform=\"translate(76,158)\">\n          <title>Tianguis stall · vendor played by a dancer in costume</title>\n          <rect x=\"-21\" y=\"-18\" width=\"42\" height=\"36\" fill=\"#5a4030\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <rect x=\"-21\" y=\"-22\" width=\"42\" height=\"5\" fill=\"#c85f38\" opacity=\"0.7\"></rect>\n        </g>\n        <g data-draggable=\"\" data-id=\"stall2\" transform=\"translate(76,278)\">\n          <title>Tianguis stall · vendor played by a dancer in costume</title>\n          <rect x=\"-21\" y=\"-18\" width=\"42\" height=\"36\" fill=\"#5a4030\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <rect x=\"-21\" y=\"-22\" width=\"42\" height=\"5\" fill=\"#c85f38\" opacity=\"0.7\"></rect>\n        </g>\n        <g data-draggable=\"\" data-id=\"stall3\" transform=\"translate(76,398)\">\n          <title>Tianguis stall · vendor played by a dancer in costume</title>\n          <rect x=\"-21\" y=\"-18\" width=\"42\" height=\"36\" fill=\"#5a4030\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <rect x=\"-21\" y=\"-22\" width=\"42\" height=\"5\" fill=\"#c85f38\" opacity=\"0.7\"></rect>\n        </g>\n        <g data-draggable=\"\" data-id=\"stall4\" transform=\"translate(76,518)\">\n          <title>Tianguis stall · vendor played by a dancer in costume</title>\n          <rect x=\"-21\" y=\"-18\" width=\"42\" height=\"36\" fill=\"#5a4030\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <rect x=\"-21\" y=\"-22\" width=\"42\" height=\"5\" fill=\"#c85f38\" opacity=\"0.7\"></rect>\n        </g>\n        <g data-draggable=\"\" data-id=\"stall5\" transform=\"translate(564,158)\">\n          <title>Tianguis stall · vendor played by a dancer in costume</title>\n          <rect x=\"-21\" y=\"-18\" width=\"42\" height=\"36\" fill=\"#5a4030\" stroke=\"#0a0908\" stroke-width=\"0.5\"></rect>\n          <rect x=\"-21\" y=\"-22\" width=\"42\" height=\"5\" fill=\"#c85f38\" opacity=\"0.7\"></rect>\n        </g>\n\n        <!-- Performer starting positions -->\n        <g data-draggable=\"\" data-id=\"youngPoet\" transform=\"translate(80,80)\">\n          <title>Youth Poet · starting position (band stage)</title>\n          <circle cx=\"0\" cy=\"0\" r=\"20\" fill=\"#e89ab0\" stroke=\"#0a0908\" stroke-width=\"2\"></circle>\n          <rect x=\"-28\" y=\"16\" width=\"56\" height=\"14\" fill=\"#e89ab0\" stroke=\"#0a0908\" stroke-width=\"1\" rx=\"6\"></rect>\n          <text x=\"0\" y=\"60\" fill=\"#e89ab0\" font-family=\"JetBrains Mono\" font-size=\"14\" letter-spacing=\"3\" text-anchor=\"middle\">YOUTH POET START</text>\n        </g>\n\n        <g data-draggable=\"\" data-id=\"elderPoet\" transform=\"translate(320,75)\">\n          <title>Elder Poet · starting position (at base of south mural wall)</title>\n          <circle cx=\"0\" cy=\"0\" r=\"20\" fill=\"#a066c2\" stroke=\"#0a0908\" stroke-width=\"2\"></circle>\n          <rect x=\"-28\" y=\"16\" width=\"56\" height=\"14\" fill=\"#a066c2\" stroke=\"#0a0908\" stroke-width=\"1\" rx=\"6\"></rect>\n          <text x=\"0\" y=\"60\" fill=\"#a066c2\" font-family=\"JetBrains Mono\" font-size=\"14\" letter-spacing=\"3\" text-anchor=\"middle\">ELDER POET START</text>\n        </g>\n\n        <!-- Audience path arrow (draggable) -->\n        <g data-draggable=\"\" data-id=\"audienceArrow\" transform=\"translate(500,465)\">\n          <title>Audience path · entry → Courtyard</title>\n          <line x1=\"28\" y1=\"18\" x2=\"-28\" y2=\"-18\" stroke=\"#f0c674\" stroke-width=\"4\" stroke-linecap=\"round\" marker-end=\"url(#arrowBig)\"></line>\n          <text x=\"0\" y=\"46\" fill=\"#f0c674\" font-family=\"JetBrains Mono\" font-size=\"14\" letter-spacing=\"4\" text-anchor=\"middle\">AUDIENCE</text>\n        </g>\n\n        <!-- Tianguis Stalls labels (draggable · oriented NW-to-SE at 45°) -->\n        <g data-draggable=\"\" data-id=\"stallsLabel1\" transform=\"translate(510,370)\">\n          <title>Tianguis Stalls row label</title>\n          <text x=\"0\" y=\"0\" transform=\"rotate(45)\" fill=\"#c85f38\" font-family=\"JetBrains Mono\" font-size=\"13\" font-weight=\"600\" letter-spacing=\"3\" text-anchor=\"middle\">TIANGUIS STALLS</text>\n        </g>\n        <g data-draggable=\"\" data-id=\"stallsLabel2\" transform=\"translate(370,510)\">\n          <title>Tianguis Stalls row label</title>\n          <text x=\"0\" y=\"0\" transform=\"rotate(45)\" fill=\"#c85f38\" font-family=\"JetBrains Mono\" font-size=\"13\" font-weight=\"600\" letter-spacing=\"3\" text-anchor=\"middle\">TIANGUIS STALLS</text>\n        </g>\n\n      </svg>",
+    "legend": [
+      {
+        "color": "#f0c674",
+        "label": "Band stage · 20 ft dia",
+        "note": "Shared with 3/4/5 · 1/4 visible here"
+      },
+      {
+        "color": "#6ec6ff",
+        "label": "Projection billboards",
+        "note": "Flanking band stage · face audience"
+      },
+      {
+        "color": "rgba(168,155,130,0.6)",
+        "label": "The Courtyard",
+        "note": "Center · ~150 pax"
+      },
+      {
+        "color": "#a89070",
+        "label": "Stone tables (6)",
+        "note": "Ringing the Courtyard · tianguis-style"
+      },
+      {
+        "color": "#e89ab0",
+        "label": "Paletero cart",
+        "note": "Inner ring · small interactive prop"
+      },
+      {
+        "color": "#4a3a2a",
+        "label": "Payphone",
+        "note": "Inner ring · sticker-covered"
+      },
+      {
+        "color": "#c85f38",
+        "label": "Taco stand",
+        "note": "Middle ring (west)"
+      },
+      {
+        "color": "#d4a24c",
+        "label": "Bus bench",
+        "note": "Middle ring (east) · seating"
+      },
+      {
+        "color": "#8a2a2a",
+        "label": "Lowrider",
+        "note": "Outer ring · hero prop"
+      },
+      {
+        "color": "#5a4030",
+        "label": "Tianguis stalls (5)",
+        "note": "Vendors played by the 5 dancers in costume"
+      },
+      {
+        "color": "#e07856",
+        "label": "South mural wall",
+        "note": "Hybrid street-art / trompe-l'oeil"
+      },
+      {
+        "color": "#e89ab0",
+        "label": "Youth Poet",
+        "note": "Starts on band stage · revealed by spot"
+      },
+      {
+        "color": "#a066c2",
+        "label": "Elder Poet",
+        "note": "Starts at base of mural · walks toward audience"
+      }
+    ]
+  },
+  "perspectives": [
+    {
+      "src": "/images/Space_2-image3.jpg",
+      "alt": "Boyle Heights · Chicano LA — perspective 1"
+    },
+    {
+      "src": "/images/Space_2-image4.jpg",
+      "alt": "Boyle Heights · Chicano LA — perspective 2"
+    },
+    {
+      "src": "/images/Space_2-image5.jpg",
+      "alt": "Boyle Heights · Chicano LA — perspective 3"
+    },
+    {
+      "src": "/images/Space_2-image6.jpg",
+      "alt": "Boyle Heights · Chicano LA — perspective 4"
+    }
+  ],
+  "beats": [
+    {
+      "number": "01",
+      "title": "The tunnel opens",
+      "body": "Audience emerges from the transition tunnel into the east aisle of Space 2. They smell the tianguis before they see it — spice, carne asada, cilantro in the air. The Tour Guide leads.",
+      "tags": [
+        {
+          "kind": "move",
+          "label": "Procession"
+        },
+        {
+          "kind": "light",
+          "label": "Warm wash"
+        }
+      ]
+    },
+    {
+      "number": "02",
+      "title": "Through the market",
+      "body": "Tour Guide, gesturing grandly: <em>\"Welcome to Boyle Heights! Home of El Mercadito.\"</em> He leads the audience through a row of five tianguis stalls — each vendor played by one of the dancers in costume, hailing them, gesturing at their wares. They pass the lowrider, the taco stand, the paletero cart. The scenic gets smaller as they move inward.",
+      "tags": [
+        {
+          "kind": "perf",
+          "label": "Tour Guide live"
+        },
+        {
+          "kind": "move",
+          "label": "Scenic walk"
+        },
+        {
+          "kind": "perf",
+          "label": "Dancers as vendors"
+        }
+      ]
+    },
+    {
+      "number": "03",
+      "title": "The Courtyard",
+      "body": "Audience arrives at The Courtyard. Six stone tables ring the space — round pink-stone tops on green pedestals, with curved concrete benches around each. The band plays quietly on the stage to the north. A warm wash holds the square.",
+      "tags": [
+        {
+          "kind": "move",
+          "label": "Settle"
+        },
+        {
+          "kind": "light",
+          "label": "Plaza wash"
+        }
+      ]
+    },
+    {
+      "number": "04",
+      "title": "The speech",
+      "body": "Tour Guide: <em>\"Let's stop here in this courtyard for a moment. Feel free to take a seat at one of the surrounding benches, but only if you need to. Because you are now standing in the epicenter of Los Angeles' Chicano culture. Stretching all the way from the iconic intersections of San Vicente &amp; La Cienaga…\"</em> (He struggles to pronounce the names.)",
+      "tags": [
+        {
+          "kind": "perf",
+          "label": "Tour Guide live"
+        }
+      ]
+    },
+    {
+      "number": "05",
+      "title": "The reveal",
+      "body": "A voice from behind the audience, crisp and correct: <em>\"You mean San Vicente and La Cienaga.\"</em> The spotlight on the band stage snaps up — the Youth Poet has been there all along. The audience turns to see her. She and the Tour Guide volley for a moment — her sharp, him sheepish. Finally he cedes the stage and exits.",
+      "tags": [
+        {
+          "kind": "sound",
+          "label": "Voice from band stage"
+        },
+        {
+          "kind": "light",
+          "label": "Spot snaps up"
+        },
+        {
+          "kind": "perf",
+          "label": "Back-and-forth banter"
+        }
+      ]
+    },
+    {
+      "number": "06",
+      "title": "Youth on the stage",
+      "body": "The band softens under her. She begins her poem. The two billboards flanking her come alive with projected images of the places she names — the 7-Eleven on Osborne, Mariachi Square, Van Nuys Blvd, Reseda, Sylmar, the 210 freeway curving through the hills. Audience faces north, transfixed.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Spot tightens"
+        },
+        {
+          "kind": "perf",
+          "label": "Band playing under"
+        },
+        {
+          "kind": "sound",
+          "label": "Projection billboards live"
+        }
+      ]
+    },
+    {
+      "number": "07",
+      "title": "Her spot goes out",
+      "body": "<em>\"We sprouted from the soil / And the soil remembers / Us.\"</em> Her spot snaps out. The billboards go dark. The band holds a chord. A beat of silence.",
+      "tags": [
+        {
+          "kind": "light",
+          "label": "Blackout on poet"
+        },
+        {
+          "kind": "sound",
+          "label": "Held silence"
+        }
+      ]
+    },
+    {
+      "number": "08",
+      "title": "Voice from the south",
+      "body": "From the other side of the room — from the mural wall behind them — a new voice: <em>\"Los Angeles is a tianguis, a marvelous marketplace…\"</em> The audience turns 180°. A follow spot finds the Elder Poet at the base of the mural.",
+      "tags": [
+        {
+          "kind": "sound",
+          "label": "Voice from mural"
+        },
+        {
+          "kind": "move",
+          "label": "Audience 180°"
+        }
+      ]
+    },
+    {
+      "number": "09",
+      "title": "The elder walks in",
+      "body": "The Elder begins walking forward through the scenic elements as he names them. Lighting chases his path — the lowrider lights up when he speaks of <em>\"lowriding is where cars become moving museums\"</em>; the tianguis stalls glow when he says <em>\"where wisdom, song, and teachings go with the tamales\"</em>; the hanging merchandise catches color on <em>\"art is alive on the walls on skin and cars.\"</em> The room is his illustration. His walk carries him steadily toward the Courtyard.",
+      "tags": [
+        {
+          "kind": "perf",
+          "label": "Elder walks through space"
+        },
+        {
+          "kind": "light",
+          "label": "Lights chase elements"
+        }
+      ]
+    },
+    {
+      "number": "10",
+      "title": "Final words in the Courtyard",
+      "body": "The Elder reaches the edge of the crowd. The audience parts and he walks into the middle of the Courtyard. The Youth Poet steps down from the band stage and joins him there. He delivers the final lines of his poem from the center of the crowd — surrounded by the audience, Youth Poet beside him. The section ends with both poets standing floor-level in the middle of the Courtyard. Blackout holds briefly before the transition.",
+      "tags": [
+        {
+          "kind": "move",
+          "label": "Audience parts"
+        },
+        {
+          "kind": "perf",
+          "label": "Youth descends · Elder finishes"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "locked": [
+      "The Courtyard: central audience gathering · widened to ~34 ft diameter for 150 pax",
+      "Six stone tables ring the Courtyard · tianguis-style seating for those who need it",
+      "Tour Guide leads processional from bottom-right entry through tianguis stalls",
+      "Warehouse ceiling stays exposed · stage lights only · no overhead decor",
+      "Band stage: 20 ft diameter · 3 ft elevated · shared with 3/4/5 · 1/4 in Space 2",
+      "10 ft inner circle for 5-piece jazz · 5 ft outer ring for up to 6 dancers/performers",
+      "South warehouse wall: hybrid trompe-l'oeil / street art mural",
+      "Projection billboards flanking band stage for youth poem",
+      "Full-scale props: lowrider, taco stand, bus bench, paletero cart, payphone",
+      "Five tianguis stalls line the entry path — vendors played by the 5 dancers in costume",
+      "Youth Poet pre-placed on band stage · revealed by spotlight on interruption",
+      "Elder poem processional from mural wall · ends in the middle of the Courtyard with Youth Poet joining him"
+    ],
+    "stillOpen": [
+      "Mural content specifics — what neighborhood view, what street-art imagery overlaid?",
+      "Exact projection content for billboards during youth poem",
+      "What's sold/displayed at the tianguis stalls",
+      "Lowrider specifics — vintage, hydraulics practical or static, paint treatment",
+      "Is the Tour Guide mic'd hands-free or with a handheld mic?",
+      "Transition to Space 3 — does the Tour Guide lead them, or does lighting pull them?"
+    ]
+  },
+  "audio": null,
+  "status": "v12"
+}

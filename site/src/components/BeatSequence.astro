@@ -1,0 +1,68 @@
+---
+import type { Beat } from '@/types';
+
+export interface Props {
+  beats: Beat[];
+}
+
+const { beats } = Astro.props;
+---
+
+<section data-block="beats" class="border-b border-[var(--rule)] bg-paper">
+  <div class="mx-auto max-w-[1320px] px-6 py-16 md:px-12 md:py-24">
+    <header class="mb-12 flex items-end justify-between gap-6 border-b border-[var(--rule)] pb-4">
+      <div>
+        <span class="kicker">Section 03 — Beat sequence</span>
+        <h2 class="display mt-2" style="font-size: clamp(34px, 4vw, 56px);" data-editable>
+          Minute by minute
+        </h2>
+      </div>
+      <span class="eyebrow hidden md:inline">Light · Sound · Move · Perf</span>
+    </header>
+
+    <ol class="space-y-12">
+      {beats.map((b, i) => (
+        <li class="reveal grid gap-6 md:grid-cols-12" data-block={`beat-${i}`}>
+          <div class="md:col-span-2">
+            <span
+              class="font-display text-red"
+              style="font-size: clamp(40px, 4vw, 64px); font-weight: 700; line-height: 0.92;"
+            >
+              {b.number}
+            </span>
+          </div>
+
+          <div class="md:col-span-10">
+            <h3
+              class="display mb-3 text-ink"
+              style="font-size: clamp(22px, 1.8vw, 28px); letter-spacing: 0;"
+              data-editable
+            >
+              {b.title}
+            </h3>
+
+            {b.tags && b.tags.length > 0 && (
+              <div class="mb-4 flex flex-wrap gap-2">
+                {b.tags.map((t) => (
+                  <span class={`beat-tag beat-tag--${t.kind}`}>
+                    <span class="beat-tag__kind">{t.kind}</span>
+                    {t.label && t.label !== t.kind && (
+                      <span class="beat-tag__label">— {t.label}</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <p
+              class="max-w-prose text-ink/85"
+              style="font-size: 17px; line-height: 1.55;"
+              data-editable
+              set:html={b.body}
+            />
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

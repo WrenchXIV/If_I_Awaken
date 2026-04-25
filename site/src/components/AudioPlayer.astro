@@ -1,0 +1,85 @@
+---
+export interface Props {
+  src?: string;
+  label?: string;
+}
+const { src, label } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolved = src ? (src.startsWith('http') ? src : `${base}${src}`) : '';
+---
+
+{src && (
+  <div data-audio-source={resolved} data-audio-label={label ?? ''} hidden></div>
+)}
+
+<script>
+  // Single global audio element, persisted across navigations via View Transitions if added later.
+  // Mute by default everywhere (browsers block autoplay-with-sound anyway). User toggles unmute.
+  const TOGGLES_SELECTOR = '[data-audio-toggle]';
+  const SOURCE_SELECTOR = '[data-audio-source]';
+
+  function getOrCreateAudio() {
+    let audio = document.getElementById('tour-audio') as HTMLAudioElement | null;
+    if (!audio) {
+      audio = document.createElement('audio');
+      audio.id = 'tour-audio';
+      audio.loop = true;
+      audio.preload = 'auto';
+      audio.style.display = 'none';
+      document.body.appendChild(audio);
+    }
+    return audio;
+  }
+
+  function setIcon(muted: boolean) {
+    document.querySelectorAll(TOGGLES_SELECTOR).forEach((btn) => {
+      const svg = btn.querySelector('[data-audio-icon]');
+      if (!svg) return;
+      svg.setAttribute('data-audio-icon', muted ? 'muted' : 'on');
+      btn.setAttribute('aria-label', muted ? 'Unmute ambient audio' : 'Mute ambient audio');
+      svg.innerHTML = muted
+        ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="22" y1="9" x2="16" y2="15"></line><line x1="16" y1="9" x2="22" y2="15"></line>'
+        : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>';
+    });
+  }
+
+  function init() {
+    const audio = getOrCreateAudio();
+    const sourceEl = document.querySelector<HTMLElement>(SOURCE_SELECTOR);
+    const desiredSrc = sourceEl?.dataset.audioSource ?? '';
+
+    if (desiredSrc && audio.src !== window.location.origin + desiredSrc && audio.src !== desiredSrc) {
+      audio.src = desiredSrc;
+    }
+
+    // Restore mute state from localStorage; default = muted.
+    const stored = localStorage.getItem('tour:muted');
+    const muted = stored === null ? true : stored === '1';
+    audio.muted = muted;
+    setIcon(muted);
+
+    if (desiredSrc) {
+      // Try to play (will be silently muted on mobile until unlocked); ignore rejection.
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+
+    document.querySelectorAll(TOGGLES_SELECTOR).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const a = getOrCreateAudio();
+        const next = !a.muted;
+        a.muted = next;
+        if (!next) a.play().catch(() => {});
+        localStorage.setItem('tour:muted', next ? '1' : '0');
+        setIcon(next);
+      }, { once: false });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

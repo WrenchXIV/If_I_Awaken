@@ -1,0 +1,141 @@
+---
+import TourLayout from '@/layouts/TourLayout.astro';
+import { SPACE_ORDER, SPACE_MANIFEST } from '@/lib/spaces';
+import { getSpace } from '@/lib/content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const spaces = SPACE_ORDER.map((id) => ({
+  entry: SPACE_MANIFEST[id],
+  data: getSpace(id),
+}));
+---
+
+<TourLayout
+  title="Interactive Tour — If I Awaken in Los Angeles"
+  description="Step through the show, space by space. An immersive theatre production directed by Andrew Scoville with original music by Derrick Hodge."
+>
+  <!-- Hero -->
+  <section class="relative isolate w-full overflow-hidden bg-dark-bg text-on-dark" style="height: clamp(620px, 92vh, 980px);">
+    <img
+      src={`${base}/images/Lobby_Design-image2.jpg`}
+      alt="The Lobby — outdoor courtyard"
+      class="absolute inset-0 h-full w-full object-cover"
+      style="object-position: 50% 60%; filter: brightness(0.55) contrast(1.05);"
+      loading="eager"
+    />
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.92) 100%);"
+    ></div>
+
+    <div class="relative mx-auto flex h-full max-w-[1320px] flex-col justify-between px-6 py-10 md:px-12 md:py-16">
+      <div class="flex items-center justify-between gap-6">
+        <span class="kicker text-red">If I Awaken in Los Angeles</span>
+        <span class="eyebrow eyebrow--on-dark hidden md:inline">Interactive tour · 100 minutes · 7 spaces</span>
+      </div>
+
+      <div class="max-w-[18ch]">
+        <h1 class="display text-on-dark" style="font-size: clamp(64px, 11vw, 200px);">
+          The whole journey<span class="text-red">.</span>
+        </h1>
+        <p class="lede mt-6 text-on-dark/85" style="font-size: clamp(20px, 2.4vw, 30px);">
+          A 30,100 sq ft warehouse in the Arts District. 150 audience members per show. One unbroken loop, in one direction, room to room — and back to where it began.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Synopsis row -->
+  <section class="border-b border-[var(--rule)] bg-paper">
+    <div class="mx-auto max-w-[1320px] grid gap-10 px-6 py-16 md:grid-cols-12 md:px-12 md:py-24">
+      <div class="md:col-span-3"><span class="kicker">The deck</span></div>
+      <div class="md:col-span-9 space-y-6 text-ink/85" style="font-size: 17px; line-height: 1.65;">
+        <p>
+          This is a working tour of the scenic design — eight rooms in a single forward-only loop. Each
+          page contains a top-down architectural plan, the moment-by-moment beat sequence, and the
+          locked design decisions vs. what's still open.
+        </p>
+        <p>
+          Click any room below to enter. The tour takes about as long to read as the show takes to
+          run.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Master plan grid -->
+  <section class="bg-paper-dim">
+    <div class="mx-auto max-w-[1320px] px-6 py-16 md:px-12 md:py-20">
+      <header class="mb-10 flex items-end justify-between gap-4 border-b-2 border-ink pb-4">
+        <div>
+          <span class="kicker">Master plan</span>
+          <h2 class="display mt-2" style="font-size: clamp(34px, 4vw, 56px);">Eight rooms, in order</h2>
+        </div>
+        <span class="eyebrow hidden md:inline">Forward only · One direction</span>
+      </header>
+
+      <ol class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {spaces.map(({ entry, data }, i) => {
+          const heroSrc = data.hero.src.startsWith('http')
+            ? data.hero.src
+            : `${base}${data.hero.src}`;
+          const num = String(entry.index).padStart(2, '0');
+          return (
+            <li class="reveal">
+              <a
+                href={`${base}${entry.href}`}
+                class="group block overflow-hidden border border-[var(--rule)] bg-paper transition-colors hover:border-red"
+              >
+                <div class="relative bg-dark-bg" style="aspect-ratio: 4/3;">
+                  <img
+                    src={heroSrc}
+                    alt={data.hero.alt}
+                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    style="filter: brightness(0.78) contrast(1.04);"
+                    loading={i < 4 ? 'eager' : 'lazy'}
+                  />
+                  <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.65) 100%);"></div>
+                  <div class="absolute left-4 top-4">
+                    <span class="font-mono text-[10px] uppercase tracking-[0.28em] text-on-dark/85">
+                      {entry.id === 'lobby' ? 'FOH' : `Space ${num}`}
+                    </span>
+                  </div>
+                  <div class="absolute bottom-3 left-4 right-4">
+                    <span class="display block text-on-dark group-hover:text-red" style="font-size: 22px; line-height: 1.05;">
+                      {entry.title}
+                    </span>
+                  </div>
+                </div>
+                <div class="p-4">
+                  <p class="text-sm text-ink/70" style="line-height: 1.5;" set:html={(data.summary ?? '').replace(/<[^>]+>/g, '').slice(0, 130) + '…'} />
+                </div>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Outbound CTA -->
+  <section class="border-t-2 border-ink bg-paper">
+    <div class="mx-auto flex max-w-[1320px] flex-col items-start justify-between gap-8 px-6 py-16 md:flex-row md:items-end md:px-12 md:py-20">
+      <div>
+        <span class="kicker">Want the full pitch?</span>
+        <h3 class="display mt-3" style="font-size: clamp(34px, 4vw, 56px);">The investor deck</h3>
+        <p class="mt-4 max-w-[60ch] text-ink/80" style="font-size: 17px; line-height: 1.6;">
+          The tour is the show on the page. The deck is the business behind it — budget, team, market, ask.
+        </p>
+      </div>
+      <a
+        href="https://www.ifiawakeninla.com"
+        class="inline-flex items-center gap-3 border-2 border-ink bg-ink px-6 py-4 uppercase tracking-[0.22em] text-paper hover:bg-red hover:border-red"
+        style="font-family: var(--f-display); font-size: 14px; font-weight: 600;"
+      >
+        View pitch deck
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </section>
+</TourLayout>

@@ -1,0 +1,43 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<header
+  class="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[var(--rule)] bg-paper/90 px-5 py-3 backdrop-blur md:px-10"
+>
+  <a
+    href={`${base}/`}
+    class="flex items-center gap-3 text-ink"
+    aria-label="If I Awaken in Los Angeles — Tour"
+  >
+    <span class="kicker text-red">If I Awaken in Los Angeles</span>
+    <span class="hidden text-sm uppercase tracking-[0.28em] text-ink/60 md:inline">
+      Interactive Tour
+    </span>
+  </a>
+
+  <nav class="flex items-center gap-6 text-sm">
+    <a
+      href={`${base}/`}
+      class="hidden uppercase tracking-[0.28em] text-ink/70 hover:text-red md:inline"
+      >Master plan</a
+    >
+    <a
+      href="https://www.ifiawakeninla.com"
+      class="hidden uppercase tracking-[0.28em] text-ink/70 hover:text-red md:inline"
+      >Pitch deck</a
+    >
+    <button
+      type="button"
+      data-audio-toggle
+      class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--rule)] text-ink/70 hover:border-red hover:text-red"
+      aria-label="Toggle ambient audio"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-audio-icon="muted">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="22" y1="9" x2="16" y2="15"></line>
+        <line x1="16" y1="9" x2="22" y2="15"></line>
+      </svg>
+    </button>
+  </nav>
+</header>
