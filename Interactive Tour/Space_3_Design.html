@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space 3 — Five Asian Neighborhoods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@300;400;600&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0908; --bg-panel: #14110f; --bg-card: #1a1614;
+    --ink: #f3ead8; --ink-dim: #a89b82; --ink-faint: #5a5245;
+    --gold: #d4a24c; --gold-bright: #f0c674;
+    --orange: #e07856; --red: #c8583a;
+    --cn: #d4453a; --jp: #c0453a; --kr: #4a8a6a; --ph: #e07856; --th: #f0c674;
+    --perf: #4ac6b0; --rule: #2a2420;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Archivo', sans-serif; font-weight: 300; line-height: 1.55;
+    padding: 48px 32px 80px; min-height: 100vh;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .header { border-bottom: 1px solid var(--rule); padding-bottom: 32px; margin-bottom: 40px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(36px, 6vw, 60px); line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 18px; }
+  h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
+  h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  h2 em { font-style: italic; color: var(--gold); }
+  .subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--ink-dim); max-width: 820px; }
+  .towns-list { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--ink-faint); margin-top: 16px; text-transform: uppercase; }
+  .callout { background: rgba(212, 162, 76, 0.05); border-left: 3px solid var(--gold); padding: 24px 28px; margin-bottom: 32px; font-size: 15px; color: var(--ink-dim); }
+  .callout strong { color: var(--ink); font-weight: 500; }
+  .callout p + p { margin-top: 12px; }
+  .meta-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .meta { background: var(--bg-panel); border: 1px solid var(--rule); padding: 14px 18px; }
+  .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .meta-value { font-size: 14px; color: var(--ink); font-weight: 400; }
+  .section { background: var(--bg-panel); border: 1px solid var(--rule); margin-bottom: 32px; }
+  .section-head { padding: 22px 28px; border-bottom: 1px solid var(--rule); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .section-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 32px; color: var(--gold); line-height: 1; font-weight: 400; margin-right: 16px; }
+  .section-head-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; letter-spacing: -0.01em; }
+  .section-hint { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.15em; text-transform: uppercase; }
+  .section-body { padding: 28px; }
+  .plan-wrap { background: #0f0c0a; border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #0a0907; border-bottom: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+  .toolbar button { background: transparent; border: 1px solid var(--rule); color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
+  .toolbar button:hover { border-color: var(--gold); color: var(--gold); }
+  .plan-svg { width: 100%; height: auto; display: block; }
+  [data-draggable] { cursor: not-allowed; }
+  [data-draggable].unlocked { cursor: grab; }
+  [data-draggable].unlocked:active { cursor: grabbing; }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; padding: 20px; background: #0a0907; border-top: 1px solid var(--rule); }
+  .legend-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--ink-dim); }
+  .legend-swatch { width: 16px; height: 16px; border-radius: 2px; flex-shrink: 0; border: 1px solid rgba(243,234,216,0.1); }
+  .legend-row strong { color: var(--ink); font-weight: 500; display: block; font-size: 13px; }
+  .legend-row span { font-size: 11px; color: var(--ink-faint); }
+  .perspective-wrap { background: #000; border: 1px solid var(--rule); margin-bottom: 20px; position: relative; }
+  .perspective-svg { width: 100%; height: auto; display: block; }
+  .perspective-meta { position: absolute; top: 12px; left: 16px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(243,234,216,0.45); pointer-events: none; }
+  .perspective-meta-r { position: absolute; top: 12px; right: 16px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(243,234,216,0.45); pointer-events: none; }
+  .perspective-caption { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--ink-dim); padding: 14px 20px; border-top: 1px solid var(--rule); background: #0a0907; }
+  .beat { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  .beat:last-child { border-bottom: none; }
+  .beat-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 36px; color: var(--gold); line-height: 1; font-weight: 400; }
+  .beat-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .beat-desc { font-size: 14px; color: var(--ink-dim); line-height: 1.6; }
+  .beat-desc em { color: var(--ink); font-style: italic; }
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; padding: 3px 8px; border-radius: 2px; text-transform: uppercase; margin-right: 6px; margin-bottom: 6px; }
+  .tag.light { background: rgba(240,198,116,0.12); color: var(--gold-bright); }
+  .tag.sound { background: rgba(110,198,255,0.12); color: #6ec6ff; }
+  .tag.move { background: rgba(224,120,86,0.14); color: var(--orange); }
+  .tag.perf { background: rgba(74,198,176,0.14); color: var(--perf); }
+  .state-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .state-col h3 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 14px; text-transform: uppercase; }
+  .state-col h3.open { color: var(--orange); }
+  .state-col ul { list-style: none; }
+  .state-col li { padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
+  .state-col li::before { content: '— '; color: var(--ink-faint); }
+  .footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  @media (max-width: 700px) { .state-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <div class="eyebrow">If I Awaken in Los Angeles · Space 03 of 06</div>
+    <h1>Five Asian<br>Neighborhoods<em> in one breath</em></h1>
+    <p class="subtitle">A wide arc of five elevated stages, one per enclave — Chinatown, Little Tokyo, Koreatown, Historic Filipinotown, Thai Town — each fronted by its real-life gateway monument. One rapper-poet moves the song along the arc; five resident dancers vocalize the chorus from their stations.</p>
+    <div class="towns-list">Chinatown · Little Tokyo · Koreatown · Historic Filipinotown · Thai Town</div>
+  </header>
+
+  <div class="callout">
+    <p>An arc of five small elevated stages fans around a central audience gathering space. One resident dancer stands on each stage throughout the entire section. A rapper-poet performs each verse from the town that verse is about, then travels along the arc to the next stage during each chorus, arriving just in time to land the next verse. Lighting isolates the active town during verses; all five light up during choruses, with accent flickers firing on each town as the lyrics name it.</p>
+    <p>No walls divide the zones. Instead, each neighborhood gets its own scenic landmark — <strong>specific picks TBD by the writer</strong>. Two of them are functionally locked in: the audience <strong>enters Space 3 by walking through the Chinatown landmark</strong> (at the first town of the song) and <strong>exits through the Thai Town landmark</strong> (at the last). Each end of the arc becomes a threshold into and out of a town.</p>
+  </div>
+
+  <div class="meta-row">
+    <div class="meta"><div class="meta-label">Footprint</div><div class="meta-value">~60 × 60 ft</div></div>
+    <div class="meta"><div class="meta-label">Ceiling</div><div class="meta-value">Exposed warehouse · 13–15 ft</div></div>
+    <div class="meta"><div class="meta-label">Band stage</div><div class="meta-value">NE corner · 1/4 visible</div></div>
+    <div class="meta"><div class="meta-label">Scenic</div><div class="meta-value">5 small stages · 5 gateway landmarks</div></div>
+    <div class="meta"><div class="meta-label">Cast</div><div class="meta-value">Tour Guide · 1 main performer · 5 stationed dancers</div></div>
+    <div class="meta"><div class="meta-label">Duration</div><div class="meta-value">~8–10 minutes</div></div>
+  </div>
+
+  <!-- ============= PLAN VIEW ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">01</span><span class="section-head-title">Plan view</span></div>
+      <span class="section-hint">Top-down · North ↑ · Drag to rearrange · Auto-saves</span>
+    </div>
+    <div class="section-body" style="padding: 0;">
+      <div class="plan-wrap">
+        <div class="toolbar">
+          <span id="lockState">● Unlocked · Drag any element</span>
+          <button id="resetBtn">Reset layout</button>
+        </div>
+        <svg class="plan-svg" viewBox="-80 -80 760 760" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="s3grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1f1a16" stroke-width="0.5"/>
+            </pattern>
+            <radialGradient id="audGrad" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="#d4a24c" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#d4a24c" stop-opacity="0"/>
+            </radialGradient>
+            <marker id="s3arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#d4a24c"/>
+            </marker>
+            <marker id="s3arrowPerf" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#4ac6b0"/>
+            </marker>
+          </defs>
+
+          <!-- Outer warehouse hint -->
+          <rect x="-80" y="-80" width="760" height="760" fill="#0a0806"/>
+
+          <!-- Space 3 boundary -->
+          <rect x="40" y="40" width="560" height="560" fill="url(#s3grid)" stroke="#3a2e22" stroke-width="1.5"/>
+          <text x="52" y="62" fill="#3a2e22" font-family="JetBrains Mono" font-size="11" letter-spacing="3">SPACE 03 · FIVE ASIAN NEIGHBORHOODS</text>
+
+          <!-- Scale: 80 px = 10 ft -->
+          <g transform="translate(60,560)">
+            <line x1="0" y1="0" x2="80" y2="0" stroke="#a89b82" stroke-width="1.2"/>
+            <line x1="0" y1="-4" x2="0" y2="4" stroke="#a89b82"/>
+            <line x1="80" y1="-4" x2="80" y2="4" stroke="#a89b82"/>
+            <text x="40" y="-8" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle">10 FT</text>
+          </g>
+
+          <!-- Band stage at NE corner (1/4 visible) -->
+          <g>
+            <circle cx="600" cy="40" r="80" fill="#1a1208" stroke="#d4a24c" stroke-width="1.5" opacity="0.85"/>
+            <circle cx="600" cy="40" r="40" fill="none" stroke="#d4a24c" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+            <!-- clip indicator: only the SW quadrant visible inside Space 3 -->
+            <line x1="600" y1="40" x2="520" y2="40" stroke="#d4a24c" stroke-width="0.6" stroke-dasharray="2,3" opacity="0.4"/>
+            <line x1="600" y1="40" x2="600" y2="120" stroke="#d4a24c" stroke-width="0.6" stroke-dasharray="2,3" opacity="0.4"/>
+          </g>
+          <g data-draggable data-id="bandLabel" transform="translate(540,24)">
+            <title>Band stage · shared between spaces 2–5 · 1/4 visible here</title>
+            <text fill="#d4a24c" font-family="JetBrains Mono" font-size="9" letter-spacing="2">BAND STAGE ↗</text>
+          </g>
+
+          <!-- Entry from Space 2 (east wall) · through the Chinatown Gate -->
+          <!-- Arrow, labels, and audience path all reposition dynamically to follow the gate -->
+          <g>
+            <line id="entryArrow" x1="660" y1="420" x2="590" y2="420" stroke="#d4a24c" stroke-width="1.5" marker-end="url(#s3arrow)" opacity="0.75"/>
+            <text id="entryLabel1" x="664" y="434" fill="#d4a24c" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5">FROM SPACE 2</text>
+            <text id="entryLabel2" x="664" y="446" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" opacity="0.75">THROUGH THE GATE</text>
+          </g>
+
+          <!-- Exit to Space 4 (north wall) · between the Apsonsi statues -->
+          <g>
+            <line id="exitArrow" x1="280" y1="70" x2="280" y2="15" stroke="#d4a24c" stroke-width="1.5" marker-end="url(#s3arrow)" opacity="0.75"/>
+            <text id="exitLabel1" x="292" y="28" fill="#d4a24c" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5">TO SPACE 4 ↑</text>
+            <text id="exitLabel2" x="292" y="42" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" opacity="0.75">BETWEEN THE STATUES</text>
+          </g>
+
+          <!-- Audience gathering circle -->
+          <g data-draggable data-id="audience" transform="translate(340,320)">
+            <title>Audience gathering — 150 pax — all 5 stages visible from here</title>
+            <circle cx="0" cy="0" r="120" fill="url(#audGrad)" stroke="#d4a24c" stroke-width="1" stroke-dasharray="4,4" opacity="0.7"/>
+            <circle cx="0" cy="0" r="3" fill="#d4a24c"/>
+            <text x="0" y="-8" fill="#d4a24c" font-family="JetBrains Mono" font-size="9" letter-spacing="2" text-anchor="middle">AUDIENCE</text>
+            <text x="0" y="6" fill="#d4a24c" font-family="JetBrains Mono" font-size="8" letter-spacing="1" text-anchor="middle" opacity="0.7">150 PAX</text>
+          </g>
+
+          <!-- Performer path (dashed arc showing journey between stages) -->
+          <g opacity="0.35">
+            <path d="M 495 475 Q 420 540 340 540" fill="none" stroke="#4ac6b0" stroke-width="1.2" stroke-dasharray="4,4"/>
+            <path d="M 340 540 Q 260 540 185 475" fill="none" stroke="#4ac6b0" stroke-width="1.2" stroke-dasharray="4,4"/>
+            <path d="M 185 475 Q 120 410 120 320" fill="none" stroke="#4ac6b0" stroke-width="1.2" stroke-dasharray="4,4"/>
+            <path d="M 120 320 Q 120 220 185 165" fill="none" stroke="#4ac6b0" stroke-width="1.2" stroke-dasharray="4,4"/>
+          </g>
+
+          <!-- ==================== GATEWAY LANDMARKS ==================== -->
+
+          <!-- Gateway 1: Chinatown Landmark · ENTRY THRESHOLD from Space 2 -->
+          <g data-draggable data-id="gateChinatown" transform="translate(570,420)">
+            <title>Chinatown Landmark · ENTRY THRESHOLD · specific form TBD by writer · audience enters Space 3 through this landmark from Space 2</title>
+            <!-- Main red gate structure oriented N-S for E-W passage -->
+            <rect x="-8" y="-36" width="16" height="72" fill="#d4453a" stroke="#0a0908" stroke-width="1.2"/>
+            <!-- Green tile roof peaks at N and S ends -->
+            <polygon points="-14,-36 -10,-44 10,-44 14,-36" fill="#2a6a4a" stroke="#0a0908" stroke-width="1"/>
+            <polygon points="-14,36 -10,44 10,44 14,36" fill="#2a6a4a" stroke="#0a0908" stroke-width="1"/>
+            <!-- Gold decorative band -->
+            <rect x="-5" y="-32" width="10" height="64" fill="#f0c674" opacity="0.55"/>
+            <!-- Pillar bases -->
+            <rect x="-10" y="-40" width="20" height="4" fill="#8a2a22"/>
+            <rect x="-10" y="36" width="20" height="4" fill="#8a2a22"/>
+            <!-- Pass-through indicator (E-W) -->
+            <line x1="-10" y1="0" x2="10" y2="0" stroke="#f0c674" stroke-width="0.6" stroke-dasharray="2,2" opacity="0.8"/>
+            <text x="0" y="-54" fill="#d4453a" font-family="JetBrains Mono" font-size="8" letter-spacing="1.2" text-anchor="middle">CHINATOWN GATE</text>
+          </g>
+
+          <!-- Gateway 2: Little Tokyo Landmark -->
+          <g data-draggable data-id="gateTokyo" transform="translate(340,580)">
+            <title>Little Tokyo Landmark · specific form TBD by writer</title>
+            <rect x="-14" y="-14" width="28" height="28" fill="#c0453a" stroke="#0a0908" stroke-width="1"/>
+            <polygon points="-16,-14 16,-14 12,-22 -12,-22" fill="#3a6a8a" stroke="#0a0908" stroke-width="1"/>
+            <rect x="-9" y="-9" width="18" height="18" fill="#8a2a22" opacity="0.6"/>
+            <rect x="-2" y="-24" width="4" height="6" fill="#1a1208"/>
+            <text x="0" y="28" fill="#c0453a" font-family="JetBrains Mono" font-size="8" letter-spacing="1.2" text-anchor="middle">LITTLE TOKYO LANDMARK</text>
+          </g>
+
+          <!-- Gateway 3: Koreatown Landmark -->
+          <g data-draggable data-id="gateKorea" transform="translate(140,510)">
+            <title>Koreatown Landmark · specific form TBD by writer</title>
+            <polygon points="0,-20 20,-8 20,12 0,22 -20,12 -20,-8" fill="#4a8a6a" stroke="#0a0908" stroke-width="1"/>
+            <polygon points="0,-16 16,-6 16,10 0,18 -16,10 -16,-6" fill="#2a5a44" opacity="0.7"/>
+            <path d="M -22 -10 Q 0 -24 22 -10" fill="none" stroke="#8a4a3a" stroke-width="2"/>
+            <circle cx="0" cy="0" r="4" fill="#c8532a"/>
+            <text x="0" y="38" fill="#4a8a6a" font-family="JetBrains Mono" font-size="8" letter-spacing="1.2" text-anchor="middle">KOREATOWN LANDMARK</text>
+          </g>
+
+          <!-- Gateway 4: Hi-Fi Landmark -->
+          <g data-draggable data-id="gatePhil" transform="translate(70,320)">
+            <title>Historic Filipinotown (Hi-Fi) Landmark · specific form TBD by writer</title>
+            <path d="M -32 10 Q -32 -14 0 -24 Q 32 -14 32 10 L 28 10 Q 28 -10 0 -20 Q -28 -10 -28 10 Z" fill="#8a6a48" stroke="#0a0908" stroke-width="1"/>
+            <polygon points="-4,-24 0,-32 4,-24" fill="#e07856"/>
+            <circle cx="0" cy="-26" r="2.5" fill="#f0c674"/>
+            <rect x="-34" y="10" width="6" height="14" fill="#6a4838"/>
+            <rect x="28" y="10" width="6" height="14" fill="#6a4838"/>
+            <text x="0" y="38" fill="#e07856" font-family="JetBrains Mono" font-size="8" letter-spacing="1.2" text-anchor="middle">HI-FI LANDMARK</text>
+          </g>
+
+          <!-- Gateway 5: Thai Town Landmark · EXIT THRESHOLD to Space 4 -->
+          <g data-draggable data-id="gateThai" transform="translate(280,90)">
+            <title>Thai Town Landmark · EXIT THRESHOLD · specific form TBD by writer · audience exits Space 3 through this landmark to Space 4</title>
+            <!-- West statue -->
+            <g transform="translate(-38,0)">
+              <rect x="-8" y="-18" width="16" height="28" fill="#a06840" stroke="#0a0908" stroke-width="1"/>
+              <circle cx="0" cy="-22" r="6" fill="#d4a24c"/>
+              <polygon points="-3,-30 0,-36 3,-30" fill="#f0c674"/>
+              <rect x="-5" y="10" width="10" height="6" fill="#6a4028"/>
+            </g>
+            <!-- East statue -->
+            <g transform="translate(38,0)">
+              <rect x="-8" y="-18" width="16" height="28" fill="#a06840" stroke="#0a0908" stroke-width="1"/>
+              <circle cx="0" cy="-22" r="6" fill="#d4a24c"/>
+              <polygon points="-3,-30 0,-36 3,-30" fill="#f0c674"/>
+              <rect x="-5" y="10" width="10" height="6" fill="#6a4028"/>
+            </g>
+            <!-- Gap / passage indicator -->
+            <line x1="-30" y1="0" x2="30" y2="0" stroke="#f0c674" stroke-width="0.6" stroke-dasharray="2,3" opacity="0.6"/>
+            <text x="0" y="28" fill="#f0c674" font-family="JetBrains Mono" font-size="8" letter-spacing="1.2" text-anchor="middle">THAI TOWN LANDMARK · EXIT</text>
+          </g>
+
+          <!-- ==================== STAGES (5) ==================== -->
+
+          <!-- Stage 1: Chinatown -->
+          <g data-draggable data-id="stage1" transform="translate(495,475)">
+            <title>Stage 1 · Chinatown · dancer stationed here · main performer begins here</title>
+            <circle cx="0" cy="0" r="26" fill="#0a0806" stroke="#d4453a" stroke-width="2"/>
+            <circle cx="0" cy="0" r="21" fill="#1a0808" stroke="#d4453a" stroke-width="0.8" opacity="0.7"/>
+            <text x="0" y="3" fill="#d4453a" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle" font-weight="600">01</text>
+            <text x="0" y="-36" fill="#d4453a" font-family="JetBrains Mono" font-size="9" letter-spacing="2" text-anchor="middle">CHINATOWN</text>
+          </g>
+
+          <!-- Stage 2: Little Tokyo -->
+          <g data-draggable data-id="stage2" transform="translate(340,540)">
+            <title>Stage 2 · Little Tokyo · dancer stationed here</title>
+            <circle cx="0" cy="0" r="26" fill="#0a0806" stroke="#c0453a" stroke-width="2"/>
+            <circle cx="0" cy="0" r="21" fill="#1a0808" stroke="#c0453a" stroke-width="0.8" opacity="0.7"/>
+            <text x="0" y="3" fill="#c0453a" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle" font-weight="600">02</text>
+            <text x="0" y="-36" fill="#c0453a" font-family="JetBrains Mono" font-size="9" letter-spacing="2" text-anchor="middle">LITTLE TOKYO</text>
+          </g>
+
+          <!-- Stage 3: Koreatown -->
+          <g data-draggable data-id="stage3" transform="translate(185,475)">
+            <title>Stage 3 · Koreatown · dancer stationed here</title>
+            <circle cx="0" cy="0" r="26" fill="#0a0806" stroke="#4a8a6a" stroke-width="2"/>
+            <circle cx="0" cy="0" r="21" fill="#081a10" stroke="#4a8a6a" stroke-width="0.8" opacity="0.7"/>
+            <text x="0" y="3" fill="#4a8a6a" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle" font-weight="600">03</text>
+            <text x="0" y="-36" fill="#4a8a6a" font-family="JetBrains Mono" font-size="9" letter-spacing="2" text-anchor="middle">KOREATOWN</text>
+          </g>
+
+          <!-- Stage 4: Historic Filipinotown -->
+          <g data-draggable data-id="stage4" transform="translate(120,320)">
+            <title>Stage 4 · Historic Filipinotown (Hi-Fi) · dancer stationed here</title>
+            <circle cx="0" cy="0" r="26" fill="#0a0806" stroke="#e07856" stroke-width="2"/>
+            <circle cx="0" cy="0" r="21" fill="#1a0f08" stroke="#e07856" stroke-width="0.8" opacity="0.7"/>
+            <text x="0" y="3" fill="#e07856" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle" font-weight="600">04</text>
+            <text x="-36" y="3" fill="#e07856" font-family="JetBrains Mono" font-size="9" letter-spacing="2" text-anchor="end">HI-FI</text>
+          </g>
+
+          <!-- Stage 5: Thai Town -->
+          <g data-draggable data-id="stage5" transform="translate(185,165)">
+            <title>Stage 5 · Thai Town · dancer stationed here · final verse of the number</title>
+            <circle cx="0" cy="0" r="26" fill="#0a0806" stroke="#f0c674" stroke-width="2"/>
+            <circle cx="0" cy="0" r="21" fill="#1a1408" stroke="#f0c674" stroke-width="0.8" opacity="0.7"/>
+            <text x="0" y="3" fill="#f0c674" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle" font-weight="600">05</text>
+            <text x="0" y="-36" fill="#f0c674" font-family="JetBrains Mono" font-size="9" letter-spacing="2" text-anchor="middle">THAI TOWN</text>
+          </g>
+
+          <!-- ==================== DANCERS (5, one per stage) ==================== -->
+
+          <g data-draggable data-id="dancer1" transform="translate(495,475)">
+            <title>Dancer · Chinatown station · lives on Stage 1 throughout the number</title>
+            <ellipse cx="0" cy="10" rx="6" ry="2" fill="#000" opacity="0.5"/>
+            <rect x="-4" y="-6" width="8" height="14" rx="1.5" fill="#d4453a"/>
+            <circle cx="0" cy="-10" r="4" fill="#3a2818"/>
+          </g>
+
+          <g data-draggable data-id="dancer2" transform="translate(340,540)">
+            <title>Dancer · Little Tokyo station</title>
+            <ellipse cx="0" cy="10" rx="6" ry="2" fill="#000" opacity="0.5"/>
+            <rect x="-4" y="-6" width="8" height="14" rx="1.5" fill="#c0453a"/>
+            <circle cx="0" cy="-10" r="4" fill="#3a2818"/>
+          </g>
+
+          <g data-draggable data-id="dancer3" transform="translate(185,475)">
+            <title>Dancer · Koreatown station</title>
+            <ellipse cx="0" cy="10" rx="6" ry="2" fill="#000" opacity="0.5"/>
+            <rect x="-4" y="-6" width="8" height="14" rx="1.5" fill="#4a8a6a"/>
+            <circle cx="0" cy="-10" r="4" fill="#3a2818"/>
+          </g>
+
+          <g data-draggable data-id="dancer4" transform="translate(120,320)">
+            <title>Dancer · Historic Filipinotown station</title>
+            <ellipse cx="0" cy="10" rx="6" ry="2" fill="#000" opacity="0.5"/>
+            <rect x="-4" y="-6" width="8" height="14" rx="1.5" fill="#e07856"/>
+            <circle cx="0" cy="-10" r="4" fill="#3a2818"/>
+          </g>
+
+          <g data-draggable data-id="dancer5" transform="translate(185,165)">
+            <title>Dancer · Thai Town station</title>
+            <ellipse cx="0" cy="10" rx="6" ry="2" fill="#000" opacity="0.5"/>
+            <rect x="-4" y="-6" width="8" height="14" rx="1.5" fill="#f0c674"/>
+            <circle cx="0" cy="-10" r="4" fill="#3a2818"/>
+          </g>
+
+          <!-- ==================== MAIN PERFORMER (starts at stage 1) ==================== -->
+          <g data-draggable data-id="mainPerf" transform="translate(515,470)">
+            <title>Main performer · rapper-poet · starts on Chinatown stage · travels arc through all 5 towns</title>
+            <ellipse cx="0" cy="12" rx="8" ry="3" fill="#000" opacity="0.6"/>
+            <rect x="-5" y="-8" width="10" height="18" rx="1.5" fill="#4ac6b0"/>
+            <circle cx="0" cy="-12" r="5" fill="#2a8070"/>
+            <circle cx="0" cy="-12" r="5" fill="none" stroke="#4ac6b0" stroke-width="1" stroke-dasharray="1,1"/>
+            <text x="0" y="-22" fill="#4ac6b0" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle">PERFORMER START</text>
+          </g>
+
+          <!-- ==================== TOUR GUIDE START ==================== -->
+          <g data-draggable data-id="tourGuide" transform="translate(590,450)">
+            <title>Tour Guide · brings audience in from Space 2 · exits after introducing the section</title>
+            <ellipse cx="0" cy="10" rx="7" ry="2.5" fill="#000" opacity="0.6"/>
+            <rect x="-5" y="-7" width="10" height="16" rx="1.5" fill="#d4a24c"/>
+            <circle cx="0" cy="-11" r="4.5" fill="#3a2818"/>
+            <text x="0" y="-20" fill="#d4a24c" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle">TOUR GUIDE</text>
+          </g>
+
+          <!-- Audience path hint (entry through gate → gathering → exit between statues) -->
+          <!-- Paths update dynamically in JS to follow the Chinatown gate and Apsonsi statues -->
+          <g opacity="0.45">
+            <path id="entryPath" d="M 555 420 Q 460 380 400 340" fill="none" stroke="#d4a24c" stroke-width="1.2" stroke-dasharray="3,4" marker-end="url(#s3arrow)"/>
+            <path id="exitPath" d="M 260 220 L 280 105" fill="none" stroke="#d4a24c" stroke-width="1.2" stroke-dasharray="3,4" marker-end="url(#s3arrow)"/>
+          </g>
+
+        </svg>
+        <div class="legend">
+          <div class="legend-row"><div class="legend-swatch" style="background:#d4453a;"></div><div><strong>Stage 1 · Chinatown</strong><span>Verse 1 · landmark TBD · entry threshold</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#c0453a;"></div><div><strong>Stage 2 · Little Tokyo</strong><span>Verse 2 · landmark TBD</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#4a8a6a;"></div><div><strong>Stage 3 · Koreatown</strong><span>Verse 3 · landmark TBD</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#e07856;"></div><div><strong>Stage 4 · Historic Filipinotown</strong><span>Verse 4 · landmark TBD</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#f0c674;"></div><div><strong>Stage 5 · Thai Town</strong><span>Verse 5 · landmark TBD · exit threshold</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#4ac6b0;"></div><div><strong>Main performer</strong><span>Rapper-poet · travels arc</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#d4a24c;"></div><div><strong>Tour Guide · Audience</strong><span>150 pax gather in center</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#4ac6b0 0 4px,transparent 4px 8px);"></div><div><strong>Performer arc path</strong><span>Traveled during choruses</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= PERSPECTIVE VIEWS ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">02</span><span class="section-head-title">Audience perspective</span></div>
+      <span class="section-hint">Two moments from the center of the arc</span>
+    </div>
+    <div class="section-body">
+
+      <div class="perspective-wrap">
+        <svg class="perspective-svg" viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="reveal-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a0604"/>
+              <stop offset="100%" stop-color="#1a0f0a"/>
+            </linearGradient>
+            <radialGradient id="reveal-spot" cx="0.5" cy="0.55" r="0.4">
+              <stop offset="0%" stop-color="#d4a24c" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#d4a24c" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="1200" height="460" fill="url(#reveal-bg)"/>
+          <!-- Ceiling -->
+          <g stroke="#3a2818" stroke-width="1.5" opacity="0.5">
+            <line x1="0" y1="40" x2="1200" y2="40"/>
+            <line x1="200" y1="0" x2="200" y2="60"/>
+            <line x1="500" y1="0" x2="500" y2="60"/>
+            <line x1="800" y1="0" x2="800" y2="60"/>
+            <line x1="1050" y1="0" x2="1050" y2="60"/>
+          </g>
+          <g fill="#1a1208">
+            <rect x="190" y="22" width="14" height="10"/>
+            <rect x="490" y="22" width="14" height="10"/>
+            <rect x="800" y="22" width="14" height="10"/>
+            <rect x="1040" y="22" width="14" height="10"/>
+          </g>
+
+          <!-- STAGE 5 · Thai Town · far left -->
+          <g transform="translate(95,260)">
+            <!-- Apsonsi statues pair -->
+            <g>
+              <rect x="-22" y="-40" width="14" height="44" fill="#a06840"/>
+              <circle cx="-15" cy="-50" r="8" fill="#d4a24c"/>
+              <polygon points="-18,-60 -15,-66 -12,-60" fill="#f0c674"/>
+              <rect x="8" y="-40" width="14" height="44" fill="#a06840"/>
+              <circle cx="15" cy="-50" r="8" fill="#d4a24c"/>
+              <polygon points="12,-60 15,-66 18,-60" fill="#f0c674"/>
+            </g>
+            <!-- stage platform -->
+            <ellipse cx="0" cy="10" rx="50" ry="8" fill="#1a0f08"/>
+            <ellipse cx="0" cy="5" rx="46" ry="6" fill="#2a1f14" stroke="#f0c674" stroke-width="1"/>
+            <!-- dancer (Thai Town) -->
+            <g transform="translate(0,-2)">
+              <ellipse cx="0" cy="10" rx="12" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-8" y="-35" width="16" height="45" rx="2" fill="#f0c674"/>
+              <circle cx="0" cy="-40" r="9" fill="#3a2818"/>
+            </g>
+            <text x="0" y="42" fill="#f0c674" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">05 · THAI TOWN</text>
+          </g>
+
+          <!-- STAGE 4 · Hi-Fi -->
+          <g transform="translate(315,290)">
+            <!-- Talang Gabay arch behind -->
+            <g>
+              <path d="M -48 0 Q -48 -40 0 -55 Q 48 -40 48 0" fill="none" stroke="#8a6a48" stroke-width="6"/>
+              <polygon points="-3,-55 0,-66 3,-55" fill="#e07856"/>
+              <circle cx="0" cy="-58" r="3" fill="#f0c674"/>
+            </g>
+            <!-- stage -->
+            <ellipse cx="0" cy="10" rx="54" ry="8" fill="#1a0f08"/>
+            <ellipse cx="0" cy="5" rx="50" ry="6" fill="#2a1f14" stroke="#e07856" stroke-width="1"/>
+            <!-- dancer -->
+            <g transform="translate(0,-2)">
+              <ellipse cx="0" cy="10" rx="13" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-9" y="-38" width="18" height="48" rx="2" fill="#e07856"/>
+              <circle cx="0" cy="-44" r="10" fill="#3a2818"/>
+            </g>
+            <text x="0" y="42" fill="#e07856" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">04 · HI-FI</text>
+          </g>
+
+          <!-- STAGE 3 · Koreatown · center -->
+          <g transform="translate(555,310)">
+            <!-- Da Wool Jung pavilion -->
+            <g>
+              <polygon points="-42,-20 -42,0 -20,10 20,10 42,0 42,-20 20,-30 -20,-30" fill="#4a8a6a" stroke="#2a5a44" stroke-width="1"/>
+              <path d="M -46 -20 Q 0 -50 46 -20" fill="none" stroke="#8a4a3a" stroke-width="3"/>
+              <rect x="-38" y="-18" width="8" height="28" fill="#2a5a44"/>
+              <rect x="30" y="-18" width="8" height="28" fill="#2a5a44"/>
+              <circle cx="0" cy="-8" r="3" fill="#c8532a"/>
+            </g>
+            <!-- stage -->
+            <ellipse cx="0" cy="18" rx="58" ry="9" fill="#1a0f08"/>
+            <ellipse cx="0" cy="13" rx="54" ry="7" fill="#2a1f14" stroke="#4a8a6a" stroke-width="1"/>
+            <!-- dancer -->
+            <g transform="translate(0,6)">
+              <ellipse cx="0" cy="10" rx="13" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-10" y="-40" width="20" height="50" rx="2" fill="#4a8a6a"/>
+              <circle cx="0" cy="-46" r="10" fill="#3a2818"/>
+            </g>
+            <text x="0" y="52" fill="#4a8a6a" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">03 · KOREATOWN</text>
+          </g>
+
+          <!-- STAGE 2 · Little Tokyo -->
+          <g transform="translate(820,290)">
+            <!-- Yagura tower -->
+            <g>
+              <rect x="-14" y="-10" width="28" height="22" fill="#c0453a" stroke="#8a2a22" stroke-width="1"/>
+              <polygon points="-16,-10 16,-10 12,-24 -12,-24" fill="#3a6a8a" stroke="#1a3848" stroke-width="1"/>
+              <rect x="-10" y="-24" width="20" height="14" fill="#c0453a" stroke="#8a2a22" stroke-width="1"/>
+              <polygon points="-12,-24 12,-24 8,-38 -8,-38" fill="#3a6a8a" stroke="#1a3848" stroke-width="1"/>
+              <rect x="-6" y="-38" width="12" height="10" fill="#c0453a"/>
+              <polygon points="-8,-38 8,-38 5,-48 -5,-48" fill="#3a6a8a"/>
+              <rect x="-2" y="-52" width="4" height="6" fill="#1a1208"/>
+            </g>
+            <!-- stage -->
+            <ellipse cx="0" cy="18" rx="52" ry="8" fill="#1a0f08"/>
+            <ellipse cx="0" cy="13" rx="48" ry="7" fill="#2a1f14" stroke="#c0453a" stroke-width="1"/>
+            <!-- dancer -->
+            <g transform="translate(0,6)">
+              <ellipse cx="0" cy="10" rx="13" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-9" y="-38" width="18" height="48" rx="2" fill="#c0453a"/>
+              <circle cx="0" cy="-44" r="10" fill="#3a2818"/>
+            </g>
+            <text x="0" y="50" fill="#c0453a" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">02 · LITTLE TOKYO</text>
+          </g>
+
+          <!-- STAGE 1 · Chinatown · far right (where main performer begins) -->
+          <g transform="translate(1080,300)">
+            <!-- Gateway arch -->
+            <g>
+              <rect x="-46" y="-16" width="92" height="16" fill="#d4453a" stroke="#8a2a22" stroke-width="1"/>
+              <rect x="-42" y="-12" width="84" height="8" fill="#f0c674"/>
+              <path d="M -48 -16 L -36 -32 L 36 -32 L 48 -16" fill="#2a6a4a" stroke="#0a0908" stroke-width="1"/>
+              <path d="M -38 -22 L 38 -22" stroke="#f0c674" stroke-width="1.5"/>
+              <rect x="-48" y="0" width="8" height="20" fill="#b03028"/>
+              <rect x="40" y="0" width="8" height="20" fill="#b03028"/>
+            </g>
+            <!-- stage -->
+            <ellipse cx="0" cy="30" rx="58" ry="9" fill="#1a0f08"/>
+            <ellipse cx="0" cy="25" rx="54" ry="7" fill="#2a1f14" stroke="#d4453a" stroke-width="1"/>
+            <!-- main performer on stage 1 -->
+            <g transform="translate(-10,18)">
+              <ellipse cx="0" cy="10" rx="14" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-10" y="-42" width="20" height="52" rx="2" fill="#4ac6b0"/>
+              <circle cx="0" cy="-48" r="11" fill="#2a8070"/>
+              <line x1="10" y1="-32" x2="24" y2="-42" stroke="#2a8070" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <!-- dancer on stage 1 -->
+            <g transform="translate(18,18)">
+              <ellipse cx="0" cy="10" rx="12" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-8" y="-35" width="16" height="45" rx="2" fill="#d4453a"/>
+              <circle cx="0" cy="-40" r="9" fill="#3a2818"/>
+            </g>
+            <text x="0" y="62" fill="#d4453a" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">01 · CHINATOWN</text>
+          </g>
+
+          <!-- Audience silhouettes in foreground -->
+          <g fill="#0a0906">
+            <g transform="translate(150,430)"><rect x="-14" y="-36" width="28" height="46" rx="2"/><circle cx="0" cy="-44" r="12"/></g>
+            <g transform="translate(270,435)"><rect x="-15" y="-38" width="30" height="48" rx="2"/><circle cx="0" cy="-46" r="13"/></g>
+            <g transform="translate(400,440)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(530,442)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(660,440)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(790,442)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(920,438)"><rect x="-15" y="-38" width="30" height="48" rx="2"/><circle cx="0" cy="-46" r="13"/></g>
+            <g transform="translate(1050,435)"><rect x="-14" y="-36" width="28" height="46" rx="2"/><circle cx="0" cy="-44" r="12"/></g>
+          </g>
+
+          <rect width="1200" height="460" fill="url(#reveal-spot)"/>
+        </svg>
+        <span class="perspective-meta">VIEW A · THE REVEAL</span>
+        <span class="perspective-meta-r">ALL 5 TOWNS · DANCERS ON STATION · PERFORMER ON STAGE 1</span>
+        <p class="perspective-caption">The audience has just settled into the center. All five stages are visible at once — Thai Town, Hi-Fi, Koreatown, Little Tokyo, Chinatown — each with its dancer in place and its landmark looming behind. The main performer stands on Stage 1 (Chinatown), waiting for the beat to drop.</p>
+      </div>
+
+      <div class="perspective-wrap">
+        <svg class="perspective-svg" viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="verse-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#050302"/>
+              <stop offset="100%" stop-color="#0a0604"/>
+            </linearGradient>
+            <radialGradient id="kr-spot" cx="0.5" cy="0.55" r="0.28">
+              <stop offset="0%" stop-color="#4a8a6a" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#4a8a6a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="1200" height="460" fill="url(#verse-bg)"/>
+          <!-- Ceiling faint -->
+          <g stroke="#2a1a10" stroke-width="1.2" opacity="0.35">
+            <line x1="0" y1="40" x2="1200" y2="40"/>
+            <line x1="300" y1="0" x2="300" y2="60"/>
+            <line x1="600" y1="0" x2="600" y2="60"/>
+            <line x1="900" y1="0" x2="900" y2="60"/>
+          </g>
+
+          <!-- Other 4 stages barely visible -->
+          <g opacity="0.18">
+            <g transform="translate(120,290)"><rect x="-18" y="-44" width="14" height="48" fill="#a06840"/><rect x="8" y="-44" width="14" height="48" fill="#a06840"/><ellipse cx="0" cy="10" rx="46" ry="7" fill="#1a0f08"/></g>
+            <g transform="translate(310,300)"><path d="M -40 0 Q -40 -35 0 -48 Q 40 -35 40 0" fill="none" stroke="#8a6a48" stroke-width="4"/><ellipse cx="0" cy="15" rx="46" ry="7" fill="#1a0f08"/></g>
+            <g transform="translate(820,300)"><rect x="-12" y="-10" width="24" height="22" fill="#5a2520"/><polygon points="-14,-10 14,-10 10,-22 -10,-22" fill="#2a3a48"/><ellipse cx="0" cy="15" rx="46" ry="7" fill="#1a0f08"/></g>
+            <g transform="translate(1080,310)"><rect x="-40" y="-14" width="80" height="14" fill="#6a2a24"/><path d="M -44 -14 L -32 -28 L 32 -28 L 44 -14" fill="#1a3a2a"/><ellipse cx="0" cy="30" rx="54" ry="8" fill="#1a0f08"/></g>
+          </g>
+
+          <!-- STAGE 3 Koreatown · LIT -->
+          <g transform="translate(555,290)">
+            <!-- Da Wool Jung pavilion lit -->
+            <g>
+              <polygon points="-54,-24 -54,6 -26,16 26,16 54,6 54,-24 26,-36 -26,-36" fill="#4a8a6a" stroke="#6aa88a" stroke-width="1.5"/>
+              <path d="M -58 -24 Q 0 -60 58 -24" fill="none" stroke="#c8532a" stroke-width="4"/>
+              <rect x="-48" y="-22" width="10" height="36" fill="#2a5a44"/>
+              <rect x="38" y="-22" width="10" height="36" fill="#2a5a44"/>
+              <circle cx="0" cy="-8" r="4" fill="#f0c674"/>
+            </g>
+            <!-- stage platform lit -->
+            <ellipse cx="0" cy="30" rx="78" ry="12" fill="#1a0f08"/>
+            <ellipse cx="0" cy="22" rx="72" ry="10" fill="#2a3a30" stroke="#4a8a6a" stroke-width="2"/>
+            <!-- main performer mid-verse -->
+            <g transform="translate(-14,14)">
+              <ellipse cx="0" cy="12" rx="16" ry="4" fill="#000" opacity="0.6"/>
+              <rect x="-11" y="-52" width="22" height="62" rx="2" fill="#4ac6b0"/>
+              <circle cx="0" cy="-60" r="13" fill="#2a8070"/>
+              <line x1="11" y1="-42" x2="28" y2="-58" stroke="#2a8070" stroke-width="4" stroke-linecap="round"/>
+              <ellipse cx="0" cy="18" rx="40" ry="11" fill="#4a8a6a" opacity="0.5"/>
+            </g>
+            <!-- dancer on stage 3 -->
+            <g transform="translate(20,14)">
+              <ellipse cx="0" cy="12" rx="13" ry="3" fill="#000" opacity="0.5"/>
+              <rect x="-9" y="-40" width="18" height="50" rx="2" fill="#4a8a6a"/>
+              <circle cx="0" cy="-46" r="10" fill="#3a2818"/>
+              <line x1="-9" y1="-30" x2="-20" y2="-44" stroke="#3a6a4a" stroke-width="3" stroke-linecap="round"/>
+              <line x1="9" y1="-30" x2="20" y2="-44" stroke="#3a6a4a" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </g>
+
+          <!-- Audience silhouettes -->
+          <g fill="#050302">
+            <g transform="translate(150,430)"><rect x="-14" y="-36" width="28" height="46" rx="2"/><circle cx="0" cy="-44" r="12"/></g>
+            <g transform="translate(280,435)"><rect x="-15" y="-38" width="30" height="48" rx="2"/><circle cx="0" cy="-46" r="13"/></g>
+            <g transform="translate(410,440)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(540,442)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(670,442)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(800,440)"><rect x="-15" y="-40" width="30" height="50" rx="2"/><circle cx="0" cy="-48" r="13"/></g>
+            <g transform="translate(930,438)"><rect x="-15" y="-38" width="30" height="48" rx="2"/><circle cx="0" cy="-46" r="13"/></g>
+            <g transform="translate(1050,435)"><rect x="-14" y="-36" width="28" height="46" rx="2"/><circle cx="0" cy="-44" r="12"/></g>
+          </g>
+
+          <rect width="1200" height="460" fill="url(#kr-spot)"/>
+        </svg>
+        <span class="perspective-meta">VIEW B · A VERSE · KOREATOWN LIT</span>
+        <span class="perspective-meta-r">FOUR STAGES DIM · ONE STAGE ALIVE</span>
+        <p class="perspective-caption">Mid-song. Only the Koreatown stage is lit — a jade-green wash on the Koreatown landmark. The other four dancers and landmarks dissolve into near-darkness. The main performer stands with K-town's dancer in the lit zone. When the chorus starts, all five return; the performer walks the arc to the next stage.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============= BEAT SEQUENCE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">03</span><span class="section-head-title">Beat sequence</span></div>
+      <span class="section-hint">8 beats · ~8–10 minutes</span>
+    </div>
+    <div class="section-body">
+
+      <div class="beat">
+        <div class="beat-num">01</div>
+        <div>
+          <div class="beat-title">Through the Chinatown landmark</div>
+          <div class="beat-desc">
+            <span class="tag perf">Tour Guide live</span><span class="tag move">Audience enters through landmark</span>
+            From Space 2's Courtyard, the Tour Guide gathers the audience and leads them to the east edge of Space 3. The threshold is not just a doorway — it's the <em>Chinatown landmark</em> itself. The audience walks through it into the space. As they emerge on the other side, the arc of five elevated stages begins to reveal itself — five dancers already in place, four more landmarks visible across the room. Warm amber wash, low house music, anticipatory.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">02</div>
+        <div>
+          <div class="beat-title">The reveal · five towns at once</div>
+          <div class="beat-desc">
+            <span class="tag light">All stages rim-lit</span><span class="tag perf">5 dancers on station</span>
+            Audience settles in the center of the arc. All five stages visible at once — 5 dancers posed in ready positions, 5 gateway monuments behind them. Tour Guide delivers his bridge: <em>"We're about to take a deep dive into L.A.'s international spice rack…"</em> Then a beat drops. Lights cut to isolate Stage 1. Tour Guide exits.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">03</div>
+        <div>
+          <div class="beat-title">Chinatown · verse 1</div>
+          <div class="beat-desc">
+            <span class="tag light">Stage 1 only · red wash</span><span class="tag perf">Main performer on Stage 1</span>
+            Main performer on Stage 1 — framed by the Chinatown landmark — drops the first verse. <em>"Firecracker-poppin'-off, from the run to the jazz club… Standin in Central Plaza, under the shadow of Bruce Lee…"</em> Chinatown dancer beside him matches the rhythm. Other four stages dark.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">04</div>
+        <div>
+          <div class="beat-title">Chorus → Little Tokyo · verse 2</div>
+          <div class="beat-desc">
+            <span class="tag light">All 5 stages up · name-flickers</span><span class="tag sound">5 dancers sing the hook</span><span class="tag move">Performer walks arc</span>
+            All five stages snap on. The 5 dancers, from their stations, chant the chorus in round — <em>"Chinatown / J-town / K-town / Thai Town / Historic Filipino-town…"</em> — each town's light flares when its name lands. Main performer walks along the arc from Stage 1 to Stage 2. He arrives at the Little Tokyo landmark as the chorus ends. Other stages dim. Verse 2 begins: <em>"Taiko drums pound like the pads of a hundred pairs of feet…"</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">05</div>
+        <div>
+          <div class="beat-title">Chorus → Koreatown · verse 3</div>
+          <div class="beat-desc">
+            <span class="tag light">All up → Stage 3 only · jade green</span><span class="tag move">Performer walks arc</span>
+            Second chorus lifts all five stages again, name-flickers as before. Main performer crosses to Stage 3. Koreatown landmark glows jade and rust. Verse 3: <em>"Yo, everybody know, Koreans run LA!… Now we on 6th & St. Andrews Place…"</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">06</div>
+        <div>
+          <div class="beat-title">Chorus → Historic Filipinotown · verse 4</div>
+          <div class="beat-desc">
+            <span class="tag light">All up → Stage 4 only · warm amber</span><span class="tag move">Performer walks arc</span>
+            Third chorus. Main performer moves to Stage 4, framed by the Hi-Fi landmark under an amber wash. Verse 4: <em>"Through the Gateway / Rolling down Temple Street / Now we in 'Hi-Fi' where the Filipino's meet…"</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">07</div>
+        <div>
+          <div class="beat-title">Chorus → Thai Town · verse 5 · the end</div>
+          <div class="beat-desc">
+            <span class="tag light">All up → Stage 5 only · gold</span><span class="tag move">Final arc walk</span><span class="tag perf">Number ends here</span>
+            Fourth and final chorus. Main performer crosses the last stretch of the arc to Stage 5 — the Thai Town landmark frames him in a gold wash. Verse 5: <em>"I swear / That spice thick in the air / Like humidity in Bangkok…"</em> Last line lands. Music out. Hold on the gold wash. The outro verse (<em>"Five towns, that's the OGs…"</em>) is cut.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">08</div>
+        <div>
+          <div class="beat-title">Through the Thai Town landmark · exit to Space 4</div>
+          <div class="beat-desc">
+            <span class="tag perf">Tour Guide returns</span><span class="tag move">Exit through landmark</span>
+            A single held breath. Tour Guide re-enters, grabs the audience, leads them north. The exit is the passage <em>through the Thai Town landmark</em> — whatever form the writer chooses, the structure frames the audience's passage out into Space 4 (Black LA). Entered through one town, exited through another — the whole section lived inside a shrunken Asian-American LA. The five dancers remain posed on their stages as the audience passes; lights hold on the arc; they don't leave.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============= STATE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">04</span><span class="section-head-title">Design state</span></div>
+      <span class="section-hint">v01 draft · subject to revision</span>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+        <div class="state-col">
+          <h3>✓ Locked</h3>
+          <ul>
+            <li>Arc layout with 5 elevated stages · all visible throughout</li>
+            <li>Audience enters through the Chinatown landmark (east threshold) and exits through the Thai Town landmark (north threshold)</li>
+            <li>1 resident dancer stationed on each stage for the full section</li>
+            <li>1 main performer (rapper-poet) moves between stages</li>
+            <li>Order: Chinatown → Little Tokyo → Koreatown → Hi-Fi → Thai Town</li>
+            <li>Chorus = all 5 stages lit + name-flicker + performer walks</li>
+            <li>Verse = only active town's stage lit</li>
+            <li>Gateway monuments serve as scenic dividers, no walls</li>
+            <li>Final recap verse (&quot;Five towns, that's the OGs…&quot;) cut</li>
+            <li>Tour Guide leads audience in from Space 2, out to Space 4</li>
+          </ul>
+        </div>
+        <div class="state-col">
+          <h3 class="open">○ Still open</h3>
+          <ul>
+            <li>Landmark choice per town — TBD by writer (Chinatown landmark must allow audience to pass through · Thai Town landmark must allow audience to pass through/between)</li>
+            <li>Cultural consultants to verify landmark choices — one per community</li>
+            <li>Practical props per stage · TBD</li>
+            <li>Dancer costumes — unified vs. town-specific</li>
+            <li>Exact stage dimensions (working assumption: 6 ft dia, 1–2 ft elevated)</li>
+            <li>Projection surfaces (if any) — or is this section purely lights + live?</li>
+            <li>Main performer casting · Asian-American rapper-poet search</li>
+            <li>DJ vs. live band balance for the hip-hop beat</li>
+            <li>Transition choreography into Space 4</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>If I Awaken in Los Angeles · Scenic Design</span>
+    <span>Space 03 of 06 · v11 · Locked</span>
+  </footer>
+
+</div>
+
+<script>
+  // Drag + persist for Space 3
+  (function() {
+    const LOCKED = true;
+    const STORAGE_KEY = 'space3-layout-v1';
+    const svg = document.querySelector('.plan-svg');
+    const draggables = svg.querySelectorAll('[data-draggable]');
+    const lockLabel = document.getElementById('lockState');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Capture original positions
+    const defaults = {};
+    draggables.forEach(g => {
+      const id = g.getAttribute('data-id');
+      const t = g.getAttribute('transform') || 'translate(0,0)';
+      const m = t.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/);
+      defaults[id] = m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+      if (!LOCKED) g.classList.add('unlocked');
+    });
+
+    // Read a draggable's current translate position
+    function getPos(g) {
+      if (!g) return null;
+      const t = g.getAttribute('transform') || '';
+      const m = t.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/);
+      return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+    }
+
+    // Keep entry/exit arrows, labels, and audience paths following the Chinatown gate and Apsonsi statues
+    function updateThresholds() {
+      const aud = getPos(svg.querySelector('[data-id="audience"]'));
+      const gate = getPos(svg.querySelector('[data-id="gateChinatown"]'));
+      const thai = getPos(svg.querySelector('[data-id="gateThai"]'));
+      if (!aud || !gate || !thai) return;
+
+      // Entry side
+      const entryArrow = svg.querySelector('#entryArrow');
+      const entryLabel1 = svg.querySelector('#entryLabel1');
+      const entryLabel2 = svg.querySelector('#entryLabel2');
+      const entryPath = svg.querySelector('#entryPath');
+      if (entryArrow) {
+        entryArrow.setAttribute('x1', gate.x + 90);
+        entryArrow.setAttribute('y1', gate.y);
+        entryArrow.setAttribute('x2', gate.x + 22);
+        entryArrow.setAttribute('y2', gate.y);
+      }
+      if (entryLabel1) {
+        entryLabel1.setAttribute('x', gate.x + 94);
+        entryLabel1.setAttribute('y', gate.y + 14);
+      }
+      if (entryLabel2) {
+        entryLabel2.setAttribute('x', gate.x + 94);
+        entryLabel2.setAttribute('y', gate.y + 26);
+      }
+      if (entryPath) {
+        const sx = gate.x - 16, sy = gate.y;
+        const ex = aud.x + 80, ey = aud.y + 20;
+        const mx = (sx + ex) / 2 + 20, my = (sy + ey) / 2 + 10;
+        entryPath.setAttribute('d', `M ${sx} ${sy} Q ${mx} ${my} ${ex} ${ey}`);
+      }
+
+      // Exit side
+      const exitArrow = svg.querySelector('#exitArrow');
+      const exitLabel1 = svg.querySelector('#exitLabel1');
+      const exitLabel2 = svg.querySelector('#exitLabel2');
+      const exitPath = svg.querySelector('#exitPath');
+      if (exitArrow) {
+        exitArrow.setAttribute('x1', thai.x);
+        exitArrow.setAttribute('y1', thai.y - 22);
+        exitArrow.setAttribute('x2', thai.x);
+        exitArrow.setAttribute('y2', Math.max(thai.y - 80, 15));
+      }
+      if (exitLabel1) {
+        exitLabel1.setAttribute('x', thai.x + 12);
+        exitLabel1.setAttribute('y', thai.y - 62);
+      }
+      if (exitLabel2) {
+        exitLabel2.setAttribute('x', thai.x + 12);
+        exitLabel2.setAttribute('y', thai.y - 48);
+      }
+      if (exitPath) {
+        const sx = aud.x - 60, sy = aud.y - 80;
+        const ex = thai.x, ey = thai.y + 22;
+        const mx = (sx + ex) / 2 - 15, my = (sy + ey) / 2;
+        exitPath.setAttribute('d', `M ${sx} ${sy} Q ${mx} ${my} ${ex} ${ey}`);
+      }
+    }
+
+    // Load saved positions
+    async function loadPositions() {
+      try {
+        const result = await window.storage.get(STORAGE_KEY);
+        if (result && result.value) {
+          const saved = JSON.parse(result.value);
+          draggables.forEach(g => {
+            const id = g.getAttribute('data-id');
+            if (saved[id]) {
+              g.setAttribute('transform', `translate(${saved[id].x},${saved[id].y})`);
+            }
+          });
+        }
+      } catch(e) { /* no saved state, use defaults */ }
+      updateThresholds();
+    }
+    loadPositions();
+
+    // Save positions (debounced)
+    let saveTimer = null;
+    function savePositions() {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        const state = {};
+        draggables.forEach(g => {
+          const id = g.getAttribute('data-id');
+          const t = g.getAttribute('transform') || '';
+          const m = t.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/);
+          if (m) state[id] = { x: parseFloat(m[1]), y: parseFloat(m[2]) };
+        });
+        try { await window.storage.set(STORAGE_KEY, JSON.stringify(state)); }
+        catch(e) { /* storage unavailable */ }
+      }, 250);
+    }
+
+    // Drag handling
+    let dragging = null;
+    let dragStart = { x: 0, y: 0 };
+    let elStart = { x: 0, y: 0 };
+
+    function svgPoint(evt) {
+      const pt = svg.createSVGPoint();
+      pt.x = evt.clientX; pt.y = evt.clientY;
+      return pt.matrixTransform(svg.getScreenCTM().inverse());
+    }
+
+    draggables.forEach(g => {
+      g.addEventListener('pointerdown', e => {
+        if (LOCKED) return;
+        dragging = g;
+        g.setPointerCapture(e.pointerId);
+        const p = svgPoint(e);
+        dragStart = { x: p.x, y: p.y };
+        const t = g.getAttribute('transform') || '';
+        const m = t.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)/);
+        elStart = m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+        e.preventDefault();
+      });
+      g.addEventListener('pointermove', e => {
+        if (!dragging || dragging !== g) return;
+        const p = svgPoint(e);
+        const dx = p.x - dragStart.x;
+        const dy = p.y - dragStart.y;
+        g.setAttribute('transform', `translate(${elStart.x + dx},${elStart.y + dy})`);
+        updateThresholds();
+      });
+      g.addEventListener('pointerup', e => {
+        if (dragging === g) {
+          dragging = null;
+          savePositions();
+          updateThresholds();
+        }
+      });
+    });
+
+    // Reset
+    resetBtn.addEventListener('click', async () => {
+      draggables.forEach(g => {
+        const id = g.getAttribute('data-id');
+        const d = defaults[id];
+        g.setAttribute('transform', `translate(${d.x},${d.y})`);
+      });
+      try { await window.storage.delete(STORAGE_KEY); } catch(e) {}
+      updateThresholds();
+    });
+
+    // Lock indicator
+    if (LOCKED) {
+      lockLabel.textContent = '● Locked · Positions fixed';
+      lockLabel.style.color = '#4ac6b0';
+    }
+  })();
+</script>
+</body>
+</html>

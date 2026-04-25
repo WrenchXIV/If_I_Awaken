@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space 7 — The Real LA (Space 1, Reborn)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@300;400;600&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0908; --bg-panel: #14110f; --bg-card: #1a1614;
+    --ink: #f3ead8; --ink-dim: #a89b82; --ink-faint: #5a5245;
+    --gold: #d4a24c; --gold-bright: #f0c674;
+    --orange: #e07856; --red: #c8583a;
+    --mosaic-1: #c84a4a; --mosaic-2: #d4a24c; --mosaic-3: #4a8a6a; --mosaic-4: #6a8aca; --mosaic-5: #c878a8;
+    --perf: #4ac6b0; --rule: #2a2420;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Archivo', sans-serif; font-weight: 300; line-height: 1.55;
+    padding: 48px 32px 80px; min-height: 100vh;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .header { border-bottom: 1px solid var(--rule); padding-bottom: 32px; margin-bottom: 40px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(36px, 6vw, 60px); line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 18px; }
+  h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
+  h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  h2 em { font-style: italic; color: var(--gold); }
+  .subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--ink-dim); max-width: 820px; }
+  .towns-list { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--ink-faint); margin-top: 16px; text-transform: uppercase; }
+  .callout { background: rgba(212, 162, 76, 0.05); border-left: 3px solid var(--gold); padding: 24px 28px; margin-bottom: 32px; font-size: 15px; color: var(--ink-dim); }
+  .callout strong { color: var(--ink); font-weight: 500; }
+  .callout p + p { margin-top: 12px; }
+  .meta-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .meta { background: var(--bg-panel); border: 1px solid var(--rule); padding: 14px 18px; }
+  .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .meta-value { font-size: 14px; color: var(--ink); font-weight: 400; }
+  .section { background: var(--bg-panel); border: 1px solid var(--rule); margin-bottom: 32px; }
+  .section-head { padding: 22px 28px; border-bottom: 1px solid var(--rule); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .section-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 32px; color: var(--gold); line-height: 1; font-weight: 400; margin-right: 16px; }
+  .section-head-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; letter-spacing: -0.01em; }
+  .section-hint { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.15em; text-transform: uppercase; }
+  .section-body { padding: 28px; }
+  .plan-wrap { background: #0f0c0a; border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #0a0907; border-bottom: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+  .toolbar button { background: transparent; border: 1px solid var(--rule); color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
+  .toolbar button:hover { border-color: var(--gold); color: var(--gold); }
+  .plan-svg { width: 100%; height: auto; display: block; }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; padding: 20px; background: #0a0907; border-top: 1px solid var(--rule); }
+  .legend-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--ink-dim); }
+  .legend-swatch { width: 16px; height: 16px; border-radius: 2px; flex-shrink: 0; border: 1px solid rgba(243,234,216,0.1); }
+  .legend-row strong { color: var(--ink); font-weight: 500; display: block; font-size: 13px; }
+  .legend-row span { font-size: 11px; color: var(--ink-faint); }
+  .perspective-wrap { background: #000; border: 1px solid var(--rule); margin-bottom: 20px; position: relative; }
+  .perspective-svg { width: 100%; height: auto; display: block; }
+  .perspective-meta { position: absolute; top: 12px; left: 16px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(243,234,216,0.45); pointer-events: none; }
+  .perspective-meta-r { position: absolute; top: 12px; right: 16px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(243,234,216,0.45); pointer-events: none; }
+  .perspective-caption { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--ink-dim); padding: 14px 20px; border-top: 1px solid var(--rule); background: #0a0907; }
+  .beat { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  .beat:last-child { border-bottom: none; }
+  .beat-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 36px; color: var(--gold); line-height: 1; font-weight: 400; }
+  .beat-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .beat-desc { font-size: 14px; color: var(--ink-dim); line-height: 1.6; }
+  .beat-desc em { color: var(--ink); font-style: italic; }
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; padding: 3px 8px; border-radius: 2px; text-transform: uppercase; margin-right: 6px; margin-bottom: 6px; }
+  .tag.light { background: rgba(240,198,116,0.12); color: var(--gold-bright); }
+  .tag.sound { background: rgba(110,198,255,0.12); color: #6ec6ff; }
+  .tag.move { background: rgba(224,120,86,0.14); color: var(--orange); }
+  .tag.perf { background: rgba(74,198,176,0.14); color: var(--perf); }
+  .state-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .state-col h3 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 14px; text-transform: uppercase; }
+  .state-col h3.open { color: var(--orange); }
+  .state-col ul { list-style: none; }
+  .state-col li { padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
+  .state-col li::before { content: '— '; color: var(--ink-faint); }
+  .footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  @media (max-width: 700px) { .state-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <div class="eyebrow">If I Awaken in Los Angeles · Space 07 of 07 · Egress</div>
+    <h1>The Real LA<em> — Space 1, reborn</em></h1>
+    <p class="subtitle">The audience walks back through the corridor where the show began — but Hollywood Boulevard is gone. The 110-ft LED wall now shows the audience itself, composed into a living mural of LA that breathes and reorganizes as people move through. The show's final argument made visual: the city was never the sign on the hill. It was the people in this room.</p>
+    <div class="towns-list">Living Mosaic · Hollywood erased · The audience is the city</div>
+  </header>
+
+  <div class="callout">
+    <p>The audience exits Space 6 after the bow and re-enters the same corridor they walked through 100 minutes ago. Same dimensions, same LED wall, same Walk of Fame stars on the floor. But the content has been completely overwritten. The Hollywood Sign is gone. The Walk of Fame celebrities are gone. The dancers-as-tourists are gone. <strong>The wall now shows the audience itself</strong> — every face captured during the show, composed into an enormous, slowly-shifting mural of Los Angeles. The audience enters at the north end, walks the length of the wall, and exits through a <strong>doorway in the middle of the east wall</strong> into the lobby and gift shop.</p>
+    <p>The mural never settles. Every 30 seconds it reorganizes — a skyline made of faces, then a beach, then a freeway at dusk, then a neighborhood block, then a mountain range — always built from the same audience portraits, always rearranging. Three words hold underneath, slowly fading in and out: <em>This is Los Angeles.</em> The audience walks through, looks for themselves, photographs the wall, photographs themselves in front of it. The corridor is otherwise empty. No performers. No Tour Guide. No music — just the residual hum of the band's last chord from Space 6, slowly fading. The city does the talking.</p>
+  </div>
+
+  <div class="meta-row">
+    <div class="meta"><div class="meta-label">Footprint</div><div class="meta-value">~62 × 110 ft corridor</div></div>
+    <div class="meta"><div class="meta-label">LED wall</div><div class="meta-value">110 ft × 14 ft (existing)</div></div>
+    <div class="meta"><div class="meta-label">Audience</div><div class="meta-value">~150 people, egress wave</div></div>
+    <div class="meta"><div class="meta-label">Dwell</div><div class="meta-value">~3–8 min per person</div></div>
+    <div class="meta"><div class="meta-label">Cast in room</div><div class="meta-value">None · audience is alone</div></div>
+    <div class="meta"><div class="meta-label">Duration</div><div class="meta-value">~10–12 min total egress</div></div>
+  </div>
+
+  <!-- ============= 01 PLAN VIEW ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">01</span><span class="section-head-title">Plan view</span></div>
+      <span class="section-hint">Top-down · Same corridor as Space 1, recoded</span>
+    </div>
+    <div class="section-body" style="padding: 0;">
+      <div class="plan-wrap">
+        <div class="toolbar">
+          <span>● Locked · Returning audience flow only</span>
+          <button>Reset layout</button>
+        </div>
+        <svg class="plan-svg" viewBox="-80 -80 600 760" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="s7grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1f1a16" stroke-width="0.5"/>
+            </pattern>
+            <linearGradient id="ledMosaic" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c84a4a" stop-opacity="0.55"/>
+              <stop offset="20%" stop-color="#d4a24c" stop-opacity="0.55"/>
+              <stop offset="40%" stop-color="#4a8a6a" stop-opacity="0.55"/>
+              <stop offset="60%" stop-color="#6a8aca" stop-opacity="0.55"/>
+              <stop offset="80%" stop-color="#c878a8" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#d4a24c" stop-opacity="0.55"/>
+            </linearGradient>
+            <marker id="s7arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#d4a24c"/>
+            </marker>
+          </defs>
+
+          <!-- Outer warehouse hint -->
+          <rect x="-80" y="-80" width="600" height="760" fill="#0a0806"/>
+
+          <!-- Space 7 boundary (same as Space 1: ~62 ft wide × 110 ft long) -->
+          <rect x="40" y="40" width="360" height="600" fill="url(#s7grid)" stroke="#3a2e22" stroke-width="1.5"/>
+          <text x="52" y="62" fill="#3a2e22" font-family="JetBrains Mono" font-size="11" letter-spacing="3">SPACE 07 · THE REAL LA · LIVING MOSAIC</text>
+          <text x="52" y="78" fill="#3a2e22" font-family="JetBrains Mono" font-size="9" letter-spacing="2">SAME CORRIDOR AS SPACE 01 · CONTENT INVERTED</text>
+
+          <!-- Scale -->
+          <g transform="translate(60,610)">
+            <line x1="0" y1="0" x2="80" y2="0" stroke="#a89b82" stroke-width="1.2"/>
+            <line x1="0" y1="-4" x2="0" y2="4" stroke="#a89b82"/>
+            <line x1="80" y1="-4" x2="80" y2="4" stroke="#a89b82"/>
+            <text x="40" y="-8" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle">10 FT</text>
+          </g>
+
+          <!-- North arrow -->
+          <g transform="translate(380,80)">
+            <circle cx="0" cy="0" r="20" fill="none" stroke="#a89b82" stroke-width="0.8"/>
+            <line x1="0" y1="-14" x2="0" y2="14" stroke="#a89b82" stroke-width="0.8"/>
+            <polygon points="0,-14 -5,-7 5,-7" fill="#a89b82"/>
+            <text x="0" y="-22" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle">N</text>
+          </g>
+
+          <!-- LED Wall (west wall, full length of corridor) -->
+          <rect x="60" y="100" width="20" height="500" fill="url(#ledMosaic)" stroke="#d4a24c" stroke-width="1.5"/>
+          <rect x="60" y="100" width="20" height="500" fill="none" stroke="#d4a24c" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.7"/>
+
+          <!-- Mosaic tile hints inside the wall -->
+          <g opacity="0.7">
+            <rect x="62" y="110" width="6" height="8" fill="#c84a4a"/><rect x="70" y="110" width="6" height="8" fill="#d4a24c"/>
+            <rect x="62" y="122" width="6" height="8" fill="#4a8a6a"/><rect x="70" y="122" width="6" height="8" fill="#6a8aca"/>
+            <rect x="62" y="134" width="6" height="8" fill="#c878a8"/><rect x="70" y="134" width="6" height="8" fill="#c84a4a"/>
+            <rect x="62" y="146" width="6" height="8" fill="#d4a24c"/><rect x="70" y="146" width="6" height="8" fill="#4a8a6a"/>
+            <rect x="62" y="158" width="6" height="8" fill="#6a8aca"/><rect x="70" y="158" width="6" height="8" fill="#c878a8"/>
+            <rect x="62" y="170" width="6" height="8" fill="#c84a4a"/><rect x="70" y="170" width="6" height="8" fill="#d4a24c"/>
+            <rect x="62" y="220" width="6" height="8" fill="#c878a8"/><rect x="70" y="220" width="6" height="8" fill="#c84a4a"/>
+            <rect x="62" y="232" width="6" height="8" fill="#d4a24c"/><rect x="70" y="232" width="6" height="8" fill="#4a8a6a"/>
+            <rect x="62" y="244" width="6" height="8" fill="#6a8aca"/><rect x="70" y="244" width="6" height="8" fill="#c878a8"/>
+            <rect x="62" y="280" width="6" height="8" fill="#4a8a6a"/><rect x="70" y="280" width="6" height="8" fill="#6a8aca"/>
+            <rect x="62" y="292" width="6" height="8" fill="#c878a8"/><rect x="70" y="292" width="6" height="8" fill="#c84a4a"/>
+            <rect x="62" y="340" width="6" height="8" fill="#d4a24c"/><rect x="70" y="340" width="6" height="8" fill="#4a8a6a"/>
+            <rect x="62" y="352" width="6" height="8" fill="#6a8aca"/><rect x="70" y="352" width="6" height="8" fill="#c878a8"/>
+            <rect x="62" y="400" width="6" height="8" fill="#c84a4a"/><rect x="70" y="400" width="6" height="8" fill="#d4a24c"/>
+            <rect x="62" y="412" width="6" height="8" fill="#4a8a6a"/><rect x="70" y="412" width="6" height="8" fill="#6a8aca"/>
+            <rect x="62" y="460" width="6" height="8" fill="#c878a8"/><rect x="70" y="460" width="6" height="8" fill="#c84a4a"/>
+            <rect x="62" y="472" width="6" height="8" fill="#d4a24c"/><rect x="70" y="472" width="6" height="8" fill="#4a8a6a"/>
+            <rect x="62" y="510" width="6" height="8" fill="#6a8aca"/><rect x="70" y="510" width="6" height="8" fill="#c878a8"/>
+            <rect x="62" y="522" width="6" height="8" fill="#c84a4a"/><rect x="70" y="522" width="6" height="8" fill="#d4a24c"/>
+            <rect x="62" y="560" width="6" height="8" fill="#4a8a6a"/><rect x="70" y="560" width="6" height="8" fill="#6a8aca"/>
+            <rect x="62" y="572" width="6" height="8" fill="#c878a8"/><rect x="70" y="572" width="6" height="8" fill="#c84a4a"/>
+          </g>
+
+          <text x="50" y="350" fill="#d4a24c" font-family="Playfair Display" font-size="14" font-style="italic" text-anchor="middle" font-weight="700" transform="rotate(-90 50 350)">LED MOSAIC WALL</text>
+          <text x="32" y="350" fill="#a89b82" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle" transform="rotate(-90 32 350)">110 FT × 14 FT · NOW SHOWS THE AUDIENCE</text>
+
+          <!-- Walk of Fame stars on floor (now blank/inverted) -->
+          <g opacity="0.4">
+            <polygon points="200,180 204,192 216,192 207,200 211,212 200,205 189,212 193,200 184,192 196,192" fill="none" stroke="#d4a24c" stroke-width="1"/>
+            <text x="200" y="225" fill="#5a5245" font-family="JetBrains Mono" font-size="7" text-anchor="middle">BLANK</text>
+            <polygon points="200,290 204,302 216,302 207,310 211,322 200,315 189,322 193,310 184,302 196,302" fill="none" stroke="#d4a24c" stroke-width="1"/>
+            <text x="200" y="335" fill="#5a5245" font-family="JetBrains Mono" font-size="7" text-anchor="middle">BLANK</text>
+            <polygon points="200,400 204,412 216,412 207,420 211,432 200,425 189,432 193,420 184,412 196,412" fill="none" stroke="#d4a24c" stroke-width="1"/>
+            <text x="200" y="445" fill="#5a5245" font-family="JetBrains Mono" font-size="7" text-anchor="middle">BLANK</text>
+            <polygon points="200,510 204,522 216,522 207,530 211,542 200,535 189,542 193,530 184,522 196,522" fill="none" stroke="#d4a24c" stroke-width="1"/>
+            <text x="200" y="555" fill="#5a5245" font-family="JetBrains Mono" font-size="7" text-anchor="middle">BLANK</text>
+          </g>
+
+          <!-- Viewing zone (against the wall, full length) -->
+          <g opacity="0.6">
+            <rect x="100" y="120" width="80" height="460" fill="#d4a24c" fill-opacity="0.04" stroke="#d4a24c" stroke-width="0.4" stroke-dasharray="3,3"/>
+            <text x="140" y="200" fill="#d4a24c" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5" text-anchor="middle" opacity="0.85" transform="rotate(-90 140 200)">VIEWING ZONE · LINGER + PHOTOGRAPH</text>
+          </g>
+
+          <!-- Primary flow path: enters north → walks length of wall → exits east at mid-corridor -->
+          <g opacity="0.55">
+            <rect x="240" y="120" width="60" height="220" fill="#a89b82" fill-opacity="0.03" stroke="#a89b82" stroke-width="0.4" stroke-dasharray="2,3"/>
+            <text x="270" y="230" fill="#a89b82" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle" opacity="0.7" transform="rotate(-90 270 230)">FLOW LANE</text>
+          </g>
+
+          <!-- South portion (below exit) — quieter, can also serve as overflow viewing -->
+          <g opacity="0.5">
+            <rect x="100" y="400" width="200" height="180" fill="#a89b82" fill-opacity="0.025" stroke="#a89b82" stroke-width="0.4" stroke-dasharray="2,3"/>
+            <text x="200" y="490" fill="#a89b82" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle" opacity="0.65">OVERFLOW VIEWING · SOUTH HALF OF WALL</text>
+          </g>
+
+          <!-- Audience figures - looking at wall, distributed full length -->
+          <g fill="#6a4838" opacity="0.85">
+            <circle cx="125" cy="160" r="6"/><circle cx="155" cy="180" r="6"/><circle cx="135" cy="220" r="6"/>
+            <circle cx="160" cy="270" r="6"/><circle cx="125" cy="310" r="6"/>
+            <circle cx="130" cy="430" r="6"/><circle cx="160" cy="470" r="6"/><circle cx="135" cy="510" r="6"/>
+            <circle cx="155" cy="550" r="6"/><circle cx="125" cy="580" r="6"/>
+          </g>
+          <!-- phones up -->
+          <g fill="none" stroke="#f0c674" stroke-width="0.8" opacity="0.7">
+            <rect x="121" y="148" width="8" height="6" rx="1"/>
+            <rect x="151" y="168" width="8" height="6" rx="1"/>
+            <rect x="156" y="258" width="8" height="6" rx="1"/>
+            <rect x="156" y="458" width="8" height="6" rx="1"/>
+            <rect x="151" y="538" width="8" height="6" rx="1"/>
+          </g>
+
+          <!-- Flow audience moving toward mid-east exit -->
+          <g fill="#3a2818" opacity="0.6">
+            <circle cx="270" cy="180" r="5"/><circle cx="275" cy="240" r="5"/><circle cx="280" cy="300" r="5"/>
+            <circle cx="295" cy="345" r="5"/><circle cx="320" cy="345" r="5"/><circle cx="350" cy="345" r="5"/>
+          </g>
+
+          <!-- Entry from Space 6 (north end) -->
+          <path d="M 220 70 L 220 105" stroke="#d4a24c" stroke-width="1.8" marker-end="url(#s7arrow)" opacity="0.9"/>
+          <text x="220" y="55" fill="#d4a24c" font-family="JetBrains Mono" font-size="10" letter-spacing="1.5" text-anchor="middle">FROM SPACE 6</text>
+          <text x="220" y="40" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle" opacity="0.8">POST-BOW · EGRESS BEGINS</text>
+
+          <!-- Suggested flow path: north entry → down corridor along wall → curve to mid-east exit -->
+          <path d="M 220 110 Q 220 220 245 320 Q 280 350 365 350" stroke="#d4a24c" stroke-width="1" stroke-dasharray="4,4" fill="none" opacity="0.55"/>
+
+          <!-- Exit to lobby/gift shop (mid-east wall) -->
+          <path d="M 380 350 L 430 350" stroke="#d4a24c" stroke-width="1.8" marker-end="url(#s7arrow)" opacity="0.9"/>
+          <text x="445" y="345" fill="#d4a24c" font-family="JetBrains Mono" font-size="10" letter-spacing="1.5" text-anchor="start">TO LOBBY</text>
+          <text x="445" y="358" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="start" opacity="0.8">GIFT SHOP · STREET</text>
+
+          <!-- East wall (opposite LED) — split around the exit doorway -->
+          <rect x="380" y="100" width="8" height="220" fill="#3a2e22"/>
+          <rect x="380" y="380" width="8" height="220" fill="#3a2e22"/>
+          <!-- exit doorway gap from y=320 to y=380 -->
+          <text x="395" y="200" fill="#5a5245" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle" transform="rotate(-90 395 200)">EAST WALL · NORTH</text>
+          <text x="395" y="500" fill="#5a5245" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle" transform="rotate(-90 395 500)">EAST WALL · SOUTH</text>
+          <!-- Doorway threshold marker -->
+          <g>
+            <line x1="380" y1="320" x2="388" y2="320" stroke="#d4a24c" stroke-width="2"/>
+            <line x1="380" y1="380" x2="388" y2="380" stroke="#d4a24c" stroke-width="2"/>
+            <rect x="382" y="320" width="4" height="60" fill="#d4a24c" fill-opacity="0.08" stroke="#d4a24c" stroke-width="0.4" stroke-dasharray="2,2"/>
+            <text x="395" y="355" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="start" opacity="0.85">DOORWAY</text>
+          </g>
+
+          <!-- South end of corridor: dead end (no exit here) -->
+          <line x1="40" y1="640" x2="400" y2="640" stroke="#3a2e22" stroke-width="1.5"/>
+          <text x="220" y="624" fill="#5a5245" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle" opacity="0.7">SOUTH END · DEAD END · NO EGRESS</text>
+
+          <!-- Dim ambient lighting -->
+          <g opacity="0.3">
+            <circle cx="220" cy="180" r="35" fill="#d4a24c" fill-opacity="0.04"/>
+            <circle cx="220" cy="350" r="35" fill="#d4a24c" fill-opacity="0.04"/>
+            <circle cx="220" cy="520" r="35" fill="#d4a24c" fill-opacity="0.04"/>
+          </g>
+
+          <!-- Dimensions -->
+          <g opacity="0.6">
+            <line x1="40" y1="32" x2="400" y2="32" stroke="#a89b82" stroke-width="0.5"/>
+            <text x="220" y="24" fill="#a89b82" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle">62 FT</text>
+          </g>
+          <g opacity="0.6">
+            <line x1="28" y1="40" x2="28" y2="640" stroke="#a89b82" stroke-width="0.5"/>
+            <text x="18" y="340" fill="#a89b82" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="middle" transform="rotate(-90 18 340)">110 FT</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <div class="legend-row"><div class="legend-swatch" style="background:linear-gradient(180deg,#c84a4a,#d4a24c,#4a8a6a,#6a8aca,#c878a8);"></div><div><strong>LED Mosaic Wall</strong><span>Same wall as Space 1 · 110 × 14 ft · audience faces compose LA</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#d4a24c;opacity:0.5;border:1px solid #d4a24c;"></div><div><strong>Walk of Fame stars</strong><span>Now blank · existing brass star plates retained</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#d4a24c;opacity:0.15;"></div><div><strong>Viewing zone</strong><span>Full length of wall · audience lingers and photographs</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#a89b82;opacity:0.15;"></div><div><strong>Flow lane + exit</strong><span>Mid-east-wall doorway to lobby · audience curves out at mid-corridor</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#6a4838;"></div><div><strong>Audience · viewing</strong><span>Phones up, photographing, finding themselves</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#3a2818;opacity:0.6;"></div><div><strong>Audience · moving to exit</strong><span>Curving toward the mid-east doorway</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= 02 AUDIENCE PERSPECTIVE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">02</span><span class="section-head-title">Audience perspective</span></div>
+      <span class="section-hint">Two moments of the same wall</span>
+    </div>
+    <div class="section-body">
+
+      <!-- VIEW A · ENTRY-PASS MEMORY -->
+      <div class="perspective-wrap">
+        <svg class="perspective-svg" viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="entryBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a0604"/>
+              <stop offset="100%" stop-color="#1a0e06"/>
+            </linearGradient>
+            <linearGradient id="ledHollywood" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1a3a6a"/>
+              <stop offset="50%" stop-color="#3a5a8a"/>
+              <stop offset="100%" stop-color="#1a3a6a"/>
+            </linearGradient>
+            <radialGradient id="entryWash" cx="0.5" cy="0.5" r="0.6">
+              <stop offset="0%" stop-color="#6ec6ff" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#6ec6ff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="1200" height="460" fill="url(#entryBg)"/>
+
+          <!-- Floor with stars (Walk of Fame) -->
+          <rect x="0" y="370" width="1200" height="90" fill="#1a1208"/>
+          <g fill="#d4a24c" opacity="0.7">
+            <polygon points="180,400 184,408 192,408 186,413 188,421 180,416 172,421 174,413 168,408 176,408"/>
+            <polygon points="400,415 404,423 412,423 406,428 408,436 400,431 392,436 394,428 388,423 396,423"/>
+            <polygon points="620,408 624,416 632,416 626,421 628,429 620,424 612,429 614,421 608,416 616,416"/>
+            <polygon points="840,420 844,428 852,428 846,433 848,441 840,436 832,441 834,433 828,428 836,428"/>
+            <polygon points="1040,410 1044,418 1052,418 1046,423 1048,431 1040,426 1032,431 1034,423 1028,418 1036,418"/>
+          </g>
+
+          <!-- LED wall (Hollywood content) -->
+          <rect x="60" y="60" width="1080" height="290" fill="url(#ledHollywood)"/>
+
+          <!-- Hollywood Sign rendered on wall -->
+          <g transform="translate(600,180)" font-family="Archivo" font-weight="900" font-size="68" fill="#f3ead8" opacity="0.95" text-anchor="middle" letter-spacing="6">
+            <text>HOLLYWOOD</text>
+          </g>
+          <!-- Suggestive hill silhouette under the sign -->
+          <path d="M 60 280 Q 250 240 450 270 T 850 250 T 1140 270 L 1140 350 L 60 350 Z" fill="#0a1a2a" opacity="0.7"/>
+
+          <!-- Wall glow on floor -->
+          <rect width="1200" height="460" fill="url(#entryWash)" opacity="0.4"/>
+
+          <!-- Audience-as-tourists silhouettes during entry -->
+          <g fill="#050302">
+            <g transform="translate(220,400)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/></g>
+            <g transform="translate(360,402)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/><line x1="-8" y1="-46" x2="-14" y2="-58" stroke="#050302" stroke-width="3" stroke-linecap="round"/><rect x="-18" y="-62" width="8" height="6" fill="#050302"/></g>
+            <g transform="translate(500,405)"><rect x="-13" y="-34" width="26" height="42" rx="2"/><circle cx="0" cy="-42" r="12"/></g>
+            <g transform="translate(680,402)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/></g>
+            <g transform="translate(820,400)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/><line x1="-7" y1="-44" x2="-13" y2="-56" stroke="#050302" stroke-width="3" stroke-linecap="round"/><rect x="-17" y="-60" width="8" height="6" fill="#050302"/></g>
+            <g transform="translate(960,402)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/></g>
+          </g>
+        </svg>
+        <span class="perspective-meta">VIEW A · ENTRY-PASS MEMORY</span>
+        <span class="perspective-meta-r">90 MIN AGO · HOLLYWOOD</span>
+        <p class="perspective-caption">How the audience first met this wall: the Hollywood sign held large, the Walk of Fame underfoot, dancers-as-tourists in the corridor, the show's promise still unbroken. The wall was selling them the LA they'd been told about. Hold this in mind for what comes next — same wall, same floor, same room.</p>
+      </div>
+
+      <!-- VIEW B · THE LIVING MOSAIC -->
+      <div class="perspective-wrap">
+        <svg class="perspective-svg" viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="exitBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a0604"/>
+              <stop offset="100%" stop-color="#160c08"/>
+            </linearGradient>
+            <radialGradient id="mosaicWash" cx="0.5" cy="0.5" r="0.7">
+              <stop offset="0%" stop-color="#d4a24c" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#d4a24c" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="1200" height="460" fill="url(#exitBg)"/>
+
+          <!-- Floor -->
+          <rect x="0" y="370" width="1200" height="90" fill="#1a1208"/>
+          <!-- Stars on floor — now dim/blank, brass outlines only -->
+          <g fill="none" stroke="#d4a24c" stroke-width="1" opacity="0.45">
+            <polygon points="180,400 184,408 192,408 186,413 188,421 180,416 172,421 174,413 168,408 176,408"/>
+            <polygon points="400,415 404,423 412,423 406,428 408,436 400,431 392,436 394,428 388,423 396,423"/>
+            <polygon points="620,408 624,416 632,416 626,421 628,429 620,424 612,429 614,421 608,416 616,416"/>
+            <polygon points="840,420 844,428 852,428 846,433 848,441 840,436 832,441 834,433 828,428 836,428"/>
+            <polygon points="1040,410 1044,418 1052,418 1046,423 1048,431 1040,426 1032,431 1034,423 1028,418 1036,418"/>
+          </g>
+
+          <!-- LED wall: mosaic of audience faces forming a skyline silhouette -->
+          <rect x="60" y="60" width="1080" height="290" fill="#0a0806"/>
+
+          <!-- Mosaic tiles - many small audience portrait squares forming an LA skyline shape -->
+          <!-- We'll generate a grid of tiles, then "carve" a skyline silhouette by masking -->
+          <defs>
+            <clipPath id="skylineClip">
+              <!-- LA skyline silhouette filling the LED area -->
+              <path d="M 60 350
+                       L 60 280
+                       L 100 280 L 100 220 L 130 220 L 130 250 L 160 250 L 160 200 L 200 200 L 200 240
+                       L 240 240 L 240 180 L 280 180 L 280 220 L 320 220 L 320 160 L 360 160 L 360 200
+                       L 400 200 L 400 140 L 440 140 L 440 100 L 480 100 L 480 180 L 520 180 L 520 130
+                       L 560 130 L 560 90 L 610 90 L 610 70 L 660 70 L 660 110 L 700 110 L 700 150
+                       L 740 150 L 740 110 L 780 110 L 780 170 L 820 170 L 820 130 L 860 130 L 860 200
+                       L 900 200 L 900 180 L 940 180 L 940 230 L 980 230 L 980 200 L 1020 200 L 1020 250
+                       L 1060 250 L 1060 220 L 1100 220 L 1100 270 L 1140 270
+                       L 1140 350 Z"/>
+            </clipPath>
+          </defs>
+
+          <!-- Light backdrop for "sky" above skyline -->
+          <rect x="60" y="60" width="1080" height="290" fill="#1a1410" opacity="0.5"/>
+
+          <!-- Sky tint -->
+          <linearGradient id="skySoft" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a2a18" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#1a0f08" stop-opacity="0.1"/>
+          </linearGradient>
+          <rect x="60" y="60" width="1080" height="290" fill="url(#skySoft)"/>
+
+          <!-- Mosaic tiles (audience faces) clipped to skyline shape -->
+          <g clip-path="url(#skylineClip)">
+            <!-- Generate a dense grid of colored tiles to suggest faces -->
+            <!-- Row 1 -->
+            <g>
+              <!-- Repeat tile pattern across the skyline -->
+              <!-- Use 5 colors representing different communities -->
+            </g>
+          </g>
+
+          <!-- Mosaic tile field within skyline -->
+          <g clip-path="url(#skylineClip)">
+            <!-- Programmatically-shaped tile grid -->
+            <!-- 36 cols × 14 rows of 30×20 tiles, offset to fill 60..1140, 70..350 -->
+            <!-- Drawn as nested groups for variety -->
+            <g>
+              <!-- We hand-place enough tiles that the pattern reads -->
+              <!-- Use a deterministic-looking smattering of color blocks -->
+              <!-- Skin tones rendered as warm browns; clothing as community accents -->
+              <!-- Top row of buildings -->
+              <!-- Generate via repeated patterns -->
+            </g>
+            <!-- Generate 14 rows × 36 cols of tiles using rect grid -->
+            <g fill-opacity="0.85" stroke="#0a0806" stroke-width="0.5">
+              <!-- Row by row, varied colors -->
+              <!-- y=70 -->
+              <rect x="60" y="70" width="30" height="20" fill="#8a5838"/><rect x="90" y="70" width="30" height="20" fill="#a06848"/><rect x="120" y="70" width="30" height="20" fill="#6a4828"/><rect x="150" y="70" width="30" height="20" fill="#a87858"/><rect x="180" y="70" width="30" height="20" fill="#7a4838"/><rect x="210" y="70" width="30" height="20" fill="#9a6848"/><rect x="240" y="70" width="30" height="20" fill="#5a3828"/><rect x="270" y="70" width="30" height="20" fill="#a87858"/><rect x="300" y="70" width="30" height="20" fill="#8a5838"/><rect x="330" y="70" width="30" height="20" fill="#6a4828"/><rect x="360" y="70" width="30" height="20" fill="#a06848"/><rect x="390" y="70" width="30" height="20" fill="#7a4838"/><rect x="420" y="70" width="30" height="20" fill="#9a6848"/><rect x="450" y="70" width="30" height="20" fill="#a87858"/><rect x="480" y="70" width="30" height="20" fill="#5a3828"/><rect x="510" y="70" width="30" height="20" fill="#8a5838"/><rect x="540" y="70" width="30" height="20" fill="#6a4828"/><rect x="570" y="70" width="30" height="20" fill="#a06848"/><rect x="600" y="70" width="30" height="20" fill="#7a4838"/><rect x="630" y="70" width="30" height="20" fill="#9a6848"/><rect x="660" y="70" width="30" height="20" fill="#a87858"/><rect x="690" y="70" width="30" height="20" fill="#5a3828"/><rect x="720" y="70" width="30" height="20" fill="#8a5838"/><rect x="750" y="70" width="30" height="20" fill="#6a4828"/><rect x="780" y="70" width="30" height="20" fill="#a06848"/><rect x="810" y="70" width="30" height="20" fill="#7a4838"/><rect x="840" y="70" width="30" height="20" fill="#9a6848"/><rect x="870" y="70" width="30" height="20" fill="#a87858"/><rect x="900" y="70" width="30" height="20" fill="#5a3828"/><rect x="930" y="70" width="30" height="20" fill="#8a5838"/><rect x="960" y="70" width="30" height="20" fill="#6a4828"/><rect x="990" y="70" width="30" height="20" fill="#a06848"/><rect x="1020" y="70" width="30" height="20" fill="#7a4838"/><rect x="1050" y="70" width="30" height="20" fill="#9a6848"/><rect x="1080" y="70" width="30" height="20" fill="#a87858"/><rect x="1110" y="70" width="30" height="20" fill="#5a3828"/>
+
+              <rect x="60" y="90" width="30" height="20" fill="#a06848"/><rect x="90" y="90" width="30" height="20" fill="#6a4828"/><rect x="120" y="90" width="30" height="20" fill="#a87858"/><rect x="150" y="90" width="30" height="20" fill="#7a4838"/><rect x="180" y="90" width="30" height="20" fill="#9a6848"/><rect x="210" y="90" width="30" height="20" fill="#5a3828"/><rect x="240" y="90" width="30" height="20" fill="#a87858"/><rect x="270" y="90" width="30" height="20" fill="#8a5838"/><rect x="300" y="90" width="30" height="20" fill="#6a4828"/><rect x="330" y="90" width="30" height="20" fill="#a06848"/><rect x="360" y="90" width="30" height="20" fill="#7a4838"/><rect x="390" y="90" width="30" height="20" fill="#9a6848"/><rect x="420" y="90" width="30" height="20" fill="#a87858"/><rect x="450" y="90" width="30" height="20" fill="#5a3828"/><rect x="480" y="90" width="30" height="20" fill="#8a5838"/><rect x="510" y="90" width="30" height="20" fill="#6a4828"/><rect x="540" y="90" width="30" height="20" fill="#a06848"/><rect x="570" y="90" width="30" height="20" fill="#7a4838"/><rect x="600" y="90" width="30" height="20" fill="#9a6848"/><rect x="630" y="90" width="30" height="20" fill="#a87858"/><rect x="660" y="90" width="30" height="20" fill="#5a3828"/><rect x="690" y="90" width="30" height="20" fill="#8a5838"/><rect x="720" y="90" width="30" height="20" fill="#6a4828"/><rect x="750" y="90" width="30" height="20" fill="#a06848"/><rect x="780" y="90" width="30" height="20" fill="#7a4838"/><rect x="810" y="90" width="30" height="20" fill="#9a6848"/><rect x="840" y="90" width="30" height="20" fill="#a87858"/><rect x="870" y="90" width="30" height="20" fill="#5a3828"/><rect x="900" y="90" width="30" height="20" fill="#8a5838"/><rect x="930" y="90" width="30" height="20" fill="#6a4828"/><rect x="960" y="90" width="30" height="20" fill="#a06848"/><rect x="990" y="90" width="30" height="20" fill="#7a4838"/><rect x="1020" y="90" width="30" height="20" fill="#9a6848"/><rect x="1050" y="90" width="30" height="20" fill="#a87858"/><rect x="1080" y="90" width="30" height="20" fill="#5a3828"/><rect x="1110" y="90" width="30" height="20" fill="#8a5838"/>
+
+              <rect x="60" y="110" width="30" height="20" fill="#6a4828"/><rect x="90" y="110" width="30" height="20" fill="#a87858"/><rect x="120" y="110" width="30" height="20" fill="#8a5838"/><rect x="150" y="110" width="30" height="20" fill="#a06848"/><rect x="180" y="110" width="30" height="20" fill="#7a4838"/><rect x="210" y="110" width="30" height="20" fill="#9a6848"/><rect x="240" y="110" width="30" height="20" fill="#5a3828"/><rect x="270" y="110" width="30" height="20" fill="#a87858"/><rect x="300" y="110" width="30" height="20" fill="#8a5838"/><rect x="330" y="110" width="30" height="20" fill="#6a4828"/><rect x="360" y="110" width="30" height="20" fill="#a06848"/><rect x="390" y="110" width="30" height="20" fill="#7a4838"/><rect x="420" y="110" width="30" height="20" fill="#9a6848"/><rect x="450" y="110" width="30" height="20" fill="#a87858"/><rect x="480" y="110" width="30" height="20" fill="#5a3828"/><rect x="510" y="110" width="30" height="20" fill="#8a5838"/><rect x="540" y="110" width="30" height="20" fill="#6a4828"/><rect x="570" y="110" width="30" height="20" fill="#a06848"/><rect x="600" y="110" width="30" height="20" fill="#7a4838"/><rect x="630" y="110" width="30" height="20" fill="#9a6848"/><rect x="660" y="110" width="30" height="20" fill="#a87858"/><rect x="690" y="110" width="30" height="20" fill="#5a3828"/><rect x="720" y="110" width="30" height="20" fill="#8a5838"/><rect x="750" y="110" width="30" height="20" fill="#6a4828"/><rect x="780" y="110" width="30" height="20" fill="#a06848"/><rect x="810" y="110" width="30" height="20" fill="#7a4838"/><rect x="840" y="110" width="30" height="20" fill="#9a6848"/><rect x="870" y="110" width="30" height="20" fill="#a87858"/><rect x="900" y="110" width="30" height="20" fill="#5a3828"/><rect x="930" y="110" width="30" height="20" fill="#8a5838"/><rect x="960" y="110" width="30" height="20" fill="#6a4828"/><rect x="990" y="110" width="30" height="20" fill="#a06848"/><rect x="1020" y="110" width="30" height="20" fill="#7a4838"/><rect x="1050" y="110" width="30" height="20" fill="#9a6848"/><rect x="1080" y="110" width="30" height="20" fill="#a87858"/><rect x="1110" y="110" width="30" height="20" fill="#5a3828"/>
+
+              <!-- Continue rows down to 350 -->
+              <rect x="60" y="130" width="30" height="20" fill="#a87858"/><rect x="90" y="130" width="30" height="20" fill="#7a4838"/><rect x="120" y="130" width="30" height="20" fill="#9a6848"/><rect x="150" y="130" width="30" height="20" fill="#5a3828"/><rect x="180" y="130" width="30" height="20" fill="#8a5838"/><rect x="210" y="130" width="30" height="20" fill="#6a4828"/><rect x="240" y="130" width="30" height="20" fill="#a06848"/><rect x="270" y="130" width="30" height="20" fill="#7a4838"/><rect x="300" y="130" width="30" height="20" fill="#9a6848"/><rect x="330" y="130" width="30" height="20" fill="#a87858"/><rect x="360" y="130" width="30" height="20" fill="#5a3828"/><rect x="390" y="130" width="30" height="20" fill="#8a5838"/><rect x="420" y="130" width="30" height="20" fill="#6a4828"/><rect x="450" y="130" width="30" height="20" fill="#a06848"/><rect x="480" y="130" width="30" height="20" fill="#7a4838"/><rect x="510" y="130" width="30" height="20" fill="#9a6848"/><rect x="540" y="130" width="30" height="20" fill="#a87858"/><rect x="570" y="130" width="30" height="20" fill="#5a3828"/><rect x="600" y="130" width="30" height="20" fill="#8a5838"/><rect x="630" y="130" width="30" height="20" fill="#6a4828"/><rect x="660" y="130" width="30" height="20" fill="#a06848"/><rect x="690" y="130" width="30" height="20" fill="#7a4838"/><rect x="720" y="130" width="30" height="20" fill="#9a6848"/><rect x="750" y="130" width="30" height="20" fill="#a87858"/><rect x="780" y="130" width="30" height="20" fill="#5a3828"/><rect x="810" y="130" width="30" height="20" fill="#8a5838"/><rect x="840" y="130" width="30" height="20" fill="#6a4828"/><rect x="870" y="130" width="30" height="20" fill="#a06848"/><rect x="900" y="130" width="30" height="20" fill="#7a4838"/><rect x="930" y="130" width="30" height="20" fill="#9a6848"/><rect x="960" y="130" width="30" height="20" fill="#a87858"/><rect x="990" y="130" width="30" height="20" fill="#5a3828"/><rect x="1020" y="130" width="30" height="20" fill="#8a5838"/><rect x="1050" y="130" width="30" height="20" fill="#6a4828"/><rect x="1080" y="130" width="30" height="20" fill="#a06848"/><rect x="1110" y="130" width="30" height="20" fill="#7a4838"/>
+
+              <rect x="60" y="150" width="30" height="20" fill="#7a4838"/><rect x="90" y="150" width="30" height="20" fill="#9a6848"/><rect x="120" y="150" width="30" height="20" fill="#a87858"/><rect x="150" y="150" width="30" height="20" fill="#5a3828"/><rect x="180" y="150" width="30" height="20" fill="#8a5838"/><rect x="210" y="150" width="30" height="20" fill="#6a4828"/><rect x="240" y="150" width="30" height="20" fill="#a06848"/><rect x="270" y="150" width="30" height="20" fill="#7a4838"/><rect x="300" y="150" width="30" height="20" fill="#9a6848"/><rect x="330" y="150" width="30" height="20" fill="#a87858"/><rect x="360" y="150" width="30" height="20" fill="#5a3828"/><rect x="390" y="150" width="30" height="20" fill="#8a5838"/><rect x="420" y="150" width="30" height="20" fill="#6a4828"/><rect x="450" y="150" width="30" height="20" fill="#a06848"/><rect x="480" y="150" width="30" height="20" fill="#7a4838"/><rect x="510" y="150" width="30" height="20" fill="#9a6848"/><rect x="540" y="150" width="30" height="20" fill="#a87858"/><rect x="570" y="150" width="30" height="20" fill="#5a3828"/><rect x="600" y="150" width="30" height="20" fill="#8a5838"/><rect x="630" y="150" width="30" height="20" fill="#6a4828"/><rect x="660" y="150" width="30" height="20" fill="#a06848"/><rect x="690" y="150" width="30" height="20" fill="#7a4838"/><rect x="720" y="150" width="30" height="20" fill="#9a6848"/><rect x="750" y="150" width="30" height="20" fill="#a87858"/><rect x="780" y="150" width="30" height="20" fill="#5a3828"/><rect x="810" y="150" width="30" height="20" fill="#8a5838"/><rect x="840" y="150" width="30" height="20" fill="#6a4828"/><rect x="870" y="150" width="30" height="20" fill="#a06848"/><rect x="900" y="150" width="30" height="20" fill="#7a4838"/><rect x="930" y="150" width="30" height="20" fill="#9a6848"/><rect x="960" y="150" width="30" height="20" fill="#a87858"/><rect x="990" y="150" width="30" height="20" fill="#5a3828"/><rect x="1020" y="150" width="30" height="20" fill="#8a5838"/><rect x="1050" y="150" width="30" height="20" fill="#6a4828"/><rect x="1080" y="150" width="30" height="20" fill="#a06848"/><rect x="1110" y="150" width="30" height="20" fill="#7a4838"/>
+
+              <rect x="60" y="170" width="30" height="20" fill="#a06848"/><rect x="90" y="170" width="30" height="20" fill="#7a4838"/><rect x="120" y="170" width="30" height="20" fill="#9a6848"/><rect x="150" y="170" width="30" height="20" fill="#a87858"/><rect x="180" y="170" width="30" height="20" fill="#5a3828"/><rect x="210" y="170" width="30" height="20" fill="#8a5838"/><rect x="240" y="170" width="30" height="20" fill="#6a4828"/><rect x="270" y="170" width="30" height="20" fill="#a06848"/><rect x="300" y="170" width="30" height="20" fill="#7a4838"/><rect x="330" y="170" width="30" height="20" fill="#9a6848"/><rect x="360" y="170" width="30" height="20" fill="#a87858"/><rect x="390" y="170" width="30" height="20" fill="#5a3828"/><rect x="420" y="170" width="30" height="20" fill="#8a5838"/><rect x="450" y="170" width="30" height="20" fill="#6a4828"/><rect x="480" y="170" width="30" height="20" fill="#a06848"/><rect x="510" y="170" width="30" height="20" fill="#7a4838"/><rect x="540" y="170" width="30" height="20" fill="#9a6848"/><rect x="570" y="170" width="30" height="20" fill="#a87858"/><rect x="600" y="170" width="30" height="20" fill="#5a3828"/><rect x="630" y="170" width="30" height="20" fill="#8a5838"/><rect x="660" y="170" width="30" height="20" fill="#6a4828"/><rect x="690" y="170" width="30" height="20" fill="#a06848"/><rect x="720" y="170" width="30" height="20" fill="#7a4838"/><rect x="750" y="170" width="30" height="20" fill="#9a6848"/><rect x="780" y="170" width="30" height="20" fill="#a87858"/><rect x="810" y="170" width="30" height="20" fill="#5a3828"/><rect x="840" y="170" width="30" height="20" fill="#8a5838"/><rect x="870" y="170" width="30" height="20" fill="#6a4828"/><rect x="900" y="170" width="30" height="20" fill="#a06848"/><rect x="930" y="170" width="30" height="20" fill="#7a4838"/><rect x="960" y="170" width="30" height="20" fill="#9a6848"/><rect x="990" y="170" width="30" height="20" fill="#a87858"/><rect x="1020" y="170" width="30" height="20" fill="#5a3828"/><rect x="1050" y="170" width="30" height="20" fill="#8a5838"/><rect x="1080" y="170" width="30" height="20" fill="#6a4828"/><rect x="1110" y="170" width="30" height="20" fill="#a06848"/>
+
+              <rect x="60" y="190" width="30" height="20" fill="#9a6848"/><rect x="90" y="190" width="30" height="20" fill="#a87858"/><rect x="120" y="190" width="30" height="20" fill="#5a3828"/><rect x="150" y="190" width="30" height="20" fill="#8a5838"/><rect x="180" y="190" width="30" height="20" fill="#6a4828"/><rect x="210" y="190" width="30" height="20" fill="#a06848"/><rect x="240" y="190" width="30" height="20" fill="#7a4838"/><rect x="270" y="190" width="30" height="20" fill="#9a6848"/><rect x="300" y="190" width="30" height="20" fill="#a87858"/><rect x="330" y="190" width="30" height="20" fill="#5a3828"/><rect x="360" y="190" width="30" height="20" fill="#8a5838"/><rect x="390" y="190" width="30" height="20" fill="#6a4828"/><rect x="420" y="190" width="30" height="20" fill="#a06848"/><rect x="450" y="190" width="30" height="20" fill="#7a4838"/><rect x="480" y="190" width="30" height="20" fill="#9a6848"/><rect x="510" y="190" width="30" height="20" fill="#a87858"/><rect x="540" y="190" width="30" height="20" fill="#5a3828"/><rect x="570" y="190" width="30" height="20" fill="#8a5838"/><rect x="600" y="190" width="30" height="20" fill="#6a4828"/><rect x="630" y="190" width="30" height="20" fill="#a06848"/><rect x="660" y="190" width="30" height="20" fill="#7a4838"/><rect x="690" y="190" width="30" height="20" fill="#9a6848"/><rect x="720" y="190" width="30" height="20" fill="#a87858"/><rect x="750" y="190" width="30" height="20" fill="#5a3828"/><rect x="780" y="190" width="30" height="20" fill="#8a5838"/><rect x="810" y="190" width="30" height="20" fill="#6a4828"/><rect x="840" y="190" width="30" height="20" fill="#a06848"/><rect x="870" y="190" width="30" height="20" fill="#7a4838"/><rect x="900" y="190" width="30" height="20" fill="#9a6848"/><rect x="930" y="190" width="30" height="20" fill="#a87858"/><rect x="960" y="190" width="30" height="20" fill="#5a3828"/><rect x="990" y="190" width="30" height="20" fill="#8a5838"/><rect x="1020" y="190" width="30" height="20" fill="#6a4828"/><rect x="1050" y="190" width="30" height="20" fill="#a06848"/><rect x="1080" y="190" width="30" height="20" fill="#7a4838"/><rect x="1110" y="190" width="30" height="20" fill="#9a6848"/>
+
+              <rect x="60" y="210" width="30" height="20" fill="#a87858"/><rect x="90" y="210" width="30" height="20" fill="#5a3828"/><rect x="120" y="210" width="30" height="20" fill="#8a5838"/><rect x="150" y="210" width="30" height="20" fill="#6a4828"/><rect x="180" y="210" width="30" height="20" fill="#a06848"/><rect x="210" y="210" width="30" height="20" fill="#7a4838"/><rect x="240" y="210" width="30" height="20" fill="#9a6848"/><rect x="270" y="210" width="30" height="20" fill="#a87858"/><rect x="300" y="210" width="30" height="20" fill="#5a3828"/><rect x="330" y="210" width="30" height="20" fill="#8a5838"/><rect x="360" y="210" width="30" height="20" fill="#6a4828"/><rect x="390" y="210" width="30" height="20" fill="#a06848"/><rect x="420" y="210" width="30" height="20" fill="#7a4838"/><rect x="450" y="210" width="30" height="20" fill="#9a6848"/><rect x="480" y="210" width="30" height="20" fill="#a87858"/><rect x="510" y="210" width="30" height="20" fill="#5a3828"/><rect x="540" y="210" width="30" height="20" fill="#8a5838"/><rect x="570" y="210" width="30" height="20" fill="#6a4828"/><rect x="600" y="210" width="30" height="20" fill="#a06848"/><rect x="630" y="210" width="30" height="20" fill="#7a4838"/><rect x="660" y="210" width="30" height="20" fill="#9a6848"/><rect x="690" y="210" width="30" height="20" fill="#a87858"/><rect x="720" y="210" width="30" height="20" fill="#5a3828"/><rect x="750" y="210" width="30" height="20" fill="#8a5838"/><rect x="780" y="210" width="30" height="20" fill="#6a4828"/><rect x="810" y="210" width="30" height="20" fill="#a06848"/><rect x="840" y="210" width="30" height="20" fill="#7a4838"/><rect x="870" y="210" width="30" height="20" fill="#9a6848"/><rect x="900" y="210" width="30" height="20" fill="#a87858"/><rect x="930" y="210" width="30" height="20" fill="#5a3828"/><rect x="960" y="210" width="30" height="20" fill="#8a5838"/><rect x="990" y="210" width="30" height="20" fill="#6a4828"/><rect x="1020" y="210" width="30" height="20" fill="#a06848"/><rect x="1050" y="210" width="30" height="20" fill="#7a4838"/><rect x="1080" y="210" width="30" height="20" fill="#9a6848"/><rect x="1110" y="210" width="30" height="20" fill="#a87858"/>
+
+              <rect x="60" y="230" width="30" height="20" fill="#5a3828"/><rect x="90" y="230" width="30" height="20" fill="#8a5838"/><rect x="120" y="230" width="30" height="20" fill="#6a4828"/><rect x="150" y="230" width="30" height="20" fill="#a06848"/><rect x="180" y="230" width="30" height="20" fill="#7a4838"/><rect x="210" y="230" width="30" height="20" fill="#9a6848"/><rect x="240" y="230" width="30" height="20" fill="#a87858"/><rect x="270" y="230" width="30" height="20" fill="#5a3828"/><rect x="300" y="230" width="30" height="20" fill="#8a5838"/><rect x="330" y="230" width="30" height="20" fill="#6a4828"/><rect x="360" y="230" width="30" height="20" fill="#a06848"/><rect x="390" y="230" width="30" height="20" fill="#7a4838"/><rect x="420" y="230" width="30" height="20" fill="#9a6848"/><rect x="450" y="230" width="30" height="20" fill="#a87858"/><rect x="480" y="230" width="30" height="20" fill="#5a3828"/><rect x="510" y="230" width="30" height="20" fill="#8a5838"/><rect x="540" y="230" width="30" height="20" fill="#6a4828"/><rect x="570" y="230" width="30" height="20" fill="#a06848"/><rect x="600" y="230" width="30" height="20" fill="#7a4838"/><rect x="630" y="230" width="30" height="20" fill="#9a6848"/><rect x="660" y="230" width="30" height="20" fill="#a87858"/><rect x="690" y="230" width="30" height="20" fill="#5a3828"/><rect x="720" y="230" width="30" height="20" fill="#8a5838"/><rect x="750" y="230" width="30" height="20" fill="#6a4828"/><rect x="780" y="230" width="30" height="20" fill="#a06848"/><rect x="810" y="230" width="30" height="20" fill="#7a4838"/><rect x="840" y="230" width="30" height="20" fill="#9a6848"/><rect x="870" y="230" width="30" height="20" fill="#a87858"/><rect x="900" y="230" width="30" height="20" fill="#5a3828"/><rect x="930" y="230" width="30" height="20" fill="#8a5838"/><rect x="960" y="230" width="30" height="20" fill="#6a4828"/><rect x="990" y="230" width="30" height="20" fill="#a06848"/><rect x="1020" y="230" width="30" height="20" fill="#7a4838"/><rect x="1050" y="230" width="30" height="20" fill="#9a6848"/><rect x="1080" y="230" width="30" height="20" fill="#a87858"/><rect x="1110" y="230" width="30" height="20" fill="#5a3828"/>
+
+              <rect x="60" y="250" width="30" height="20" fill="#8a5838"/><rect x="90" y="250" width="30" height="20" fill="#6a4828"/><rect x="120" y="250" width="30" height="20" fill="#a06848"/><rect x="150" y="250" width="30" height="20" fill="#7a4838"/><rect x="180" y="250" width="30" height="20" fill="#9a6848"/><rect x="210" y="250" width="30" height="20" fill="#a87858"/><rect x="240" y="250" width="30" height="20" fill="#5a3828"/><rect x="270" y="250" width="30" height="20" fill="#8a5838"/><rect x="300" y="250" width="30" height="20" fill="#6a4828"/><rect x="330" y="250" width="30" height="20" fill="#a06848"/><rect x="360" y="250" width="30" height="20" fill="#7a4838"/><rect x="390" y="250" width="30" height="20" fill="#9a6848"/><rect x="420" y="250" width="30" height="20" fill="#a87858"/><rect x="450" y="250" width="30" height="20" fill="#5a3828"/><rect x="480" y="250" width="30" height="20" fill="#8a5838"/><rect x="510" y="250" width="30" height="20" fill="#6a4828"/><rect x="540" y="250" width="30" height="20" fill="#a06848"/><rect x="570" y="250" width="30" height="20" fill="#7a4838"/><rect x="600" y="250" width="30" height="20" fill="#9a6848"/><rect x="630" y="250" width="30" height="20" fill="#a87858"/><rect x="660" y="250" width="30" height="20" fill="#5a3828"/><rect x="690" y="250" width="30" height="20" fill="#8a5838"/><rect x="720" y="250" width="30" height="20" fill="#6a4828"/><rect x="750" y="250" width="30" height="20" fill="#a06848"/><rect x="780" y="250" width="30" height="20" fill="#7a4838"/><rect x="810" y="250" width="30" height="20" fill="#9a6848"/><rect x="840" y="250" width="30" height="20" fill="#a87858"/><rect x="870" y="250" width="30" height="20" fill="#5a3828"/><rect x="900" y="250" width="30" height="20" fill="#8a5838"/><rect x="930" y="250" width="30" height="20" fill="#6a4828"/><rect x="960" y="250" width="30" height="20" fill="#a06848"/><rect x="990" y="250" width="30" height="20" fill="#7a4838"/><rect x="1020" y="250" width="30" height="20" fill="#9a6848"/><rect x="1050" y="250" width="30" height="20" fill="#a87858"/><rect x="1080" y="250" width="30" height="20" fill="#5a3828"/><rect x="1110" y="250" width="30" height="20" fill="#8a5838"/>
+
+              <rect x="60" y="270" width="30" height="20" fill="#6a4828"/><rect x="90" y="270" width="30" height="20" fill="#a06848"/><rect x="120" y="270" width="30" height="20" fill="#7a4838"/><rect x="150" y="270" width="30" height="20" fill="#9a6848"/><rect x="180" y="270" width="30" height="20" fill="#a87858"/><rect x="210" y="270" width="30" height="20" fill="#5a3828"/><rect x="240" y="270" width="30" height="20" fill="#8a5838"/><rect x="270" y="270" width="30" height="20" fill="#6a4828"/><rect x="300" y="270" width="30" height="20" fill="#a06848"/><rect x="330" y="270" width="30" height="20" fill="#7a4838"/><rect x="360" y="270" width="30" height="20" fill="#9a6848"/><rect x="390" y="270" width="30" height="20" fill="#a87858"/><rect x="420" y="270" width="30" height="20" fill="#5a3828"/><rect x="450" y="270" width="30" height="20" fill="#8a5838"/><rect x="480" y="270" width="30" height="20" fill="#6a4828"/><rect x="510" y="270" width="30" height="20" fill="#a06848"/><rect x="540" y="270" width="30" height="20" fill="#7a4838"/><rect x="570" y="270" width="30" height="20" fill="#9a6848"/><rect x="600" y="270" width="30" height="20" fill="#a87858"/><rect x="630" y="270" width="30" height="20" fill="#5a3828"/><rect x="660" y="270" width="30" height="20" fill="#8a5838"/><rect x="690" y="270" width="30" height="20" fill="#6a4828"/><rect x="720" y="270" width="30" height="20" fill="#a06848"/><rect x="750" y="270" width="30" height="20" fill="#7a4838"/><rect x="780" y="270" width="30" height="20" fill="#9a6848"/><rect x="810" y="270" width="30" height="20" fill="#a87858"/><rect x="840" y="270" width="30" height="20" fill="#5a3828"/><rect x="870" y="270" width="30" height="20" fill="#8a5838"/><rect x="900" y="270" width="30" height="20" fill="#6a4828"/><rect x="930" y="270" width="30" height="20" fill="#a06848"/><rect x="960" y="270" width="30" height="20" fill="#7a4838"/><rect x="990" y="270" width="30" height="20" fill="#9a6848"/><rect x="1020" y="270" width="30" height="20" fill="#a87858"/><rect x="1050" y="270" width="30" height="20" fill="#5a3828"/><rect x="1080" y="270" width="30" height="20" fill="#8a5838"/><rect x="1110" y="270" width="30" height="20" fill="#6a4828"/>
+
+              <rect x="60" y="290" width="30" height="20" fill="#a06848"/><rect x="90" y="290" width="30" height="20" fill="#7a4838"/><rect x="120" y="290" width="30" height="20" fill="#9a6848"/><rect x="150" y="290" width="30" height="20" fill="#a87858"/><rect x="180" y="290" width="30" height="20" fill="#5a3828"/><rect x="210" y="290" width="30" height="20" fill="#8a5838"/><rect x="240" y="290" width="30" height="20" fill="#6a4828"/><rect x="270" y="290" width="30" height="20" fill="#a06848"/><rect x="300" y="290" width="30" height="20" fill="#7a4838"/><rect x="330" y="290" width="30" height="20" fill="#9a6848"/><rect x="360" y="290" width="30" height="20" fill="#a87858"/><rect x="390" y="290" width="30" height="20" fill="#5a3828"/><rect x="420" y="290" width="30" height="20" fill="#8a5838"/><rect x="450" y="290" width="30" height="20" fill="#6a4828"/><rect x="480" y="290" width="30" height="20" fill="#a06848"/><rect x="510" y="290" width="30" height="20" fill="#7a4838"/><rect x="540" y="290" width="30" height="20" fill="#9a6848"/><rect x="570" y="290" width="30" height="20" fill="#a87858"/><rect x="600" y="290" width="30" height="20" fill="#5a3828"/><rect x="630" y="290" width="30" height="20" fill="#8a5838"/><rect x="660" y="290" width="30" height="20" fill="#6a4828"/><rect x="690" y="290" width="30" height="20" fill="#a06848"/><rect x="720" y="290" width="30" height="20" fill="#7a4838"/><rect x="750" y="290" width="30" height="20" fill="#9a6848"/><rect x="780" y="290" width="30" height="20" fill="#a87858"/><rect x="810" y="290" width="30" height="20" fill="#5a3828"/><rect x="840" y="290" width="30" height="20" fill="#8a5838"/><rect x="870" y="290" width="30" height="20" fill="#6a4828"/><rect x="900" y="290" width="30" height="20" fill="#a06848"/><rect x="930" y="290" width="30" height="20" fill="#7a4838"/><rect x="960" y="290" width="30" height="20" fill="#9a6848"/><rect x="990" y="290" width="30" height="20" fill="#a87858"/><rect x="1020" y="290" width="30" height="20" fill="#5a3828"/><rect x="1050" y="290" width="30" height="20" fill="#8a5838"/><rect x="1080" y="290" width="30" height="20" fill="#6a4828"/><rect x="1110" y="290" width="30" height="20" fill="#a06848"/>
+
+              <rect x="60" y="310" width="30" height="20" fill="#7a4838"/><rect x="90" y="310" width="30" height="20" fill="#9a6848"/><rect x="120" y="310" width="30" height="20" fill="#a87858"/><rect x="150" y="310" width="30" height="20" fill="#5a3828"/><rect x="180" y="310" width="30" height="20" fill="#8a5838"/><rect x="210" y="310" width="30" height="20" fill="#6a4828"/><rect x="240" y="310" width="30" height="20" fill="#a06848"/><rect x="270" y="310" width="30" height="20" fill="#7a4838"/><rect x="300" y="310" width="30" height="20" fill="#9a6848"/><rect x="330" y="310" width="30" height="20" fill="#a87858"/><rect x="360" y="310" width="30" height="20" fill="#5a3828"/><rect x="390" y="310" width="30" height="20" fill="#8a5838"/><rect x="420" y="310" width="30" height="20" fill="#6a4828"/><rect x="450" y="310" width="30" height="20" fill="#a06848"/><rect x="480" y="310" width="30" height="20" fill="#7a4838"/><rect x="510" y="310" width="30" height="20" fill="#9a6848"/><rect x="540" y="310" width="30" height="20" fill="#a87858"/><rect x="570" y="310" width="30" height="20" fill="#5a3828"/><rect x="600" y="310" width="30" height="20" fill="#8a5838"/><rect x="630" y="310" width="30" height="20" fill="#6a4828"/><rect x="660" y="310" width="30" height="20" fill="#a06848"/><rect x="690" y="310" width="30" height="20" fill="#7a4838"/><rect x="720" y="310" width="30" height="20" fill="#9a6848"/><rect x="750" y="310" width="30" height="20" fill="#a87858"/><rect x="780" y="310" width="30" height="20" fill="#5a3828"/><rect x="810" y="310" width="30" height="20" fill="#8a5838"/><rect x="840" y="310" width="30" height="20" fill="#6a4828"/><rect x="870" y="310" width="30" height="20" fill="#a06848"/><rect x="900" y="310" width="30" height="20" fill="#7a4838"/><rect x="930" y="310" width="30" height="20" fill="#9a6848"/><rect x="960" y="310" width="30" height="20" fill="#a87858"/><rect x="990" y="310" width="30" height="20" fill="#5a3828"/><rect x="1020" y="310" width="30" height="20" fill="#8a5838"/><rect x="1050" y="310" width="30" height="20" fill="#6a4828"/><rect x="1080" y="310" width="30" height="20" fill="#a06848"/><rect x="1110" y="310" width="30" height="20" fill="#7a4838"/>
+
+              <rect x="60" y="330" width="30" height="20" fill="#9a6848"/><rect x="90" y="330" width="30" height="20" fill="#a87858"/><rect x="120" y="330" width="30" height="20" fill="#5a3828"/><rect x="150" y="330" width="30" height="20" fill="#8a5838"/><rect x="180" y="330" width="30" height="20" fill="#6a4828"/><rect x="210" y="330" width="30" height="20" fill="#a06848"/><rect x="240" y="330" width="30" height="20" fill="#7a4838"/><rect x="270" y="330" width="30" height="20" fill="#9a6848"/><rect x="300" y="330" width="30" height="20" fill="#a87858"/><rect x="330" y="330" width="30" height="20" fill="#5a3828"/><rect x="360" y="330" width="30" height="20" fill="#8a5838"/><rect x="390" y="330" width="30" height="20" fill="#6a4828"/><rect x="420" y="330" width="30" height="20" fill="#a06848"/><rect x="450" y="330" width="30" height="20" fill="#7a4838"/><rect x="480" y="330" width="30" height="20" fill="#9a6848"/><rect x="510" y="330" width="30" height="20" fill="#a87858"/><rect x="540" y="330" width="30" height="20" fill="#5a3828"/><rect x="570" y="330" width="30" height="20" fill="#8a5838"/><rect x="600" y="330" width="30" height="20" fill="#6a4828"/><rect x="630" y="330" width="30" height="20" fill="#a06848"/><rect x="660" y="330" width="30" height="20" fill="#7a4838"/><rect x="690" y="330" width="30" height="20" fill="#9a6848"/><rect x="720" y="330" width="30" height="20" fill="#a87858"/><rect x="750" y="330" width="30" height="20" fill="#5a3828"/><rect x="780" y="330" width="30" height="20" fill="#8a5838"/><rect x="810" y="330" width="30" height="20" fill="#6a4828"/><rect x="840" y="330" width="30" height="20" fill="#a06848"/><rect x="870" y="330" width="30" height="20" fill="#7a4838"/><rect x="900" y="330" width="30" height="20" fill="#9a6848"/><rect x="930" y="330" width="30" height="20" fill="#a87858"/><rect x="960" y="330" width="30" height="20" fill="#5a3828"/><rect x="990" y="330" width="30" height="20" fill="#8a5838"/><rect x="1020" y="330" width="30" height="20" fill="#6a4828"/><rect x="1050" y="330" width="30" height="20" fill="#a06848"/><rect x="1080" y="330" width="30" height="20" fill="#7a4838"/><rect x="1110" y="330" width="30" height="20" fill="#9a6848"/>
+            </g>
+
+            <!-- Subtle face dots inside each tile -->
+            <g fill="#0a0806" opacity="0.55">
+              <!-- Add small "eye" dots for selected tiles to suggest faces -->
+              <circle cx="80" cy="78" r="1.5"/><circle cx="83" cy="78" r="1.5"/>
+              <circle cx="200" cy="78" r="1.5"/><circle cx="203" cy="78" r="1.5"/>
+              <circle cx="320" cy="98" r="1.5"/><circle cx="323" cy="98" r="1.5"/>
+              <circle cx="500" cy="138" r="1.5"/><circle cx="503" cy="138" r="1.5"/>
+              <circle cx="700" cy="98" r="1.5"/><circle cx="703" cy="98" r="1.5"/>
+              <circle cx="900" cy="178" r="1.5"/><circle cx="903" cy="178" r="1.5"/>
+              <circle cx="1100" cy="238" r="1.5"/><circle cx="1103" cy="238" r="1.5"/>
+              <circle cx="200" cy="298" r="1.5"/><circle cx="203" cy="298" r="1.5"/>
+              <circle cx="450" cy="258" r="1.5"/><circle cx="453" cy="258" r="1.5"/>
+              <circle cx="600" cy="318" r="1.5"/><circle cx="603" cy="318" r="1.5"/>
+              <circle cx="800" cy="278" r="1.5"/><circle cx="803" cy="278" r="1.5"/>
+              <circle cx="1000" cy="318" r="1.5"/><circle cx="1003" cy="318" r="1.5"/>
+            </g>
+          </g>
+
+          <!-- Skyline silhouette outline (faint) -->
+          <path d="M 60 280 L 100 280 L 100 220 L 130 220 L 130 250 L 160 250 L 160 200 L 200 200 L 200 240 L 240 240 L 240 180 L 280 180 L 280 220 L 320 220 L 320 160 L 360 160 L 360 200 L 400 200 L 400 140 L 440 140 L 440 100 L 480 100 L 480 180 L 520 180 L 520 130 L 560 130 L 560 90 L 610 90 L 610 70 L 660 70 L 660 110 L 700 110 L 700 150 L 740 150 L 740 110 L 780 110 L 780 170 L 820 170 L 820 130 L 860 130 L 860 200 L 900 200 L 900 180 L 940 180 L 940 230 L 980 230 L 980 200 L 1020 200 L 1020 250 L 1060 250 L 1060 220 L 1100 220 L 1100 270 L 1140 270" fill="none" stroke="#d4a24c" stroke-width="0.6" opacity="0.3"/>
+
+          <!-- Subtitle text on wall -->
+          <text x="600" y="345" fill="#f3ead8" font-family="Playfair Display" font-size="13" font-style="italic" text-anchor="middle" letter-spacing="3" opacity="0.85">this is los angeles.</text>
+
+          <!-- Soft ambient wash -->
+          <rect width="1200" height="460" fill="url(#mosaicWash)"/>
+
+          <!-- Audience walking out, looking at wall, phones up -->
+          <g fill="#050302">
+            <g transform="translate(220,400)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/><line x1="0" y1="-32" x2="0" y2="-50" stroke="#050302" stroke-width="3" stroke-linecap="round"/><rect x="-5" y="-58" width="10" height="8" fill="#050302"/></g>
+            <g transform="translate(380,402)"><rect x="-13" y="-34" width="26" height="42" rx="2"/><circle cx="0" cy="-42" r="12"/></g>
+            <g transform="translate(540,404)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/><line x1="0" y1="-30" x2="0" y2="-48" stroke="#050302" stroke-width="3" stroke-linecap="round"/><rect x="-5" y="-56" width="10" height="8" fill="#050302"/></g>
+            <g transform="translate(700,402)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/></g>
+            <g transform="translate(860,400)"><rect x="-13" y="-34" width="26" height="42" rx="2"/><circle cx="0" cy="-42" r="12"/><line x1="0" y1="-32" x2="0" y2="-50" stroke="#050302" stroke-width="3" stroke-linecap="round"/><rect x="-5" y="-58" width="10" height="8" fill="#050302"/></g>
+            <g transform="translate(1010,402)"><rect x="-12" y="-32" width="24" height="40" rx="2"/><circle cx="0" cy="-40" r="11"/></g>
+          </g>
+
+        </svg>
+        <span class="perspective-meta">VIEW B · THE LIVING MOSAIC</span>
+        <span class="perspective-meta-r">EGRESS · "THIS IS LOS ANGELES."</span>
+        <p class="perspective-caption">The same wall, on the way out. The Hollywood Sign is gone. In its place: a slowly-shifting mosaic of every audience face from tonight, composed into the LA skyline. Every 30 seconds the mural reorganizes — a beach, a freeway, a neighborhood block — always the same faces, always rearranging. The audience finds themselves, photographs the wall, photographs themselves with it. Three words hold underneath, slowly fading: <em>this is los angeles.</em></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============= 03 BEAT SEQUENCE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">03</span><span class="section-head-title">Beat sequence</span></div>
+      <span class="section-hint">5 beats · ~10–12 minutes total egress</span>
+    </div>
+    <div class="section-body">
+
+      <div class="beat">
+        <div class="beat-num">01</div>
+        <div>
+          <div class="beat-title">Re-entry · the room remembered</div>
+          <div class="beat-desc">
+            <span class="tag light">Wall pre-lit · soft amber spill</span><span class="tag sound">Band's last chord, slowly fading</span><span class="tag move">Audience exits Space 6</span>
+            The first audience members round the corner from Space 6 and re-enter the corridor. <em>They recognize the room.</em> Same proportions, same Walk of Fame stars on the floor, same massive west wall. For a half-second they expect the Hollywood content — the Sign, the cycling landmarks, the opening they walked in to. Instead, the wall is something else entirely. Recognition flickers into surprise. They slow down without realizing they've slowed down.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">02</div>
+        <div>
+          <div class="beat-title">The skyline forms</div>
+          <div class="beat-desc">
+            <span class="tag light">First mosaic configuration · LA skyline</span><span class="tag sound">Last chord still fading · ambient hush</span>
+            The wall holds its first composition: the LA skyline, downtown towers and hills, rendered entirely from audience portraits arranged like mosaic tiles. From across the corridor it reads as a recognizable cityscape; up close, individual faces resolve. The text underneath, in slow Playfair italic: <em>this is los angeles.</em> It holds. The audience starts walking the length of the wall, scanning. <em>Where am I?</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">03</div>
+        <div>
+          <div class="beat-title">The mural breathes</div>
+          <div class="beat-desc">
+            <span class="tag light">Reconfigure to beach · 30-sec hold</span><span class="tag light">Reconfigure to freeway · 30-sec hold</span><span class="tag light">Reconfigure to neighborhood · 30-sec hold</span>
+            Every 30 seconds the mosaic <em>reorganizes</em>. The skyline dissolves; the same audience faces drift into a new composition — a beach with surfers, then a freeway at dusk with brake-light streams, then a residential neighborhood with palm trees and bungalows, then a mountain ridgeline. Each composition holds for 30 seconds before the next morph. The audience never sees the same image twice in a single egress window. The text underneath cycles too — sometimes <em>this is los angeles</em>, sometimes just <em>los angeles</em>, sometimes blank.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">04</div>
+        <div>
+          <div class="beat-title">Finding yourself · photographing the wall</div>
+          <div class="beat-desc">
+            <span class="tag move">Audience pauses · phones up · selfies</span><span class="tag perf">No performers · the audience is the show</span>
+            The audience naturally arranges itself in two streams. Some walk the full length of the wall scanning for their face — they stop, point, laugh, photograph the wall, photograph themselves in front of it, show their friends. Others move along the east side of the corridor, taking it in but heading for the exit. The wall is photographable from every angle: the macro mural, the micro tile, the selfie. People <em>linger.</em> The corridor is full of soft phone-screen glow and quiet conversation. The Walk of Fame stars on the floor are dim, brass outlines only — they no longer demand attention.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">05</div>
+        <div>
+          <div class="beat-title">Exit · turning out into the lobby</div>
+          <div class="beat-desc">
+            <span class="tag light">Wall continues · no fade-out</span><span class="tag sound">Band's chord finally gone · ambient room tone</span><span class="tag move">Mid-corridor turn · east wall doorway to lobby</span>
+            The audience reaches the <em>middle of the corridor</em> and turns right through the doorway in the east wall — into the lobby and gift shop. The exit is mid-wall, not at the end, so the audience naturally walks <em>past</em> half the mural before turning out, then sees the south half of the mural as they pivot toward the doorway. Some keep walking south first to take in the full length of the wall before doubling back to the exit. The wall does not fade — it keeps cycling for the next person, and the next. The band's last chord has finally dissolved entirely; the room is silent except for the soft murmur of the audience itself. The lobby is calm and warmly lit. Front doors open onto the street. The audience steps out of the warehouse and back into the actual city of LA — the one the show has been telling them about. The closing image of the show is not on a screen. It is the city outside the door.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============= 04 DESIGN STATE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">04</span><span class="section-head-title">Design state</span></div>
+      <span class="section-hint">v01 · concept · subject to development</span>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+        <div class="state-col">
+          <h3>✓ Locked</h3>
+          <ul>
+            <li>Same physical corridor as Space 1 — no new build, content overwrite only</li>
+            <li>LED wall is the centerpiece · existing 110 ft × 14 ft LED wall reused</li>
+            <li>Display direction: Living Mosaic — audience portraits compose images of LA that reorganize every 30 seconds</li>
+            <li>Compositions cycle through multiple LA images: skyline, beach, freeway, neighborhood, mountains (final list TBD)</li>
+            <li>Subtitle text holds and fades: "This is Los Angeles."</li>
+            <li>No performers in the corridor on egress — audience experiences it alone</li>
+            <li>Tour Guide is not present (removes performance frame; audience owns the moment)</li>
+            <li>Walk of Fame stars on floor remain physical but dimmed — brass outlines only, no celebrity names lit</li>
+            <li>Sound: band's last chord from Space 6 finale slowly fading, then silence</li>
+            <li>Audience moves at their own pace — viewers stop near wall, pass-through lane on east side</li>
+            <li>Total dwell ~3–8 min per person; total egress window ~10–12 min</li>
+            <li>Transition to lobby/gift shop/street is direct and unmarked — no curtain call, no "exit through gift shop" framing</li>
+          </ul>
+        </div>
+        <div class="state-col">
+          <h3 class="open">○ Still open</h3>
+          <ul>
+            <li>How audience photos are captured — to be designed separately as a tech workstream (red carpet, in-show capture, etc.)</li>
+            <li>Final list of LA compositions the mural cycles through — needs creative direction (skyline + how many others?)</li>
+            <li>Composition transition style — hard cut, dissolve, slow drift of tiles into new positions, or hybrid</li>
+            <li>Subtitle text variants — "this is los angeles" only, or rotating phrases (e.g., neighborhood names, show lines, blank intervals)</li>
+            <li>Whether the Tour Guide makes a silent presence at the corridor exit (handshake, nod) or is fully absent</li>
+            <li>Ambient sound — sustained band chord, ambient room tone, or full silence?</li>
+            <li>Walk of Fame star treatment — fully dim, faintly uplit, or replaced with audience names rotating?</li>
+            <li>Lobby/gift shop content — does it echo the mural (printed mural, photo download station) or stay neutral?</li>
+            <li>Photo delivery to audience — QR code, email, web gallery (tech workstream)</li>
+            <li>Consent / opt-out flow for audience photos (legal + production workstream)</li>
+            <li>What happens for audience members who don't appear in the mosaic (opted out, missed by capture) — placeholder tiles? Skip and move on?</li>
+            <li>Show-night reset — does the wall reset at end of night, or do photos accumulate across multiple shows?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>If I Awaken in Los Angeles · Scenic Design</span>
+    <span>Space 07 of 07 · v01 · The Real LA</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

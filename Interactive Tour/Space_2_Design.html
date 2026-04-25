@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space 2 — Boyle Heights / Chicano LA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@300;400;600&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0908; --bg-panel: #1a1614; --bg-card: #14110f;
+    --ink: #f3ead8; --ink-dim: #a89b82; --ink-faint: #5a5245;
+    --gold: #d4a24c; --gold-bright: #f0c674;
+    --orange: #e07856; --red: #c8583a;
+    --pink: #e89ab0; --blue: #6ec6ff;
+    --rule: #2a2420;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Archivo', sans-serif; font-weight: 300; line-height: 1.55;
+    padding: 48px 32px 80px; min-height: 100vh;
+    background-image: radial-gradient(ellipse at top left, rgba(224, 120, 86, 0.05), transparent 60%), radial-gradient(ellipse at bottom right, rgba(232, 154, 176, 0.03), transparent 60%);
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .header { border-bottom: 1px solid var(--rule); padding-bottom: 32px; margin-bottom: 48px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--orange); text-transform: uppercase; margin-bottom: 16px; }
+  h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(38px, 6vw, 64px); line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1 em { font-style: italic; color: var(--orange); font-weight: 400; }
+  .subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 20px; color: var(--ink-dim); max-width: 780px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 32px; margin-top: 28px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); }
+  .meta-item strong { color: var(--ink); display: block; margin-top: 4px; font-weight: 400; }
+
+  .callout {
+    background: linear-gradient(135deg, rgba(224, 120, 86, 0.08), rgba(212, 162, 76, 0.04));
+    border: 1px solid rgba(224, 120, 86, 0.3);
+    border-left: 3px solid var(--orange);
+    padding: 28px 32px; margin-top: 32px;
+  }
+  .callout-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--orange); text-transform: uppercase; margin-bottom: 10px; }
+  .callout h3 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .callout p { color: var(--ink-dim); font-size: 15px; max-width: 760px; }
+
+  .section { margin-top: 72px; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.35em; color: var(--orange); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--orange); }
+  h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(26px, 4vw, 36px); line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 24px; }
+
+  .plan-toolbar {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;
+    margin-bottom: 16px; padding: 14px 20px;
+    background: var(--bg-card); border: 1px solid var(--rule); border-left: 3px solid var(--gold);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim);
+  }
+  .plan-toolbar strong { color: var(--gold-bright); font-weight: 500; }
+  .plan-toolbar-status { color: var(--ink-faint); font-size: 10px; letter-spacing: 0.2em; }
+  .reset-btn {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    padding: 8px 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+  }
+  .reset-btn:hover { background: var(--gold); color: var(--bg); }
+  .reset-btn:active { transform: scale(0.97); }
+
+  .plan-wrap {
+    background: var(--bg-panel); border: 1px solid var(--rule);
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px; align-items: start;
+  }
+  @media (max-width: 860px) { .plan-wrap { grid-template-columns: 1fr; } }
+  .plan-svg { width: 100%; height: auto; touch-action: none; }
+  .plan-svg [data-draggable] { cursor: grab; transition: filter 0.15s; }
+  .plan-svg [data-draggable]:hover { filter: brightness(1.25); }
+  .plan-svg [data-draggable].dragging { cursor: grabbing; opacity: 0.8; filter: brightness(1.3); }
+  .plan-svg.locked [data-draggable] { cursor: default; }
+  .plan-svg.locked [data-draggable]:hover { filter: none; }
+
+  .plan-legend h3 { font-family: 'Playfair Display', serif; font-weight: 400; font-style: italic; font-size: 20px; margin-bottom: 20px; color: var(--orange); }
+  .legend-row { display: flex; gap: 14px; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+  .legend-row:last-child { border-bottom: none; }
+  .legend-swatch { width: 14px; height: 14px; flex-shrink: 0; margin-top: 4px; border-radius: 2px; }
+  .legend-row strong { display: block; color: var(--ink); font-weight: 500; margin-bottom: 2px; font-size: 13px; }
+  .legend-row span { color: var(--ink-dim); font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+
+  .views {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 860px) { .views { grid-template-columns: 1fr; } }
+  .view { background: var(--bg-panel); border: 1px solid var(--rule); overflow: hidden; }
+  .view-header { padding: 16px 20px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .view-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; }
+  .view-dir { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--orange); }
+  .view-frame { background: #000; }
+  .view-svg { width: 100%; height: auto; display: block; }
+  .view-cap { padding: 14px 20px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--ink-dim); }
+
+  .timeline { margin-top: 24px; }
+  .beat { display: grid; grid-template-columns: 90px 1fr; gap: 28px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  .beat:last-child { border-bottom: none; }
+  .beat-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 40px; font-weight: 400; color: var(--orange); line-height: 1; text-align: right; opacity: 0.8; }
+  .beat-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.01em; }
+  .beat-desc { color: var(--ink-dim); font-size: 14px; max-width: 780px; }
+  .beat-desc .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; padding: 2px 8px; margin-right: 8px; border-radius: 2px; text-transform: uppercase; vertical-align: 2px; }
+  .tag.light { background: rgba(232, 154, 176, 0.12); color: var(--pink); }
+  .tag.sound { background: rgba(110, 198, 255, 0.1); color: var(--blue); }
+  .tag.move { background: rgba(224, 120, 86, 0.12); color: var(--orange); }
+  .tag.perf { background: rgba(212, 162, 76, 0.14); color: var(--gold-bright); }
+
+  .state-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+  @media (max-width: 700px) { .state-grid { grid-template-columns: 1fr; } }
+  .state-card { background: var(--bg-panel); border: 1px solid var(--rule); padding: 28px; }
+  .state-card.locked { border-left: 3px solid var(--gold); }
+  .state-card.open { border-left: 3px solid var(--red); }
+  .state-card h3 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 18px; }
+  .state-card.locked h3 { color: var(--gold); }
+  .state-card.open h3 { color: var(--red); }
+  .state-list { list-style: none; }
+  .state-list li { padding: 9px 0; border-bottom: 1px dashed var(--rule); font-size: 13px; color: var(--ink); display: flex; gap: 10px; }
+  .state-list li:last-child { border-bottom: none; }
+  .state-list li::before { content: '—'; color: var(--ink-faint); flex-shrink: 0; }
+
+  .footer { margin-top: 72px; padding-top: 32px; border-top: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <div class="eyebrow">If I Awaken in Los Angeles · Scenic Design</div>
+    <h1>Space 2<br><em>Boyle Heights · Chicano LA</em></h1>
+    <p class="subtitle">A warehouse tianguis. Scenic elements grow larger as they move out from a central Courtyard ringed with stone tables. Audience arrives through the market. Youth sings from the band stage, elder walks in from the mural wall, they meet in the middle.</p>
+    <div class="meta">
+      <div class="meta-item">Footprint<strong>~62 × 62 ft</strong></div>
+      <div class="meta-item">Ceiling<strong>13–15 ft (exposed warehouse)</strong></div>
+      <div class="meta-item">Audience<strong>150 per show</strong></div>
+      <div class="meta-item">Band Stage<strong>20 ft dia · 3 ft up · 5-piece jazz</strong></div>
+      <div class="meta-item">Scenic grammar<strong>Facades · full-scale props · open sight lines</strong></div>
+      <div class="meta-item">Live in room<strong>Tour Guide · Youth Poet · Elder Poet · Band</strong></div>
+    </div>
+  </header>
+
+  <div class="callout">
+    <div class="callout-label">The spatial move</div>
+    <h3>A courtyard with a horizon</h3>
+    <p>Audience enters from the bottom-right, led by the Tour Guide through a row of tianguis stalls until they land in The Courtyard — a central plaza ringed by six stone tables (round pink-stone tops on green pedestals). The band stage sits to their north; the south mural wall is their horizon. Scenic graduates outward — smallest in the center, largest at the edges — so sight lines from the Courtyard stay clean. During the youth poem, audience faces north (band stage); during the elder poem, they turn 180° to face south (mural wall). The elder walks forward through the scenic elements he names and ends his poem in the middle of the Courtyard, surrounded by the audience, with the Youth Poet joining him there.</p>
+  </div>
+
+  <!-- ================= PLAN VIEW ================= -->
+  <section class="section">
+    <div class="section-label">01 · Plan View · Editable</div>
+    <h2>Top-down orientation</h2>
+
+    <div class="plan-toolbar">
+      <div>Click and drag any element to reposition · <strong>Changes save automatically</strong></div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span class="plan-toolbar-status" id="planStatus">ready</span>
+        <button class="reset-btn" id="resetLayout">Reset layout</button>
+      </div>
+    </div>
+
+    <div class="plan-wrap">
+
+      <svg class="plan-svg" id="planSvg" viewBox="-80 -80 760 760" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="muralGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e07856" stop-opacity="0.6"/>
+            <stop offset="50%" stop-color="#c85f38" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#e07856" stop-opacity="0.6"/>
+          </linearGradient>
+          <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <polygon points="0 0, 8 4, 0 8" fill="#f0c674"/>
+          </marker>
+          <marker id="arrowBig" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <polygon points="0 0, 8 4, 0 8" fill="#f0c674"/>
+          </marker>
+        </defs>
+
+        <!-- Space 2 boundary (NOT draggable) -->
+        <rect x="40" y="40" width="560" height="560" fill="#1a0f08" stroke="#e07856" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+        <!-- South mural wall (NOT draggable) -->
+        <rect x="40" y="40" width="560" height="14" fill="url(#muralGrad)"/>
+        <text x="320" y="33" fill="#e07856" font-family="JetBrains Mono" font-size="9" letter-spacing="3" text-anchor="middle">SOUTH MURAL WALL (HYBRID STREET-ART / TROMPE-L'OEIL)</text>
+
+        <!-- Direction marker (NOT draggable) -->
+        <text x="560" y="100" fill="#5a5245" font-family="JetBrains Mono" font-size="8" letter-spacing="1" text-anchor="middle">N</text>
+        <line x1="560" y1="104" x2="560" y2="120" stroke="#5a5245" stroke-width="0.5"/>
+
+        <!-- Entry (NOT draggable) -->
+        <path d="M 630 570 L 605 570" stroke="#f0c674" stroke-width="2" fill="none" marker-end="url(#arrowG)"/>
+        <text x="625" y="560" fill="#f0c674" font-family="JetBrains Mono" font-size="9" letter-spacing="1" text-anchor="end">ENTRY (TUNNEL)</text>
+
+        <!-- Scale (NOT draggable) -->
+        <line x1="60" y1="615" x2="140" y2="615" stroke="#5a5245" stroke-width="1"/>
+        <line x1="60" y1="612" x2="60" y2="618" stroke="#5a5245" stroke-width="1"/>
+        <line x1="140" y1="612" x2="140" y2="618" stroke="#5a5245" stroke-width="1"/>
+        <text x="100" y="630" fill="#5a5245" font-family="JetBrains Mono" font-size="8" letter-spacing="1" text-anchor="middle">≈ 10 ft</text>
+
+        <!-- ===== DRAGGABLE ELEMENTS ===== -->
+
+        <!-- The Courtyard -->
+        <g data-draggable data-id="plaza" transform="translate(320,340)">
+          <title>The Courtyard · widened for 150 pax</title>
+          <circle cx="0" cy="0" r="135" fill="#2a1a10" stroke="#a89b82" stroke-width="1" stroke-dasharray="3,4" opacity="0.8"/>
+          <text x="0" y="5" fill="#a89b82" font-family="Playfair Display" font-size="16" font-style="italic" text-anchor="middle">The Courtyard</text>
+          <text x="0" y="22" fill="#a89b82" font-family="JetBrains Mono" font-size="7" letter-spacing="2" text-anchor="middle">~150 PAX</text>
+        </g>
+
+        <!-- Band stage · 20 ft diameter · center at Space 2 NW corner (1/4 overlaps Space 2) -->
+        <g data-draggable data-id="bandStage" transform="translate(40,40)">
+          <title>Band stage · 20 ft diameter · 3 ft elevated · shared with spaces 3/4/5</title>
+          <circle cx="0" cy="0" r="80" fill="#2a2018" stroke="#f0c674" stroke-width="2"/>
+          <circle cx="0" cy="0" r="40" fill="none" stroke="#f0c674" stroke-width="0.5" stroke-dasharray="2,3" opacity="0.7"/>
+        </g>
+
+        <!-- Band stage label (draggable separately) -->
+        <g data-draggable data-id="bandStageLabel" transform="translate(40,-22)">
+          <title>Band stage label</title>
+          <text x="0" y="0" fill="#f0c674" font-family="JetBrains Mono" font-size="11" letter-spacing="2" text-anchor="middle">BAND STAGE</text>
+          <text x="0" y="14" fill="#f0c674" font-family="JetBrains Mono" font-size="8" letter-spacing="1" text-anchor="middle" opacity="0.7">20 FT · 5-PC JAZZ</text>
+        </g>
+
+        <!-- Tianguis stone tables (6) ringing The Courtyard -->
+        <!-- Positioned hexagonally around plaza center (320, 340) at radius ~85 -->
+        <!-- Gaps at north and south preserve sight lines to band stage and mural -->
+        <g data-draggable data-id="table1" transform="translate(405,340)">
+          <title>Tianguis stone table · seats 4–6</title>
+          <circle cx="0" cy="0" r="18" fill="#a89070"/>
+          <circle cx="0" cy="0" r="11" fill="#c8a078"/>
+          <circle cx="0" cy="0" r="3.5" fill="#4a6a4a" opacity="0.75"/>
+        </g>
+        <g data-draggable data-id="table2" transform="translate(362,414)">
+          <title>Tianguis stone table · seats 4–6</title>
+          <circle cx="0" cy="0" r="18" fill="#a89070"/>
+          <circle cx="0" cy="0" r="11" fill="#c8a078"/>
+          <circle cx="0" cy="0" r="3.5" fill="#4a6a4a" opacity="0.75"/>
+        </g>
+        <g data-draggable data-id="table3" transform="translate(278,414)">
+          <title>Tianguis stone table · seats 4–6</title>
+          <circle cx="0" cy="0" r="18" fill="#a89070"/>
+          <circle cx="0" cy="0" r="11" fill="#c8a078"/>
+          <circle cx="0" cy="0" r="3.5" fill="#4a6a4a" opacity="0.75"/>
+        </g>
+        <g data-draggable data-id="table4" transform="translate(235,340)">
+          <title>Tianguis stone table · seats 4–6</title>
+          <circle cx="0" cy="0" r="18" fill="#a89070"/>
+          <circle cx="0" cy="0" r="11" fill="#c8a078"/>
+          <circle cx="0" cy="0" r="3.5" fill="#4a6a4a" opacity="0.75"/>
+        </g>
+        <g data-draggable data-id="table5" transform="translate(278,266)">
+          <title>Tianguis stone table · seats 4–6</title>
+          <circle cx="0" cy="0" r="18" fill="#a89070"/>
+          <circle cx="0" cy="0" r="11" fill="#c8a078"/>
+          <circle cx="0" cy="0" r="3.5" fill="#4a6a4a" opacity="0.75"/>
+        </g>
+        <g data-draggable data-id="table6" transform="translate(362,266)">
+          <title>Tianguis stone table · seats 4–6</title>
+          <circle cx="0" cy="0" r="18" fill="#a89070"/>
+          <circle cx="0" cy="0" r="11" fill="#c8a078"/>
+          <circle cx="0" cy="0" r="3.5" fill="#4a6a4a" opacity="0.75"/>
+        </g>
+
+        <!-- Projection billboards -->
+        <g data-draggable data-id="billboard1" transform="translate(242.5,179)">
+          <title>Projection billboard (for youth poem)</title>
+          <rect x="-27.5" y="-14" width="55" height="28" fill="#1a1208" stroke="#6ec6ff" stroke-width="1.5"/>
+          <rect x="-24.5" y="-11" width="49" height="22" fill="none" stroke="#6ec6ff" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <text x="0" y="5" fill="#6ec6ff" font-family="JetBrains Mono" font-size="6" letter-spacing="1" text-anchor="middle">BILLBOARD</text>
+        </g>
+        <g data-draggable data-id="billboard2" transform="translate(397.5,179)">
+          <title>Projection billboard (for youth poem)</title>
+          <rect x="-27.5" y="-14" width="55" height="28" fill="#1a1208" stroke="#6ec6ff" stroke-width="1.5"/>
+          <rect x="-24.5" y="-11" width="49" height="22" fill="none" stroke="#6ec6ff" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <text x="0" y="5" fill="#6ec6ff" font-family="JetBrains Mono" font-size="6" letter-spacing="1" text-anchor="middle">BILLBOARD</text>
+        </g>
+
+        <!-- Paletero cart -->
+        <g data-draggable data-id="paletero" transform="translate(175,330)">
+          <title>Paletero cart</title>
+          <rect x="-14" y="-8" width="28" height="16" fill="#e89ab0" stroke="#0a0908" stroke-width="0.5"/>
+          <circle cx="-8" cy="10" r="3" fill="#3a2818"/>
+          <circle cx="8" cy="10" r="3" fill="#3a2818"/>
+          <text x="0" y="-12" fill="#e89ab0" font-family="JetBrains Mono" font-size="7" text-anchor="middle">PALETERO</text>
+        </g>
+
+        <!-- Payphone -->
+        <g data-draggable data-id="payphone" transform="translate(465,330)">
+          <title>Payphone</title>
+          <rect x="-6" y="-16" width="12" height="22" fill="#4a3a2a" stroke="#0a0908" stroke-width="0.5"/>
+          <rect x="-4" y="-14" width="8" height="6" fill="#1a1208"/>
+          <text x="0" y="-20" fill="#a89b82" font-family="JetBrains Mono" font-size="7" text-anchor="middle">PAYPHONE</text>
+        </g>
+
+        <!-- Taco stand -->
+        <g data-draggable data-id="tacoStand" transform="translate(135,220)">
+          <title>Taco stand</title>
+          <rect x="-22" y="-14" width="44" height="28" fill="#c85f38"/>
+          <polygon points="-22,-14 22,-14 28,-22 -28,-22" fill="#8a4a30"/>
+          <rect x="-18" y="-10" width="36" height="6" fill="#1a1208"/>
+          <text x="0" y="22" fill="#c85f38" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle">TACO STAND</text>
+        </g>
+
+        <!-- Bus bench -->
+        <g data-draggable data-id="busBench" transform="translate(505,220)">
+          <title>Bus bench (Spanish-language ads)</title>
+          <rect x="-26" y="-4" width="52" height="8" fill="#2a3a7a"/>
+          <rect x="-26" y="-18" width="52" height="14" fill="#d4a24c"/>
+          <text x="0" y="-8" fill="#0a0908" font-family="JetBrains Mono" font-size="5" letter-spacing="0.5" text-anchor="middle">SE HABLA ESPAÑOL</text>
+          <text x="0" y="22" fill="#2a3a7a" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle">BUS BENCH</text>
+        </g>
+
+        <!-- Lowrider -->
+        <g data-draggable data-id="lowrider" transform="translate(320,490)">
+          <title>Lowrider</title>
+          <ellipse cx="0" cy="8" rx="55" ry="5" fill="#000" opacity="0.5"/>
+          <path d="M -50 0 Q -50 -16 -40 -18 L 40 -18 Q 50 -16 50 0 Z" fill="#8a2a2a"/>
+          <path d="M -40 -18 L -20 -26 L 20 -26 L 40 -18" fill="#6a1a1a"/>
+          <circle cx="-28" cy="6" r="7" fill="#0a0908"/>
+          <circle cx="28" cy="6" r="7" fill="#0a0908"/>
+          <circle cx="-28" cy="6" r="4" fill="#d4a24c"/>
+          <circle cx="28" cy="6" r="4" fill="#d4a24c"/>
+          <text x="0" y="26" fill="#c8583a" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">LOWRIDER</text>
+        </g>
+
+        <!-- Tianguis stalls (5) · vendors played by the 5 dancers in costume -->
+        <g data-draggable data-id="stall1" transform="translate(76,158)">
+          <title>Tianguis stall · vendor played by a dancer in costume</title>
+          <rect x="-21" y="-18" width="42" height="36" fill="#5a4030" stroke="#0a0908" stroke-width="0.5"/>
+          <rect x="-21" y="-22" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+        </g>
+        <g data-draggable data-id="stall2" transform="translate(76,278)">
+          <title>Tianguis stall · vendor played by a dancer in costume</title>
+          <rect x="-21" y="-18" width="42" height="36" fill="#5a4030" stroke="#0a0908" stroke-width="0.5"/>
+          <rect x="-21" y="-22" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+        </g>
+        <g data-draggable data-id="stall3" transform="translate(76,398)">
+          <title>Tianguis stall · vendor played by a dancer in costume</title>
+          <rect x="-21" y="-18" width="42" height="36" fill="#5a4030" stroke="#0a0908" stroke-width="0.5"/>
+          <rect x="-21" y="-22" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+        </g>
+        <g data-draggable data-id="stall4" transform="translate(76,518)">
+          <title>Tianguis stall · vendor played by a dancer in costume</title>
+          <rect x="-21" y="-18" width="42" height="36" fill="#5a4030" stroke="#0a0908" stroke-width="0.5"/>
+          <rect x="-21" y="-22" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+        </g>
+        <g data-draggable data-id="stall5" transform="translate(564,158)">
+          <title>Tianguis stall · vendor played by a dancer in costume</title>
+          <rect x="-21" y="-18" width="42" height="36" fill="#5a4030" stroke="#0a0908" stroke-width="0.5"/>
+          <rect x="-21" y="-22" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+        </g>
+
+        <!-- Performer starting positions -->
+        <g data-draggable data-id="youngPoet" transform="translate(80,80)">
+          <title>Youth Poet · starting position (band stage)</title>
+          <circle cx="0" cy="0" r="20" fill="#e89ab0" stroke="#0a0908" stroke-width="2"/>
+          <rect x="-28" y="16" width="56" height="14" fill="#e89ab0" stroke="#0a0908" stroke-width="1" rx="6"/>
+          <text x="0" y="60" fill="#e89ab0" font-family="JetBrains Mono" font-size="14" letter-spacing="3" text-anchor="middle">YOUTH POET START</text>
+        </g>
+
+        <g data-draggable data-id="elderPoet" transform="translate(320,75)">
+          <title>Elder Poet · starting position (at base of south mural wall)</title>
+          <circle cx="0" cy="0" r="20" fill="#a066c2" stroke="#0a0908" stroke-width="2"/>
+          <rect x="-28" y="16" width="56" height="14" fill="#a066c2" stroke="#0a0908" stroke-width="1" rx="6"/>
+          <text x="0" y="60" fill="#a066c2" font-family="JetBrains Mono" font-size="14" letter-spacing="3" text-anchor="middle">ELDER POET START</text>
+        </g>
+
+        <!-- Audience path arrow (draggable) -->
+        <g data-draggable data-id="audienceArrow" transform="translate(500,465)">
+          <title>Audience path · entry → Courtyard</title>
+          <line x1="28" y1="18" x2="-28" y2="-18" stroke="#f0c674" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowBig)"/>
+          <text x="0" y="46" fill="#f0c674" font-family="JetBrains Mono" font-size="14" letter-spacing="4" text-anchor="middle">AUDIENCE</text>
+        </g>
+
+        <!-- Tianguis Stalls labels (draggable · oriented NW-to-SE at 45°) -->
+        <g data-draggable data-id="stallsLabel1" transform="translate(510,370)">
+          <title>Tianguis Stalls row label</title>
+          <text x="0" y="0" transform="rotate(45)" fill="#c85f38" font-family="JetBrains Mono" font-size="13" font-weight="600" letter-spacing="3" text-anchor="middle">TIANGUIS STALLS</text>
+        </g>
+        <g data-draggable data-id="stallsLabel2" transform="translate(370,510)">
+          <title>Tianguis Stalls row label</title>
+          <text x="0" y="0" transform="rotate(45)" fill="#c85f38" font-family="JetBrains Mono" font-size="13" font-weight="600" letter-spacing="3" text-anchor="middle">TIANGUIS STALLS</text>
+        </g>
+
+      </svg>
+
+      <div class="plan-legend">
+        <h3>The spatial move</h3>
+        <div class="legend-row"><div class="legend-swatch" style="background: #f0c674;"></div><div><strong>Band stage · 20 ft dia</strong><span>Shared with 3/4/5 · 1/4 visible here</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #6ec6ff;"></div><div><strong>Projection billboards</strong><span>Flanking band stage · face audience</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: rgba(168,155,130,0.6);"></div><div><strong>The Courtyard</strong><span>Center · ~150 pax</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #a89070;"></div><div><strong>Stone tables (6)</strong><span>Ringing the Courtyard · tianguis-style</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #e89ab0;"></div><div><strong>Paletero cart</strong><span>Inner ring · small interactive prop</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #4a3a2a;"></div><div><strong>Payphone</strong><span>Inner ring · sticker-covered</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #c85f38;"></div><div><strong>Taco stand</strong><span>Middle ring (west)</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #d4a24c;"></div><div><strong>Bus bench</strong><span>Middle ring (east) · seating</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #8a2a2a;"></div><div><strong>Lowrider</strong><span>Outer ring · hero prop</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #5a4030;"></div><div><strong>Tianguis stalls (5)</strong><span>Vendors played by the 5 dancers in costume</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #e07856;"></div><div><strong>South mural wall</strong><span>Hybrid street-art / trompe-l'oeil</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #e89ab0;"></div><div><strong>Youth Poet</strong><span>Starts on band stage · revealed by spot</span></div></div>
+        <div class="legend-row"><div class="legend-swatch" style="background: #a066c2;"></div><div><strong>Elder Poet</strong><span>Starts at base of mural · walks toward audience</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DUAL PERSPECTIVE VIEWS ================= -->
+  <section class="section">
+    <div class="section-label">02 · The 180° Turn</div>
+    <h2>What the audience sees</h2>
+    <div class="views">
+
+      <div class="view">
+        <div class="view-header">
+          <span class="view-title">Youth Poet · facing north</span>
+          <span class="view-dir">← BEAT 06</span>
+        </div>
+        <div class="view-frame">
+          <svg class="view-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="spotY" cx="0.5" cy="0.4" r="0.25">
+                <stop offset="0%" stop-color="#f0c674" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#f0c674" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="ceilY" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2a2018"/>
+                <stop offset="100%" stop-color="#1a1208" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="420" fill="#0a0604"/>
+            <rect x="0" y="0" width="600" height="60" fill="url(#ceilY)"/>
+            <g stroke="#3a2818" stroke-width="1.5" opacity="0.7">
+              <line x1="0" y1="20" x2="600" y2="20"/>
+              <line x1="0" y1="35" x2="600" y2="35"/>
+              <line x1="80" y1="0" x2="80" y2="50"/>
+              <line x1="240" y1="0" x2="240" y2="50"/>
+              <line x1="400" y1="0" x2="400" y2="50"/>
+              <line x1="540" y1="0" x2="540" y2="50"/>
+            </g>
+            <g fill="#1a1208">
+              <rect x="120" y="22" width="14" height="10"/>
+              <rect x="280" y="22" width="14" height="10"/>
+              <rect x="440" y="22" width="14" height="10"/>
+            </g>
+            <polygon points="290,25 310,25 330,230 270,230" fill="#f0c674" opacity="0.1"/>
+            <ellipse cx="300" cy="240" rx="100" ry="18" fill="#3a2818"/>
+            <ellipse cx="300" cy="225" rx="98" ry="16" fill="#2a1e14"/>
+            <path d="M 202 240 L 202 258 Q 300 272 398 258 L 398 240" fill="#1a1208"/>
+            <g fill="#1a1208">
+              <circle cx="240" cy="200" r="9"/><rect x="233" y="208" width="14" height="20" rx="2"/>
+              <circle cx="270" cy="195" r="8"/><rect x="263" y="202" width="14" height="24" rx="2"/>
+              <line x1="275" y1="210" x2="280" y2="226" stroke="#3a2818" stroke-width="2"/>
+              <circle cx="340" cy="198" r="8"/><rect x="333" y="205" width="14" height="22" rx="2"/>
+              <circle cx="370" cy="195" r="8"/><rect x="363" y="202" width="14" height="24" rx="2"/>
+              <path d="M 374 214 Q 382 220 378 228" stroke="#3a2818" stroke-width="2" fill="none"/>
+              <circle cx="215" cy="198" r="8"/><rect x="208" y="205" width="14" height="22" rx="2"/>
+            </g>
+            <ellipse cx="300" cy="215" rx="85" ry="18" fill="#f0c674" opacity="0.06"/>
+            <g transform="translate(300, 235)">
+              <ellipse cx="0" cy="5" rx="14" ry="3" fill="#000"/>
+              <rect x="-9" y="-55" width="18" height="60" fill="#c85f38" rx="2"/>
+              <circle cx="0" cy="-63" r="11" fill="#3a2818"/>
+              <path d="M -10 -62 Q -13 -48 -10 -40" stroke="#2a1e14" stroke-width="3" fill="none"/>
+              <path d="M 10 -62 Q 13 -48 10 -40" stroke="#2a1e14" stroke-width="3" fill="none"/>
+              <line x1="9" y1="-42" x2="22" y2="-58" stroke="#3a2818" stroke-width="3" stroke-linecap="round"/>
+              <ellipse cx="0" cy="10" rx="42" ry="10" fill="#f0c674" opacity="0.3"/>
+            </g>
+            <g>
+              <rect x="130" y="155" width="80" height="60" fill="#1a1208" stroke="#6ec6ff" stroke-width="1" opacity="0.9"/>
+              <rect x="132" y="157" width="76" height="56" fill="#6ec6ff" opacity="0.15"/>
+              <rect x="140" y="175" width="60" height="30" fill="#c85f38" opacity="0.5"/>
+              <text x="170" y="195" fill="#f3ead8" font-family="Playfair Display" font-size="9" text-anchor="middle" opacity="0.7">7-ELEVEN</text>
+              <rect x="165" y="215" width="4" height="25" fill="#1a1208"/>
+              <rect x="185" y="215" width="4" height="25" fill="#1a1208"/>
+              <rect x="390" y="155" width="80" height="60" fill="#1a1208" stroke="#6ec6ff" stroke-width="1" opacity="0.9"/>
+              <rect x="392" y="157" width="76" height="56" fill="#6ec6ff" opacity="0.15"/>
+              <rect x="400" y="175" width="60" height="30" fill="#8a4a70" opacity="0.5"/>
+              <text x="430" y="195" fill="#f3ead8" font-family="Playfair Display" font-size="8" text-anchor="middle" opacity="0.7">MARIACHI PLAZA</text>
+              <rect x="425" y="215" width="4" height="25" fill="#1a1208"/>
+              <rect x="445" y="215" width="4" height="25" fill="#1a1208"/>
+            </g>
+            <g transform="translate(110, 330)">
+              <rect x="-24" y="-18" width="48" height="28" fill="#e89ab0"/>
+              <rect x="-20" y="-24" width="40" height="8" fill="#8a4a5a"/>
+              <circle cx="-14" cy="14" r="6" fill="#0a0908"/>
+              <circle cx="14" cy="14" r="6" fill="#0a0908"/>
+              <text x="0" y="-5" fill="#f3ead8" font-family="Playfair Display" font-size="10" text-anchor="middle" font-style="italic">paletas</text>
+            </g>
+            <g transform="translate(490, 325)">
+              <rect x="-12" y="-38" width="24" height="46" fill="#4a3a2a"/>
+              <rect x="-10" y="-34" width="20" height="14" fill="#1a1208"/>
+              <circle cx="0" cy="-10" r="4" fill="#1a1208"/>
+              <rect x="-8" y="0" width="16" height="4" fill="#6a5040"/>
+            </g>
+            <g fill="#000">
+              <g transform="translate(60,395)"><ellipse cx="0" cy="10" rx="14" ry="4"/><rect x="-10" y="-32" width="20" height="42" rx="2"/><circle cx="0" cy="-40" r="10"/></g>
+              <g transform="translate(150,402)"><ellipse cx="0" cy="10" rx="16" ry="5"/><rect x="-12" y="-36" width="24" height="46" rx="2"/><circle cx="0" cy="-44" r="11"/></g>
+              <g transform="translate(230,405)"><ellipse cx="0" cy="10" rx="17" ry="5"/><rect x="-13" y="-38" width="26" height="48" rx="2"/><circle cx="0" cy="-46" r="12"/></g>
+              <g transform="translate(310,408)"><ellipse cx="0" cy="10" rx="18" ry="5"/><rect x="-13" y="-40" width="26" height="50" rx="2"/><circle cx="0" cy="-48" r="12"/></g>
+              <g transform="translate(390,405)"><ellipse cx="0" cy="10" rx="17" ry="5"/><rect x="-13" y="-38" width="26" height="48" rx="2"/><circle cx="0" cy="-46" r="12"/></g>
+              <g transform="translate(470,402)"><ellipse cx="0" cy="10" rx="16" ry="5"/><rect x="-12" y="-36" width="24" height="46" rx="2"/><circle cx="0" cy="-44" r="11"/></g>
+              <g transform="translate(550,395)"><ellipse cx="0" cy="10" rx="14" ry="4"/><rect x="-10" y="-32" width="20" height="42" rx="2"/><circle cx="0" cy="-40" r="10"/></g>
+            </g>
+            <text x="300" y="405" fill="#a89b82" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle" opacity="0.5">AUDIENCE FACING NORTH</text>
+            <rect x="0" y="0" width="600" height="420" fill="url(#spotY)" pointer-events="none"/>
+          </svg>
+        </div>
+        <p class="view-cap">Youth poet on the band stage, spotlit. Billboards flanking her project the places she names — 7-Eleven, Mariachi Plaza, Van Nuys, the 210. The band stays in her shadow.</p>
+      </div>
+
+      <div class="view">
+        <div class="view-header">
+          <span class="view-title">Elder Poet · facing south</span>
+          <span class="view-dir">BEAT 08 →</span>
+        </div>
+        <div class="view-frame">
+          <svg class="view-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="spotE" cx="0.5" cy="0.6" r="0.3">
+                <stop offset="0%" stop-color="#e89ab0" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#e89ab0" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="ceilE" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2a2018"/>
+                <stop offset="100%" stop-color="#1a1208" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="mural2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#4a5a8a"/>
+                <stop offset="60%" stop-color="#c85f38"/>
+                <stop offset="100%" stop-color="#2a1a10"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="420" fill="#0a0604"/>
+            <rect x="0" y="0" width="600" height="60" fill="url(#ceilE)"/>
+            <g stroke="#3a2818" stroke-width="1.5" opacity="0.7">
+              <line x1="0" y1="20" x2="600" y2="20"/>
+              <line x1="0" y1="35" x2="600" y2="35"/>
+              <line x1="80" y1="0" x2="80" y2="50"/>
+              <line x1="240" y1="0" x2="240" y2="50"/>
+              <line x1="400" y1="0" x2="400" y2="50"/>
+              <line x1="540" y1="0" x2="540" y2="50"/>
+            </g>
+            <g fill="#1a1208">
+              <rect x="120" y="22" width="14" height="10"/>
+              <rect x="280" y="22" width="14" height="10"/>
+              <rect x="440" y="22" width="14" height="10"/>
+            </g>
+            <rect x="40" y="60" width="520" height="160" fill="url(#mural2)" opacity="0.85"/>
+            <g fill="#3a2010" opacity="0.8">
+              <rect x="60" y="110" width="80" height="70"/>
+              <rect x="160" y="100" width="70" height="80"/>
+              <rect x="250" y="105" width="90" height="75"/>
+              <rect x="360" y="95" width="80" height="85"/>
+              <rect x="460" y="110" width="90" height="70"/>
+            </g>
+            <path d="M 40 120 Q 200 90 400 110 Q 500 95 560 115 L 560 130 L 40 130 Z" fill="#8a4a30" opacity="0.5"/>
+            <g opacity="0.7">
+              <circle cx="130" cy="140" r="18" fill="#e89ab0"/>
+              <text x="280" y="155" fill="#f0c674" font-family="Playfair Display" font-size="20" font-weight="900" font-style="italic" text-anchor="middle">BOYLE</text>
+              <text x="350" y="170" fill="#e07856" font-family="Playfair Display" font-size="10" letter-spacing="4">HEIGHTS</text>
+              <ellipse cx="490" cy="155" rx="14" ry="22" fill="#f0c674" opacity="0.5"/>
+            </g>
+            <rect x="40" y="60" width="520" height="160" fill="none" stroke="#2a1e14" stroke-width="1"/>
+            <g transform="translate(170, 290)">
+              <ellipse cx="0" cy="30" rx="70" ry="8" fill="#000" opacity="0.6"/>
+              <path d="M -65 15 Q -65 -8 -50 -12 L 50 -12 Q 65 -8 65 15 Z" fill="#6a1a1a"/>
+              <path d="M -50 -12 L -28 -24 L 28 -24 L 50 -12" fill="#4a1010"/>
+              <circle cx="-36" cy="22" r="9" fill="#0a0908"/>
+              <circle cx="36" cy="22" r="9" fill="#0a0908"/>
+              <circle cx="-36" cy="22" r="5" fill="#d4a24c"/>
+              <circle cx="36" cy="22" r="5" fill="#d4a24c"/>
+              <rect x="-38" y="-8" width="76" height="6" fill="#1a1208"/>
+            </g>
+            <g>
+              <rect x="430" y="250" width="60" height="75" fill="#5a4030" stroke="#0a0908" stroke-width="1"/>
+              <rect x="430" y="245" width="60" height="8" fill="#c85f38"/>
+              <rect x="440" y="260" width="10" height="20" fill="#e89ab0"/>
+              <rect x="455" y="260" width="10" height="20" fill="#d4a24c"/>
+              <rect x="470" y="260" width="10" height="20" fill="#6ec6ff" opacity="0.6"/>
+              <rect x="500" y="260" width="60" height="65" fill="#6a4030" stroke="#0a0908" stroke-width="1"/>
+              <rect x="500" y="255" width="60" height="8" fill="#8a4a30"/>
+            </g>
+            <g transform="translate(310, 325)">
+              <ellipse cx="0" cy="10" rx="16" ry="4" fill="#000"/>
+              <rect x="-10" y="-52" width="20" height="62" fill="#4a3a2a"/>
+              <circle cx="0" cy="-60" r="11" fill="#3a2818"/>
+              <ellipse cx="0" cy="-68" rx="14" ry="4" fill="#2a1e14"/>
+              <rect x="-8" y="-72" width="16" height="6" fill="#2a1e14"/>
+              <line x1="-4" y1="-20" x2="-16" y2="-35" stroke="#3a2818" stroke-width="3" stroke-linecap="round"/>
+              <line x1="4" y1="-20" x2="20" y2="-12" stroke="#3a2818" stroke-width="3" stroke-linecap="round"/>
+              <ellipse cx="0" cy="14" rx="48" ry="12" fill="#e89ab0" opacity="0.25"/>
+            </g>
+            <g fill="#000">
+              <g transform="translate(60,395)"><ellipse cx="0" cy="10" rx="14" ry="4"/><rect x="-10" y="-32" width="20" height="42" rx="2"/><circle cx="0" cy="-40" r="10"/></g>
+              <g transform="translate(150,402)"><ellipse cx="0" cy="10" rx="16" ry="5"/><rect x="-12" y="-36" width="24" height="46" rx="2"/><circle cx="0" cy="-44" r="11"/></g>
+              <g transform="translate(230,405)"><ellipse cx="0" cy="10" rx="17" ry="5"/><rect x="-13" y="-38" width="26" height="48" rx="2"/><circle cx="0" cy="-46" r="12"/></g>
+              <g transform="translate(310,408)"><ellipse cx="0" cy="10" rx="18" ry="5"/><rect x="-13" y="-40" width="26" height="50" rx="2"/><circle cx="0" cy="-48" r="12"/></g>
+              <g transform="translate(390,405)"><ellipse cx="0" cy="10" rx="17" ry="5"/><rect x="-13" y="-38" width="26" height="48" rx="2"/><circle cx="0" cy="-46" r="12"/></g>
+              <g transform="translate(470,402)"><ellipse cx="0" cy="10" rx="16" ry="5"/><rect x="-12" y="-36" width="24" height="46" rx="2"/><circle cx="0" cy="-44" r="11"/></g>
+              <g transform="translate(550,395)"><ellipse cx="0" cy="10" rx="14" ry="4"/><rect x="-10" y="-32" width="20" height="42" rx="2"/><circle cx="0" cy="-40" r="10"/></g>
+            </g>
+            <text x="300" y="405" fill="#a89b82" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle" opacity="0.5">AUDIENCE FACING SOUTH</text>
+            <rect x="0" y="0" width="600" height="420" fill="url(#spotE)" pointer-events="none"/>
+          </svg>
+        </div>
+        <p class="view-cap">Elder poet lit at the mural wall, walking toward the audience through the lowrider, past the tianguis stalls — a lighting trail picks out each element as he names it.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= BEAT SEQUENCE ================= -->
+  <section class="section">
+    <div class="section-label">03 · Scene Sequence</div>
+    <h2>Ten beats of the neighborhood</h2>
+    <div class="timeline">
+
+      <div class="beat">
+        <div class="beat-num">01</div>
+        <div>
+          <div class="beat-title">The tunnel opens</div>
+          <div class="beat-desc">
+            <span class="tag move">Procession</span><span class="tag light">Warm wash</span>
+            Audience emerges from the transition tunnel into the east aisle of Space 2. They smell the tianguis before they see it — spice, carne asada, cilantro in the air. The Tour Guide leads.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">02</div>
+        <div>
+          <div class="beat-title">Through the market</div>
+          <div class="beat-desc">
+            <span class="tag perf">Tour Guide live</span><span class="tag move">Scenic walk</span><span class="tag perf">Dancers as vendors</span>
+            Tour Guide, gesturing grandly: <em>"Welcome to Boyle Heights! Home of El Mercadito."</em> He leads the audience through a row of five tianguis stalls — each vendor played by one of the dancers in costume, hailing them, gesturing at their wares. They pass the lowrider, the taco stand, the paletero cart. The scenic gets smaller as they move inward.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">03</div>
+        <div>
+          <div class="beat-title">The Courtyard</div>
+          <div class="beat-desc">
+            <span class="tag move">Settle</span><span class="tag light">Plaza wash</span>
+            Audience arrives at The Courtyard. Six stone tables ring the space — round pink-stone tops on green pedestals, with curved concrete benches around each. The band plays quietly on the stage to the north. A warm wash holds the square.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">04</div>
+        <div>
+          <div class="beat-title">The speech</div>
+          <div class="beat-desc">
+            <span class="tag perf">Tour Guide live</span>
+            Tour Guide: <em>"Let's stop here in this courtyard for a moment. Feel free to take a seat at one of the surrounding benches, but only if you need to. Because you are now standing in the epicenter of Los Angeles' Chicano culture. Stretching all the way from the iconic intersections of San Vicente & La Cienaga…"</em> (He struggles to pronounce the names.)
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">05</div>
+        <div>
+          <div class="beat-title">The reveal</div>
+          <div class="beat-desc">
+            <span class="tag sound">Voice from band stage</span><span class="tag light">Spot snaps up</span><span class="tag perf">Back-and-forth banter</span>
+            A voice from behind the audience, crisp and correct: <em>"You mean San Vicente and La Cienaga."</em> The spotlight on the band stage snaps up — the Youth Poet has been there all along. The audience turns to see her. She and the Tour Guide volley for a moment — her sharp, him sheepish. Finally he cedes the stage and exits.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">06</div>
+        <div>
+          <div class="beat-title">Youth on the stage</div>
+          <div class="beat-desc">
+            <span class="tag light">Spot tightens</span><span class="tag perf">Band playing under</span><span class="tag sound">Projection billboards live</span>
+            The band softens under her. She begins her poem. The two billboards flanking her come alive with projected images of the places she names — the 7-Eleven on Osborne, Mariachi Square, Van Nuys Blvd, Reseda, Sylmar, the 210 freeway curving through the hills. Audience faces north, transfixed.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">07</div>
+        <div>
+          <div class="beat-title">Her spot goes out</div>
+          <div class="beat-desc">
+            <span class="tag light">Blackout on poet</span><span class="tag sound">Held silence</span>
+            <em>"We sprouted from the soil / And the soil remembers / Us."</em> Her spot snaps out. The billboards go dark. The band holds a chord. A beat of silence.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">08</div>
+        <div>
+          <div class="beat-title">Voice from the south</div>
+          <div class="beat-desc">
+            <span class="tag sound">Voice from mural</span><span class="tag move">Audience 180°</span>
+            From the other side of the room — from the mural wall behind them — a new voice: <em>"Los Angeles is a tianguis, a marvelous marketplace…"</em> The audience turns 180°. A follow spot finds the Elder Poet at the base of the mural.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">09</div>
+        <div>
+          <div class="beat-title">The elder walks in</div>
+          <div class="beat-desc">
+            <span class="tag perf">Elder walks through space</span><span class="tag light">Lights chase elements</span>
+            The Elder begins walking forward through the scenic elements as he names them. Lighting chases his path — the lowrider lights up when he speaks of <em>"lowriding is where cars become moving museums"</em>; the tianguis stalls glow when he says <em>"where wisdom, song, and teachings go with the tamales"</em>; the hanging merchandise catches color on <em>"art is alive on the walls on skin and cars."</em> The room is his illustration. His walk carries him steadily toward the Courtyard.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">10</div>
+        <div>
+          <div class="beat-title">Final words in the Courtyard</div>
+          <div class="beat-desc">
+            <span class="tag move">Audience parts</span><span class="tag perf">Youth descends · Elder finishes</span>
+            The Elder reaches the edge of the crowd. The audience parts and he walks into the middle of the Courtyard. The Youth Poet steps down from the band stage and joins him there. He delivers the final lines of his poem from the center of the crowd — surrounded by the audience, Youth Poet beside him. The section ends with both poets standing floor-level in the middle of the Courtyard. Blackout holds briefly before the transition.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= STATE ================= -->
+  <section class="section">
+    <div class="section-label">04 · Design State</div>
+    <h2>What's locked · what's open</h2>
+    <div class="state-grid">
+      <div class="state-card locked">
+        <h3>Locked</h3>
+        <ul class="state-list">
+          <li>The Courtyard: central audience gathering · widened to ~34 ft diameter for 150 pax</li>
+          <li>Six stone tables ring the Courtyard · tianguis-style seating for those who need it</li>
+          <li>Tour Guide leads processional from bottom-right entry through tianguis stalls</li>
+          <li>Warehouse ceiling stays exposed · stage lights only · no overhead decor</li>
+          <li>Band stage: 20 ft diameter · 3 ft elevated · shared with 3/4/5 · 1/4 in Space 2</li>
+          <li>10 ft inner circle for 5-piece jazz · 5 ft outer ring for up to 6 dancers/performers</li>
+          <li>South warehouse wall: hybrid trompe-l'oeil / street art mural</li>
+          <li>Projection billboards flanking band stage for youth poem</li>
+          <li>Full-scale props: lowrider, taco stand, bus bench, paletero cart, payphone</li>
+          <li>Five tianguis stalls line the entry path — vendors played by the 5 dancers in costume</li>
+          <li>Youth Poet pre-placed on band stage · revealed by spotlight on interruption</li>
+          <li>Elder poem processional from mural wall · ends in the middle of the Courtyard with Youth Poet joining him</li>
+        </ul>
+      </div>
+      <div class="state-card open">
+        <h3>Still open</h3>
+        <ul class="state-list">
+          <li>Mural content specifics — what neighborhood view, what street-art imagery overlaid?</li>
+          <li>Exact projection content for billboards during youth poem</li>
+          <li>What's sold/displayed at the tianguis stalls</li>
+          <li>Lowrider specifics — vintage, hydraulics practical or static, paint treatment</li>
+          <li>Is the Tour Guide mic'd hands-free or with a handheld mic?</li>
+          <li>Transition to Space 3 — does the Tour Guide lead them, or does lighting pull them?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>If I Awaken in Los Angeles · Scenic Design</span>
+    <span>Space 02 of 06 · v12 · Locked · Final ending in the Courtyard</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const svg = document.getElementById('planSvg');
+  if (!svg) return;
+
+  // Positions are LOCKED. Saved positions still load from storage, drag is disabled.
+  const LOCKED = true;
+
+  const STORAGE_KEY = 'space2-layout-v2';
+  const status = document.getElementById('planStatus');
+
+  // Capture default positions from initial render
+  const defaults = {};
+  const draggables = svg.querySelectorAll('[data-draggable]');
+  draggables.forEach(el => {
+    const id = el.dataset.id;
+    const match = (el.getAttribute('transform') || '').match(/translate\(([^,\s]+)[,\s]+([^)\s]+)\)/);
+    defaults[id] = match ? { x: parseFloat(match[1]), y: parseFloat(match[2]) } : { x: 0, y: 0 };
+  });
+
+  let positions = JSON.parse(JSON.stringify(defaults));
+
+  function setStatus(text, tone) {
+    if (!status) return;
+    status.textContent = text;
+    status.style.color = tone === 'save' ? 'var(--gold-bright)' : tone === 'error' ? 'var(--red)' : 'var(--ink-faint)';
+  }
+
+  async function loadState() {
+    try {
+      if (!window.storage) return;
+      const saved = await window.storage.get(STORAGE_KEY);
+      if (saved && saved.value) {
+        const parsed = JSON.parse(saved.value);
+        positions = { ...defaults, ...parsed };
+        Object.keys(positions).forEach(id => updateElement(id));
+        setStatus('loaded');
+      }
+    } catch (e) {
+      // no saved state — fine, use defaults
+    }
+  }
+
+  let saveTimer = null;
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveState, 250);
+  }
+
+  async function saveState() {
+    try {
+      if (!window.storage) { setStatus('storage unavailable', 'error'); return; }
+      await window.storage.set(STORAGE_KEY, JSON.stringify(positions));
+      setStatus('saved', 'save');
+      setTimeout(() => setStatus('ready'), 1200);
+    } catch (e) {
+      setStatus('save failed', 'error');
+    }
+  }
+
+  function updateElement(id) {
+    const el = svg.querySelector('[data-id="' + id + '"]');
+    if (!el) return;
+    const pos = positions[id];
+    el.setAttribute('transform', 'translate(' + pos.x + ',' + pos.y + ')');
+  }
+
+  function screenToSVG(event) {
+    const pt = svg.createSVGPoint();
+    pt.x = event.clientX;
+    pt.y = event.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+
+  let dragState = null;
+
+  svg.addEventListener('pointerdown', (e) => {
+    if (LOCKED) return;
+    const target = e.target.closest('[data-draggable]');
+    if (!target) return;
+    e.preventDefault();
+    const id = target.dataset.id;
+    const start = screenToSVG(e);
+    const currentPos = positions[id];
+    dragState = {
+      id,
+      element: target,
+      pointerId: e.pointerId,
+      offset: { x: currentPos.x - start.x, y: currentPos.y - start.y }
+    };
+    target.classList.add('dragging');
+    // bring to front
+    target.parentNode.appendChild(target);
+    try { target.setPointerCapture(e.pointerId); } catch (err) {}
+    setStatus('dragging');
+  });
+
+  svg.addEventListener('pointermove', (e) => {
+    if (!dragState) return;
+    const current = screenToSVG(e);
+    positions[dragState.id] = {
+      x: current.x + dragState.offset.x,
+      y: current.y + dragState.offset.y
+    };
+    updateElement(dragState.id);
+  });
+
+  function endDrag() {
+    if (!dragState) return;
+    dragState.element.classList.remove('dragging');
+    try { dragState.element.releasePointerCapture(dragState.pointerId); } catch (err) {}
+    dragState = null;
+    scheduleSave();
+  }
+
+  svg.addEventListener('pointerup', endDrag);
+  svg.addEventListener('pointercancel', endDrag);
+  document.addEventListener('pointerup', endDrag);
+
+  // Reset button
+  const resetBtn = document.getElementById('resetLayout');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', async () => {
+      positions = JSON.parse(JSON.stringify(defaults));
+      Object.keys(positions).forEach(id => updateElement(id));
+      try {
+        if (window.storage) await window.storage.delete(STORAGE_KEY);
+        setStatus('reset', 'save');
+        setTimeout(() => setStatus('ready'), 1200);
+      } catch (e) {
+        setStatus('reset (local only)', 'save');
+      }
+    });
+  }
+
+  loadState();
+
+  // Apply locked state
+  if (LOCKED) {
+    svg.classList.add('locked');
+    const toolbarText = document.querySelector('.plan-toolbar > div:first-child');
+    if (toolbarText) toolbarText.innerHTML = '<strong style="color: var(--gold-bright);">Layout locked</strong> · positions saved';
+  }
+})();
+</script>
+
+</body>
+</html>

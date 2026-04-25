@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lobby & Front of House — If I Awaken in Los Angeles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@300;400;600&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0908; --bg-panel: #14110f; --bg-card: #1a1614;
+    --ink: #f3ead8; --ink-dim: #a89b82; --ink-faint: #5a5245;
+    --gold: #d4a24c; --gold-bright: #f0c674;
+    --orange: #e07856; --red: #c8583a; --velvet: #6a1a2a;
+    --outdoor: #4a6a4a; --indoor: #4a3828; --carpet: #8a1820;
+    --perf: #4ac6b0; --rule: #2a2420;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Archivo', sans-serif; font-weight: 300; line-height: 1.55;
+    padding: 48px 32px 80px; min-height: 100vh;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .header { border-bottom: 1px solid var(--rule); padding-bottom: 32px; margin-bottom: 40px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(36px, 6vw, 60px); line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 18px; }
+  h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
+  h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  h2 em { font-style: italic; color: var(--gold); }
+  .subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--ink-dim); max-width: 820px; }
+  .towns-list { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--ink-faint); margin-top: 16px; text-transform: uppercase; }
+  .callout { background: rgba(212, 162, 76, 0.05); border-left: 3px solid var(--gold); padding: 24px 28px; margin-bottom: 32px; font-size: 15px; color: var(--ink-dim); }
+  .callout strong { color: var(--ink); font-weight: 500; }
+  .callout p + p { margin-top: 12px; }
+  .meta-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .meta { background: var(--bg-panel); border: 1px solid var(--rule); padding: 14px 18px; }
+  .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .meta-value { font-size: 14px; color: var(--ink); font-weight: 400; }
+  .section { background: var(--bg-panel); border: 1px solid var(--rule); margin-bottom: 32px; }
+  .section-head { padding: 22px 28px; border-bottom: 1px solid var(--rule); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .section-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 32px; color: var(--gold); line-height: 1; font-weight: 400; margin-right: 16px; }
+  .section-head-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; letter-spacing: -0.01em; }
+  .section-hint { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.15em; text-transform: uppercase; }
+  .section-body { padding: 28px; }
+  .plan-wrap { background: #0f0c0a; border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #0a0907; border-bottom: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+  .toolbar button { background: transparent; border: 1px solid var(--rule); color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
+  .toolbar button:hover { border-color: var(--gold); color: var(--gold); }
+  .plan-svg { width: 100%; height: auto; display: block; }
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; padding: 20px; background: #0a0907; border-top: 1px solid var(--rule); }
+  .legend-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--ink-dim); }
+  .legend-swatch { width: 16px; height: 16px; border-radius: 2px; flex-shrink: 0; border: 1px solid rgba(243,234,216,0.1); }
+  .legend-row strong { color: var(--ink); font-weight: 500; display: block; font-size: 13px; }
+  .legend-row span { font-size: 11px; color: var(--ink-faint); }
+  .perspective-wrap { background: #000; border: 1px solid var(--rule); margin-bottom: 20px; position: relative; }
+  .perspective-svg { width: 100%; height: auto; display: block; }
+  .perspective-meta { position: absolute; top: 12px; left: 16px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(243,234,216,0.45); pointer-events: none; }
+  .perspective-meta-r { position: absolute; top: 12px; right: 16px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(243,234,216,0.45); pointer-events: none; }
+  .perspective-caption { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--ink-dim); padding: 14px 20px; border-top: 1px solid var(--rule); background: #0a0907; }
+  .beat { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  .beat:last-child { border-bottom: none; }
+  .beat-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 36px; color: var(--gold); line-height: 1; font-weight: 400; }
+  .beat-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .beat-desc { font-size: 14px; color: var(--ink-dim); line-height: 1.6; }
+  .beat-desc em { color: var(--ink); font-style: italic; }
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; padding: 3px 8px; border-radius: 2px; text-transform: uppercase; margin-right: 6px; margin-bottom: 6px; }
+  .tag.light { background: rgba(240,198,116,0.12); color: var(--gold-bright); }
+  .tag.sound { background: rgba(110,198,255,0.12); color: #6ec6ff; }
+  .tag.move { background: rgba(224,120,86,0.14); color: var(--orange); }
+  .tag.perf { background: rgba(74,198,176,0.14); color: var(--perf); }
+  .phase-marker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; padding: 16px 0 8px; border-bottom: 1px solid var(--rule); margin-bottom: 0; display: block; }
+  .zone-card { background: var(--bg-panel); border: 1px solid var(--rule); padding: 24px 26px; margin-bottom: 18px; border-left: 3px solid var(--gold); }
+  .zone-card-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+  .zone-card-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: 28px; color: var(--gold); line-height: 1; font-weight: 400; }
+  .zone-card-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; }
+  .zone-card-meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: var(--ink-faint); text-transform: uppercase; margin-left: auto; }
+  .zone-card-body { font-size: 14px; color: var(--ink-dim); line-height: 1.65; }
+  .zone-card-body strong { color: var(--ink); font-weight: 500; }
+  .zone-card-body em { color: var(--gold-bright); font-style: italic; }
+  .zone-card-body p + p { margin-top: 10px; }
+  .zone-card-body ul { list-style: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
+  .zone-card-body li { padding: 5px 0; font-size: 13px; }
+  .zone-card-body li::before { content: '— '; color: var(--ink-faint); }
+  .state-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .state-col h3 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 14px; text-transform: uppercase; }
+  .state-col h3.open { color: var(--orange); }
+  .state-col ul { list-style: none; }
+  .state-col li { padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
+  .state-col li::before { content: '— '; color: var(--ink-faint); }
+  .footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  @media (max-width: 700px) { .state-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <div class="eyebrow">If I Awaken in Los Angeles · Lobby & Front of House</div>
+    <h1>The Lobby<em> — outdoor courtyard meets indoor club</em></h1>
+    <p class="subtitle">A two-part front-of-house experience. The audience first arrives in an outdoor courtyard with a Hollywood-style red carpet check-in under the LA sky, then steps through a single threshold door into a warm indoor club lounge with the bar, gift shop, and entrance to the show. Same ~9,500 sq ft of front-of-house, but split between sky and shelter.</p>
+    <div class="towns-list">Outdoor red carpet · Indoor lounge · Arts District industrial · Old Hollywood premiere</div>
+  </header>
+
+  <div class="callout">
+    <p>The lobby is split by an existing wall into two halves. The <strong>outdoor courtyard</strong> (~3,800 sq ft) sits at the north end — gated off the parking lot at its narrow tip, with the warehouse exterior wall on the west and a chamfered fence on the east. This is where the red carpet, the step-and-repeat backdrop, the photographer, and the ticket scan all live, in the open air. LA's weather makes this viable most of the year; a retractable canopy handles rain.</p>
+    <p>The <strong>indoor lounge</strong> (~5,700 sq ft) is the larger half, accessed through a single door in the middle of the green/blue wall. Inside: a ~64-ft bar, cocktail tables, a 5-booth VIP section along the angled wall, a curated gift shop split into north and south sections, and the show entry/exit doorway in the middle of the west wall (shared with Space 1 / Space 7). The aesthetic principle holds across both halves — <strong>Old Hollywood premiere glamour layered onto Arts District industrial</strong> — but expressed differently: the courtyard is sky-lit and palm-lined, the indoor is brick-and-velvet warm.</p>
+    <p>Pre-show, the audience flows <em>parking → gate → red carpet → indoor door → bar → show.</em> Post-show, they reverse: <em>show → gift shop → optional bar → indoor door → courtyard → gate → parking.</em> The single threshold door between the two zones means everyone passes through both spaces twice — once before the show, once after.</p>
+  </div>
+
+  <div class="meta-row">
+    <div class="meta"><div class="meta-label">Total area</div><div class="meta-value">~9,500 sq ft</div></div>
+    <div class="meta"><div class="meta-label">Outdoor (green)</div><div class="meta-value">~3,800 sq ft · red carpet</div></div>
+    <div class="meta"><div class="meta-label">Indoor (blue)</div><div class="meta-value">~5,700 sq ft · bar + shop</div></div>
+    <div class="meta"><div class="meta-label">Capacity</div><div class="meta-value">150 + crew</div></div>
+    <div class="meta"><div class="meta-label">Pre-show</div><div class="meta-value">~30 min</div></div>
+    <div class="meta"><div class="meta-label">Post-show</div><div class="meta-value">~10–15 min</div></div>
+    <div class="meta"><div class="meta-label">Street gate</div><div class="meta-value">North end of green · 21.7 ft wide</div></div>
+    <div class="meta"><div class="meta-label">Show doorway</div><div class="meta-value">Mid-west wall of blue</div></div>
+  </div>
+
+  <!-- ============= 01 PLAN VIEW ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">01</span><span class="section-head-title">Plan view</span></div>
+      <span class="section-hint">Top-down · Outdoor green ↑ · Indoor blue ↓ · LOCKED final layout</span>
+    </div>
+    <div class="section-body" style="padding: 0;">
+      <div class="plan-wrap">
+        <div class="toolbar">
+          <span>● Locked · final layout</span>
+        </div>
+
+        <svg class="plan-svg" viewBox="-100 -100 1000 1100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="lgrid" width="48" height="48" patternUnits="userSpaceOnUse">
+              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#1f1a16" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="paver" width="60" height="32" patternUnits="userSpaceOnUse">
+              <rect width="60" height="32" fill="#1a2418"/>
+              <line x1="0" y1="0" x2="60" y2="0" stroke="#2a3a28" stroke-width="0.5"/>
+              <line x1="0" y1="32" x2="60" y2="32" stroke="#2a3a28" stroke-width="0.5"/>
+              <line x1="30" y1="0" x2="30" y2="32" stroke="#2a3a28" stroke-width="0.5"/>
+            </pattern>
+            <pattern id="brick" patternUnits="userSpaceOnUse" width="14" height="6">
+              <rect width="14" height="6" fill="#3a2618"/>
+              <line x1="0" y1="0" x2="14" y2="0" stroke="#1a1008" stroke-width="0.4"/>
+              <line x1="7" y1="0" x2="7" y2="6" stroke="#1a1008" stroke-width="0.4"/>
+            </pattern>
+            <linearGradient id="bargrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a3828" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#2a1818" stop-opacity="0.6"/>
+            </linearGradient>
+            <linearGradient id="shopgrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a4838" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#2a3828" stop-opacity="0.5"/>
+            </linearGradient>
+            <linearGradient id="carpetgrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a82030" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#6a0a18" stop-opacity="0.85"/>
+            </linearGradient>
+            <linearGradient id="skytint" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a4828" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#2a3818" stop-opacity="0.08"/>
+            </linearGradient>
+            <marker id="larrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#d4a24c"/>
+            </marker>
+            <marker id="larrow-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#e07856"/>
+            </marker>
+          </defs>
+
+          <!-- Outer warehouse hint -->
+          <rect x="-100" y="-100" width="1000" height="1100" fill="#0a0806"/>
+
+          <!-- Main warehouse hint (west of lobby) -->
+          <g opacity="0.4">
+            <rect x="-90" y="0" width="90" height="920" fill="#1a0e08" stroke="#3a2e22" stroke-width="1" stroke-dasharray="4,4"/>
+            <text x="-45" y="460" fill="#5a4838" font-family="JetBrains Mono" font-size="10" letter-spacing="2" text-anchor="middle" transform="rotate(-90 -45 460)">MAIN WAREHOUSE · SPACES 1–6</text>
+          </g>
+
+          <!-- Parking lot hint above gate -->
+          <g opacity="0.5">
+            <rect x="-30" y="-90" width="200" height="80" fill="none" stroke="#5a4838" stroke-width="0.5" stroke-dasharray="3,4"/>
+            <text x="70" y="-50" fill="#5a4838" font-family="JetBrains Mono" font-size="10" letter-spacing="2" text-anchor="middle">PARKING / STREET</text>
+          </g>
+
+          <!-- ============== OUTDOOR GREEN SECTION ============== -->
+          <!-- Sky tint background -->
+          <polygon points="0,0 130,0 373,544 0,544" fill="url(#skytint)"/>
+          <!-- Paver pattern overlay -->
+          <polygon points="0,0 130,0 373,544 0,544" fill="url(#paver)" opacity="0.5"/>
+
+          <g class="editable" data-id="outdoor-label" transform="translate(0, 49.87)">
+            <text x="200" y="50" fill="#7aa07a" font-family="Playfair Display" font-size="22" font-style="italic" font-weight="700">Outdoor courtyard</text>
+            <text x="200" y="78" fill="#7aa07a" font-family="JetBrains Mono" font-size="10" letter-spacing="2">~3,800 SQ FT · OPEN-AIR</text>
+          </g>
+
+          <!-- Outdoor walls (perimeter) -->
+          <line x1="0" y1="0" x2="0" y2="544" stroke="#3a2e22" stroke-width="2.5"/>
+          <line x1="130" y1="0" x2="373" y2="544" stroke="#5a4838" stroke-width="2" stroke-dasharray="6,4"/>
+          <text x="270" y="280" fill="#5a4838" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" transform="rotate(66 270 280)">PERIMETER FENCE</text>
+
+          <!-- Warehouse exterior wall (west wall of outdoor) -->
+          <text x="-12" y="100" fill="#5a4838" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="end" transform="rotate(-90 -12 100)">WAREHOUSE EXTERIOR</text>
+
+          <!-- ============== STREET GATE (top of green, 21.7 ft wide) ============== -->
+          <g class="editable" data-id="gate" transform="translate(0,0)">
+            <!-- Gate base -->
+            <rect x="0" y="-12" width="130" height="14" fill="#1a1208" stroke="#d4a24c" stroke-width="1.2"/>
+            <!-- Iron gate vertical bars -->
+            <g stroke="#d4a24c" stroke-width="1" opacity="0.85">
+              <line x1="8" y1="-10" x2="8" y2="0"/><line x1="18" y1="-10" x2="18" y2="0"/><line x1="28" y1="-10" x2="28" y2="0"/><line x1="38" y1="-10" x2="38" y2="0"/><line x1="48" y1="-10" x2="48" y2="0"/><line x1="58" y1="-10" x2="58" y2="0"/><line x1="68" y1="-10" x2="68" y2="0"/><line x1="78" y1="-10" x2="78" y2="0"/><line x1="88" y1="-10" x2="88" y2="0"/><line x1="98" y1="-10" x2="98" y2="0"/><line x1="108" y1="-10" x2="108" y2="0"/><line x1="118" y1="-10" x2="118" y2="0"/>
+            </g>
+            <!-- Marquee above gate -->
+            <rect x="-10" y="-32" width="150" height="20" fill="#1a1208" stroke="#d4a24c" stroke-width="1.5"/>
+            <text x="65" y="-18" fill="#f0c674" font-family="Playfair Display" font-size="11" font-style="italic" font-weight="700" text-anchor="middle">If I Awaken in Los Angeles</text>
+            <!-- Marquee bulbs -->
+            <g fill="#f0c674" opacity="0.85">
+              <circle cx="-4" cy="-22" r="2"/><circle cx="-4" cy="-12" r="2"/><circle cx="134" cy="-22" r="2"/><circle cx="134" cy="-12" r="2"/>
+            </g>
+            <text x="65" y="-42" fill="#d4a24c" font-family="JetBrains Mono" font-size="8" letter-spacing="2" text-anchor="middle">GATE · 21.7 FT · STREET ENTRY</text>
+          </g>
+
+          <!-- ============== STEP-AND-REPEAT BACKDROP (on west wall, mid-carpet) ============== -->
+          <g class="editable" data-id="backdrop" transform="translate(2.58, 22.28)">
+          <rect x="0" y="160" width="8" height="200" fill="#3a0a14" stroke="#8a1820" stroke-width="1.5"/>
+          <g opacity="0.95">
+            <text x="14" y="240" fill="#f0c674" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" text-anchor="start">STEP-AND-REPEAT</text>
+            <text x="14" y="252" fill="#c8585a" font-family="JetBrains Mono" font-size="6" letter-spacing="1" text-anchor="start" opacity="0.85">12 × 30 FT · WEST WALL</text>
+          </g>
+          <g opacity="0.6">
+            <line x1="0" y1="180" x2="8" y2="180" stroke="#d4a24c" stroke-width="0.4"/>
+            <line x1="0" y1="220" x2="8" y2="220" stroke="#d4a24c" stroke-width="0.4"/>
+            <line x1="0" y1="260" x2="8" y2="260" stroke="#d4a24c" stroke-width="0.4"/>
+            <line x1="0" y1="300" x2="8" y2="300" stroke="#d4a24c" stroke-width="0.4"/>
+            <line x1="0" y1="340" x2="8" y2="340" stroke="#d4a24c" stroke-width="0.4"/>
+          </g>
+          </g>
+
+          <!-- ============== RED CARPET RUNWAY (along west wall) ============== -->
+          <g class="editable" data-id="carpet" transform="translate(-3.36, 2.99)">
+          <polygon points="8,20 80,20 80,470 8,470" fill="url(#carpetgrad)" stroke="#5a0a14" stroke-width="0.8"/>
+          <g stroke="#5a0a14" stroke-width="0.4" opacity="0.45">
+            <line x1="14" y1="80" x2="76" y2="80"/>
+            <line x1="14" y1="140" x2="76" y2="140"/>
+            <line x1="14" y1="380" x2="76" y2="380"/>
+            <line x1="14" y1="420" x2="76" y2="420"/>
+          </g>
+          <text x="44" y="440" fill="#f0c674" font-family="Playfair Display" font-size="13" font-style="italic" font-weight="700" text-anchor="middle" transform="rotate(-90 44 440)">RED CARPET · ~75 FT</text>
+          <polygon points="50,470 110,470 195,540 158,540" fill="#5a0a14" stroke="#3a0810" stroke-width="0.4" opacity="0.6"/>
+          </g>
+
+          <!-- Velvet ropes east side of carpet (full length) -->
+          <g class="editable" data-id="velvet-ropes" transform="translate(0,0)">
+          <g fill="#d4a24c" stroke="#8a6a48" stroke-width="0.5">
+            <circle cx="86" cy="40" r="3"/><circle cx="86" cy="120" r="3"/><circle cx="86" cy="200" r="3"/><circle cx="86" cy="280" r="3"/><circle cx="86" cy="360" r="3"/><circle cx="86" cy="440" r="3"/>
+          </g>
+          <g stroke="#8a1830" stroke-width="0.8" opacity="0.7">
+            <line x1="86" y1="40" x2="86" y2="120"/>
+            <line x1="86" y1="120" x2="86" y2="200"/>
+            <line x1="86" y1="200" x2="86" y2="280"/>
+            <line x1="86" y1="280" x2="86" y2="360"/>
+            <line x1="86" y1="360" x2="86" y2="440"/>
+          </g>
+          </g>
+
+          <!-- ============== PHOTOGRAPHER POSITION (across from backdrop) ============== -->
+          <g class="editable" data-id="photog" transform="translate(140.22, 271.18)">
+            <circle r="11" fill="#1a1410" stroke="#d4a24c" stroke-width="1.2"/>
+            <rect x="-6" y="-6" width="12" height="9" fill="#3a2418"/>
+            <text x="0" y="22" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle">PHOTOG</text>
+          </g>
+          <line x1="160" y1="260" x2="10" y2="260" stroke="#d4a24c" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.4"/>
+
+          <!-- ============== TICKET SCAN STATION (at gate) ============== -->
+          <g class="editable" data-id="ticket-scan" transform="translate(160.61, 173.59)">
+            <rect x="-22" y="-10" width="44" height="20" fill="#1a1410" stroke="#d4a24c" stroke-width="0.8" rx="2"/>
+            <text x="0" y="3" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle">TICKET SCAN</text>
+          </g>
+
+          <!-- ============== OUTDOOR DECOR ============== -->
+          <g class="editable" data-id="palm-1" transform="translate(218.63, 263.18)">
+            <rect x="-2" y="0" width="4" height="20" fill="#3a2418"/>
+            <path d="M 0 0 Q -14 -8 -22 -4 M 0 0 Q 14 -8 22 -4 M 0 0 Q -10 -14 -16 -18 M 0 0 Q 10 -14 16 -18 M 0 0 Q 0 -16 -4 -22 M 0 0 Q 0 -16 4 -22" stroke="#5a8a4a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <g class="editable" data-id="palm-2" transform="translate(277.33, 402.58)">
+            <rect x="-2" y="0" width="4" height="22" fill="#3a2418"/>
+            <path d="M 0 0 Q -14 -8 -22 -4 M 0 0 Q 14 -8 22 -4 M 0 0 Q -10 -14 -16 -18 M 0 0 Q 10 -14 16 -18 M 0 0 Q 0 -16 -4 -22 M 0 0 Q 0 -16 4 -22" stroke="#5a8a4a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <g class="editable" data-id="palm-3" transform="translate(287.83, 512.67)">
+            <rect x="-2" y="0" width="4" height="18" fill="#3a2418"/>
+            <path d="M 0 0 Q -12 -6 -18 -2 M 0 0 Q 12 -6 18 -2 M 0 0 Q -8 -12 -14 -14 M 0 0 Q 8 -12 14 -14 M 0 0 Q 0 -14 -3 -18 M 0 0 Q 0 -14 3 -18" stroke="#5a8a4a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- String lights overhead (across courtyard) -->
+          <g class="editable" data-id="string-lights" transform="translate(0,0)" opacity="0.7">
+            <path d="M 30 80 Q 180 50 290 100" stroke="#5a4838" stroke-width="0.5" fill="none"/>
+            <path d="M 60 220 Q 200 200 310 260" stroke="#5a4838" stroke-width="0.5" fill="none"/>
+            <path d="M 90 380 Q 220 360 330 420" stroke="#5a4838" stroke-width="0.5" fill="none"/>
+            <g fill="#f0c674">
+              <circle cx="80" cy="68" r="1.4"/><circle cx="130" cy="60" r="1.4"/><circle cx="180" cy="56" r="1.4"/><circle cx="230" cy="64" r="1.4"/><circle cx="270" cy="78" r="1.4"/>
+              <circle cx="100" cy="208" r="1.4"/><circle cx="160" cy="200" r="1.4"/><circle cx="220" cy="208" r="1.4"/><circle cx="280" cy="232" r="1.4"/>
+              <circle cx="130" cy="368" r="1.4"/><circle cx="190" cy="362" r="1.4"/><circle cx="250" cy="380" r="1.4"/><circle cx="310" cy="406" r="1.4"/>
+            </g>
+          </g>
+
+          <!-- Outdoor cocktail tables (small, scattered in lower courtyard) -->
+          <g class="editable" data-id="outdoor-tables" transform="translate(0,0)" fill="#3a2418" stroke="#5a4838" stroke-width="0.5">
+            <circle cx="270" cy="350" r="8"/>
+            <g fill="#1a0e08"><circle cx="258" cy="345" r="3"/><circle cx="282" cy="345" r="3"/></g>
+            <circle cx="295" cy="450" r="8"/>
+            <g fill="#1a0e08"><circle cx="283" cy="445" r="3"/><circle cx="307" cy="445" r="3"/></g>
+            <circle cx="220" cy="430" r="7"/>
+            <g fill="#1a0e08"><circle cx="210" cy="426" r="3"/><circle cx="230" cy="426" r="3"/></g>
+          </g>
+
+          <!-- Audience on red carpet (lined up along west wall) -->
+          <g class="editable" data-id="carpet-audience" transform="translate(0,0)" fill="#d4a24c" opacity="0.7">
+            <circle cx="44" cy="70" r="5"/><circle cx="44" cy="160" r="5"/><circle cx="44" cy="240" r="5"/><circle cx="44" cy="320" r="5"/><circle cx="44" cy="400" r="5"/>
+          </g>
+
+          <!-- ============== WALL BETWEEN GREEN AND BLUE ============== -->
+          <line x1="0" y1="544" x2="155" y2="544" stroke="#3a2e22" stroke-width="3"/>
+          <line x1="220" y1="544" x2="373" y2="544" stroke="#3a2e22" stroke-width="3"/>
+          <!-- Door gap (centered) -->
+          <line x1="155" y1="544" x2="155" y2="546" stroke="#d4a24c" stroke-width="2"/>
+          <line x1="220" y1="544" x2="220" y2="546" stroke="#d4a24c" stroke-width="2"/>
+          <g class="editable" data-id="indoor-entry" transform="translate(11.33, 1.72)">
+            <rect x="155" y="540" width="65" height="8" fill="#1a1410" stroke="#d4a24c" stroke-width="0.6" stroke-dasharray="2,2"/>
+            <text x="187" y="538" fill="#d4a24c" font-family="JetBrains Mono" font-size="8" letter-spacing="1.5" text-anchor="middle">INDOOR ENTRY DOOR</text>
+            <text x="187" y="565" fill="#d4a24c" font-family="JetBrains Mono" font-size="6" letter-spacing="1" text-anchor="middle" opacity="0.85">~10 FT WIDE · GREEN/BLUE THRESHOLD</text>
+          </g>
+
+          <!-- ============== INDOOR BLUE SECTION ============== -->
+          <polygon points="0,544 373,544 725,920 0,920" fill="url(#bargrad)"/>
+          <g class="editable" data-id="indoor-label" transform="translate(74.81, -1.72)">
+            <text x="380" y="600" fill="#c89868" font-family="Playfair Display" font-size="24" font-style="italic" font-weight="700">Indoor lounge</text>
+            <text x="380" y="628" fill="#c89868" font-family="JetBrains Mono" font-size="10" letter-spacing="2">~5,700 SQ FT · BAR + GIFT SHOP</text>
+          </g>
+
+          <!-- Outer walls of blue -->
+          <line x1="0" y1="544" x2="0" y2="920" stroke="#3a2e22" stroke-width="2.5"/>
+          <line x1="0" y1="920" x2="725" y2="920" stroke="#3a2e22" stroke-width="2.5"/>
+          <line x1="373" y1="544" x2="725" y2="920" stroke="#3a2e22" stroke-width="2.5"/>
+
+          <!-- ============== SHOW ENTRY/EXIT DOORWAY (mid west wall) ============== -->
+          <g class="editable" data-id="show-doorway" transform="translate(1.57, -0.78)">
+            <rect x="-2" y="700" width="4" height="60" fill="#0a0806"/>
+            <line x1="0" y1="700" x2="6" y2="700" stroke="#d4a24c" stroke-width="2"/>
+            <line x1="0" y1="760" x2="6" y2="760" stroke="#d4a24c" stroke-width="2"/>
+            <text x="-12" y="730" fill="#d4a24c" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5" text-anchor="end">SHOW ENTRY/EXIT</text>
+            <text x="-12" y="744" fill="#d4a24c" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="end" opacity="0.85">→ SPACE 1 / ← SPACE 7</text>
+          </g>
+
+          <!-- ============== ZONE 3A: GIFT SHOP · NORTH (above show doorway) ============== -->
+          <g class="editable" data-id="giftshop-north" transform="translate(1.64, 2.58)">
+            <polygon id="giftshop-n-zone" points="0,544 159,544 159,690 0,690" fill="url(#shopgrad)"/>
+            <text id="giftshop-n-label" x="80" y="586" fill="#7aa07a" font-family="Playfair Display" font-size="15" font-style="italic" font-weight="700" text-anchor="middle">Gift Shop</text>
+            <text id="giftshop-n-sub" x="80" y="601" fill="#7aa07a" font-family="JetBrains Mono" font-size="7" letter-spacing="2" text-anchor="middle">· NORTH ·</text>
+            <text id="giftshop-n-meta" x="80" y="617" fill="#7aa07a" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" text-anchor="middle">27 × 24 FT · ~648 SQ FT</text>
+            <g fill="#3a2818" stroke="#6a4828" stroke-width="0.5">
+              <rect x="6" y="552" width="14" height="80"/>
+              <rect x="40" y="640" width="44" height="18" rx="2"/>
+              <rect x="92" y="640" width="40" height="18" rx="2" fill="#4a3828"/>
+              <text x="112" y="651" fill="#d4a24c" font-family="JetBrains Mono" font-size="5.5" letter-spacing="0.5" text-anchor="middle">PHOTO KIOSK</text>
+            </g>
+              </g>
+
+          <!-- Walking path label (gap between the two gift shop sections) -->
+          <g opacity="0.6">
+            <text x="80" y="690" fill="#a89b82" font-family="JetBrains Mono" font-size="6.5" letter-spacing="2" text-anchor="middle" font-style="italic">↔ walking path · bar to show ↔</text>
+            <text x="80" y="775" fill="#a89b82" font-family="JetBrains Mono" font-size="6.5" letter-spacing="2" text-anchor="middle" font-style="italic">↔ walking path · show to bar ↔</text>
+          </g>
+
+          <!-- ============== ZONE 3B: GIFT SHOP · SOUTH (below show doorway) ============== -->
+          <g class="editable" data-id="giftshop-south" transform="translate(0,0)">
+            <polygon id="giftshop-s-zone" points="0,770 165,770 165,920 0,920" fill="url(#shopgrad)"/>
+            <text id="giftshop-s-label" x="82" y="812" fill="#7aa07a" font-family="Playfair Display" font-size="15" font-style="italic" font-weight="700" text-anchor="middle">Gift Shop</text>
+            <text id="giftshop-s-sub" x="82" y="827" fill="#7aa07a" font-family="JetBrains Mono" font-size="7" letter-spacing="2" text-anchor="middle">· SOUTH ·</text>
+            <text id="giftshop-s-meta" x="82" y="843" fill="#7aa07a" font-family="JetBrains Mono" font-size="7" letter-spacing="1.5" text-anchor="middle">28 × 25 FT · ~700 SQ FT</text>
+            <g fill="#3a2818" stroke="#6a4828" stroke-width="0.5">
+              <rect x="6" y="788" width="14" height="80"/>
+              <rect x="40" y="880" width="44" height="18" rx="2"/>
+              <rect x="92" y="878" width="40" height="22" rx="2" fill="#4a3828"/>
+              <text x="112" y="892" fill="#d4a24c" font-family="JetBrains Mono" font-size="5.5" letter-spacing="0.5" text-anchor="middle">CASHIER</text>
+            </g>
+              </g>
+
+          <!-- ============== ZONE 2: BAR / WAITING (rest of indoor · BAR LENGTH RESIZABLE) ============== -->
+          <g class="editable" data-id="bar" transform="translate(89.98, 2.58)">
+            <rect id="bar-top-strip" x="80" y="884" width="382" height="6" fill="#5a2a1a"/>
+            <rect id="bar-rect" x="80" y="890" width="382" height="20" fill="#3a1818" stroke="#8a1820" stroke-width="1.2"/>
+            <rect id="bar-bottom-strip" x="80" y="908" width="382" height="6" fill="#1a0a08"/>
+            <text id="bar-label" x="271" y="903" fill="#d4a24c" font-family="Playfair Display" font-size="13" font-style="italic" font-weight="700" text-anchor="middle">THE BAR · 64 FT</text>
+            <g id="bar-stools" fill="#1a0a08" stroke="#8a6a48" stroke-width="0.5">
+              <circle cx="105" cy="876" r="6"/><circle cx="135" cy="876" r="6"/><circle cx="165" cy="876" r="6"/><circle cx="195" cy="876" r="6"/><circle cx="225" cy="876" r="6"/><circle cx="255" cy="876" r="6"/><circle cx="285" cy="876" r="6"/><circle cx="315" cy="876" r="6"/><circle cx="345" cy="876" r="6"/><circle cx="375" cy="876" r="6"/><circle cx="405" cy="876" r="6"/><circle cx="435" cy="876" r="6"/><circle cx="465" cy="876" r="6"/><circle cx="495" cy="876" r="6"/><circle cx="525" cy="876" r="6"/><circle cx="555" cy="876" r="6"/>
+            </g>
+          </g>
+
+          <!-- Bartender positions -->
+          <g class="editable" data-id="bartenders" transform="translate(-55.70, 1.57)" fill="#d4a24c" opacity="0.85">
+            <circle cx="170" cy="900" r="4"/>
+            <circle cx="330" cy="900" r="4"/>
+            <circle cx="490" cy="900" r="4"/>
+          </g>
+
+          <!-- Cocktail tables in bar zone -->
+          <g class="editable" data-id="bar-tables" transform="translate(-50.99, 11.77)" fill="#3a2818" stroke="#6a4828" stroke-width="0.5">
+            <g>
+              <circle cx="290" cy="660" r="14"/>
+              <circle cx="290" cy="660" r="10" fill="#4a2818"/>
+              <g fill="#1a0e08"><circle cx="270" cy="650" r="5"/><circle cx="310" cy="650" r="5"/><circle cx="270" cy="670" r="5"/><circle cx="310" cy="670" r="5"/></g>
+            </g>
+            <g>
+              <circle cx="380" cy="700" r="14"/>
+              <circle cx="380" cy="700" r="10" fill="#4a2818"/>
+              <g fill="#1a0e08"><circle cx="360" cy="690" r="5"/><circle cx="400" cy="690" r="5"/><circle cx="360" cy="710" r="5"/><circle cx="400" cy="710" r="5"/></g>
+            </g>
+            <g>
+              <circle cx="290" cy="760" r="14"/>
+              <circle cx="290" cy="760" r="10" fill="#4a2818"/>
+              <g fill="#1a0e08"><circle cx="270" cy="750" r="5"/><circle cx="310" cy="750" r="5"/><circle cx="270" cy="770" r="5"/><circle cx="310" cy="770" r="5"/></g>
+            </g>
+            <g>
+              <circle cx="400" cy="800" r="14"/>
+              <circle cx="400" cy="800" r="10" fill="#4a2818"/>
+              <g fill="#1a0e08"><circle cx="380" cy="790" r="5"/><circle cx="420" cy="790" r="5"/><circle cx="380" cy="810" r="5"/><circle cx="420" cy="810" r="5"/></g>
+            </g>
+            <g>
+              <circle cx="500" cy="740" r="14"/>
+              <circle cx="500" cy="740" r="10" fill="#4a2818"/>
+              <g fill="#1a0e08"><circle cx="480" cy="730" r="5"/><circle cx="520" cy="730" r="5"/><circle cx="480" cy="750" r="5"/><circle cx="520" cy="750" r="5"/></g>
+            </g>
+            <g>
+              <circle cx="560" cy="820" r="14"/>
+              <circle cx="560" cy="820" r="10" fill="#4a2818"/>
+              <g fill="#1a0e08"><circle cx="540" cy="810" r="5"/><circle cx="580" cy="810" r="5"/><circle cx="540" cy="830" r="5"/><circle cx="580" cy="830" r="5"/></g>
+            </g>
+          </g>
+
+          <!-- VIP Booths section along chamfered NE wall (replaced banquette · 5 booths · 20 seats) -->
+          <g class="editable" data-id="booths" transform="translate(-1.57, -4.71)">
+            <!-- VIP zone subtle floor demarcation - inset polygon paralleling the wall -->
+            <polygon points="395,612 696,914 705,902 720,895 720,920 405,605"
+                     fill="none" stroke="#8a6a48" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.5"/>
+            <!-- VIP zone inner floor wash (subtle gold-tinted) -->
+            <polygon points="380,615 700,920 720,920 720,915 405,600"
+                     fill="#2a1f10" opacity="0.35"/>
+
+            <!-- Velvet rope perimeter (defines VIP zone, parallel to wall, ~25px inward) -->
+            <g stroke="#8a1830" stroke-width="0.9" opacity="0.7">
+              <line x1="370" y1="650" x2="448" y2="730"/>
+              <line x1="448" y1="730" x2="510" y2="792"/>
+              <line x1="510" y1="792" x2="572" y2="854"/>
+              <line x1="572" y1="854" x2="640" y2="920"/>
+            </g>
+            <!-- Brass stanchions for velvet ropes -->
+            <g fill="#d4a24c" stroke="#8a6a48" stroke-width="0.5">
+              <circle cx="370" cy="650" r="3"/>
+              <circle cx="448" cy="730" r="3"/>
+              <circle cx="510" cy="792" r="3"/>
+              <circle cx="572" cy="854" r="3"/>
+              <circle cx="640" cy="920" r="3"/>
+            </g>
+
+            <!-- Booth 1 — 4-person VIP -->
+            <g transform="translate(427, 634) rotate(46)">
+              <!-- Back bench (against the wall) -->
+              <rect x="-26" y="-15" width="52" height="6" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.5" rx="1.5"/>
+              <!-- Side benches -->
+              <rect x="-26" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="20" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <!-- Center table -->
+              <rect x="-12" y="-3" width="24" height="14" rx="2" fill="#3a2418" stroke="#a89868" stroke-width="0.6"/>
+              <!-- Candle on table -->
+              <circle cx="0" cy="4" r="1.5" fill="#f0c674" opacity="0.9"/>
+            </g>
+            <!-- Booth 2 — 4-person VIP -->
+            <g transform="translate(485, 692) rotate(46)">
+              <rect x="-26" y="-15" width="52" height="6" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.5" rx="1.5"/>
+              <rect x="-26" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="20" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="-12" y="-3" width="24" height="14" rx="2" fill="#3a2418" stroke="#a89868" stroke-width="0.6"/>
+              <circle cx="0" cy="4" r="1.5" fill="#f0c674" opacity="0.9"/>
+            </g>
+            <!-- Booth 3 (center / largest) — 4-person VIP -->
+            <g transform="translate(548, 752) rotate(46)">
+              <rect x="-26" y="-15" width="52" height="6" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.5" rx="1.5"/>
+              <rect x="-26" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="20" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="-12" y="-3" width="24" height="14" rx="2" fill="#3a2418" stroke="#a89868" stroke-width="0.6"/>
+              <circle cx="0" cy="4" r="1.5" fill="#f0c674" opacity="0.9"/>
+            </g>
+            <!-- Booth 4 — 4-person VIP -->
+            <g transform="translate(610, 813) rotate(46)">
+              <rect x="-26" y="-15" width="52" height="6" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.5" rx="1.5"/>
+              <rect x="-26" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="20" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="-12" y="-3" width="24" height="14" rx="2" fill="#3a2418" stroke="#a89868" stroke-width="0.6"/>
+              <circle cx="0" cy="4" r="1.5" fill="#f0c674" opacity="0.9"/>
+            </g>
+            <!-- Booth 5 — 4-person VIP -->
+            <g transform="translate(668, 870) rotate(46)">
+              <rect x="-26" y="-15" width="52" height="6" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.5" rx="1.5"/>
+              <rect x="-26" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="20" y="-9" width="6" height="20" fill="#5a2a2a" stroke="#3a1818" stroke-width="0.4" rx="1"/>
+              <rect x="-12" y="-3" width="24" height="14" rx="2" fill="#3a2418" stroke="#a89868" stroke-width="0.6"/>
+              <circle cx="0" cy="4" r="1.5" fill="#f0c674" opacity="0.9"/>
+            </g>
+
+            <!-- VIP label rotated along wall, between booths 2 and 3 -->
+            <text x="495" y="745" fill="#d4a24c" font-family="Playfair Display" font-size="13" font-style="italic" font-weight="700" text-anchor="middle" transform="rotate(46 495 745)">VIP · 5 BOOTHS · 20 SEATS</text>
+            <!-- VIP host stand at NW entry to VIP zone -->
+            <g transform="translate(360, 645)">
+              <rect x="-9" y="-5" width="18" height="10" fill="#1a1410" stroke="#d4a24c" stroke-width="0.7" rx="1"/>
+              <text x="0" y="2" fill="#d4a24c" font-family="JetBrains Mono" font-size="5" letter-spacing="0.5" text-anchor="middle">HOST</text>
+            </g>
+          </g>
+
+          <!-- Standing audience scattered through bar zone -->
+          <g class="editable" data-id="standing-audience" transform="translate(-54.41, -22.37)" fill="#d4a24c" opacity="0.6">
+            <circle cx="270" cy="650" r="4"/><circle cx="310" cy="650" r="4"/><circle cx="270" cy="670" r="4"/>
+            <circle cx="360" cy="690" r="4"/><circle cx="400" cy="690" r="4"/>
+            <circle cx="270" cy="750" r="4"/><circle cx="310" cy="750" r="4"/>
+            <circle cx="380" cy="790" r="4"/><circle cx="420" cy="790" r="4"/>
+            <circle cx="480" cy="730" r="4"/><circle cx="520" cy="730" r="4"/>
+            <circle cx="540" cy="810" r="4"/><circle cx="580" cy="810" r="4"/>
+            <circle cx="240" cy="700" r="4"/><circle cx="320" cy="700" r="4"/>
+            <circle cx="450" cy="780" r="4"/><circle cx="600" cy="850" r="4"/>
+            <circle cx="350" cy="850" r="4"/><circle cx="250" cy="820" r="4"/>
+            <circle cx="280" cy="600" r="4"/><circle cx="350" cy="620" r="4"/>
+            <circle cx="450" cy="640" r="4"/><circle cx="540" cy="680" r="4"/>
+          </g>
+
+          <!-- Restrooms (enlarged + made more visible) -->
+          <g class="editable" data-id="restrooms" transform="translate(-43.93, 21.18)" opacity="1">
+            <rect x="609" y="828" width="80" height="60" fill="#2a1812" stroke="#a89b82" stroke-width="1.6" rx="2"/>
+            <line x1="649" y1="830" x2="649" y2="886" stroke="#a89b82" stroke-width="1" opacity="0.65"/>
+            <text x="629" y="864" fill="#d4a24c" font-family="JetBrains Mono" font-size="13" font-weight="700" letter-spacing="1" text-anchor="middle">M</text>
+            <text x="669" y="864" fill="#d4a24c" font-family="JetBrains Mono" font-size="13" font-weight="700" letter-spacing="1" text-anchor="middle">W</text>
+            <text x="649" y="881" fill="#a89b82" font-family="JetBrains Mono" font-size="6" letter-spacing="1.5" text-anchor="middle" opacity="0.85">RESTROOMS</text>
+          </g>
+
+          <!-- Coat check (just inside indoor entry) -->
+          <g class="editable" data-id="coat-check" transform="translate(45.57, -8.60)" opacity="0.85">
+            <rect x="240" y="560" width="80" height="20" fill="#1a1410" stroke="#8a6a48" stroke-width="0.6"/>
+            <text x="280" y="574" fill="#8a6a48" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle">COAT CHECK</text>
+          </g>
+
+          <!-- Service/back doors (existing on plan, marked as service) -->
+          <g class="editable" data-id="service-doors" transform="translate(0,0)" opacity="0.5">
+            <rect x="640" y="912" width="80" height="10" fill="none" stroke="#5a4838" stroke-width="0.6" stroke-dasharray="2,2"/>
+            <text x="680" y="936" fill="#5a4838" font-family="JetBrains Mono" font-size="7" letter-spacing="1" text-anchor="middle">SERVICE / EMERGENCY</text>
+          </g>
+
+          <!-- Audience flow arrows removed in v04 — visual is cleaner without -->
+
+          <!-- North arrow -->
+          <g transform="translate(820,40)">
+            <circle cx="0" cy="0" r="22" fill="none" stroke="#a89b82" stroke-width="0.9"/>
+            <line x1="0" y1="-15" x2="0" y2="15" stroke="#a89b82" stroke-width="0.9"/>
+            <polygon points="0,-15 -6,-7 6,-7" fill="#a89b82"/>
+            <text x="0" y="-26" fill="#a89b82" font-family="JetBrains Mono" font-size="10" text-anchor="middle">N</text>
+          </g>
+
+          <!-- Scale: 60 px = 10 ft -->
+          <g transform="translate(700,990)">
+            <line x1="0" y1="0" x2="60" y2="0" stroke="#a89b82" stroke-width="1.2"/>
+            <line x1="0" y1="-4" x2="0" y2="4" stroke="#a89b82"/>
+            <line x1="60" y1="-4" x2="60" y2="4" stroke="#a89b82"/>
+            <text x="30" y="-8" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle">10 FT</text>
+          </g>
+
+          <!-- Dimension labels -->
+          <g opacity="0.55">
+            <line x1="0" y1="-66" x2="130" y2="-66" stroke="#a89b82" stroke-width="0.5"/>
+            <text x="65" y="-72" fill="#a89b82" font-family="JetBrains Mono" font-size="8" text-anchor="middle">21.7 FT</text>
+
+            <line x1="-50" y1="0" x2="-50" y2="544" stroke="#a89b82" stroke-width="0.5"/>
+            <text x="-66" y="270" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle" transform="rotate(-90 -66 270)">90.7 FT (OUTDOOR)</text>
+
+            <line x1="-50" y1="544" x2="-50" y2="920" stroke="#a89b82" stroke-width="0.5"/>
+            <text x="-66" y="730" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle" transform="rotate(-90 -66 730)">62.6 FT (INDOOR)</text>
+
+            <line x1="0" y1="950" x2="725" y2="950" stroke="#a89b82" stroke-width="0.5"/>
+            <line x1="0" y1="944" x2="0" y2="956" stroke="#a89b82" stroke-width="0.5"/>
+            <line x1="725" y1="944" x2="725" y2="956" stroke="#a89b82" stroke-width="0.5"/>
+            <text x="362" y="970" fill="#a89b82" font-family="JetBrains Mono" font-size="9" text-anchor="middle">120.8 FT</text>
+          </g>
+
+        </svg>
+        <div class="legend">
+          <div class="legend-row"><div class="legend-swatch" style="background:#3a4828;"></div><div><strong>Outdoor courtyard (green)</strong><span>3,800 sq ft · open-air with paver flooring · paths, palms, string lights</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#a82030;"></div><div><strong>Red carpet</strong><span>~75 ft along west wall · backdrop on warehouse exterior · velvet ropes on east side</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#1a1208;border:1px solid #d4a24c;"></div><div><strong>Street gate (top of green)</strong><span>21.7 ft wide iron gate + marquee · primary public entry</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#4a3828;"></div><div><strong>Indoor lounge (blue)</strong><span>5,700 sq ft · bar, gift shop, show doorway, restrooms</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#3a4838;"></div><div><strong>Gift shop</strong><span>Wraps the show doorway · post-show audience emerges into retail</span></div></div>
+          <div class="legend-row"><div class="legend-swatch" style="background:#3a1818;border:1px solid #8a1820;"></div><div><strong>Bar (south wall)</strong><span>50-ft bar · 16 stools · backbar mirror</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= 02 ZONE PROFILES ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">02</span><span class="section-head-title">Zone profiles</span></div>
+      <span class="section-hint">Three zones · creative direction + key elements</span>
+    </div>
+    <div class="section-body">
+
+      <div class="zone-card" style="border-left-color: #8a1820;">
+        <div class="zone-card-head">
+          <span class="zone-card-num">1</span>
+          <span class="zone-card-title">Outdoor Red Carpet · Check-in</span>
+          <span class="zone-card-meta">Outdoor green · ~3,800 sq ft · ~85-ft runway</span>
+        </div>
+        <div class="zone-card-body">
+          <p><strong>Theme.</strong> "The Premiere — under the LA sky." A genuine Old Hollywood red carpet experience held outdoors in a courtyard, played with full theatrical commitment but a knowing wink — <em>tonight, every guest is the celebrity, and tonight's premiere happens to be in the Arts District at golden hour.</em> The audience's first encounter with the show is being greeted, photographed, and ushered as if they're arriving at a film premiere — but with the actual sky overhead, palm trees in the courtyard, and the warehouse exterior brick as the architectural frame.</p>
+          <p><strong>The gate.</strong> A 21.7-ft-wide iron gate at the north end of the courtyard, opening directly off the parking lot. Above it, a small marquee with the show's name in script-style theatrical typography and frosted-bulb edge lighting. Industrial-iron pattern below; old-Hollywood marquee above. Same dramaturgical move as the lobby itself: glamour layered onto industrial.</p>
+          <p><strong>The runway.</strong> A real red carpet, ~75 ft long and ~12 ft wide, runs flush against the <em>west wall of the courtyard</em> — the warehouse exterior brick. This positions the carpet along the longest straight wall of the courtyard, leaves the rest of the open courtyard available for the photographer, palms, tables, and circulation. The carpet ends about 12 ft shy of the indoor door; a short transition runner connects the end of the carpet to the doorway.</p>
+          <p><strong>The backdrop.</strong> A 12-ft tall × 30-ft wide step-and-repeat backdrop is mounted directly on the same west wall (the warehouse exterior brick), positioned about halfway down the carpet so guests have already had a moment to register the experience before they pose. With the backdrop on the wall behind the carpet, the photo composition is natural: guest stands on the carpet, backdrop is the wall directly behind them, photographer captures from across the open courtyard. The backdrop is the show's logo and key art tiled in standard step-and-repeat grid, front-lit by warm theatrical fixtures.</p>
+          <p><strong>The capture moment.</strong> The photographer (or calibrated camera rig) is positioned across the courtyard from the backdrop, about ~15 ft east of the carpet. A "host" in character welcomes each guest or group: <em>"Step on the star, look this way, give us your best red-carpet smile."</em> Photo is taken in 5–10 seconds. This becomes the input for the Space 7 Living Mosaic — the audience's enrollment moment.</p>
+          <p><strong>The exchange.</strong> Tickets are scanned at the gate (just inside, by a host) so by the time guests reach the photo position they're already validated. After the photo, they continue down the carpet, step off onto the transition runner, and approach the indoor entry door. A coat check is positioned just inside that door.</p>
+          <p><strong>Outdoor character.</strong> Concrete pavers underfoot. Velvet ropes on brass stanchions line the east side of the carpet (the warehouse exterior wall serves as the natural west boundary). Potted palms scattered along the eastern courtyard edge, opposite the carpet. Jacaranda trees if seasonal, succulents and native plants in low planters along the chamfered fence. String lights (Edison bulbs on warm-white) zig-zag overhead. A few small standing-height cocktail tables in the eastern half of the courtyard for early arrivals to wait outside before joining the carpet. Soft uplighting on the warehouse brick. The whole space reads as <em>VIP entrance lane on the formal-architectural side, open courtyard on the social side.</em></p>
+          <p><strong>Weather contingency.</strong> A retractable canopy or tensile shade structure covers the carpet and photo zone, deployable in 5 minutes if rain threatens. LA averages 35 rainy days/year, so this is the exception, but show-must-go-on requires it.</p>
+          <ul>
+            <li><strong>Materials:</strong> Red velvet carpet (weatherized) · brass stanchions · matte black backdrop with metallic gold logo print · iron gate with marquee · concrete pavers · planted palms + succulents</li>
+            <li><strong>Lighting:</strong> Warm string lights overhead · theatrical front lights on backdrop · uplighting on warehouse brick · marquee bulbs · golden-hour-feel even after dark</li>
+            <li><strong>Sound:</strong> Soft music spilling from indoor lounge through the door · jazz / Old Hollywood standards · ambient enough that you can still hear the city outside the gate</li>
+            <li><strong>Throughput:</strong> 5 guests/minute = 30 minutes for 150 guests · two photo positions in parallel if needed</li>
+            <li><strong>Staffing:</strong> 1 host at gate (ticket scan) · 1 host at carpet (in character) · 1 photographer · 1 floor manager</li>
+            <li><strong>Weather plan:</strong> Retractable canopy over carpet + photo zone · backup plan to move to interior if storm</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zone-card" style="border-left-color: #c89868;">
+        <div class="zone-card-head">
+          <span class="zone-card-num">2</span>
+          <span class="zone-card-title">Indoor Bar &amp; Lounge</span>
+          <span class="zone-card-meta">Indoor blue · ~3,700 sq ft (excl. gift shop) · 50-ft bar</span>
+        </div>
+        <div class="zone-card-body">
+          <p><strong>Theme.</strong> "The Real LA Lounge." Crossing the indoor threshold from the outdoor courtyard is a transition from sky-lit premiere to warm interior club. The bar is the heart of the indoor lounge — somewhere off Sunset where industry people actually drink, where the playlist is right, where the photos on the walls are of real LA, and where the cocktails are named after places you'd be embarrassed not to know. Same dramaturgical principle as outside: glamorous on first glance; on closer inspection, the warehouse is still there.</p>
+          <p><strong>The bar.</strong> A 50-ft bar runs along the south wall of the indoor lounge (the longest unbroken interior wall, 120.8 ft, gives ample room for the bar plus surrounding circulation). The backbar is a feature — full-height mirror, warm LED, brass-edged shelving stocked floor-to-ceiling with bottles. Velvet upholstered stools (16 along the bar). Three bartenders working — visible, theatrical, capable. A separate service well at one end for waitstaff to pull cocktails for the floor.</p>
+          <p><strong>Floor seating.</strong> 6–8 cocktail tables scattered through the open floor — small (24" round), with 4 low velvet stools each. Plus a <strong>5-booth VIP section along the angled NE wall</strong> (the room's outer chamfered corner) — each booth is 4-person with deep leather or velvet upholstery, a back bench against the wall, side benches, and a center table with a candle. The booths are spaced generously to give each group breathing room and privacy. The whole VIP zone is set apart with a velvet rope perimeter on brass stanchions and a subtle floor demarcation, with a dedicated host stand at its NW entry. The VIP designation is real (booths must be reserved or purchased separately) but the visual language stays warm and Old Hollywood — never bottle-service-club. Throughout the rest of the lounge: floor lamps, table candles, a few low brass pendants.</p>
+          <p><strong>Walls.</strong> The existing red brick is left exposed — Arts District character preserved. Layered onto it: <em>vintage LA neon signs</em> (collected real signs from defunct LA businesses, or replicas — diners, motels, coffee shops, bars from East LA / Crenshaw / Koreatown). Framed B&amp;W photos of Boyle Heights, Crenshaw, Koreatown, the Arts District itself in the 70s–90s — real LA, not Hollywood. One Spanish-tile accent panel as a feature wall. A small neon sign behind the bar reads simply <em>"Los Angeles"</em> in script.</p>
+          <p><strong>Cocktail menu.</strong> Each drink named after a moment from the show or a real LA neighborhood. Examples: <em>"Boyle Heights Sunset" · "The Topanga" · "Crenshaw &amp; Slauson" · "The Sekou"</em> (the Tour Guide's signature drink). Snacks lean into LA's culinary multiculturalism — elote cups, kalbi sliders, soul food bites, pupusas — sourced from real LA businesses listed on the menu.</p>
+          <p><strong>Music.</strong> Pre-show playlist: jazz, Latin jazz, soul, R&amp;B, funk — the musical lineage the band on stage is going to inherit. Curated by the show's composer. Volume conversation-friendly but unmistakably present. Spills out the indoor entry door into the courtyard so the courtyard isn't dead-quiet.</p>
+          <ul>
+            <li><strong>Materials:</strong> Polished concrete floor (existing) · brass fixtures · velvet upholstery (deep red, rust, ochre) · leather/velvet VIP booths (cognac) · velvet rope perimeter on brass stanchions · brass-edged glass · vintage neon · framed B&amp;W photographs · Spanish tile accent panel · exposed red brick</li>
+            <li><strong>Lighting:</strong> Warm (2700K) · backbar LED accent · table candles · sparse brass pendants · neon glow as the only color light</li>
+            <li><strong>Capacity:</strong> 150 standing comfortably · ~52 seated (16 at bar + ~16 at cocktail tables + 20 in VIP booths) · room for circulation and ushers</li>
+            <li><strong>Staffing:</strong> 3 bartenders · 2–3 cocktail servers · 1 host at indoor entry · 1 floor manager</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zone-card" style="border-left-color: #7aa07a;">
+        <div class="zone-card-head">
+          <span class="zone-card-num">3</span>
+          <span class="zone-card-title">Indoor Gift Shop · The City as a Store</span>
+          <span class="zone-card-meta">Indoor blue · ~1,348 sq ft total · split N + S with walking corridor</span>
+        </div>
+        <div class="zone-card-body">
+          <p><strong>Theme.</strong> "The City as a Store." Not show merch. A curated LA general store — a love letter to the city's actual makers, writers, and small businesses, framed by the show as a way to take a piece of the experience home. The gift shop is where the show's argument extends past the wall: <em>the real LA is people and culture, and here are some of the people and some of the culture.</em></p>
+          <p><strong>Spatial split.</strong> The gift shop is divided into <em>two adjacent sections</em> along the indoor lounge's west wall, separated by a generous walking corridor that aligns precisely with the show entry/exit doorway. Post-show audience emerges from Space 7 directly into this corridor and is bracketed on both sides by retail. The split serves circulation: it preserves an unobstructed path from the bar/lounge to the show entry, and after the show, the audience can browse north then south (or vice versa) without ever feeling like the shop is in their way.</p>
+          <p><strong>Gift Shop · NORTH</strong> <span style="color:var(--ink-faint); font-size:12px;">— ~648 sq ft · 27 × 24 ft</span></p>
+          <ul>
+            <li><strong>Photo-print kiosk:</strong> Guests scan their souvenir card / QR code and print their best photos from the show on demand — Polaroid-style or postcard-size · digital web gallery available too. Positioned so the photo moment is the FIRST thing audience encounters after the Living Mosaic.</li>
+            <li><strong>Show merchandise:</strong> Limited-edition program book · vinyl record of the show's score · screen-printed posters by LA artists (one per show space) · t-shirts in subtle script ("Los Angeles, 2026")</li>
+          </ul>
+          <p><strong>Gift Shop · SOUTH</strong> <span style="color:var(--ink-faint); font-size:12px;">— ~700 sq ft · 28 × 25 ft</span></p>
+          <ul>
+            <li><strong>Books by/about LA voices:</strong> Joan Didion · Octavia Butler · Wanda Coleman · Sandra Cisneros · James Ellroy · Hector Tobar · Walter Mosley · Mike Davis · current poets and novelists rotated quarterly · a single curated reading list of ~30 titles</li>
+            <li><strong>Goods from LA businesses:</strong> Coffee from Lincoln Heights · hot sauce from Boyle Heights · candles from a Black-owned LA brand · ceramics by an Asian-American LA potter · jewelry by local designers · prints by Topanga and Laurel Canyon artists · each item with a small card naming the maker and their neighborhood</li>
+            <li><strong>Cashier &amp; LA neighborhood feature wall:</strong> The map of LA with each product's neighborhood marked, by a commissioned LA artist. Final consolidation point before exit.</li>
+          </ul>
+          <p><strong>Visual.</strong> Mid-century retail aesthetic — wood shelving (oak or walnut), brass fixtures, soft warm lighting (3000K). The existing brick walls remain exposed. Wood + brick = warm, considered, anti-souvenir-shop. Display tables are low and angled so the room reads as inviting rather than dense. Both sections share the same materials palette so they read as one shop with a corridor through it, not two separate stores.</p>
+          <p><strong>Walking corridor.</strong> ~17 ft wide between the two sections. The show entry/exit doorway sits in the corridor's western wall. Pre-show audience uses the corridor to walk west to the show entry; post-show audience emerges into the corridor and chooses N or S to browse. Width is intentionally generous — supports egress for 150 people in tandem with the bar zone egress paths.</p>
+          <ul>
+            <li><strong>Materials:</strong> Oak/walnut shelving · brass hardware · brick (existing) · soft warm lighting · printed cards naming each maker · LA-artist-made feature wall in south section</li>
+            <li><strong>Lighting:</strong> Warm (3000K) · directional spots on featured products · ambient wash · gallery-like rather than retail-like · same fixtures in both sections for cohesion</li>
+            <li><strong>Sound:</strong> Quiet · no overt music · ambient room tone bleeds in from the bar</li>
+            <li><strong>Staffing:</strong> 1 retail associate per section (2 total) · 1 photo-print station operator in north</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============= 03 BEAT SEQUENCE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">03</span><span class="section-head-title">Beat sequence</span></div>
+      <span class="section-hint">Pre-show + post-show flows · 10 beats total</span>
+    </div>
+    <div class="section-body">
+
+      <span class="phase-marker">Phase A · Pre-show · ~30 minutes</span>
+
+      <div class="beat">
+        <div class="beat-num">01</div>
+        <div>
+          <div class="beat-title">Arrival at the gate</div>
+          <div class="beat-desc">
+            <span class="tag light">Marquee bulbs · warm uplight on iron gate</span><span class="tag sound">Distant indoor music + outdoor ambient</span><span class="tag move">Guests arrive from parking · approach gate</span>
+            Audience approaches the venue from the parking lot. The exterior is otherwise unremarkable warehouse — but the iron gate, with its marquee overhead, is unmistakable. The marquee reads <em>If I Awaken in Los Angeles</em>, frosted bulbs lit. A host stationed at the gate scans tickets and welcomes guests. They pass through the gate into an outdoor courtyard, golden-hour lit, palm-lined, with string lights overhead.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">02</div>
+        <div>
+          <div class="beat-title">Red carpet check-in (outdoor)</div>
+          <div class="beat-desc">
+            <span class="tag light">Theatrical front lights · backdrop spot</span><span class="tag sound">Old Hollywood standards spilling from indoor</span><span class="tag move">Onto carpet · pose · click</span><span class="tag perf">Host in character · photographer</span>
+            Once through the gate, audience steps onto the red carpet runway. Halfway down, they reach the step-and-repeat backdrop on the warehouse exterior wall. A host in character welcomes each guest or group: <em>"Welcome to the premiere — step on the star, look this way."</em> Photographer captures the photo. The premiere conceit lands fully — the audience is treated as if they are the celebrity arrivals, and tonight, in this courtyard, they are.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">03</div>
+        <div>
+          <div class="beat-title">Through the door, into the lounge</div>
+          <div class="beat-desc">
+            <span class="tag light">Door warm-glowing · indoor music spills out</span><span class="tag sound">Music swells as door opens</span><span class="tag move">Through the door · coat check just inside</span>
+            Audience continues down the rest of the carpet and approaches the door at the far end of the courtyard — the threshold between outdoor and indoor. As they cross, they leave the open sky and step into a warm, brick-lined club. The music swells. The bar comes into view. Coat check is right inside the door for those who need it. The transition itself is theatrical: <em>premiere on the carpet, party in the lounge.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">04</div>
+        <div>
+          <div class="beat-title">Settling into the bar</div>
+          <div class="beat-desc">
+            <span class="tag light">Warm bar wash · neon glow · candles</span><span class="tag sound">Curated jazz · conversational volume</span><span class="tag move">Free movement · order drinks · find seats</span>
+            Audience moves to the 50-ft bar or finds a cocktail table. Bartenders work the rail; servers move through with cocktails for tables. The walls catch the eye — vintage neon signs from real LA businesses, B&amp;W photos of neighborhoods that aren't Hollywood. The cocktail menu names places: <em>Boyle Heights Sunset, The Topanga, Crenshaw &amp; Slauson</em>. Audience asks each other: <em>"Have you been there?"</em> The show's argument has already begun, quietly.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">05</div>
+        <div>
+          <div class="beat-title">5-min call · into the show</div>
+          <div class="beat-desc">
+            <span class="tag light">Bar lights pulse soft · door warms</span><span class="tag sound">Music dips · single chime</span><span class="tag move">Walk to show doorway · west wall</span><span class="tag perf">Floor managers usher</span>
+            Music dips for a moment. A single chime. Floor managers move through the bar, quietly directing audience toward the show entry doorway in the middle of the west wall. Audience finishes drinks and walks the short distance to the door. They pass briefly through the gift shop area — foreshadowing — and step through into Space 1. The show begins.
+          </div>
+        </div>
+      </div>
+
+      <span class="phase-marker">Phase B · Post-show · ~10–15 minutes</span>
+
+      <div class="beat">
+        <div class="beat-num">06</div>
+        <div>
+          <div class="beat-title">Emerging from Space 7 · into the walking path</div>
+          <div class="beat-desc">
+            <span class="tag light">Gift shop warm on both sides · gallery lighting</span><span class="tag sound">Quiet ambient · band's last chord nearly gone</span><span class="tag move">Through the doorway · into the corridor between shops</span>
+            Audience exits the Space 7 corridor through the same west-wall doorway they entered through 100 minutes ago. They emerge into the walking path — a corridor flanked on both sides by gift shop sections. <em>Gift Shop North</em> on their left (with the photo-print kiosk and show merchandise); <em>Gift Shop South</em> on their right (with LA-made goods, books, and the cashier). The first thing they see after the Living Mosaic is shelves of LA-made goods on both sides. The show's argument continues physically: <em>"the city is its people; here are some of them."</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">07</div>
+        <div>
+          <div class="beat-title">Browsing the city · both shops</div>
+          <div class="beat-desc">
+            <span class="tag light">Soft directional spots · warm wall wash</span><span class="tag sound">Quiet · bar music bleeds in faintly</span><span class="tag move">North shop · south shop · linger or pass</span>
+            Audience moves through both shops at their own pace. In the north section, some line up at the photo-print kiosk to print their best frame from the show; others browse show merchandise — vinyl, posters, programs. In the south section, some pause at the LA neighborhood feature wall and pick up books — Octavia Butler, Joan Didion, a poetry collection by an LA poet they didn't know existed; others gather candles, coffee, ceramics from LA businesses. Many will visit both. The corridor between makes flow easy: <em>browse north, cross to south, head east toward the bar or the door.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">08</div>
+        <div>
+          <div class="beat-title">Back to the bar (optional)</div>
+          <div class="beat-desc">
+            <span class="tag light">Bar warm · same as pre-show</span><span class="tag sound">Same playlist returns · slightly quieter</span><span class="tag move">Some return to bar · others head outside</span>
+            Roughly half the audience drifts back into the bar for a post-show drink. The room reads differently now — the cocktail named <em>The Sekou</em> means something. The neon sign reading <em>Los Angeles</em> means something. Conversations are about the show, the moments, the lines they remember. The bartenders, who've been serving all night, become listeners. The other half of the audience continues toward the exit.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">09</div>
+        <div>
+          <div class="beat-title">Through the door · back into the courtyard</div>
+          <div class="beat-desc">
+            <span class="tag light">Outdoor cooler · string lights still on</span><span class="tag sound">Indoor music fades behind · LA night ambient</span><span class="tag move">Through indoor door · into courtyard</span>
+            Audience passes through the indoor entry door — but in reverse. Coats retrieved. They step back into the outdoor courtyard, now with string lights as the primary illumination, palms swaying, the city's night air. Some linger here for a final conversation under the sky. Others walk the carpet back toward the gate.
+          </div>
+        </div>
+      </div>
+
+      <div class="beat">
+        <div class="beat-num">10</div>
+        <div>
+          <div class="beat-title">Through the gate · back to the city</div>
+          <div class="beat-desc">
+            <span class="tag light">Marquee bulbs · streetlight beyond</span><span class="tag sound">Distant traffic · the actual city</span><span class="tag move">Through the gate · into the parking lot</span>
+            Audience exits through the iron gate they entered through. Behind them, the marquee still glows. Ahead of them: the parking lot, the Arts District street, the 6th Street viaduct in the distance, downtown skyline. The show's argument lands one more time, in real space: <em>this is the city the show was about. You are walking in it now.</em> The closing image of the show is not on a wall — it is the city itself, outside the gate.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============= 04 DESIGN STATE ============= -->
+  <section class="section">
+    <div class="section-head">
+      <div style="display:flex;align-items:baseline;"><span class="section-num">04</span><span class="section-head-title">Design state</span></div>
+      <span class="section-hint">v10 · LOCKED · final layout</span>
+    </div>
+    <div class="section-body">
+      <div class="state-grid">
+        <div class="state-col">
+          <h3>✓ Locked</h3>
+          <ul>
+            <li>Lobby is split into two halves: outdoor courtyard (green, ~3,800 sq ft) at the north end, indoor lounge (blue, ~5,700 sq ft) at the south end</li>
+            <li>Single threshold door connects them, centered in the green/blue wall</li>
+            <li>Street/parking entry: 21.7-ft-wide iron gate at the top of the green courtyard, with marquee overhead</li>
+            <li>Show entry/exit doorway in the middle of the indoor lounge's west wall (= middle of Space 1's east wall)</li>
+            <li>Loop flow: pre-show parking → gate → red carpet → indoor → bar → show; post-show show → gift shop (north or south) → bar (optional) → indoor door → courtyard → gate → parking</li>
+            <li>Red carpet runway lives entirely outdoors, ~75 ft long along the warehouse exterior west wall</li>
+            <li>Step-and-repeat backdrop mounted on the warehouse exterior wall (west wall of courtyard), 12 ft × 30 ft</li>
+            <li>Photo capture moment integrated into outdoor red carpet check-in (feeds the Space 7 Living Mosaic system)</li>
+            <li>Ticket scan station positioned mid-courtyard adjacent to red carpet</li>
+            <li>Souvenir card with QR code given at gate scan or post-photo (gates personalized photo gallery delivery)</li>
+            <li>~64-ft bar shifted east toward the angled wall, with bartenders, a 5-booth VIP section along the chamfered NE wall (velvet rope perimeter, dedicated host stand), and cocktail tables clustered around it</li>
+            <li>Cocktail menu named after show moments and LA neighborhoods</li>
+            <li>Music: jazz/Latin jazz/soul/R&amp;B pre-show; same playlist returns post-show at lower volume; spills from indoor to outdoor</li>
+            <li>Bar walls: existing brick exposed, layered with vintage LA neon signs and B&amp;W photos of real LA neighborhoods</li>
+            <li><strong>Gift shop split into TWO sections — North (~648 sq ft, 27 × 24 ft) and South (~700 sq ft, 28 × 25 ft) — with a ~17-ft walking corridor between them aligned with the show entry/exit doorway</strong></li>
+            <li>North section: photo-print kiosk + show merchandise (first encountered post-show)</li>
+            <li>South section: books by LA voices + goods from LA businesses + cashier + LA neighborhood feature wall</li>
+            <li>Walking corridor preserves direct east-west flow from bar/lounge to show entry; never blocked by retail</li>
+            <li>Aesthetic principle: Old Hollywood premiere glamour layered onto raw Arts District industrial; never disguise the warehouse beneath; outdoor courtyard expresses this with palms+iron+marquee, indoor with brick+velvet+neon</li>
+            <li>Coat check just inside the indoor entry door (shifted slightly east of door)</li>
+            <li>Restrooms use existing infrastructure on the south side of the indoor lounge</li>
+            <li>3 palm trees positioned in the outdoor courtyard along the eastern fence side</li>
+            <li>String lights overhead in the outdoor courtyard</li>
+            <li>Standing audience and bar table positions tested across 150-pax capacity</li>
+          </ul>
+        </div>
+        <div class="state-col">
+          <h3 class="open">○ Still open</h3>
+          <ul>
+            <li>Weather contingency mechanism — retractable canopy, tensile shade, pop-up tent, or move indoors entirely on rain days</li>
+            <li>Iron gate detailing — sliding vs swinging vs double-leaf · marquee typography</li>
+            <li>Outdoor lighting plot — string light layout, uplighting on warehouse exterior, ground accent</li>
+            <li>Outdoor flooring — existing concrete vs new pavers vs polished concrete</li>
+            <li>Outdoor planting palette — palms, jacarandas, succulents, native plants (LA-specific designer)</li>
+            <li>Outdoor cocktail tables — quantity, placement, weather-resistant materials</li>
+            <li>Step-and-repeat key art (graphic design)</li>
+            <li>Souvenir card design and QR-code mechanics (front-end/print + tech workstream)</li>
+            <li>Photographer staffing model — single photographer with DSLR, photo-booth rig, or hybrid</li>
+            <li>Cold-weather plan — patio heaters, outdoor blankets if late-show + chilly nights</li>
+            <li>Final cocktail menu — names + drinks (writer + show composer + bar consultant)</li>
+            <li>Snack/food menu — which LA businesses, which dishes (food consultant + community partners)</li>
+            <li>Vintage neon sign sourcing — real signs vs replicas, which businesses to honor</li>
+            <li>B&amp;W photo curation — which neighborhoods, which photographers, licensing</li>
+            <li>Final gift shop inventory split between N and S sections — supplier agreements, replenishment cadence</li>
+            <li>LA neighborhood feature-wall map for South section — commissioned artist (LA-based)</li>
+            <li>Photo-print kiosk technology in North section — vendor selection, pricing</li>
+            <li>Bar staffing schedule — bartender + waitress count, pre-show vs post-show staffing</li>
+            <li>VIP booth pricing model — included in premium tickets vs separate add-on vs pre-show reservation</li>
+            <li>VIP service model — dedicated server per 2 booths, pre-arranged drink packages, food service to table</li>
+            <li>VIP host workflow — checking guests in at the host stand, escorting to assigned booth</li>
+            <li>Music playlist — final selections (composer)</li>
+            <li>Capacity verification — fire marshal sign-off on 150-pax in the indoor lounge with split shop layout</li>
+            <li>Coat check capacity and workflow during arrival/egress peaks</li>
+            <li>Exterior signage and approach from parking lot</li>
+            <li>Accessibility — wheelchair routes through outdoor courtyard, indoor entry door, walking corridor between shops, all zones</li>
+            <li>Emergency egress paths and capacity (the walking corridor supports egress along with separate bar zone exits)</li>
+            <li>Lighting plot for each zone — separate cues for pre-show, post-show, late-night</li>
+            <li>Acoustic treatment — bar reverb concerns with brick/concrete/metal ceiling</li>
+            <li>HVAC and warmth — keeping the indoor bar comfortable, outdoor courtyard heating in cooler months</li>
+            <li>Cleaning/reset workflow between shows (12 shows/week)</li>
+            <li>Door at green/blue boundary — single vs double, swinging direction, weather-tightness</li>
+            <li>Service/back-of-house entry — confirmed at SE corner of indoor lounge per existing plan</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>If I Awaken in Los Angeles · Scenic Design</span>
+    <span>Lobby &amp; Front of House · v12 · LOCKED · 5-booth VIP section</span>
+  </footer>
+
+</div>
+
+
+
+
+
+</body>
+</html>
