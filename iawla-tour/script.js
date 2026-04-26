@@ -1,126 +1,76 @@
-/* ============================================================
-   IF I AWAKEN IN LOS ANGELES — Investor Tour
-   Navigation, progress, and beats-drawer logic
-   ============================================================ */
-(function () {
-  'use strict';
+/* ==========================================================
+   EXPERIMENT · PROMENADE-WALK
+   Click "Walk forward" to advance to the next stop. The stage
+   photo dollies (scale + pan) into its target zoom for the
+   beat. Each beat is a stop on the path through the show.
+   ========================================================== */
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const navDots = Array.from(document.querySelectorAll('.nav-dot'));
-  const progressEl = document.querySelector('#progress .current');
-  const showMark = document.getElementById('showmark');
-  const total = slides.length;
+(function(){
+  const tour = document.getElementById('tour');
+  const stops = Array.from(document.querySelectorAll('.stop'));
+  const fwdBtn = document.getElementById('walkFwd');
+  const backBtn = document.getElementById('walkBack');
+  const counter = document.getElementById('counter');
+  const total = document.getElementById('total');
+  const where = document.getElementById('where');
 
-  // ---- Track current slide via IntersectionObserver ----
-  let currentIndex = 0;
-  function setCurrent(idx) {
-    if (idx === currentIndex) return;
-    currentIndex = idx;
-    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (progressEl) progressEl.textContent = String(idx + 1).padStart(2, '0');
-    if (showMark) showMark.classList.toggle('visible', idx > 0 && idx < total - 1);
+  let idx = 0;
+  let walking = false;
+
+  total.textContent = String(stops.length).padStart(2,'0');
+
+  // Apply per-stop zoom/pan to each .stage based on data attrs
+  stops.forEach(stop => {
+    const stage = stop.querySelector('.stage');
+    const img = stop.dataset.img;
+    if (img && stage) stage.style.backgroundImage = `url('${img}')`;
+    const zoom = parseFloat(stop.dataset.zoom || '1.0');
+    const cx = parseFloat(stop.dataset.cx || '50');
+    const cy = parseFloat(stop.dataset.cy || '50');
+    stop.style.setProperty('--zoom', zoom);
+    stop.style.setProperty('--bgX', cx + '%');
+    stop.style.setProperty('--bgY', cy + '%');
+  });
+
+  function setStop(i){
+    if (i < 0 || i >= stops.length) return;
+    if (walking) return;
+    walking = true;
+    tour.classList.add('is-walking');
+    fwdBtn.classList.add('is-walking');
+
+    stops.forEach((s,j)=>s.classList.toggle('is-current', j===i));
+    idx = i;
+
+    counter.textContent = String(i+1).padStart(2,'0');
+    where.textContent = stops[i].dataset.where || stops[i].dataset.id;
+
+    backBtn.disabled = i === 0;
+    if (i === stops.length - 1) {
+      fwdBtn.querySelector('.fwd-label').textContent = 'You\'ve arrived';
+      fwdBtn.disabled = true;
+    } else {
+      fwdBtn.querySelector('.fwd-label').textContent = 'Walk forward';
+      fwdBtn.disabled = false;
+    }
+
+    setTimeout(() => {
+      walking = false;
+      tour.classList.remove('is-walking');
+      fwdBtn.classList.remove('is-walking');
+    }, 1400);
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      // Pick the entry most in view
-      let best = null;
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-      }
-      if (best) {
-        const idx = slides.indexOf(best.target);
-        if (idx !== -1) setCurrent(idx);
-      }
-    },
-    { threshold: [0.45, 0.55, 0.65] }
-  );
-  slides.forEach((s) => io.observe(s));
-
-  // ---- Keyboard navigation ----
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(total - 1, idx));
-    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function isDrawerOpen() {
-    return document.querySelector('.drawer.open');
-  }
+  fwdBtn.addEventListener('click', () => setStop(idx + 1));
+  backBtn.addEventListener('click', () => setStop(idx - 1));
 
   document.addEventListener('keydown', (e) => {
-    // Don't intercept if typing in an input or if drawer is open (let Esc close drawer)
-    const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-
-    if (isDrawerOpen()) {
-      if (e.key === 'Escape') closeDrawer();
-      return;
-    }
-
-    switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowRight':
-      case 'PageDown':
-      case ' ':
-        e.preventDefault();
-        goTo(currentIndex + 1);
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-      case 'PageUp':
-        e.preventDefault();
-        goTo(currentIndex - 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(total - 1);
-        break;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){
+      e.preventDefault(); setStop(idx + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){
+      e.preventDefault(); setStop(idx - 1);
     }
   });
 
-  // ---- Side-nav clicks (smooth scroll instead of jumping) ----
-  navDots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
-      e.preventDefault();
-      goTo(i);
-    });
-  });
-
-  // ---- Beat sequence drawers ----
-  const backdrop = document.getElementById('drawer-backdrop');
-
-  function openDrawer(key) {
-    const drawer = document.getElementById('drawer-' + key);
-    if (!drawer) return;
-    drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden', 'false');
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    document.querySelectorAll('.drawer.open').forEach((d) => {
-      d.classList.remove('open');
-      d.setAttribute('aria-hidden', 'true');
-    });
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.querySelectorAll('[data-open-beats]').forEach((btn) => {
-    btn.addEventListener('click', () => openDrawer(btn.dataset.openBeats));
-  });
-  document.querySelectorAll('.drawer-close').forEach((btn) => {
-    btn.addEventListener('click', closeDrawer);
-  });
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
-
-  // Initialize
-  setCurrent(0);
-  navDots.forEach((d, i) => d.classList.toggle('active', i === 0));
+  setStop(0);
 })();
