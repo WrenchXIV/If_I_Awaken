@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <title>If I Awaken in Los Angeles · Investor Tour</title>
+  <title>If I Awaken in Los Angeles · Investor Tour · v3</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=JetBrains+Mono:wght@300;400;500&family=Archivo:wght@300;400;500&display=swap" rel="stylesheet">
@@ -13,196 +13,225 @@
 </head>
 <body>
 
-<div class="experiment-tag">PINNED-SPACES · v2</div>
+<div class="experiment-tag">PINNED-SPACES · v3</div>
 <div class="rail"><div class="rail-fill" id="railFill"></div></div>
 <div class="space-marker" id="spaceMarker">— · —</div>
+
+<!-- ============================================================
+     EDIT TOOLBAR (live edit mode)
+     ============================================================ -->
+<div class="edit-toolbar" id="editToolbar">
+  <div class="et-status" id="etStatus">✏ Edit mode — click any text to change it. Autosaves locally.</div>
+  <button class="et-btn" id="etShow">Show my edits</button>
+  <button class="et-btn et-reset" id="etReset">Reset all</button>
+</div>
+
+<div class="edit-panel" id="editPanel" hidden>
+  <div class="ep-inner">
+    <div class="ep-head">
+      <div class="ep-title">Your edits</div>
+      <button class="ep-close" id="epClose">×</button>
+    </div>
+    <p class="ep-help">Copy this JSON and paste it back to me — I'll commit your changes to source so they stick.</p>
+    <textarea class="ep-text" id="epText" readonly></textarea>
+    <button class="ep-copy" id="epCopy">Copy to clipboard</button>
+  </div>
+</div>
 
 <!-- ============================================================
      COVER
      ============================================================ -->
 <section class="slide cover" data-marker="Cover">
   <div class="cover-inner">
-    <div class="cover-mark">If I Awaken<br>in Los Angeles</div>
-    <div class="cover-credits">Directed by Andrew Scoville · Composed by Derrick Hodge</div>
-    <div class="cover-meta">Arts District Warehouse · Los Angeles · June 2026 — August 2027</div>
+    <div class="cover-mark" data-edit>If I Awaken<br>in Los Angeles</div>
+    <div class="cover-credits" data-edit>Directed by Andrew Scoville · Composed by Derrick Hodge</div>
+    <div class="cover-meta" data-edit>Arts District Warehouse · Los Angeles · June 2026 — August 2027</div>
     <div class="scroll-hint">Scroll ↓</div>
   </div>
 </section>
 
-<!-- ============================================================
-     OPENING 1 · THE VISION
-     ============================================================ -->
+<!-- VISION -->
 <section class="slide vision" data-marker="The Vision">
   <div class="vision-inner">
-    <div class="eyebrow">The argument</div>
-    <p class="vision-text">
+    <div class="eyebrow" data-edit>The argument</div>
+    <p class="vision-text" data-edit>
       Los Angeles has spent a century selling itself as a billboard.
       <em>If I Awaken in Los Angeles</em> is the show that walks behind the sign —
       through Boyle Heights and Koreatown, Leimert Park and Laurel Canyon, Filipinotown and the South Central church —
       and finds the city the postcards never printed.
     </p>
-    <p class="vision-tagline"><em>The real LA is not on the hill.<br>It's in this room.</em></p>
+    <p class="vision-tagline" data-edit><em>The real LA is not on the hill.<br>It's in this room.</em></p>
   </div>
 </section>
 
-<!-- ============================================================
-     OPENING 2 · WHY THE DESIGN MATTERS
-     ============================================================ -->
+<!-- WHY THE DESIGN MATTERS -->
 <section class="slide why-design" data-marker="Why the Design">
   <div class="why-inner">
-    <div class="eyebrow">Why the scenic spend</div>
-    <h2>The room is the show.</h2>
-    <p class="why-lead">
+    <div class="eyebrow" data-edit>Why the scenic spend</div>
+    <h2 data-edit>The room is the show.</h2>
+    <p class="why-lead" data-edit>
       Every dollar of scenic design goes into something the audience walks <em>through</em>, not past.
       Seven distinct neighborhoods, built once and inhabited for fourteen months.
     </p>
     <div class="why-grid">
       <div class="why-stat">
-        <div class="why-num">7</div>
-        <div class="why-lab">Built environments — each its own neighborhood, its own scenic language, its own crowd geometry.</div>
+        <div class="why-num" data-edit>7</div>
+        <div class="why-lab" data-edit>Built environments — each its own neighborhood, scenic language, crowd geometry.</div>
       </div>
       <div class="why-stat">
-        <div class="why-num">110<span class="unit">ft</span></div>
-        <div class="why-lab">LED wall in Space 01 — the longest single video surface in any LA immersive production.</div>
+        <div class="why-num" data-edit>110<span class="unit">ft</span></div>
+        <div class="why-lab" data-edit>LED wall in Space 01 — the longest single video surface in any LA immersive production.</div>
       </div>
       <div class="why-stat">
-        <div class="why-num">150</div>
-        <div class="why-lab">Audience members per show, walking through together. The crowd is part of the staging.</div>
+        <div class="why-num" data-edit>150</div>
+        <div class="why-lab" data-edit>Audience members per show, walking through together. The crowd is part of the staging.</div>
       </div>
       <div class="why-stat">
-        <div class="why-num">14<span class="unit">mo</span></div>
-        <div class="why-lab">Run length. The build amortizes over hundreds of performances, not a single tour stop.</div>
+        <div class="why-num" data-edit>14<span class="unit">mo</span></div>
+        <div class="why-lab" data-edit>Run length. The build amortizes over hundreds of performances, not a single tour stop.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     LOBBY (single intro slide)
-     ============================================================ -->
-<section class="slide lobby-slide" data-marker="Lobby · Pre-show" style="--bg-img:url('images/lobby-redcarpet.jpg')">
+<!-- LOBBY · ARRIVAL (image cropped via object-position) -->
+<section class="slide lobby-slide" data-marker="Lobby · Arrival">
+  <img class="lobby-bg" src="images/lobby-redcarpet.jpg" alt="">
   <div class="lobby-veil"></div>
   <div class="lobby-inner">
-    <div class="eyebrow">Front-of-house · Pre-show</div>
-    <h2 class="lobby-title">The arrival</h2>
-    <p class="lobby-body">
-      Thirty minutes before curtain, the audience steps off the street into a Hollywood premiere,
-      then drifts into a brick-and-velvet bar that already feels like the after-party.
+    <div class="eyebrow" data-edit>Front-of-house · Pre-show · Zone 01</div>
+    <h2 class="lobby-title" data-edit>The arrival</h2>
+    <p class="lobby-body" data-edit>
+      Thirty minutes before curtain, the audience steps off the street into a Hollywood premiere —
+      75 feet of red carpet, a step-and-repeat backdrop, palm trees and string lights, marquee bulbs overhead.
+      Every guest is photographed on entry. Those images return at the very end of the show.
     </p>
   </div>
 </section>
 
-<!-- ============================================================
-     SPACE 01 — Hollywood Boulevard
-     Phases: warehouse → plan + intro → photo + clustered beats
-     ============================================================ -->
+<!-- BAR & LOUNGE (new) -->
+<section class="slide lobby-slide bar-slide" data-marker="Lobby · Bar & Lounge">
+  <img class="lobby-bg" src="images/lobby-bar.jpg" alt="">
+  <div class="lobby-veil"></div>
+  <div class="lobby-inner">
+    <div class="eyebrow" data-edit>Front-of-house · Pre-show · Zone 02</div>
+    <h2 class="lobby-title" data-edit>The bar &amp; lounge</h2>
+    <p class="lobby-body" data-edit>
+      A 64-foot bar along the south wall. Sixteen stools. Vintage LA neon. Framed black-and-white neighborhood photographs.
+      Tufted leather booths and a five-booth VIP section under brass stanchions.
+      <em>Audiences are impressed before the show even starts.</em>
+    </p>
+  </div>
+</section>
+
+<!-- SPACE 01 -->
 <section class="space" data-space="01" data-marker="Space 01 · Hollywood Blvd">
   <div class="space-pin-wrap" data-clusters="2">
     <div class="space-stage">
 
-      <!-- PHASE 1: Warehouse -->
       <div class="phase phase-warehouse" data-phase="warehouse">
-        <div class="phase-eyebrow">Where you are in the venue</div>
+        <div class="phase-eyebrow" data-edit>Where you are in the venue</div>
         <div class="phase-warehouse-body">
-          <div class="warehouse-svg-wrap">
-            <!-- WAREHOUSE SVG (lit-01) injected by JS via class -->
-            __WAREHOUSE_SVG__
-          </div>
+          <div class="warehouse-svg-wrap"></div>
           <div class="warehouse-caption">
-            <div class="warehouse-caption-num">01</div>
-            <div class="warehouse-caption-name">Hollywood Boulevard</div>
-            <div class="warehouse-caption-where">Right edge of the show floor — a tall narrow corridor running north-south, anchoring the entire LED wall.</div>
+            <div class="warehouse-caption-num" data-edit>01</div>
+            <div class="warehouse-caption-name" data-edit>Hollywood Boulevard</div>
+            <div class="warehouse-caption-where" data-edit>Right edge of the show floor — a tall narrow corridor running north-south, anchoring the entire LED wall.</div>
           </div>
         </div>
       </div>
 
-      <!-- PHASE 2: Plan + intro -->
       <div class="phase phase-plan" data-phase="plan">
         <div class="phase-plan-body">
-          <div class="plan-svg-wrap">
-            __PLAN_SVG_01__
-          </div>
+          <div class="plan-svg-wrap"></div>
           <div class="plan-text">
-            <div class="phase-eyebrow">Space 01</div>
-            <h2 class="plan-title">Hollywood Boulevard</h2>
-            <p class="plan-sub"><em>Hollywood Boulevard as a wide, shallow stage. The audience stands on the Walk of Fame. The wall is the street. The tour begins — and then breaks open.</em></p>
+            <div class="phase-eyebrow" data-edit>Space 01</div>
+            <h2 class="plan-title" data-edit>Hollywood Boulevard</h2>
+            <p class="plan-sub" data-edit><em>Hollywood Boulevard as a wide, shallow stage. The audience stands on the Walk of Fame. The wall is the street. The tour begins — and then breaks open.</em></p>
             <div class="plan-why">
-              <div class="plan-why-eyebrow">What makes it important</div>
-              <div class="plan-why-h">The sidewalk is alive.</div>
-              <p>The five dancers arrive in Space 1 costumed as tourists — cameras, maps, fanny packs, phones held high. They greet and direct the audience at arrival, move through the sidewalk as Sekou speaks, and after the blackout, return in a line for the opening dance number. <em>We are all tourists here, until the show decides we aren't anymore.</em></p>
+              <div class="plan-why-eyebrow" data-edit>What makes it important</div>
+              <div class="plan-why-h" data-edit>The sidewalk is alive.</div>
+              <p data-edit>Five dancers arrive costumed as tourists — cameras, maps, fanny packs, phones held high. They greet and direct the audience at arrival, move through the sidewalk as Sekou speaks, and after the blackout, return in a line for the opening dance number. <em>We are all tourists here, until the show decides we aren't anymore.</em></p>
             </div>
             <div class="plan-meta">
-              <div><span class="m-lab">Footprint</span> ~62 × 110 ft</div>
-              <div><span class="m-lab">LED wall</span> 110 ft × 14 ft</div>
-              <div><span class="m-lab">Audience</span> ~100, along the wall</div>
-              <div><span class="m-lab">Live</span> Tour Guide + 5 dancers</div>
+              <div><span class="m-lab">Footprint</span> <span data-edit>~62 × 110 ft</span></div>
+              <div><span class="m-lab">LED wall</span> <span data-edit>110 ft × 14 ft</span></div>
+              <div><span class="m-lab">Audience</span> <span data-edit>150, along the wall</span></div>
+              <div><span class="m-lab">Live</span> <span data-edit>Tour Guide + 5 dancers</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PHASE 3: Photo + beats clusters -->
       <div class="phase phase-photo" data-phase="photo" style="background-image:url('images/space1-hero.jpg')">
         <div class="photo-veil"></div>
         <div class="photo-id">
-          <div class="phase-eyebrow">Story · Space 01</div>
-          <h3>Hollywood Boulevard · the moments</h3>
+          <div class="phase-eyebrow" data-edit>Story · Space 01</div>
+          <h3 data-edit>Hollywood Boulevard · the moments</h3>
         </div>
 
         <div class="cluster" data-cluster="0">
           <div class="cluster-beats">
-            <div class="beat-card">
-              <div class="bc-num">01</div>
-              <div class="bc-cue">House up · Tourists greet</div>
-              <h4>Arrival</h4>
-              <p>Five dancers, costumed as tourists, greet the audience at the door. Without a word: we're all tourists here.</p>
+            <div class="beat-card" data-stagger="0">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>01</div>
+              <div class="bc-cue" data-edit>House up · Tourists greet</div>
+              <h4 data-edit>Arrival</h4>
+              <p data-edit>Five dancers, costumed as tourists, greet the audience at the door. Without a word: we're all tourists here.</p>
             </div>
-            <div class="beat-card">
-              <div class="bc-num">02</div>
-              <div class="bc-cue">Spot · TCL Chinese Theatre</div>
-              <h4>Sekou enters</h4>
-              <p><em>"Welcome aboard, folks!"</em> The wall pushes in on the pagoda facade. <em>Hollywood Swinging</em>.</p>
+            <div class="beat-card" data-stagger="1">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>02</div>
+              <div class="bc-cue" data-edit>Spot · TCL Chinese Theatre</div>
+              <h4 data-edit>Sekou enters</h4>
+              <p data-edit><em>"Welcome aboard, folks!"</em> The wall pushes in on the pagoda facade. <em>Hollywood Swinging</em>.</p>
             </div>
-            <div class="beat-card">
-              <div class="bc-num">03</div>
-              <div class="bc-cue">Walk of Fame → Capitol → Sign</div>
-              <h4>Landmarks cycle</h4>
-              <p>The LED moves through landmark POVs. The tourists react in character — sidewalk full of life.</p>
+            <div class="beat-card" data-stagger="2">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>03</div>
+              <div class="bc-cue" data-edit>Walk of Fame → Capitol → Sign</div>
+              <h4 data-edit>Landmarks cycle</h4>
+              <p data-edit>The LED moves through landmark POVs. The tourists react in character — sidewalk full of life.</p>
             </div>
-            <div class="beat-card">
-              <div class="bc-num">04</div>
-              <div class="bc-cue">Mellow · Street-level faces</div>
-              <h4>The pivot</h4>
-              <p>Music softens. <em>"Look deeper."</em> Real faces — fruit vendor, auditioning woman. Cameras drop.</p>
+            <div class="beat-card" data-stagger="3">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>04</div>
+              <div class="bc-cue" data-edit>Mellow · Street-level faces</div>
+              <h4 data-edit>The pivot</h4>
+              <p data-edit>Music softens. <em>"Look deeper."</em> Real faces — fruit vendor, auditioning woman. Cameras drop.</p>
             </div>
           </div>
         </div>
 
         <div class="cluster" data-cluster="1">
           <div class="cluster-beats">
-            <div class="beat-card">
-              <div class="bc-num">05</div>
-              <div class="bc-cue">Pavement → Soil → Roots</div>
-              <h4>The descent</h4>
-              <p><em>"Past the pavement, down into the very soil."</em> Concrete cracks. Earth. Roots. The tourists stand still.</p>
+            <div class="beat-card" data-stagger="0">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>05</div>
+              <div class="bc-cue" data-edit>Pavement → Soil → Roots</div>
+              <h4 data-edit>The descent</h4>
+              <p data-edit><em>"Past the pavement, down into the very soil."</em> Concrete cracks. Earth. Roots. The tourists stand still.</p>
             </div>
-            <div class="beat-card">
-              <div class="bc-num">06</div>
-              <div class="bc-cue">Dark · Silence</div>
-              <h4>Blackout</h4>
-              <p>LED wall goes black. The room holds a beat. The tour is over.</p>
+            <div class="beat-card" data-stagger="1">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>06</div>
+              <div class="bc-cue" data-edit>Dark · Silence</div>
+              <h4 data-edit>Blackout</h4>
+              <p data-edit>LED wall goes black. The room holds a beat. The tour is over.</p>
             </div>
-            <div class="beat-card">
-              <div class="bc-num">07</div>
-              <div class="bc-cue">Lights up · Dance · Video</div>
-              <h4>The number</h4>
-              <p>Five tourist-dancers revealed in a line along the sidewalk. Video, audio, movement — the wall is the set.</p>
+            <div class="beat-card" data-stagger="2">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>07</div>
+              <div class="bc-cue" data-edit>Lights up · Dance · Video</div>
+              <h4 data-edit>The number</h4>
+              <p data-edit>Five tourist-dancers revealed in a line. Video, audio, movement — the wall is the set.</p>
             </div>
-            <div class="beat-card">
-              <div class="bc-num">08</div>
-              <div class="bc-cue">Wash · Path lit</div>
-              <h4>To the tunnel</h4>
-              <p>Tour Guide returns. <em>"Follow me…"</em> A lit path draws the audience left, into the transition tunnel.</p>
+            <div class="beat-card" data-stagger="3">
+              <button class="bc-del" title="Delete this beat">×</button>
+              <div class="bc-num" data-edit>08</div>
+              <div class="bc-cue" data-edit>Wash · Path lit</div>
+              <h4 data-edit>To the tunnel</h4>
+              <p data-edit>Tour Guide returns. <em>"Follow me…"</em> A lit path draws the audience left, into the transition tunnel.</p>
             </div>
           </div>
         </div>
@@ -212,150 +241,88 @@
   </div>
 </section>
 
-<!-- ============================================================
-     SPACE 02 — Boyle Heights
-     ============================================================ -->
+<!-- SPACE 02 -->
 <section class="space" data-space="02" data-marker="Space 02 · Boyle Heights">
   <div class="space-pin-wrap" data-clusters="3">
     <div class="space-stage">
 
-      <!-- PHASE 1: Warehouse -->
       <div class="phase phase-warehouse" data-phase="warehouse">
-        <div class="phase-eyebrow">Where you are in the venue</div>
+        <div class="phase-eyebrow" data-edit>Where you are in the venue</div>
         <div class="phase-warehouse-body">
-          <div class="warehouse-svg-wrap">
-            __WAREHOUSE_SVG__
-          </div>
+          <div class="warehouse-svg-wrap"></div>
           <div class="warehouse-caption">
-            <div class="warehouse-caption-num">02</div>
-            <div class="warehouse-caption-name">Boyle Heights</div>
-            <div class="warehouse-caption-where">Bottom-right of the show floor — adjacent to Space 01, opening into the central courtyard via a row of tianguis stalls.</div>
+            <div class="warehouse-caption-num" data-edit>02</div>
+            <div class="warehouse-caption-name" data-edit>Boyle Heights</div>
+            <div class="warehouse-caption-where" data-edit>Bottom-right of the show floor — adjacent to Space 01, opening into the central courtyard via a row of tianguis stalls.</div>
           </div>
         </div>
       </div>
 
-      <!-- PHASE 2: Plan + intro -->
       <div class="phase phase-plan" data-phase="plan">
         <div class="phase-plan-body">
-          <div class="plan-svg-wrap">
-            __PLAN_SVG_02__
-          </div>
+          <div class="plan-svg-wrap"></div>
           <div class="plan-text">
-            <div class="phase-eyebrow">Space 02</div>
-            <h2 class="plan-title">Boyle Heights</h2>
-            <p class="plan-sub"><em>A warehouse tianguis. Scenic elements grow larger as they move out from a central Courtyard ringed with stone tables. Youth sings from the band stage; elder walks in from the mural wall. They meet in the middle.</em></p>
+            <div class="phase-eyebrow" data-edit>Space 02</div>
+            <h2 class="plan-title" data-edit>Boyle Heights</h2>
+            <p class="plan-sub" data-edit><em>A warehouse tianguis. Scenic elements grow larger as they move out from a central Courtyard ringed with stone tables. Youth sings from the band stage; elder walks in from the mural wall. They meet in the middle.</em></p>
             <div class="plan-why">
-              <div class="plan-why-eyebrow">What makes it important</div>
-              <div class="plan-why-h">A courtyard with a horizon.</div>
-              <p>Audience enters from the bottom-right, led through a row of tianguis stalls until they land in <em>The Courtyard</em> — a central plaza ringed by six stone tables. The band stage sits to their north; the mural wall is their horizon. Scenic graduates outward — smallest in the center, largest at the edges — so sight lines stay clean. Audience faces north for the youth poet, then turns 180° to face the elder.</p>
+              <div class="plan-why-eyebrow" data-edit>What makes it important</div>
+              <div class="plan-why-h" data-edit>A courtyard with a horizon.</div>
+              <p data-edit>Audience enters from the bottom-right, led through tianguis stalls until they land in The Courtyard — a central plaza ringed by six stone tables. The band stage sits to their north; the mural wall is their horizon. Audience faces north for the youth poet, then turns 180° to face the elder.</p>
             </div>
             <div class="plan-meta">
-              <div><span class="m-lab">Footprint</span> ~62 × 62 ft</div>
-              <div><span class="m-lab">Audience</span> 150, in the round</div>
-              <div><span class="m-lab">Band stage</span> 20 ft dia · 5-piece jazz</div>
-              <div><span class="m-lab">Live</span> Tour Guide · Youth + Elder Poets · Band</div>
+              <div><span class="m-lab">Footprint</span> <span data-edit>~62 × 62 ft</span></div>
+              <div><span class="m-lab">Audience</span> <span data-edit>150, in the round</span></div>
+              <div><span class="m-lab">Band stage</span> <span data-edit>20 ft dia · 5-piece jazz</span></div>
+              <div><span class="m-lab">Live</span> <span data-edit>Tour Guide · Youth + Elder Poets · Band</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PHASE 3: Photo + beats clusters -->
       <div class="phase phase-photo" data-phase="photo" style="background-image:url('images/space2-hero.jpg')">
         <div class="photo-veil"></div>
         <div class="photo-id">
-          <div class="phase-eyebrow">Story · Space 02</div>
-          <h3>Boyle Heights · the moments</h3>
+          <div class="phase-eyebrow" data-edit>Story · Space 02</div>
+          <h3 data-edit>Boyle Heights · the moments</h3>
         </div>
 
         <div class="cluster" data-cluster="0">
           <div class="cluster-beats">
-            <div class="beat-card">
-              <div class="bc-num">01</div>
-              <div class="bc-cue">Procession · Warm wash</div>
-              <h4>The tunnel opens</h4>
-              <p>Audience emerges into the east aisle. Smell the tianguis before they see it — spice, carne asada, cilantro.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">02</div>
-              <div class="bc-cue">Scenic walk · Dancers as vendors</div>
-              <h4>Through the market</h4>
-              <p><em>"Welcome to Boyle Heights! Home of El Mercadito."</em> Five tianguis stalls, each vendor a dancer in costume.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">03</div>
-              <div class="bc-cue">Settle · Plaza wash</div>
-              <h4>The Courtyard</h4>
-              <p>Six stone tables ring the space. The band plays quietly to the north. A warm wash holds the square.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">04</div>
-              <div class="bc-cue">Tour Guide live</div>
-              <h4>The speech</h4>
-              <p><em>"You are now standing in the epicenter of LA's Chicano culture. From San Vicente &amp; La Cienaga…"</em></p>
-            </div>
+            <div class="beat-card" data-stagger="0"><button class="bc-del">×</button><div class="bc-num" data-edit>01</div><div class="bc-cue" data-edit>Procession · Warm wash</div><h4 data-edit>The tunnel opens</h4><p data-edit>Audience emerges into the east aisle. Smell the tianguis before they see it — spice, carne asada, cilantro.</p></div>
+            <div class="beat-card" data-stagger="1"><button class="bc-del">×</button><div class="bc-num" data-edit>02</div><div class="bc-cue" data-edit>Scenic walk · Dancers as vendors</div><h4 data-edit>Through the market</h4><p data-edit><em>"Welcome to Boyle Heights! Home of El Mercadito."</em> Five tianguis stalls, each vendor a dancer in costume.</p></div>
+            <div class="beat-card" data-stagger="2"><button class="bc-del">×</button><div class="bc-num" data-edit>03</div><div class="bc-cue" data-edit>Settle · Plaza wash</div><h4 data-edit>The Courtyard</h4><p data-edit>Six stone tables ring the space. The band plays quietly to the north. A warm wash holds the square.</p></div>
+            <div class="beat-card" data-stagger="3"><button class="bc-del">×</button><div class="bc-num" data-edit>04</div><div class="bc-cue" data-edit>Tour Guide live</div><h4 data-edit>The speech</h4><p data-edit><em>"You are now standing in the epicenter of LA's Chicano culture."</em></p></div>
           </div>
         </div>
 
         <div class="cluster" data-cluster="1">
           <div class="cluster-beats">
-            <div class="beat-card">
-              <div class="bc-num">05</div>
-              <div class="bc-cue">Voice · Spot snaps up</div>
-              <h4>The reveal</h4>
-              <p>From behind: <em>"You mean San Vicente and La Cienaga."</em> Spot up on the band stage — the Youth Poet has been there all along.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">06</div>
-              <div class="bc-cue">Spot tightens · Billboards live</div>
-              <h4>Youth on the stage</h4>
-              <p>Band softens. Two billboards alive — Mariachi Square, Van Nuys, the 210 curving through the hills.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">07</div>
-              <div class="bc-cue">Blackout on poet · Held silence</div>
-              <h4>Her spot goes out</h4>
-              <p><em>"We sprouted from the soil / And the soil remembers / Us."</em> Spot snaps out. A beat of silence.</p>
-            </div>
+            <div class="beat-card" data-stagger="0"><button class="bc-del">×</button><div class="bc-num" data-edit>05</div><div class="bc-cue" data-edit>Voice · Spot snaps up</div><h4 data-edit>The reveal</h4><p data-edit>From behind: <em>"You mean San Vicente and La Cienaga."</em> Spot up on the band stage — the Youth Poet has been there all along.</p></div>
+            <div class="beat-card" data-stagger="1"><button class="bc-del">×</button><div class="bc-num" data-edit>06</div><div class="bc-cue" data-edit>Spot tightens · Billboards live</div><h4 data-edit>Youth on the stage</h4><p data-edit>Band softens. Two billboards alive — Mariachi Square, Van Nuys, the 210 curving through the hills.</p></div>
+            <div class="beat-card" data-stagger="2"><button class="bc-del">×</button><div class="bc-num" data-edit>07</div><div class="bc-cue" data-edit>Blackout on poet · Held silence</div><h4 data-edit>Her spot goes out</h4><p data-edit><em>"We sprouted from the soil / And the soil remembers / Us."</em> Spot snaps out. A beat of silence.</p></div>
           </div>
         </div>
 
         <div class="cluster" data-cluster="2">
           <div class="cluster-beats">
-            <div class="beat-card">
-              <div class="bc-num">08</div>
-              <div class="bc-cue">Voice from mural · Audience 180°</div>
-              <h4>Voice from the south</h4>
-              <p>From the mural wall: <em>"Los Angeles is a tianguis…"</em> The audience turns. The Elder Poet at the base of the mural.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">09</div>
-              <div class="bc-cue">Elder walks · Lights chase</div>
-              <h4>The elder walks in</h4>
-              <p>The Elder names elements as he passes. Lowrider lights up. Stalls glow. Merchandise catches color.</p>
-            </div>
-            <div class="beat-card">
-              <div class="bc-num">10</div>
-              <div class="bc-cue">Audience parts · Youth descends</div>
-              <h4>Final words</h4>
-              <p>Audience parts. Youth Poet steps down. Elder delivers the final lines from the center — surrounded.</p>
-            </div>
+            <div class="beat-card" data-stagger="0"><button class="bc-del">×</button><div class="bc-num" data-edit>08</div><div class="bc-cue" data-edit>Voice from mural · Audience 180°</div><h4 data-edit>Voice from the south</h4><p data-edit>From the mural wall: <em>"Los Angeles is a tianguis…"</em> The audience turns. The Elder Poet at the base of the mural.</p></div>
+            <div class="beat-card" data-stagger="1"><button class="bc-del">×</button><div class="bc-num" data-edit>09</div><div class="bc-cue" data-edit>Elder walks · Lights chase</div><h4 data-edit>The elder walks in</h4><p data-edit>The Elder names elements as he passes. Lowrider lights up. Stalls glow. Merchandise catches color.</p></div>
+            <div class="beat-card" data-stagger="2"><button class="bc-del">×</button><div class="bc-num" data-edit>10</div><div class="bc-cue" data-edit>Audience parts · Youth descends</div><h4 data-edit>Final words</h4><p data-edit>Audience parts. Youth Poet steps down. Elder delivers the final lines from the center — surrounded.</p></div>
           </div>
         </div>
 
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     BOW
-     ============================================================ -->
+<!-- BOW -->
 <section class="slide bow" data-marker="Bow">
   <div class="bow-inner">
-    <div class="bow-tagline"><em>The real LA<br>is in this room.</em></div>
+    <div class="bow-tagline" data-edit><em>The real LA<br>is in this room.</em></div>
     <div class="bow-rule"></div>
-    <div class="bow-contact">
+    <div class="bow-contact" data-edit>
       If I Awaken in Los Angeles<br>
       <a href="mailto:producer@example.com">producer@example.com</a><br>
       Andrew Scoville · Derrick Hodge<br>
