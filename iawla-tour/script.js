@@ -1,126 +1,115 @@
-/* ============================================================
-   IF I AWAKEN IN LOS ANGELES — Investor Tour
-   Navigation, progress, and beats-drawer logic
-   ============================================================ */
-(function () {
-  'use strict';
+/* ==========================================================
+   EXPERIMENT · CURTAIN-REVEAL
+   - Active beat shows curtain-down by default.
+   - Drag up on the curtain to lift it (or click for instant lift).
+   - Once lifted, "Continue" button appears; click → next beat.
+   ========================================================== */
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const navDots = Array.from(document.querySelectorAll('.nav-dot'));
-  const progressEl = document.querySelector('#progress .current');
-  const showMark = document.getElementById('showmark');
-  const total = slides.length;
+(function(){
+  const beats = Array.from(document.querySelectorAll('.beat'));
+  const counter = document.getElementById('counter');
+  let idx = 0;
 
-  // ---- Track current slide via IntersectionObserver ----
-  let currentIndex = 0;
-  function setCurrent(idx) {
-    if (idx === currentIndex) return;
-    currentIndex = idx;
-    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (progressEl) progressEl.textContent = String(idx + 1).padStart(2, '0');
-    if (showMark) showMark.classList.toggle('visible', idx > 0 && idx < total - 1);
+  // Apply per-beat background image
+  beats.forEach(beat => {
+    const img = beat.dataset.img;
+    const bg = beat.querySelector('.beat-bg');
+    if (img && bg && !bg.classList.contains('blackout')){
+      bg.style.backgroundImage = `url('${img}')`;
+    }
+  });
+
+  function updateCounter(){
+    counter.textContent = `${String(idx+1).padStart(2,'0')} / ${String(beats.length).padStart(2,'0')}`;
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      // Pick the entry most in view
-      let best = null;
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-      }
-      if (best) {
-        const idx = slides.indexOf(best.target);
-        if (idx !== -1) setCurrent(idx);
-      }
-    },
-    { threshold: [0.45, 0.55, 0.65] }
-  );
-  slides.forEach((s) => io.observe(s));
-
-  // ---- Keyboard navigation ----
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(total - 1, idx));
-    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function setActive(i){
+    if (i < 0 || i >= beats.length) return;
+    beats[idx].classList.remove('is-revealed');
+    // reset curtain transform
+    const oldCurtain = beats[idx].querySelector('.curtain');
+    if (oldCurtain) oldCurtain.style.transform = '';
+    beats.forEach((b,j)=>b.classList.toggle('is-active', j===i));
+    idx = i;
+    updateCounter();
+    // If beat has no curtain, mark as revealed so continue is shown
+    if (beats[i].dataset.noCurtain) beats[i].classList.add('is-revealed');
   }
 
-  function isDrawerOpen() {
-    return document.querySelector('.drawer.open');
+  function reveal(beat){
+    beat.classList.add('is-revealed');
   }
+
+  // Continue button
+  document.querySelectorAll('.continue-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setActive(idx + 1);
+    });
+  });
+
+  // Curtain interaction: click to lift, or drag-up
+  beats.forEach(beat => {
+    const curtain = beat.querySelector('.curtain');
+    if (!curtain) return;
+
+    let dragging = false;
+    let startY = 0;
+    let dy = 0;
+
+    curtain.addEventListener('click', (e) => {
+      if (Math.abs(dy) > 10) return; // ignore if it was a drag
+      reveal(beat);
+    });
+
+    function start(y){
+      if (beat.classList.contains('is-revealed')) return;
+      dragging = true;
+      startY = y;
+      dy = 0;
+      curtain.classList.add('is-dragging');
+    }
+    function move(y){
+      if (!dragging) return;
+      dy = y - startY;
+      const t = Math.min(0, dy);  // only allow upward
+      curtain.style.transform = `translateY(${t}px)`;
+    }
+    function end(){
+      if (!dragging) return;
+      dragging = false;
+      curtain.classList.remove('is-dragging');
+      const liftedFar = Math.abs(dy) > window.innerHeight * 0.18;
+      curtain.style.transform = '';
+      if (liftedFar) reveal(beat);
+    }
+
+    curtain.addEventListener('mousedown', e => start(e.clientY));
+    window.addEventListener('mousemove', e => move(e.clientY));
+    window.addEventListener('mouseup', end);
+
+    curtain.addEventListener('touchstart', e => start(e.touches[0].clientY), {passive:true});
+    window.addEventListener('touchmove', e => move(e.touches[0].clientY), {passive:true});
+    window.addEventListener('touchend', end);
+  });
 
   document.addEventListener('keydown', (e) => {
-    // Don't intercept if typing in an input or if drawer is open (let Esc close drawer)
-    const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-
-    if (isDrawerOpen()) {
-      if (e.key === 'Escape') closeDrawer();
-      return;
-    }
-
-    switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowRight':
-      case 'PageDown':
-      case ' ':
-        e.preventDefault();
-        goTo(currentIndex + 1);
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-      case 'PageUp':
-        e.preventDefault();
-        goTo(currentIndex - 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(total - 1);
-        break;
-    }
-  });
-
-  // ---- Side-nav clicks (smooth scroll instead of jumping) ----
-  navDots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
+    if (e.key === 'ArrowUp' || e.key === ' '){
       e.preventDefault();
-      goTo(i);
-    });
+      const cur = beats[idx];
+      if (!cur.classList.contains('is-revealed')) reveal(cur);
+      else setActive(idx + 1);
+    } else if (e.key === 'ArrowRight' || e.key === 'PageDown'){
+      e.preventDefault();
+      const cur = beats[idx];
+      if (!cur.classList.contains('is-revealed')) reveal(cur);
+      else setActive(idx + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){
+      e.preventDefault();
+      setActive(idx - 1);
+    }
   });
 
-  // ---- Beat sequence drawers ----
-  const backdrop = document.getElementById('drawer-backdrop');
-
-  function openDrawer(key) {
-    const drawer = document.getElementById('drawer-' + key);
-    if (!drawer) return;
-    drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden', 'false');
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    document.querySelectorAll('.drawer.open').forEach((d) => {
-      d.classList.remove('open');
-      d.setAttribute('aria-hidden', 'true');
-    });
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.querySelectorAll('[data-open-beats]').forEach((btn) => {
-    btn.addEventListener('click', () => openDrawer(btn.dataset.openBeats));
-  });
-  document.querySelectorAll('.drawer-close').forEach((btn) => {
-    btn.addEventListener('click', closeDrawer);
-  });
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
-
-  // Initialize
-  setCurrent(0);
-  navDots.forEach((d, i) => d.classList.toggle('active', i === 0));
+  // Init
+  if (beats[0].dataset.noCurtain) beats[0].classList.add('is-revealed');
+  updateCounter();
 })();
