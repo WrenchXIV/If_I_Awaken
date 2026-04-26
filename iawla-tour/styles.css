@@ -1,15 +1,14 @@
 /* ==========================================================
-   EXPERIMENT · PINNED-SPACES
-   The space photo locks center-screen as you scroll. Beats
-   fade in/out over it. When the last beat is past, the space
-   releases and the next one takes over.
+   PINNED-SPACES · v2 — investor edition
+   Per-space flow: warehouse → plan + intro → beats clusters
    ========================================================== */
 
 :root{
   --bg:#0a0908; --bg-panel:#110f0d; --bg-elev:#181512;
   --gold:#d4a24c; --gold-bright:#f0c674; --gold-soft:rgba(212,162,76,.14);
   --ink:#ece4d4; --ink-dim:#a89c84; --ink-faint:#5a5340;
-  --rule:#2a2420;
+  --rule:#2a2420; --rule-soft:#1a1612;
+  --pink:#e89ab0; --orange:#e07856; --blue:#6ec6ff;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --sans:'Archivo',system-ui,sans-serif;
@@ -19,13 +18,13 @@
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);color:var(--ink);font-family:var(--sans);
-  font-weight:300;-webkit-font-smoothing:antialiased;
+  font-weight:300;-webkit-font-smoothing:antialiased;letter-spacing:.005em;
 }
-
-img{display:block;max-width:100%}
+img,svg{display:block;max-width:100%}
 a{color:var(--gold);text-decoration:none}
 a:hover{color:var(--gold-bright)}
 em{color:var(--gold-bright);font-style:italic}
+button{background:none;border:none;color:inherit;font:inherit;cursor:pointer}
 
 /* ----- chrome ----- */
 .experiment-tag{
@@ -50,12 +49,24 @@ em{color:var(--gold-bright);font-style:italic}
   text-transform:uppercase;
 }
 
+/* ----- shared utilities ----- */
+.eyebrow, .phase-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.28em;
+  color:var(--gold);text-transform:uppercase;
+}
+
 /* ==========================================================
-   COVER
+   SLIDE — single-viewport sections
    ========================================================== */
+.slide{
+  min-height:100vh;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;padding:8vh 6vw;
+}
+
+/* ----- COVER ----- */
 .cover{
-  height:100vh;display:flex;align-items:center;justify-content:center;
-  text-align:center;position:relative;
+  text-align:center;
   background:radial-gradient(ellipse at center,#1a1410 0%,var(--bg) 70%);
 }
 .cover::before{
@@ -66,7 +77,7 @@ em{color:var(--gold-bright);font-style:italic}
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at center,rgba(10,9,8,.4) 0%,rgba(10,9,8,.94) 100%);
 }
-.cover-inner{position:relative;z-index:1;padding:0 6vw}
+.cover-inner{position:relative;z-index:1}
 .cover-mark{
   font-family:var(--serif);font-style:italic;font-weight:500;
   font-size:clamp(48px,8vw,124px);line-height:.95;letter-spacing:-.02em;
@@ -87,109 +98,86 @@ em{color:var(--gold-bright);font-style:italic}
 }
 @keyframes pulse{0%,100%{opacity:.4;transform:translate(-50%,0)}50%{opacity:1;transform:translate(-50%,4px)}}
 
-/* ==========================================================
-   SPACE — pinned scroll
-   Each pinned space is tall (per beat: 90vh) so we scroll
-   through it. The .space-stage is sticky inside .pin-wrap,
-   which means it stays put while .beats below scrolls past.
-   ========================================================== */
-.space{position:relative}
-.space.pinned{}
-.pin-wrap{
-  position:relative;
+/* ----- VISION (slide 2) ----- */
+.vision{background:var(--bg)}
+.vision::before{
+  content:'';position:absolute;inset:0;
+  background:url('images/space5-hero.jpg') center/cover;opacity:.16;
 }
-
-.space-stage{
-  position:sticky;top:0;
-  height:100vh;width:100%;
-  background-size:cover;background-position:center;
-  z-index:1;overflow:hidden;
+.vision::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,9,8,.6) 0%,rgba(10,9,8,.5) 50%,rgba(10,9,8,.92) 100%);
 }
-.space-stage-veil{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(10,9,8,.55) 0%,rgba(10,9,8,.78) 100%);
+.vision-inner{
+  position:relative;z-index:1;max-width:980px;
 }
-.space-id{
-  position:absolute;left:6vw;top:6vh;z-index:2;
-  font-family:var(--mono);font-size:11px;letter-spacing:.28em;
-  color:var(--gold);text-transform:uppercase;
-}
-.space-id-name{
-  position:absolute;left:6vw;top:calc(6vh + 26px);z-index:2;
-  font-family:var(--serif);font-style:italic;font-size:clamp(40px,5vw,72px);
-  font-weight:500;color:var(--ink);max-width:80vw;line-height:1;
-}
-
-/* Beats column overlays the sticky stage and scrolls.
-   Negative top margin pulls beats into the same scroll height as the stage. */
-.beats{
-  position:relative;z-index:2;
-  margin-top:-100vh;            /* sit on top of sticky stage */
-  display:flex;flex-direction:column;
-  padding-top:60vh;              /* first beat positioned in lower-half of viewport */
-}
-.beat{
-  min-height:90vh;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:0 6vw 12vh;
-  max-width:780px;
-  opacity:.18;
-  transform:translateY(20px);
-  transition:opacity .6s ease, transform .6s ease;
-}
-.beat.is-in{opacity:1;transform:none}
-.beat-num{
-  font-family:var(--mono);font-size:42px;letter-spacing:-.02em;
-  color:var(--gold);font-weight:300;line-height:1;
-  -webkit-text-stroke:0;
-}
-.beat-cue{
-  margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;
-  color:var(--gold);text-transform:uppercase;
-}
-.beat h3{
-  margin-top:18px;font-family:var(--serif);font-style:italic;
-  font-size:clamp(36px,4.5vw,56px);font-weight:500;line-height:1.05;
+.vision-text{
+  margin-top:28px;font-family:var(--serif);font-weight:400;
+  font-size:clamp(24px,2.6vw,40px);line-height:1.4;letter-spacing:-.01em;
   color:var(--ink);
 }
-.beat p{
-  margin-top:18px;font-size:clamp(16px,1.4vw,19px);line-height:1.65;
-  color:var(--ink);
-  text-shadow:0 1px 12px rgba(0,0,0,.5);
+.vision-tagline{
+  margin-top:48px;padding-top:32px;border-top:1px solid var(--rule);
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:clamp(28px,3.2vw,48px);line-height:1.2;
+  color:var(--gold-bright);
 }
 
-/* ==========================================================
-   LOBBY (single, non-pinned slide)
-   ========================================================== */
-.lobby-space{
-  height:100vh;position:relative;overflow:hidden;
-  display:flex;align-items:flex-end;
+/* ----- WHY THE DESIGN MATTERS ----- */
+.why-design{background:var(--bg)}
+.why-design::before{
+  content:'';position:absolute;inset:0;
+  background:url('images/space7-hero.jpg') center/cover;opacity:.12;
 }
-.lobby-space .space-stage{
-  position:absolute;inset:0;z-index:0;height:100%;
+.why-design::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,9,8,.7) 0%,rgba(10,9,8,.92) 100%);
 }
-.lobby-space .space-content{
-  position:relative;z-index:2;padding:0 6vw 12vh;max-width:760px;
+.why-inner{position:relative;z-index:1;max-width:1200px;width:100%}
+.why-design h2{
+  margin-top:18px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(40px,5vw,72px);line-height:1.05;color:var(--ink);
 }
-.space-eyebrow{
-  font-family:var(--mono);font-size:11px;letter-spacing:.28em;
-  color:var(--gold);text-transform:uppercase;
+.why-lead{
+  margin-top:24px;max-width:760px;
+  font-family:var(--serif);font-weight:400;font-size:clamp(18px,1.7vw,24px);
+  line-height:1.5;color:var(--ink-dim);
 }
-.space-title{
-  margin-top:22px;font-family:var(--serif);font-style:italic;
-  font-size:clamp(48px,6vw,84px);font-weight:500;line-height:1;
+.why-lead em{color:var(--gold-bright)}
+.why-grid{
+  margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--rule);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
 }
-.space-body{
-  margin-top:24px;font-size:clamp(17px,1.5vw,21px);line-height:1.6;
-  color:var(--ink);
+.why-stat{background:var(--bg);padding:28px 24px;display:flex;flex-direction:column;gap:14px}
+.why-num{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(56px,6vw,80px);line-height:1;color:var(--gold-bright);
+}
+.why-num .unit{font-size:.4em;color:var(--gold);margin-left:4px;letter-spacing:.05em}
+.why-lab{font-size:13px;line-height:1.55;color:var(--ink-dim)}
+
+/* ----- LOBBY SLIDE ----- */
+.lobby-slide{
+  align-items:flex-end;justify-content:flex-start;padding:0;
+  background:var(--bg-img,none) center/cover var(--bg);
+}
+.lobby-slide::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,9,8,.4) 0%,rgba(10,9,8,.9) 100%);
+}
+.lobby-veil{display:none}
+.lobby-inner{position:relative;z-index:1;padding:0 6vw 14vh;max-width:760px}
+.lobby-title{
+  margin-top:22px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(48px,6vw,84px);line-height:1;color:var(--ink);
+}
+.lobby-body{
+  margin-top:24px;font-size:clamp(17px,1.5vw,21px);line-height:1.6;color:var(--ink);
 }
 
-/* ==========================================================
-   BOW
-   ========================================================== */
+/* ----- BOW ----- */
 .bow{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  text-align:center;position:relative;
+  text-align:center;
   background:radial-gradient(ellipse at center,#1a1410 0%,var(--bg) 70%);
 }
 .bow::before{
@@ -201,20 +189,201 @@ em{color:var(--gold-bright);font-style:italic}
   background:radial-gradient(ellipse at center,rgba(10,9,8,.5) 0%,rgba(10,9,8,.96) 100%);
 }
 .bow-inner{position:relative;z-index:1;padding:0 6vw}
-.bow-tagline{
-  font-family:var(--serif);font-style:italic;font-size:clamp(40px,6vw,80px);
-  color:var(--ink);line-height:1.1;
-}
+.bow-tagline{font-family:var(--serif);font-style:italic;
+  font-size:clamp(40px,6vw,80px);color:var(--ink);line-height:1.1}
 .bow-rule{width:80px;height:1px;background:var(--gold);margin:48px auto}
-.bow-contact{
-  font-family:var(--mono);font-size:12px;letter-spacing:.15em;
-  color:var(--ink-dim);line-height:2.4;text-transform:uppercase;
+.bow-contact{font-family:var(--mono);font-size:12px;letter-spacing:.15em;
+  color:var(--ink-dim);line-height:2.4;text-transform:uppercase}
+
+/* ==========================================================
+   SPACE — multi-phase pinned section
+   Each .space-pin-wrap is tall; .space-stage stays sticky.
+   JS toggles which .phase is active based on scroll progress.
+   ========================================================== */
+.space{position:relative}
+.space-pin-wrap{
+  position:relative;
+  /* Default: 2 clusters → ~5 viewports total. Per-space override via JS. */
+  min-height:500vh;
+}
+.space-pin-wrap[data-clusters="2"]{min-height:450vh}
+.space-pin-wrap[data-clusters="3"]{min-height:550vh}
+
+.space-stage{
+  position:sticky;top:0;
+  height:100vh;width:100%;overflow:hidden;
+  background:var(--bg);
 }
 
-@media (max-width:720px){
-  .beat{padding-left:6vw;padding-right:6vw}
-  .beat-num{font-size:32px}
-  .beat h3{font-size:32px}
-  .beat p{font-size:15px}
-  .space-id-name{font-size:32px}
+/* All phases stack at top:0; only is-active is visible */
+.phase{
+  position:absolute;inset:0;
+  opacity:0;visibility:hidden;
+  transition:opacity .8s ease, visibility 0s linear .8s;
+  display:flex;flex-direction:column;
+  padding:8vh 5vw 6vh;
+}
+.phase.is-active{
+  opacity:1;visibility:visible;z-index:2;
+  transition:opacity .8s ease;
+}
+
+/* ----- PHASE 1: WAREHOUSE ----- */
+.phase-warehouse{justify-content:center}
+.phase-warehouse-body{
+  display:grid;grid-template-columns:1.7fr 1fr;gap:48px;align-items:center;
+  max-width:1500px;margin:0 auto;width:100%;
+}
+.warehouse-svg-wrap{position:relative}
+.warehouse-svg{width:100%;height:auto;max-height:78vh}
+.warehouse-caption{padding-left:8px;border-left:1px solid var(--rule)}
+.warehouse-caption-num{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(56px,6vw,84px);line-height:1;color:var(--gold-bright);
+}
+.warehouse-caption-name{
+  margin-top:6px;font-family:var(--serif);font-style:italic;
+  font-size:clamp(28px,2.6vw,40px);line-height:1.1;color:var(--ink);
+}
+.warehouse-caption-where{
+  margin-top:24px;padding-top:18px;border-top:1px solid var(--rule);
+  font-size:15px;line-height:1.6;color:var(--ink-dim);max-width:380px;
+}
+.phase-warehouse .phase-eyebrow{
+  position:absolute;top:6vh;left:5vw;
+}
+
+/* WAREHOUSE SVG — active-space highlight */
+.warehouse-svg .ws-rect{transition:fill .4s ease, stroke .4s ease, stroke-width .4s ease}
+.warehouse-svg .ws-num,
+.warehouse-svg .ws-name{transition:fill .4s ease}
+.warehouse-svg .ws-space.is-lit .ws-rect{
+  fill:rgba(212,162,76,.18);stroke:var(--gold-bright);stroke-width:1.6;
+}
+.warehouse-svg .ws-space.is-lit .ws-num,
+.warehouse-svg .ws-space.is-lit .ws-name{fill:var(--gold-bright)}
+.warehouse-svg .ws-space.is-lit .ws-rect{
+  filter:drop-shadow(0 0 8px rgba(212,162,76,.5));
+}
+
+/* ----- PHASE 2: PLAN ----- */
+.phase-plan{justify-content:center}
+.phase-plan-body{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+  max-width:1500px;margin:0 auto;width:100%;
+}
+.plan-svg-wrap{position:relative}
+.plan-svg-wrap svg{width:100%;height:auto;max-height:78vh}
+.plan-text{max-width:560px}
+.plan-title{
+  margin-top:14px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(40px,4.5vw,64px);line-height:1;color:var(--ink);
+}
+.plan-sub{
+  margin-top:20px;font-family:var(--serif);font-weight:400;
+  font-size:clamp(16px,1.4vw,20px);line-height:1.55;color:var(--ink-dim);
+}
+.plan-sub em{color:var(--gold-bright)}
+.plan-why{
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--rule);
+}
+.plan-why-eyebrow{
+  font-family:var(--mono);font-size:10px;letter-spacing:.28em;
+  color:var(--gold);text-transform:uppercase;
+}
+.plan-why-h{
+  margin-top:10px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(22px,2vw,28px);line-height:1.2;color:var(--ink);
+}
+.plan-why p{
+  margin-top:14px;font-size:14px;line-height:1.65;color:var(--ink-dim);
+}
+.plan-meta{
+  margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;
+  padding-top:20px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;color:var(--ink-dim);
+}
+.plan-meta .m-lab{
+  display:block;font-size:9px;letter-spacing:.22em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:2px;
+}
+
+/* ----- PHASE 3: PHOTO + BEAT CLUSTERS ----- */
+.phase-photo{
+  background-size:cover;background-position:center;
+  padding:0;
+}
+.photo-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,9,8,.55) 0%,rgba(10,9,8,.86) 100%);
+}
+.photo-id{
+  position:absolute;top:6vh;left:5vw;z-index:3;
+}
+.photo-id h3{
+  margin-top:8px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(22px,2vw,30px);color:var(--ink);
+}
+
+/* Cluster — fades in/out as scroll progresses */
+.cluster{
+  position:absolute;inset:0;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  padding:14vh 5vw 6vh;
+  opacity:0;visibility:hidden;
+  transition:opacity .7s ease, visibility 0s linear .7s;
+}
+.cluster.is-active{
+  opacity:1;visibility:visible;
+  transition:opacity .7s ease;
+}
+.cluster-beats{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px 24px;
+  max-width:1280px;width:100%;
+}
+.beat-card{
+  background:rgba(10,9,8,.62);backdrop-filter:blur(10px);
+  border:1px solid rgba(212,162,76,.15);border-radius:4px;
+  padding:18px 22px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.bc-num{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  color:var(--gold);font-weight:400;
+}
+.bc-cue{
+  font-family:var(--mono);font-size:10px;letter-spacing:.22em;
+  color:var(--ink-faint);text-transform:uppercase;
+}
+.beat-card h4{
+  margin-top:6px;font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:clamp(20px,1.8vw,26px);line-height:1.05;color:var(--ink);
+}
+.beat-card p{
+  font-size:13px;line-height:1.55;color:var(--ink);
+}
+.beat-card em{color:var(--gold-bright)}
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+@media (max-width:900px){
+  .phase-warehouse-body, .phase-plan-body{
+    grid-template-columns:1fr;gap:24px;
+  }
+  .warehouse-svg, .plan-svg-wrap svg{max-height:48vh}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .cluster-beats{grid-template-columns:1fr;gap:12px}
+  .beat-card{padding:14px 16px}
+  .beat-card p{font-size:12px}
+}
+@media (max-width:600px){
+  .vision-text{font-size:20px}
+  .vision-tagline{font-size:24px}
+  .why-design h2{font-size:32px}
+  .cover-mark{font-size:48px}
+  .plan-title{font-size:32px}
+  .warehouse-caption-num{font-size:48px}
+  .phase{padding:6vh 5vw 4vh}
+  .photo-id h3{font-size:18px}
 }
