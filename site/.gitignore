@@ -7,3 +7,9 @@ dist
 .vscode
 .idea
 *.log
+
+# Image and audio assets are mirrored from the repo root at build time
+# (see scripts/sync-assets.mjs). Source of truth lives in /Interactive Tour
+# and /tour audio at the repo root.
+public/images/
+public/audio/

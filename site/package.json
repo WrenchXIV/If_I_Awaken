@@ -4,10 +4,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/sync-assets.mjs && node scripts/extract-content.mjs",
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/sync-assets.mjs && node scripts/extract-content.mjs",
     "build": "astro build",
     "preview": "astro preview",
+    "extract": "node scripts/extract-content.mjs",
+    "sync-assets": "node scripts/sync-assets.mjs",
     "astro": "astro"
   },
   "dependencies": {
