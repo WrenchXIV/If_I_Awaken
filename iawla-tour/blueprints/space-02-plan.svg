@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 720 720" width="2160" height="2160" aria-label="Space 02 plan">
+  <rect x="-40" y="-40" width="720" height="720" fill="#0a0908"/>
+  <defs>
+    <linearGradient id="muralGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e07856" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#c85f38" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#e07856" stop-opacity="0.6"/>
+    </linearGradient>
+    <marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><polygon points="0 0, 8 4, 0 8" fill="#f0c674"/></marker>
+  </defs>
+  <rect x="40" y="40" width="560" height="560" fill="#1a0f08" stroke="#e07856" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <rect x="40" y="40" width="560" height="14" fill="url(#muralGrad)"/>
+  <text x="320" y="33" fill="#e07856" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="3" text-anchor="middle">SOUTH MURAL WALL</text>
+  <text x="560" y="100" fill="#5a5245" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" text-anchor="middle">N</text>
+  <line x1="560" y1="104" x2="560" y2="120" stroke="#5a5245" stroke-width="0.5"/>
+  <path d="M 630 570 L 605 570" stroke="#f0c674" stroke-width="2" fill="none" marker-end="url(#ar2)"/>
+  <text x="625" y="560" fill="#f0c674" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1" text-anchor="end">ENTRY</text>
+
+  <g transform="translate(320,340)">
+    <circle cx="0" cy="0" r="135" fill="#2a1a10" stroke="#a89b82" stroke-width="1" stroke-dasharray="3,4" opacity="0.8"/>
+    <text x="0" y="5" fill="#a89b82" font-family="Playfair Display, serif" font-size="16" font-style="italic" text-anchor="middle">The Courtyard</text>
+    <text x="0" y="22" fill="#a89b82" font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="2" text-anchor="middle">~150 PAX</text>
+  </g>
+  <g transform="translate(40,40)">
+    <circle cx="0" cy="0" r="80" fill="#2a2018" stroke="#f0c674" stroke-width="2"/>
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#f0c674" stroke-width="0.5" stroke-dasharray="2,3" opacity="0.7"/>
+    <text x="0" y="-100" fill="#f0c674" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="2" text-anchor="middle">BAND STAGE</text>
+  </g>
+
+  <g fill="#a89070">
+    <circle cx="405" cy="340" r="14"/><circle cx="362" cy="414" r="14"/><circle cx="278" cy="414" r="14"/>
+    <circle cx="235" cy="340" r="14"/><circle cx="278" cy="266" r="14"/><circle cx="362" cy="266" r="14"/>
+  </g>
+  <g fill="#c8a078">
+    <circle cx="405" cy="340" r="8"/><circle cx="362" cy="414" r="8"/><circle cx="278" cy="414" r="8"/>
+    <circle cx="235" cy="340" r="8"/><circle cx="278" cy="266" r="8"/><circle cx="362" cy="266" r="8"/>
+  </g>
+
+  <rect x="215" y="165" width="55" height="28" fill="#1a1208" stroke="#6ec6ff" stroke-width="1.5"/>
+  <text x="242" y="184" fill="#6ec6ff" font-family="JetBrains Mono, monospace" font-size="6" letter-spacing="1" text-anchor="middle">BILLBOARD</text>
+  <rect x="370" y="165" width="55" height="28" fill="#1a1208" stroke="#6ec6ff" stroke-width="1.5"/>
+  <text x="397" y="184" fill="#6ec6ff" font-family="JetBrains Mono, monospace" font-size="6" letter-spacing="1" text-anchor="middle">BILLBOARD</text>
+
+  <rect x="55" y="140" width="42" height="36" fill="#5a4030"/><rect x="55" y="136" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+  <rect x="55" y="260" width="42" height="36" fill="#5a4030"/><rect x="55" y="256" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+  <rect x="55" y="380" width="42" height="36" fill="#5a4030"/><rect x="55" y="376" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+  <rect x="55" y="500" width="42" height="36" fill="#5a4030"/><rect x="55" y="496" width="42" height="5" fill="#c85f38" opacity="0.7"/>
+  <text x="76" y="190" fill="#c85f38" font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1" text-anchor="middle">STALLS</text>
+
+  <g transform="translate(320,490)">
+    <ellipse cx="0" cy="8" rx="55" ry="5" fill="#000" opacity="0.5"/>
+    <path d="M -50 0 Q -50 -16 -40 -18 L 40 -18 Q 50 -16 50 0 Z" fill="#8a2a2a"/>
+    <path d="M -40 -18 L -20 -26 L 20 -26 L 40 -18" fill="#6a1a1a"/>
+    <circle cx="-28" cy="6" r="7" fill="#0a0908"/><circle cx="28" cy="6" r="7" fill="#0a0908"/>
+    <text x="0" y="26" fill="#c8583a" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="2" text-anchor="middle">LOWRIDER</text>
+  </g>
+  <g transform="translate(135,220)">
+    <rect x="-22" y="-14" width="44" height="28" fill="#c85f38"/>
+    <polygon points="-22,-14 22,-14 28,-22 -28,-22" fill="#8a4a30"/>
+    <text x="0" y="22" fill="#c85f38" font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1" text-anchor="middle">TACOS</text>
+  </g>
+  <g transform="translate(80,80)">
+    <circle cx="0" cy="0" r="14" fill="#e89ab0" stroke="#0a0908" stroke-width="2"/>
+    <text x="0" y="36" fill="#e89ab0" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2" text-anchor="middle">YOUTH POET</text>
+  </g>
+  <g transform="translate(320,75)">
+    <circle cx="0" cy="0" r="14" fill="#a066c2" stroke="#0a0908" stroke-width="2"/>
+    <text x="0" y="36" fill="#a066c2" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2" text-anchor="middle">ELDER POET</text>
+  </g>
+  <g transform="translate(500,465)">
+    <line x1="28" y1="18" x2="-28" y2="-18" stroke="#f0c674" stroke-width="3" stroke-linecap="round" marker-end="url(#ar2)"/>
+    <text x="0" y="40" fill="#f0c674" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3" text-anchor="middle">AUDIENCE</text>
+  </g>
+</svg>
