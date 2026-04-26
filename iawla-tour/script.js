@@ -1,126 +1,67 @@
-/* ============================================================
-   IF I AWAKEN IN LOS ANGELES — Investor Tour
-   Navigation, progress, and beats-drawer logic
-   ============================================================ */
-(function () {
-  'use strict';
+/* ==========================================================
+   EXPERIMENT · PINNED-SPACES
+   - Track scroll progress (top rail).
+   - Update space-name marker based on which space is visible.
+   - Mark the beat closest to viewport center as `.is-in`
+     so it fades in over the pinned stage.
+   ========================================================== */
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const navDots = Array.from(document.querySelectorAll('.nav-dot'));
-  const progressEl = document.querySelector('#progress .current');
-  const showMark = document.getElementById('showmark');
-  const total = slides.length;
+(function(){
+  const railFill = document.getElementById('railFill');
+  const marker   = document.getElementById('spaceMarker');
+  const beats    = Array.from(document.querySelectorAll('.beat'));
+  const spaces   = Array.from(document.querySelectorAll('[data-space-name]'));
 
-  // ---- Track current slide via IntersectionObserver ----
-  let currentIndex = 0;
-  function setCurrent(idx) {
-    if (idx === currentIndex) return;
-    currentIndex = idx;
-    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (progressEl) progressEl.textContent = String(idx + 1).padStart(2, '0');
-    if (showMark) showMark.classList.toggle('visible', idx > 0 && idx < total - 1);
+  let ticking = false;
+  function onScroll(){
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const pct  = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+      railFill.style.width = pct + '%';
+
+      // active beat = nearest to viewport mid
+      const mid = window.innerHeight / 2;
+      let bestBeat = null, bestBeatDist = Infinity;
+      beats.forEach(b => {
+        const r = b.getBoundingClientRect();
+        const c = r.top + r.height / 2;
+        const d = Math.abs(c - mid);
+        if (d < bestBeatDist){ bestBeatDist = d; bestBeat = b; }
+      });
+      beats.forEach(b => b.classList.toggle('is-in', b === bestBeat));
+
+      // active space marker = the one most occupying the viewport
+      let bestSpace = null, bestSpaceArea = 0;
+      spaces.forEach(s => {
+        const r = s.getBoundingClientRect();
+        const top = Math.max(0, r.top);
+        const bot = Math.min(window.innerHeight, r.bottom);
+        const area = Math.max(0, bot - top);
+        if (area > bestSpaceArea){ bestSpaceArea = area; bestSpace = s; }
+      });
+      if (bestSpace && marker) marker.textContent = bestSpace.dataset.spaceName;
+
+      ticking = false;
+    });
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      // Pick the entry most in view
-      let best = null;
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-      }
-      if (best) {
-        const idx = slides.indexOf(best.target);
-        if (idx !== -1) setCurrent(idx);
-      }
-    },
-    { threshold: [0.45, 0.55, 0.65] }
-  );
-  slides.forEach((s) => io.observe(s));
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  onScroll();
 
-  // ---- Keyboard navigation ----
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(total - 1, idx));
-    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function isDrawerOpen() {
-    return document.querySelector('.drawer.open');
-  }
-
+  // Keyboard nav: jump beat-to-beat
   document.addEventListener('keydown', (e) => {
-    // Don't intercept if typing in an input or if drawer is open (let Esc close drawer)
-    const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-
-    if (isDrawerOpen()) {
-      if (e.key === 'Escape') closeDrawer();
-      return;
-    }
-
-    switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowRight':
-      case 'PageDown':
-      case ' ':
-        e.preventDefault();
-        goTo(currentIndex + 1);
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-      case 'PageUp':
-        e.preventDefault();
-        goTo(currentIndex - 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(total - 1);
-        break;
-    }
-  });
-
-  // ---- Side-nav clicks (smooth scroll instead of jumping) ----
-  navDots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){
       e.preventDefault();
-      goTo(i);
-    });
+      const cur = beats.findIndex(b => b.classList.contains('is-in'));
+      const target = beats[Math.min(beats.length-1, cur+1)] || beats[beats.length-1];
+      if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp'){
+      e.preventDefault();
+      const cur = beats.findIndex(b => b.classList.contains('is-in'));
+      const target = beats[Math.max(0, cur-1)] || beats[0];
+      if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
+    }
   });
-
-  // ---- Beat sequence drawers ----
-  const backdrop = document.getElementById('drawer-backdrop');
-
-  function openDrawer(key) {
-    const drawer = document.getElementById('drawer-' + key);
-    if (!drawer) return;
-    drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden', 'false');
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    document.querySelectorAll('.drawer.open').forEach((d) => {
-      d.classList.remove('open');
-      d.setAttribute('aria-hidden', 'true');
-    });
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.querySelectorAll('[data-open-beats]').forEach((btn) => {
-    btn.addEventListener('click', () => openDrawer(btn.dataset.openBeats));
-  });
-  document.querySelectorAll('.drawer-close').forEach((btn) => {
-    btn.addEventListener('click', closeDrawer);
-  });
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
-
-  // Initialize
-  setCurrent(0);
-  navDots.forEach((d, i) => d.classList.toggle('active', i === 0));
 })();
