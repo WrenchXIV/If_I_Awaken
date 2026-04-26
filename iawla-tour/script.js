@@ -1,126 +1,206 @@
-/* ============================================================
-   IF I AWAKEN IN LOS ANGELES — Investor Tour
-   Navigation, progress, and beats-drawer logic
-   ============================================================ */
-(function () {
-  'use strict';
+/* ==========================================================
+   EXPERIMENT · EMBODIED-CUES
+   Each beat declares a gesture (tap/hold/drag/wait/none). The
+   beat completes only when the gesture is performed; only then
+   does "Continue" enable in the ribbon.
+   ========================================================== */
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const navDots = Array.from(document.querySelectorAll('.nav-dot'));
-  const progressEl = document.querySelector('#progress .current');
-  const showMark = document.getElementById('showmark');
-  const total = slides.length;
+(function(){
+  const beats = Array.from(document.querySelectorAll('.beat'));
+  const counterEl = document.getElementById('counter');
+  const totalEl = document.getElementById('total');
+  const nextBtn = document.getElementById('next');
+  const backBtn = document.getElementById('back');
+  let idx = 0;
 
-  // ---- Track current slide via IntersectionObserver ----
-  let currentIndex = 0;
-  function setCurrent(idx) {
-    if (idx === currentIndex) return;
-    currentIndex = idx;
-    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (progressEl) progressEl.textContent = String(idx + 1).padStart(2, '0');
-    if (showMark) showMark.classList.toggle('visible', idx > 0 && idx < total - 1);
+  totalEl.textContent = String(beats.length).padStart(2,'0');
+
+  // Apply per-beat bg image
+  beats.forEach(beat => {
+    const img = beat.dataset.img;
+    const bg = beat.querySelector('.bg');
+    if (img && bg && !bg.classList.contains('blackout')){
+      bg.style.backgroundImage = `url('${img}')`;
+    }
+  });
+
+  function updateChrome(){
+    counterEl.textContent = String(idx+1).padStart(2,'0');
+    backBtn.disabled = idx === 0;
+    const beat = beats[idx];
+    nextBtn.disabled = !beat.classList.contains('beat-revealed');
+    nextBtn.textContent = idx === beats.length - 1 ? 'Restart ↺' : 'Continue →';
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      // Pick the entry most in view
-      let best = null;
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+  function setActive(i){
+    if (i < 0 || i >= beats.length) {
+      // wrap-around: restart
+      if (i >= beats.length) i = 0;
+      else return;
+    }
+    beats.forEach((b,j)=>b.classList.toggle('is-active', j===i));
+    idx = i;
+    armGesture(beats[i]);
+    updateChrome();
+  }
+
+  function complete(beat){
+    beat.classList.add('beat-revealed');
+    updateChrome();
+  }
+
+  // ----- gesture: tap -----
+  function armTap(beat){
+    const need = parseInt(beat.dataset.tapCount || '1', 10);
+    const targets = Array.from(beat.querySelectorAll('.tap-target'));
+    let count = 0;
+    // reset
+    targets.forEach(t => t.classList.remove('tapped'));
+    targets.forEach(t => {
+      t.onclick = () => {
+        if (t.classList.contains('tapped')) return;
+        t.classList.add('tapped');
+        count++;
+        if (count >= need) complete(beat);
+      };
+    });
+  }
+
+  // ----- gesture: hold -----
+  function armHold(beat){
+    const need = parseInt(beat.dataset.holdMs || '2400', 10);
+    const zone = beat.querySelector('.g-hold');
+    const fill = beat.querySelector('.hold-fill');
+    let start = 0, raf = null, holding = false;
+
+    function tick(now){
+      if (!holding) return;
+      const p = Math.min(100, ((now - start) / need) * 100);
+      if (fill) fill.style.setProperty('--p', p);
+      if (p >= 100) { stopHold(); complete(beat); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    function startHold(){
+      if (beat.classList.contains('beat-revealed')) return;
+      holding = true; start = performance.now();
+      zone.classList.add('is-holding');
+      raf = requestAnimationFrame(tick);
+    }
+    function stopHold(){
+      holding = false;
+      zone.classList.remove('is-holding');
+      if (raf) cancelAnimationFrame(raf);
+      if (!beat.classList.contains('beat-revealed')) {
+        if (fill) fill.style.setProperty('--p', 0);
       }
-      if (best) {
-        const idx = slides.indexOf(best.target);
-        if (idx !== -1) setCurrent(idx);
-      }
-    },
-    { threshold: [0.45, 0.55, 0.65] }
-  );
-  slides.forEach((s) => io.observe(s));
+    }
 
-  // ---- Keyboard navigation ----
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(total - 1, idx));
-    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    zone.onmousedown = startHold;
+    zone.ontouchstart = (e) => { e.preventDefault(); startHold(); };
+    window.addEventListener('mouseup', stopHold);
+    window.addEventListener('touchend', stopHold);
   }
 
-  function isDrawerOpen() {
-    return document.querySelector('.drawer.open');
-  }
+  // ----- gesture: drag (axis x/y, threshold) -----
+  function armDrag(beat){
+    const axis = beat.dataset.dragAxis || 'x';
+    const need = parseInt(beat.dataset.dragDistance || '300', 10);
+    const apart = beat.dataset.dragDir === 'apart';
 
-  document.addEventListener('keydown', (e) => {
-    // Don't intercept if typing in an input or if drawer is open (let Esc close drawer)
-    const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (apart){
+      const left = beat.querySelector('.k-left');
+      const right = beat.querySelector('.k-right');
+      let lx = 0, rx = 0, dragL = false, dragR = false, sxL = 0, sxR = 0;
 
-    if (isDrawerOpen()) {
-      if (e.key === 'Escape') closeDrawer();
+      const startL = (x) => { dragL = true; sxL = x - lx; };
+      const moveL = (x) => { if (!dragL) return; lx = Math.min(0, x - sxL); left.style.transform = `translateX(${lx}px)`; checkApart(); };
+      const endL = () => { dragL = false; };
+      const startR = (x) => { dragR = true; sxR = x - rx; };
+      const moveR = (x) => { if (!dragR) return; rx = Math.max(0, x - sxR); right.style.transform = `translateX(${rx}px)`; checkApart(); };
+      const endR = () => { dragR = false; };
+      const checkApart = () => {
+        if (Math.abs(lx) + Math.abs(rx) >= need) complete(beat);
+      };
+
+      left.onmousedown = e => startL(e.clientX);
+      right.onmousedown = e => startR(e.clientX);
+      left.ontouchstart = e => startL(e.touches[0].clientX);
+      right.ontouchstart = e => startR(e.touches[0].clientX);
+      window.addEventListener('mousemove', e => { moveL(e.clientX); moveR(e.clientX); });
+      window.addEventListener('touchmove', e => { moveL(e.touches[0].clientX); moveR(e.touches[0].clientX); }, {passive:true});
+      window.addEventListener('mouseup', () => { endL(); endR(); });
+      window.addEventListener('touchend', () => { endL(); endR(); });
       return;
     }
 
-    switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowRight':
-      case 'PageDown':
-      case ' ':
-        e.preventDefault();
-        goTo(currentIndex + 1);
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-      case 'PageUp':
-        e.preventDefault();
-        goTo(currentIndex - 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(total - 1);
-        break;
+    const knob = beat.querySelector('.drag-knob');
+    if (!knob) return;
+    let s = 0, p = 0, dragging = false;
+
+    const startD = (val) => { dragging = true; s = val - p; knob.parentElement.classList.add('is-dragging'); };
+    const moveD = (val) => {
+      if (!dragging) return;
+      p = val - s;
+      if (axis === 'x') knob.style.transform = `translateX(${p}px)`;
+      else knob.style.transform = `translateY(${p}px)`;
+      if (Math.abs(p) >= need) complete(beat);
+    };
+    const endD = () => {
+      dragging = false;
+      if (knob.parentElement) knob.parentElement.classList.remove('is-dragging');
+    };
+
+    knob.onmousedown = e => startD(axis === 'x' ? e.clientX : e.clientY);
+    knob.ontouchstart = e => startD(axis === 'x' ? e.touches[0].clientX : e.touches[0].clientY);
+    window.addEventListener('mousemove', e => moveD(axis === 'x' ? e.clientX : e.clientY));
+    window.addEventListener('touchmove', e => moveD(axis === 'x' ? e.touches[0].clientX : e.touches[0].clientY), {passive:true});
+    window.addEventListener('mouseup', endD);
+    window.addEventListener('touchend', endD);
+  }
+
+  // ----- gesture: wait -----
+  function armWait(beat){
+    const need = parseInt(beat.dataset.waitMs || '3000', 10);
+    const fill = beat.querySelector('.wait-fill');
+    const start = performance.now();
+    function tick(now){
+      const p = Math.min(100, ((now - start) / need) * 100);
+      if (fill) fill.style.width = p + '%';
+      if (p >= 100) complete(beat);
+      else if (beats[idx] === beat) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function armGesture(beat){
+    const g = beat.dataset.gesture;
+    if (g === 'tap') armTap(beat);
+    else if (g === 'hold') armHold(beat);
+    else if (g === 'drag') armDrag(beat);
+    else if (g === 'wait') armWait(beat);
+    else complete(beat);
+  }
+
+  // ----- chrome buttons -----
+  nextBtn.addEventListener('click', () => {
+    if (idx === beats.length - 1) setActive(0);
+    else setActive(idx + 1);
+  });
+  backBtn.addEventListener('click', () => setActive(idx - 1));
+  document.querySelectorAll('.advance').forEach(btn => {
+    btn.addEventListener('click', () => setActive(idx + 1));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || (e.key === ' ' && beats[idx].classList.contains('beat-revealed'))){
+      e.preventDefault();
+      if (!nextBtn.disabled) nextBtn.click();
+    } else if (e.key === 'ArrowLeft'){
+      e.preventDefault();
+      backBtn.click();
     }
   });
 
-  // ---- Side-nav clicks (smooth scroll instead of jumping) ----
-  navDots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
-      e.preventDefault();
-      goTo(i);
-    });
-  });
-
-  // ---- Beat sequence drawers ----
-  const backdrop = document.getElementById('drawer-backdrop');
-
-  function openDrawer(key) {
-    const drawer = document.getElementById('drawer-' + key);
-    if (!drawer) return;
-    drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden', 'false');
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    document.querySelectorAll('.drawer.open').forEach((d) => {
-      d.classList.remove('open');
-      d.setAttribute('aria-hidden', 'true');
-    });
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.querySelectorAll('[data-open-beats]').forEach((btn) => {
-    btn.addEventListener('click', () => openDrawer(btn.dataset.openBeats));
-  });
-  document.querySelectorAll('.drawer-close').forEach((btn) => {
-    btn.addEventListener('click', closeDrawer);
-  });
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
-
-  // Initialize
-  setCurrent(0);
-  navDots.forEach((d, i) => d.classList.toggle('active', i === 0));
+  // Init
+  setActive(0);
 })();
