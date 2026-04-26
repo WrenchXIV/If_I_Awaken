@@ -1,7 +1,7 @@
 import type { SpaceId, SpaceManifestEntry } from '@/types';
 
 export const SPACE_ORDER: SpaceId[] = [
-  'lobby',
+  'lounge',
   'space-1',
   'space-2',
   'space-3',
@@ -12,12 +12,12 @@ export const SPACE_ORDER: SpaceId[] = [
 ];
 
 export const SPACE_MANIFEST: Record<SpaceId, SpaceManifestEntry> = {
-  lobby: {
-    id: 'lobby',
+  lounge: {
+    id: 'lounge',
     index: 0,
-    title: 'The Lobby',
-    shortTitle: 'Lobby',
-    href: '/lobby',
+    title: 'The Lounge',
+    shortTitle: 'Lounge',
+    href: '/lounge',
   },
   'space-1': {
     id: 'space-1',
@@ -76,4 +76,13 @@ export function neighbors(id: SpaceId): { prev?: SpaceId; next?: SpaceId } {
     prev: i > 0 ? SPACE_ORDER[i - 1] : undefined,
     next: i < SPACE_ORDER.length - 1 ? SPACE_ORDER[i + 1] : undefined,
   };
+}
+
+/**
+ * Index → human path label for the progress UI in tour mode.
+ * The Lounge counts as 'Front of house' rather than a numbered room.
+ */
+export function progressLabel(index: number): string {
+  if (index === 0) return 'FOH';
+  return String(index).padStart(2, '0');
 }

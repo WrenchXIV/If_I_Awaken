@@ -1,6 +1,8 @@
 ---
 import TourLayout from '@/layouts/TourLayout.astro';
+import TourModeLayout from '@/layouts/TourModeLayout.astro';
 import Hero from '@/components/Hero.astro';
+import TourHero from '@/components/TourHero.astro';
 import Callout from '@/components/Callout.astro';
 import MetaRow from '@/components/MetaRow.astro';
 import PlanView from '@/components/PlanView.astro';
@@ -9,6 +11,8 @@ import BeatSequence from '@/components/BeatSequence.astro';
 import DesignState from '@/components/DesignState.astro';
 import SpaceFooter from '@/components/SpaceFooter.astro';
 import AudioPlayer from '@/components/AudioPlayer.astro';
+import TourLede from '@/components/TourLede.astro';
+import TourContinue from '@/components/TourContinue.astro';
 import { SPACE_ORDER } from '@/lib/spaces';
 import { getSpace } from '@/lib/content';
 import type { SpaceContent } from '@/types';
@@ -25,19 +29,47 @@ interface Props {
 }
 
 const { space } = Astro.props as Props;
+const tourMode = Astro.url.searchParams.has('tour');
 const pageTitle = `${space.title} — If I Awaken in Los Angeles`;
+const description = (space.summary ?? '').replace(/<[^>]+>/g, '').slice(0, 200);
 ---
 
-<TourLayout title={pageTitle} description={(space.summary ?? '').replace(/<[^>]+>/g, '').slice(0, 200)}>
-  <Hero space={space} />
-  <Callout summary={space.summary} callout={space.callout} />
-  {space.meta && space.meta.length > 0 && <MetaRow meta={space.meta} />}
-  {space.plan && <PlanView plan={space.plan} index={space.index} />}
-  {space.perspectives && space.perspectives.length > 0 && (
-    <PerspectiveGallery images={space.perspectives} />
-  )}
-  {space.beats && space.beats.length > 0 && <BeatSequence beats={space.beats} />}
-  {space.design && <DesignState state={space.design} />}
-  {space.audio && <AudioPlayer src={space.audio.src} label={space.audio.label} />}
-  <SpaceFooter space={space} />
-</TourLayout>
+{tourMode ? (
+  <TourModeLayout title={pageTitle} description={description} space={space}>
+    <TourHero space={space} />
+    <TourLede space={space} />
+    {space.beats && space.beats.length > 0 && <BeatSequence beats={space.beats} />}
+    {space.audio && <AudioPlayer src={space.audio.src} label={space.audio.label} />}
+    <TourContinue space={space} />
+
+    <!-- Hidden by default, expandable design notes for anyone who wants the architect's view -->
+    <details class="mx-auto max-w-[1320px] border-t border-[var(--rule)] bg-paper px-6 py-10 md:px-12">
+      <summary class="kicker cursor-pointer text-ink/65 hover:text-red">
+        View design notes ↓
+      </summary>
+      <div class="mt-8 space-y-0">
+        <Callout summary={space.summary} callout={space.callout} />
+        {space.meta && space.meta.length > 0 && <MetaRow meta={space.meta} />}
+        {space.plan && <PlanView plan={space.plan} index={space.index} />}
+        {space.perspectives && space.perspectives.length > 0 && (
+          <PerspectiveGallery images={space.perspectives} />
+        )}
+        {space.design && <DesignState state={space.design} />}
+      </div>
+    </details>
+  </TourModeLayout>
+) : (
+  <TourLayout title={pageTitle} description={description}>
+    <Hero space={space} />
+    <Callout summary={space.summary} callout={space.callout} />
+    {space.meta && space.meta.length > 0 && <MetaRow meta={space.meta} />}
+    {space.plan && <PlanView plan={space.plan} index={space.index} />}
+    {space.perspectives && space.perspectives.length > 0 && (
+      <PerspectiveGallery images={space.perspectives} />
+    )}
+    {space.beats && space.beats.length > 0 && <BeatSequence beats={space.beats} />}
+    {space.design && <DesignState state={space.design} />}
+    {space.audio && <AudioPlayer src={space.audio.src} label={space.audio.label} />}
+    <SpaceFooter space={space} />
+  </TourLayout>
+)}

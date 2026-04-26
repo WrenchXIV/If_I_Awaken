@@ -15,7 +15,7 @@ const OUT_DIR = resolve(__dirname, '..', 'src', 'data', 'spaces');
 if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
 
 const files = [
-  { id: 'lobby', file: 'Lobby_Design.html', index: 0 },
+  { id: 'lounge', file: 'Lobby_Design.html', index: 0 },
   { id: 'space-1', file: 'Space_1_Design.html', index: 1 },
   { id: 'space-2', file: 'Space_2_Design.html', index: 2 },
   { id: 'space-3', file: 'Space_3_Design.html', index: 3 },
@@ -25,8 +25,15 @@ const files = [
   { id: 'space-7', file: 'Space_7_Design.html', index: 7 },
 ];
 
+// Replace "Lobby" with "Lounge" in the lounge JSON content (image filenames retained verbatim).
+const renames = {
+  lounge: (s) => typeof s === 'string'
+    ? s.replace(/\bLobby\b/g, 'Lounge').replace(/\blobby\b/g, 'lounge')
+    : s,
+};
+
 const heroImageGuess = {
-  lobby: 'Lobby_Design-image1.jpg',
+  lounge: 'Lobby_Design-image1.jpg',
   'space-1': 'Space_1-image1.jpg',
   'space-2': 'Space_2-image2.jpg',
   'space-3': 'Space_3-image1.jpg',
@@ -37,7 +44,7 @@ const heroImageGuess = {
 };
 
 const perspectiveImageGuess = {
-  lobby: ['Lobby_Design-image2.jpg', 'Lobby_Design-image3.jpg'],
+  lounge: ['Lobby_Design-image2.jpg', 'Lobby_Design-image3.jpg'],
   'space-1': ['Space_1-image2.jpg', 'Space_1-image3.jpg'],
   'space-2': ['Space_2-image3.jpg', 'Space_2-image4.jpg', 'Space_2-image5.jpg', 'Space_2-image6.jpg'],
   'space-3': ['Space_3-image2.jpg', 'Space_3-image3.jpg', 'Space_3-image4.jpg', 'Space_3-image5.jpg'],
@@ -49,7 +56,7 @@ const perspectiveImageGuess = {
 
 const AUDIO_DIR = resolve(__dirname, '..', 'public', 'audio');
 const audioCandidates = {
-  lobby: ['Lobby.mp3', 'Lobby.wav', 'Lobby.m4a'],
+  lounge: ['Lounge.mp3', 'Lounge.wav', 'Lounge.m4a', 'Lobby.mp3', 'Lobby.wav', 'Lobby.m4a'],
   'space-1': ['Space1.mp3', 'Space1.wav', 'Space1.m4a'],
   'space-2': ['Space2.mp3', 'Space2.wav', 'Space2.m4a'],
   'space-3': ['Space3.mp3', 'Space3.wav', 'Space3.m4a'],
@@ -313,8 +320,17 @@ for (const { id, file, index } of files) {
     status: status || 'v01',
   };
 
+  // Apply per-id text renames (e.g. Lobby → Lounge for the Lounge page)
+  const renamer = renames[id];
+  const renamed = renamer
+    ? JSON.parse(JSON.stringify(space), (k, v) => {
+        if (k === 'src') return v; // never touch image/audio paths
+        return typeof v === 'string' ? renamer(v) : v;
+      })
+    : space;
+
   const outPath = resolve(OUT_DIR, `${id}.json`);
-  writeFileSync(outPath, JSON.stringify(space, null, 2));
+  writeFileSync(outPath, JSON.stringify(renamed, null, 2));
   console.log(`✓ ${id}.json   (${beats.length} beats, ${meta.length} meta, ${design.locked.length}/${design.stillOpen.length} state)`);
 }
 

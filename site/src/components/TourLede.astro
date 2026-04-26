@@ -1,0 +1,40 @@
+---
+import type { SpaceContent } from '@/types';
+import { TOUR_NARRATION } from '@/data/tour-narration';
+
+export interface Props {
+  space: SpaceContent;
+}
+
+const { space } = Astro.props;
+const narration = TOUR_NARRATION[space.id];
+const indexLabel = space.index === 0 ? 'Front of house' : `Space ${String(space.index).padStart(2, '0')} of 07`;
+---
+
+<section data-block="tour-lede" class="border-b border-[var(--rule)] bg-paper">
+  <div class="mx-auto max-w-[1320px] px-6 py-20 md:px-12 md:py-28">
+    <div class="grid gap-10 md:grid-cols-12">
+      <div class="md:col-span-3">
+        <span class="kicker">{indexLabel}</span>
+      </div>
+      <div class="md:col-span-9">
+        <p
+          class="lede"
+          style="font-size: clamp(28px, 3.6vw, 52px); line-height: 1.18;"
+          data-editable
+          data-block="tour-lede-arrival"
+        >
+          {narration.arrival}
+        </p>
+        <p
+          class="mt-8 max-w-[58ch] text-ink/85"
+          style="font-family: var(--f-serif); font-style: italic; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.45;"
+          data-editable
+          data-block="tour-lede-body"
+        >
+          {narration.body}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

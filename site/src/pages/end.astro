@@ -1,0 +1,60 @@
+---
+import TourModeLayout from '@/layouts/TourModeLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<TourModeLayout title="End of show — If I Awaken in Los Angeles">
+  <section class="relative isolate w-full overflow-hidden bg-dark-bg text-on-dark" style="min-height: 92vh;">
+    <img
+      src={`${base}/images/Space_7-image2.jpg`}
+      alt="The Living Mosaic"
+      class="absolute inset-0 h-full w-full object-cover"
+      style="object-position: 50% 50%; filter: brightness(0.45) contrast(1.1);"
+      loading="eager"
+    />
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.4) 35%, rgba(0,0,0,0.95) 100%);"></div>
+
+    <div class="relative mx-auto flex min-h-[92vh] max-w-[1320px] flex-col justify-between px-6 py-12 md:px-12 md:py-20">
+      <div>
+        <span class="kicker text-red">End of show</span>
+      </div>
+
+      <div class="max-w-[28ch] space-y-8">
+        <h1 class="display text-on-dark" style="font-size: clamp(58px, 9vw, 168px);" data-editable>
+          The lights come up<span class="text-red">.</span>
+        </h1>
+        <p
+          class="lede max-w-[60ch] text-on-dark/85"
+          style="font-size: clamp(22px, 2.6vw, 34px); line-height: 1.3;"
+          data-editable
+        >
+          You walk back out the way you came. The warehouse exhales behind you. Somewhere a friend you don't know yet is keeping a photo of your face in their phone.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 border-t border-[var(--on-dark-rule)] pt-8">
+        <a
+          href={`${base}/`}
+          class="group inline-flex items-center gap-3 border-2 border-on-dark px-6 py-3 uppercase tracking-[0.22em] text-on-dark hover:border-red hover:text-red"
+          style="font-family: var(--f-display); font-size: 14px; font-weight: 600;"
+        >
+          ← Back to the master plan
+        </a>
+        <a
+          href="https://www.ifiawakeninla.com"
+          class="group inline-flex items-center gap-3 bg-red px-6 py-3 uppercase tracking-[0.22em] text-paper hover:bg-red-deep"
+          style="font-family: var(--f-display); font-size: 14px; font-weight: 600;"
+        >
+          View the pitch deck
+          <span class="inline-block transition-transform group-hover:translate-x-1">→</span>
+        </a>
+        <a
+          href={`${base}/space-7?tour=1`}
+          class="text-xs uppercase tracking-[0.28em] text-on-dark/55 hover:text-on-dark"
+        >
+          ↺ Stay in Space 7
+        </a>
+      </div>
+    </div>
+  </section>
+</TourModeLayout>

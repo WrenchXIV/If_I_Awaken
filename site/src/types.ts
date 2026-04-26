@@ -2,7 +2,7 @@
 // Every space's JSON file conforms to SpaceContent.
 
 export type SpaceId =
-  | 'lobby'
+  | 'lounge'
   | 'space-1'
   | 'space-2'
   | 'space-3'

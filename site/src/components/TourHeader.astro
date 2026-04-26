@@ -1,0 +1,75 @@
+---
+import { SPACE_ORDER, SPACE_MANIFEST, progressLabel } from '@/lib/spaces';
+import type { SpaceId } from '@/types';
+
+export interface Props {
+  currentId?: SpaceId;
+}
+const { currentId } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const items = SPACE_ORDER.map((id) => {
+  const entry = SPACE_MANIFEST[id];
+  const isCurrent = id === currentId;
+  const isPassed = currentId
+    ? SPACE_ORDER.indexOf(id) < SPACE_ORDER.indexOf(currentId)
+    : false;
+  return { id, entry, isCurrent, isPassed, label: progressLabel(entry.index) };
+});
+---
+
+<header
+  class="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[var(--rule)] bg-paper/95 px-5 py-3 backdrop-blur md:px-10"
+  data-tour-header
+>
+  <a
+    href={`${base}/`}
+    class="flex items-center gap-3"
+    aria-label="If I Awaken in Los Angeles — Tour"
+  >
+    <span class="kicker text-red">If I Awaken in LA</span>
+  </a>
+
+  <nav aria-label="Tour progress" class="flex items-center gap-2 md:gap-3">
+    {items.map(({ id, entry, isCurrent, isPassed, label }) => (
+      <a
+        href={`${base}${entry.href}?tour=1`}
+        class={`group flex items-center gap-2 ${isCurrent ? '' : 'text-ink/45 hover:text-ink'}`}
+        aria-current={isCurrent ? 'page' : undefined}
+        title={entry.title}
+      >
+        <span
+          class="hidden font-mono text-[10px] uppercase tracking-[0.28em] md:inline"
+          style={isCurrent ? 'color: var(--red);' : ''}
+        >
+          {label}
+        </span>
+        <span
+          class="block h-1.5 w-1.5 rounded-full"
+          style={`background: ${isCurrent ? 'var(--red)' : isPassed ? 'rgba(17,17,17,0.4)' : 'rgba(17,17,17,0.18)'};`}
+        ></span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="flex items-center gap-3">
+    <button
+      type="button"
+      data-audio-toggle
+      class="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--rule)] text-ink/70 hover:border-red hover:text-red"
+      aria-label="Toggle ambient audio"
+    >
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-audio-icon="muted">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="22" y1="9" x2="16" y2="15"></line>
+        <line x1="16" y1="9" x2="22" y2="15"></line>
+      </svg>
+    </button>
+    <a
+      href={`${base}/`}
+      class="text-xs uppercase tracking-[0.28em] text-ink/60 hover:text-red"
+    >
+      Exit
+    </a>
+  </div>
+</header>

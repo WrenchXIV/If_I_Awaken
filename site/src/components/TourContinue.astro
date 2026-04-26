@@ -1,0 +1,51 @@
+---
+import type { SpaceContent } from '@/types';
+import { neighbors, SPACE_MANIFEST } from '@/lib/spaces';
+import { TOUR_NARRATION } from '@/data/tour-narration';
+
+export interface Props {
+  space: SpaceContent;
+}
+
+const { space } = Astro.props;
+const { next } = neighbors(space.id);
+const nextEntry = next ? SPACE_MANIFEST[next] : null;
+const narration = TOUR_NARRATION[space.id];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// At the end (Space 7), the Continue button drives to the outro.
+const href = nextEntry
+  ? `${base}${nextEntry.href}?tour=1`
+  : `${base}/end`;
+
+const headline = nextEntry
+  ? narration.continueLabel
+  : narration.continueLabel;
+
+const subline = nextEntry
+  ? `Next · ${nextEntry.title}`
+  : 'End of show';
+---
+
+<section data-block="tour-continue" class="bg-dark-bg text-on-dark">
+  <div class="mx-auto max-w-[1320px] px-6 py-24 md:px-12 md:py-32">
+    <a
+      href={href}
+      data-tour-continue
+      class="group block w-full text-center transition-opacity"
+    >
+      <span class="kicker eyebrow--on-dark">{subline}</span>
+
+      <span
+        class="display mx-auto mt-6 block max-w-[18ch] text-on-dark group-hover:text-red"
+        style="font-size: clamp(46px, 6.5vw, 96px);"
+      >
+        {headline} <span class="inline-block translate-y-[-0.05em] transition-transform group-hover:translate-x-2">→</span>
+      </span>
+
+      <span class="mt-8 inline-block border-t border-[var(--on-dark-rule)] pt-4 text-xs uppercase tracking-[0.28em] text-on-dark/60">
+        Click to continue
+      </span>
+    </a>
+  </div>
+</section>

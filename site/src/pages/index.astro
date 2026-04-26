@@ -35,13 +35,29 @@ const spaces = SPACE_ORDER.map((id) => ({
         <span class="eyebrow eyebrow--on-dark hidden md:inline">Interactive tour · 100 minutes · 7 spaces</span>
       </div>
 
-      <div class="max-w-[18ch]">
+      <div class="max-w-[20ch]">
         <h1 class="display text-on-dark" style="font-size: clamp(64px, 11vw, 200px);">
           The whole journey<span class="text-red">.</span>
         </h1>
-        <p class="lede mt-6 text-on-dark/85" style="font-size: clamp(20px, 2.4vw, 30px);">
-          A 30,100 sq ft warehouse in the Arts District. 150 audience members per show. One unbroken loop, in one direction, room to room — and back to where it began.
+        <p class="lede mt-6 max-w-[44ch] text-on-dark/85" style="font-size: clamp(20px, 2.4vw, 30px);">
+          A 30,100 sq ft warehouse in the Arts District. 150 audience per show. One forward-only loop, room to room — and back out the way you came.
         </p>
+        <div class="mt-10 flex flex-wrap items-center gap-5">
+          <a
+            href={`${base}/lounge?tour=1`}
+            class="group inline-flex items-center gap-3 border-2 border-red bg-red px-7 py-4 uppercase tracking-[0.22em] text-paper hover:bg-red-deep"
+            style="font-family: var(--f-display); font-size: 15px; font-weight: 600;"
+          >
+            Start the interactive tour
+            <span class="inline-block translate-y-[-1px] transition-transform group-hover:translate-x-1">→</span>
+          </a>
+          <a
+            href="#master-plan"
+            class="text-xs uppercase tracking-[0.28em] text-on-dark/70 hover:text-red"
+          >
+            or jump to any room ↓
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -65,7 +81,7 @@ const spaces = SPACE_ORDER.map((id) => ({
   </section>
 
   <!-- Master plan grid -->
-  <section class="bg-paper-dim">
+  <section id="master-plan" class="bg-paper-dim">
     <div class="mx-auto max-w-[1320px] px-6 py-16 md:px-12 md:py-20">
       <header class="mb-10 flex items-end justify-between gap-4 border-b-2 border-ink pb-4">
         <div>
@@ -84,7 +100,7 @@ const spaces = SPACE_ORDER.map((id) => ({
           return (
             <li class="reveal">
               <a
-                href={`${base}${entry.href}`}
+                href={`${base}${entry.href}?tour=1`}
                 class="group block overflow-hidden border border-[var(--rule)] bg-paper transition-colors hover:border-red"
               >
                 <div class="relative bg-dark-bg" style="aspect-ratio: 4/3;">

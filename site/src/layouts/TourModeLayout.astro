@@ -1,0 +1,50 @@
+---
+import '@/styles/global.css';
+import TourHeader from '@/components/TourHeader.astro';
+import TourTransition from '@/components/TourTransition.astro';
+import EditorOverlay from '@/components/EditorOverlay.astro';
+import type { SpaceContent } from '@/types';
+
+export interface Props {
+  title: string;
+  description?: string;
+  space?: SpaceContent;
+}
+
+const { title, description = '', space } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-brand="cinema" data-tour="1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c0c0c" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body class="bg-paper text-ink">
+    <TourHeader currentId={space?.id} />
+    <main>
+      <slot />
+    </main>
+    <TourTransition />
+    <EditorOverlay />
+
+    <script>
+      // Reveal-on-scroll for any [.reveal] elements
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

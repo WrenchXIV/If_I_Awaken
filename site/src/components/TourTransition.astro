@@ -1,0 +1,147 @@
+---
+// Fade-to-black interstitial that appears whenever a [data-tour-continue] link
+// is clicked. Briefly shows "Entering Space 02" then navigates.
+---
+
+<div
+  id="tour-curtain"
+  class="pointer-events-none fixed inset-0 z-[60] flex items-center justify-center bg-dark-bg opacity-0 transition-opacity duration-700"
+  aria-hidden="true"
+>
+  <div class="text-center">
+    <span class="kicker eyebrow--on-dark" style="color: rgba(244,239,230,0.55);">Now entering</span>
+    <p
+      id="tour-curtain-label"
+      class="display mt-3 text-on-dark"
+      style="font-size: clamp(34px, 4vw, 60px);"
+    ></p>
+  </div>
+</div>
+
+<div
+  id="tour-unmute-prompt"
+  class="pointer-events-none fixed bottom-6 left-1/2 z-50 hidden -translate-x-1/2 items-center gap-3 rounded-full border border-[var(--rule)] bg-paper/95 px-4 py-2 text-xs uppercase tracking-[0.22em] text-ink/75 shadow-sm backdrop-blur"
+  data-unmute-prompt
+>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+    <line x1="22" y1="9" x2="16" y2="15"></line>
+    <line x1="16" y1="9" x2="22" y2="15"></line>
+  </svg>
+  <span>Score muted —</span>
+  <button
+    type="button"
+    data-unmute-prompt-action
+    class="pointer-events-auto rounded-full border border-red px-2.5 py-0.5 text-red hover:bg-red hover:text-paper"
+    style="font-family: var(--f-display); letter-spacing: 0.2em;"
+  >Tap to listen</button>
+  <button
+    type="button"
+    data-unmute-prompt-dismiss
+    class="pointer-events-auto rounded-full px-2 text-ink/40 hover:text-ink"
+    aria-label="Dismiss"
+  >×</button>
+</div>
+
+<script>
+  // Tour-mode client behavior:
+  //   1. Intercept clicks on [data-tour-continue] → fade page to black, show "Entering Space 02", navigate.
+  //   2. Show a small unmute prompt every page in tour mode while audio is muted.
+
+  function isTourMode() {
+    const params = new URLSearchParams(window.location.search);
+    return params.has('tour');
+  }
+
+  function setupContinueInterstitial() {
+    const curtain = document.getElementById('tour-curtain') as HTMLElement | null;
+    const label = document.getElementById('tour-curtain-label') as HTMLElement | null;
+    if (!curtain || !label) return;
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-tour-continue]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = a.getAttribute('href') || '/';
+        // Pull a label out of the link's subline if present
+        const subline = a.querySelector('.kicker')?.textContent?.replace(/Next\s*·\s*/, '') ?? '';
+        label.textContent = subline.trim();
+
+        curtain.classList.remove('opacity-0');
+        curtain.classList.add('opacity-100');
+        // Slow audio fade to mask page change
+        const audio = document.getElementById('tour-audio') as HTMLAudioElement | null;
+        if (audio && !audio.muted) {
+          const startVol = audio.volume;
+          const t0 = performance.now();
+          const fade = (now: number) => {
+            const t = Math.min(1, (now - t0) / 700);
+            audio.volume = startVol * (1 - t * 0.6);
+            if (t < 1) requestAnimationFrame(fade);
+          };
+          requestAnimationFrame(fade);
+        }
+        setTimeout(() => {
+          window.location.href = href;
+        }, 850);
+      });
+    });
+  }
+
+  function setupUnmutePrompt() {
+    if (!isTourMode()) return;
+    const prompt = document.querySelector<HTMLElement>('[data-unmute-prompt]');
+    if (!prompt) return;
+
+    // Reveal if dismissed-this-session is not set, and audio is muted
+    const update = () => {
+      const audio = document.getElementById('tour-audio') as HTMLAudioElement | null;
+      const dismissed = sessionStorage.getItem('tour:unmuteDismissed') === '1';
+      const muted = !audio || audio.muted;
+      const visible = muted && !dismissed && !!audio?.src;
+      prompt.classList.toggle('hidden', !visible);
+      prompt.classList.toggle('flex', visible);
+    };
+
+    prompt.querySelector<HTMLButtonElement>('[data-unmute-prompt-action]')?.addEventListener('click', () => {
+      const a = document.getElementById('tour-audio') as HTMLAudioElement | null;
+      if (!a) return;
+      a.muted = false;
+      a.volume = 0.7;
+      a.play().catch(() => {});
+      localStorage.setItem('tour:muted', '0');
+      update();
+      // Keep the icon synced
+      document.querySelectorAll('[data-audio-toggle]').forEach((b) => (b as HTMLButtonElement).click());
+      // The above toggles state — undo by re-syncing
+      a.muted = false;
+      localStorage.setItem('tour:muted', '0');
+    });
+
+    prompt.querySelector<HTMLButtonElement>('[data-unmute-prompt-dismiss]')?.addEventListener('click', () => {
+      sessionStorage.setItem('tour:unmuteDismissed', '1');
+      update();
+    });
+
+    // Run on load and when audio state changes
+    setTimeout(update, 100);
+    document.querySelectorAll('[data-audio-toggle]').forEach((b) => b.addEventListener('click', () => setTimeout(update, 50)));
+  }
+
+  function init() {
+    setupContinueInterstitial();
+    setupUnmutePrompt();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
+
+<style>
+  /* Force the curtain to render above all sticky headers */
+  #tour-curtain.opacity-100 {
+    pointer-events: auto;
+  }
+</style>
