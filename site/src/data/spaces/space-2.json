@@ -309,6 +309,9 @@
       "Transition to Space 3 — does the Tour Guide lead them, or does lighting pull them?"
     ]
   },
-  "audio": null,
+  "audio": {
+    "src": "/audio/Space2.mp3",
+    "label": "Composer's score · space-2"
+  },
   "status": "v12"
 }

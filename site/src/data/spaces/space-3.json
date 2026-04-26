@@ -255,6 +255,9 @@
       "Transition choreography into Space 4"
     ]
   },
-  "audio": null,
+  "audio": {
+    "src": "/audio/Space3.mp3",
+    "label": "Composer's score · space-3"
+  },
   "status": "v11"
 }

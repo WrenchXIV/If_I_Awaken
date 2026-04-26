@@ -265,6 +265,9 @@
       "Dance choreography — movement language to be set (choreographer TBD)"
     ]
   },
-  "audio": null,
+  "audio": {
+    "src": "/audio/Space6.mp3",
+    "label": "Composer's score · space-6"
+  },
   "status": "v06"
 }
