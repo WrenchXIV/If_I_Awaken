@@ -424,6 +424,28 @@ function onScroll(){
         let activeCluster = Math.min(clusters - 1, Math.floor(photoProgress / perCluster));
         clusterEls.forEach((c, i) => c.classList.toggle('is-active', i === activeCluster));
 
+        // Drive bg-layer crossfade + camera-style transform.
+        // Each bg-layer maps to its cluster slice; visibility ramps up at slice
+        // start, full during slice, ramps down across the last 15% into next.
+        const bgLayers = space.querySelectorAll('.bg-layer');
+        bgLayers.forEach((layer, i) => {
+          const clusterIdx = parseInt(layer.dataset.cluster || i, 10);
+          const start = clusterIdx * perCluster;
+          const local = (photoProgress - start) / perCluster; // can be <0 or >1
+          let vis = 0;
+          if (local >= -0.15 && local <= 1.15){
+            if (local < 0) vis = (local + 0.15) / 0.15;
+            else if (local > 0.85) vis = 1 - (local - 0.85) / 0.15;
+            else vis = 1;
+          }
+          vis = Math.max(0, Math.min(1, vis));
+          layer.style.setProperty('--vis', vis.toFixed(3));
+          // camera move: scale 1.0 → 1.06 + slight upward drift across the slice
+          const t = Math.max(0, Math.min(1, local));
+          layer.style.setProperty('--scale', (1 + t * 0.06).toFixed(3));
+          layer.style.setProperty('--ty', (-t * 2).toFixed(2) + '%');
+        });
+
         // Within the active cluster, drive each beat-card's --reveal var
         // Cluster local progress: 0 → 1 across this cluster's slice
         const clusterLocal = Math.max(0, Math.min(1, (photoProgress - activeCluster * perCluster) / perCluster));
@@ -448,6 +470,7 @@ function onScroll(){
           c.classList.remove('is-active');
           c.querySelectorAll('.beat-card').forEach(card => card.style.setProperty('--reveal', 0));
         });
+        space.querySelectorAll('.bg-layer').forEach(layer => layer.style.setProperty('--vis', 0));
       }
     });
 

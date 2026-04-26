@@ -283,8 +283,17 @@ body.edit-on [data-edit].is-edited{outline-color:var(--gold-bright)}
 .plan-meta .m-lab{display:block;font-size:9px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin-bottom:2px}
 
 /* PHASE 3: Photo + clusters */
-.phase-photo{background-size:cover;background-position:center;padding:0}
-.photo-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,8,.55) 0%,rgba(10,9,8,.86) 100%)}
+.phase-photo{padding:0;background:#0a0908}
+.bg-layers{position:absolute;inset:0;overflow:hidden;z-index:0}
+.bg-layer{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  opacity:var(--vis,0);
+  transform:scale(var(--scale,1)) translateY(var(--ty,0%));
+  transition:opacity .35s ease, transform .15s linear;
+  will-change:opacity, transform;
+}
+.photo-veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,9,8,.55) 0%,rgba(10,9,8,.86) 100%)}
 .photo-id{position:absolute;top:6vh;left:5vw;z-index:3}
 .photo-id h3{margin-top:8px;font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(22px,2vw,30px);color:var(--ink)}
 
