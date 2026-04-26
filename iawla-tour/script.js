@@ -1,126 +1,90 @@
-/* ============================================================
-   IF I AWAKEN IN LOS ANGELES — Investor Tour
-   Navigation, progress, and beats-drawer logic
-   ============================================================ */
-(function () {
-  'use strict';
+/* ==========================================================
+   EXPERIMENT · SCORE-DRIVEN
+   Beats are timed. Like a conductor: the score advances.
+   You can pause, step back, step forward.
+   ========================================================== */
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const navDots = Array.from(document.querySelectorAll('.nav-dot'));
-  const progressEl = document.querySelector('#progress .current');
-  const showMark = document.getElementById('showmark');
-  const total = slides.length;
+(function(){
+  const beats = Array.from(document.querySelectorAll('.beat'));
+  const transport = document.getElementById('transport');
+  const playBtn = document.getElementById('play');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const counter = document.getElementById('counter');
+  const total = document.getElementById('total');
+  const barFill = document.getElementById('barFill');
+  const cueLine = document.getElementById('cueLine');
+  const replayBtn = document.getElementById('replay');
 
-  // ---- Track current slide via IntersectionObserver ----
-  let currentIndex = 0;
-  function setCurrent(idx) {
-    if (idx === currentIndex) return;
-    currentIndex = idx;
-    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (progressEl) progressEl.textContent = String(idx + 1).padStart(2, '0');
-    if (showMark) showMark.classList.toggle('visible', idx > 0 && idx < total - 1);
+  let idx = 0;
+  let playing = false;
+  let beatStart = 0;
+  let elapsed = 0;
+  let raf = null;
+
+  total.textContent = String(beats.length).padStart(2,'0');
+
+  function setActive(i){
+    beats.forEach((b,j)=>b.classList.toggle('is-active', j===i));
+    idx = i;
+    counter.textContent = String(i+1).padStart(2,'0');
+    const cue = beats[i].querySelector('.beat-cue, .beat-eyebrow, .cover-prompt');
+    cueLine.textContent = cue ? cue.textContent.trim() : (beats[i].dataset.beatId || '');
+    elapsed = 0; beatStart = performance.now();
+    barFill.style.width = '0%';
+    if (i === beats.length - 1) { stop(); barFill.style.width='100%'; }
+    playBtn.classList.add('tick');
+    setTimeout(()=>playBtn.classList.remove('tick'), 1000);
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      // Pick the entry most in view
-      let best = null;
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-      }
-      if (best) {
-        const idx = slides.indexOf(best.target);
-        if (idx !== -1) setCurrent(idx);
-      }
-    },
-    { threshold: [0.45, 0.55, 0.65] }
-  );
-  slides.forEach((s) => io.observe(s));
-
-  // ---- Keyboard navigation ----
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(total - 1, idx));
-    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function tick(now){
+    if (!playing) return;
+    const dur = parseInt(beats[idx].dataset.duration || 8000, 10);
+    elapsed = now - beatStart;
+    const pct = Math.min(100, (elapsed / dur) * 100);
+    barFill.style.width = pct + '%';
+    if (elapsed >= dur && dur > 0) {
+      if (idx < beats.length - 1) setActive(idx + 1);
+      else stop();
+    }
+    raf = requestAnimationFrame(tick);
   }
 
-  function isDrawerOpen() {
-    return document.querySelector('.drawer.open');
+  function play(){
+    if (idx === beats.length - 1) return;
+    playing = true;
+    transport.classList.add('is-playing');
+    beatStart = performance.now() - elapsed;
+    raf = requestAnimationFrame(tick);
   }
+  function pause(){
+    playing = false;
+    transport.classList.remove('is-playing');
+    if (raf) cancelAnimationFrame(raf);
+  }
+  function stop(){ pause(); elapsed = 0; }
+
+  function next(){
+    pause();
+    if (idx < beats.length - 1) setActive(idx + 1);
+  }
+  function prev(){
+    pause();
+    if (idx > 0) setActive(idx - 1);
+  }
+
+  playBtn.addEventListener('click', () => playing ? pause() : play());
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+  if (replayBtn) replayBtn.addEventListener('click', () => { setActive(0); play(); });
 
   document.addEventListener('keydown', (e) => {
-    // Don't intercept if typing in an input or if drawer is open (let Esc close drawer)
-    const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-
-    if (isDrawerOpen()) {
-      if (e.key === 'Escape') closeDrawer();
-      return;
-    }
-
-    switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowRight':
-      case 'PageDown':
-      case ' ':
-        e.preventDefault();
-        goTo(currentIndex + 1);
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-      case 'PageUp':
-        e.preventDefault();
-        goTo(currentIndex - 1);
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(total - 1);
-        break;
-    }
+    if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+    else if (e.key === 'Home') setActive(0);
+    else if (e.key === 'End') setActive(beats.length - 1);
   });
 
-  // ---- Side-nav clicks (smooth scroll instead of jumping) ----
-  navDots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
-      e.preventDefault();
-      goTo(i);
-    });
-  });
-
-  // ---- Beat sequence drawers ----
-  const backdrop = document.getElementById('drawer-backdrop');
-
-  function openDrawer(key) {
-    const drawer = document.getElementById('drawer-' + key);
-    if (!drawer) return;
-    drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden', 'false');
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    document.querySelectorAll('.drawer.open').forEach((d) => {
-      d.classList.remove('open');
-      d.setAttribute('aria-hidden', 'true');
-    });
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.querySelectorAll('[data-open-beats]').forEach((btn) => {
-    btn.addEventListener('click', () => openDrawer(btn.dataset.openBeats));
-  });
-  document.querySelectorAll('.drawer-close').forEach((btn) => {
-    btn.addEventListener('click', closeDrawer);
-  });
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
-
-  // Initialize
-  setCurrent(0);
-  navDots.forEach((d, i) => d.classList.toggle('active', i === 0));
+  setActive(0);
 })();
