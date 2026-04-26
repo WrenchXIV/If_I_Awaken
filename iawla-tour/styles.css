@@ -92,6 +92,7 @@ body.edit-on [data-edit].is-edited{outline-color:var(--gold-bright)}
   background:rgba(10,9,8,.86);backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;padding:5vh 5vw;
 }
+.edit-panel[hidden]{display:none !important}
 .ep-inner{
   width:100%;max-width:780px;max-height:90vh;
   background:var(--bg-panel);border:1px solid var(--rule);border-radius:8px;
