@@ -8,6 +8,8 @@ Open `index.html` in any modern browser. That's it. No build step, no server nee
 
 **Navigation:** scroll, mouse wheel, ↑↓ ←→ arrows, Page Up/Down, Space, Home/End. Press `Esc` to close the beat-sequence drawer.
 
+**Plan views are interactive.** On every space slide, you can drag any element on the plan view (cast members, audience zones, scenic, seating rows) to try alternative blocking. Positions are saved to your browser's localStorage per space. A `Reset layout` button in the corner of each plan returns to the original blocking.
+
 ## Files
 
 ```

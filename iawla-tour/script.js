@@ -120,6 +120,110 @@
   });
   if (backdrop) backdrop.addEventListener('click', closeDrawer);
 
+  // ---- Plan SVG drag/snap (works on every .plan-svg) ----
+  document.querySelectorAll('.plan-svg').forEach((svg) => initPlanDrag(svg));
+
+  function initPlanDrag(svg) {
+    const draggables = svg.querySelectorAll('[data-draggable]');
+    if (!draggables.length) return;
+
+    const planKey = svg.closest('.space-slide')?.dataset.key
+      || svg.closest('.slide')?.id
+      || 'plan';
+    const STORAGE_KEY = 'iawla-plan-' + planKey;
+
+    const defaults = {};
+    draggables.forEach((el) => {
+      const id = el.dataset.id;
+      const m = (el.getAttribute('transform') || '').match(/translate\(([^,\s]+)[,\s]+([^)\s]+)\)/);
+      defaults[id] = m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+    });
+
+    let positions = JSON.parse(JSON.stringify(defaults));
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        positions = { ...defaults, ...JSON.parse(saved) };
+        Object.keys(positions).forEach(applyPosition);
+      }
+    } catch (e) { /* ignore */ }
+
+    function applyPosition(id) {
+      const el = svg.querySelector('[data-id="' + CSS.escape(id) + '"]');
+      if (!el) return;
+      const p = positions[id];
+      el.setAttribute('transform', 'translate(' + p.x + ',' + p.y + ')');
+    }
+
+    let saveTimer = null;
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(positions)); }
+        catch (e) { /* ignore */ }
+      }, 200);
+    }
+
+    function screenToSVG(event) {
+      const pt = svg.createSVGPoint();
+      pt.x = event.clientX;
+      pt.y = event.clientY;
+      return pt.matrixTransform(svg.getScreenCTM().inverse());
+    }
+
+    let drag = null;
+
+    svg.addEventListener('pointerdown', (e) => {
+      const target = e.target.closest('[data-draggable]');
+      if (!target || !svg.contains(target)) return;
+      e.preventDefault();
+      const id = target.dataset.id;
+      const start = screenToSVG(e);
+      const cur = positions[id];
+      drag = {
+        id, target, pid: e.pointerId,
+        offset: { x: cur.x - start.x, y: cur.y - start.y }
+      };
+      target.classList.add('dragging');
+      target.parentNode.appendChild(target);
+      try { target.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+
+    svg.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const cur = screenToSVG(e);
+      positions[drag.id] = { x: cur.x + drag.offset.x, y: cur.y + drag.offset.y };
+      applyPosition(drag.id);
+    });
+
+    function endDrag() {
+      if (!drag) return;
+      drag.target.classList.remove('dragging');
+      try { drag.target.releasePointerCapture(drag.pid); } catch (err) {}
+      drag = null;
+      scheduleSave();
+    }
+    svg.addEventListener('pointerup', endDrag);
+    svg.addEventListener('pointercancel', endDrag);
+    document.addEventListener('pointerup', endDrag);
+
+    // Reset button (added per space-plan container)
+    const planWrap = svg.closest('.space-plan');
+    if (planWrap && !planWrap.querySelector('.plan-reset')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'plan-reset';
+      btn.textContent = 'Reset layout';
+      btn.addEventListener('click', () => {
+        positions = JSON.parse(JSON.stringify(defaults));
+        Object.keys(positions).forEach(applyPosition);
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      });
+      planWrap.appendChild(btn);
+    }
+  }
+
   // Initialize
   setCurrent(0);
   navDots.forEach((d, i) => d.classList.toggle('active', i === 0));
