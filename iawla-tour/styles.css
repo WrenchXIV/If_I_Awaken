@@ -458,16 +458,71 @@ strong { font-weight: 500; color: var(--ink); }
 }
 @media (max-width: 1100px) { .space-slide .slide-inner { grid-template-columns: 1fr; } }
 
+.space-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-self: center;
+  width: 100%;
+}
 .space-image {
   background: #000;
   border: 1px solid var(--rule);
   overflow: hidden;
   position: relative;
   aspect-ratio: 16 / 11;
-  align-self: center;
 }
 .space-image img {
   width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.carousel-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  transition: opacity 1200ms ease;
+  pointer-events: none;
+}
+.carousel-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.carousel-thumbs .thumb {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0.55;
+  transition: opacity 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.carousel-thumbs .thumb:hover {
+  opacity: 0.9;
+  border-color: var(--gold);
+}
+.carousel-thumbs .thumb.active {
+  opacity: 1;
+  border-color: var(--gold);
+}
+.carousel-thumbs .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+@media print {
+  .carousel-slide:not(.active) { display: none; }
+  .carousel-thumbs { display: none; }
 }
 .space-image-cap {
   position: absolute;
@@ -924,6 +979,110 @@ strong { font-weight: 500; color: var(--ink); }
    ============================================================ */
 .space-plan svg [stroke="#d4a24c"] { stroke: var(--gold); }
 .space-plan svg [fill="#d4a24c"] { fill: var(--gold); }
+
+/* ============================================================
+   EDIT MODE (in-browser editor)
+   ============================================================ */
+#edit-bar {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9000;
+  display: flex;
+  gap: 8px;
+  background: rgba(10, 9, 8, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px;
+  border: 1px solid var(--rule);
+}
+#edit-bar button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+#edit-bar button:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+#edit-bar #edit-toggle {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+body.edit-mode #edit-bar #edit-toggle {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+body.edit-mode [contenteditable="true"] {
+  outline: 1px dashed rgba(212, 162, 76, 0.45);
+  outline-offset: 3px;
+  cursor: text;
+  transition: outline-color 120ms ease, background 120ms ease;
+}
+body.edit-mode [contenteditable="true"]:hover {
+  outline-color: var(--gold);
+  background: rgba(212, 162, 76, 0.05);
+}
+body.edit-mode [contenteditable="true"]:focus {
+  outline: 1px solid var(--gold);
+  background: rgba(212, 162, 76, 0.08);
+}
+
+body.edit-mode .carousel-slide.active,
+body.edit-mode .lobby-img img {
+  cursor: pointer;
+  outline: 1px dashed rgba(212, 162, 76, 0.4);
+  outline-offset: -2px;
+}
+body.edit-mode .carousel-slide.active:hover,
+body.edit-mode .lobby-img img:hover {
+  outline-color: var(--gold);
+}
+
+.thumb-add {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--gold);
+  border-style: dashed !important;
+  background: transparent !important;
+}
+.thumb-add:hover { color: var(--gold-bright); }
+
+.thumb-delete {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  font-size: 14px;
+  line-height: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'Archivo', sans-serif;
+}
+body.edit-mode .thumb { position: relative; overflow: visible; }
+body.edit-mode .thumb-delete { display: inline-flex; }
+.thumb-delete:hover { background: var(--gold); color: var(--bg); }
+
+@media print {
+  #edit-bar { display: none; }
+}
 
 /* ============================================================
    PRINT (so a PDF export still looks reasonable)

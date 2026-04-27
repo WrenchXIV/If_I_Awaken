@@ -10,6 +10,16 @@ Open `index.html` in any modern browser. That's it. No build step, no server nee
 
 **Plan views are interactive.** On every space slide, you can drag any element on the plan view (cast members, audience zones, scenic, seating rows) to try alternative blocking. Positions are saved to your browser's localStorage per space. A `Reset layout` button in the corner of each plan returns to the original blocking.
 
+**Hero images are a carousel.** Each space slide has multiple reference images. The hero auto-advances every six seconds with a slow cross-fade. Hover or click any thumbnail beneath the hero to switch images; the carousel pauses while you're looking, then resumes.
+
+**Edit mode (in-browser editing).** Click `Edit` in the top-right.
+- All slide text — titles, subtitles, captions, beat descriptions, the bow tagline — becomes click-to-edit.
+- Click a hero image to swap it with a file from your computer.
+- Click `+` in the thumbnail strip to add an image to that space.
+- Hover a thumbnail in edit mode and click the `×` to remove an image.
+- Click `Save HTML` to download a new `index.html` containing all your edits. (Replaced/added images are embedded as base64 data, so the file may grow if you add many.) Drop the downloaded file back into this folder to make it the new live version.
+- Click `Discard` to reload and lose unsaved edits.
+
 ## Files
 
 ```
