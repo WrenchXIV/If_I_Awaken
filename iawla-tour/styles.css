@@ -989,6 +989,7 @@ strong { font-weight: 500; color: var(--ink); }
   right: 16px;
   z-index: 9000;
   display: flex;
+  align-items: center;
   gap: 8px;
   background: rgba(10, 9, 8, 0.85);
   backdrop-filter: blur(8px);
@@ -996,6 +997,20 @@ strong { font-weight: 500; color: var(--ink); }
   padding: 6px;
   border: 1px solid var(--rule);
 }
+
+#edit-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0 8px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  white-space: nowrap;
+}
+#edit-status.show { opacity: 1; }
+#edit-status.error { color: var(--orange); }
 #edit-bar button {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;

@@ -278,39 +278,126 @@
   }
 
   // ---- Edit mode (text + image swap + add + save HTML) ----
+  const EDITABLE_SEL = [
+    '.slide h1', '.slide h2', '.slide h3',
+    '.slide p:not(.bow-contact)',
+    '.space-eyebrow', '.space-image-cap',
+    '.space-meta-item dt', '.space-meta-item dd',
+    '.eyebrow', '.section-title', '.section-sub',
+    '.zone-body strong', '.zone-body span',
+    '.bow-tagline', '.bow-contact',
+    '.lobby-img-cap',
+    '.drawer-head h2', '.drawer-head-eyebrow',
+    '.beat-title', '.beat-desc', '.tag',
+    '.cover-tagline', '.cover-credit', '.cover-mark',
+    '.numbers .num-row .num', '.numbers .num-row .label',
+    '.argument-quote', '.argument-attrib'
+  ].join(',');
+
+  const STORE_TEXT = 'iawla-edits-text-v1';
+  const STORE_IMG = 'iawla-edits-images-v1';
+
+  function getEditableEls() { return Array.from(document.querySelectorAll(EDITABLE_SEL)); }
+  function getSwappableImgs() {
+    return Array.from(document.querySelectorAll(
+      '.carousel-slide, .lobby-img img, .venue-image img, .space-image > img:not(.carousel-slide)'
+    ));
+  }
+
+  // Apply any saved edits BEFORE wiring edit-mode so reloaded text shows up
+  applyStoredEdits();
+
+  function applyStoredEdits() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORE_TEXT) || '{}');
+      const els = getEditableEls();
+      els.forEach((el, i) => { if (stored[i] != null) el.innerHTML = stored[i]; });
+    } catch (e) { /* ignore */ }
+    try {
+      const imgs = JSON.parse(localStorage.getItem(STORE_IMG) || '{}');
+      const all = getSwappableImgs();
+      Object.keys(imgs).forEach((i) => { if (all[+i]) all[+i].src = imgs[i]; });
+    } catch (e) { /* ignore */ }
+  }
+
+  let textSaveTimer = null;
+  function saveText(el) {
+    clearTimeout(textSaveTimer);
+    textSaveTimer = setTimeout(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem(STORE_TEXT) || '{}');
+        const els = getEditableEls();
+        const idx = els.indexOf(el);
+        if (idx === -1) return;
+        stored[idx] = el.innerHTML;
+        localStorage.setItem(STORE_TEXT, JSON.stringify(stored));
+        flashSavedHint();
+      } catch (e) { /* ignore */ }
+    }, 400);
+  }
+
+  function saveImage(imgEl) {
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORE_IMG) || '{}');
+      const all = getSwappableImgs();
+      const idx = all.indexOf(imgEl);
+      if (idx === -1) return;
+      stored[idx] = imgEl.src;
+      localStorage.setItem(STORE_IMG, JSON.stringify(stored));
+      flashSavedHint();
+    } catch (e) {
+      flashSavedHint('Storage full — image too large to auto-save', true);
+    }
+  }
+
+  function clearLocalEdits() {
+    try {
+      localStorage.removeItem(STORE_TEXT);
+      localStorage.removeItem(STORE_IMG);
+    } catch (e) { /* ignore */ }
+  }
+
+  function hasLocalEdits() {
+    try {
+      const t = localStorage.getItem(STORE_TEXT);
+      const i = localStorage.getItem(STORE_IMG);
+      return (t && t !== '{}') || (i && i !== '{}');
+    } catch (e) { return false; }
+  }
+
+  let savedHintTimer = null;
+  function flashSavedHint(msg, isError) {
+    const el = document.getElementById('edit-status');
+    if (!el) return;
+    el.textContent = msg || 'Saved · local';
+    el.classList.toggle('error', !!isError);
+    el.classList.add('show');
+    clearTimeout(savedHintTimer);
+    savedHintTimer = setTimeout(() => el.classList.remove('show'), 1400);
+  }
+
   initEditMode();
 
   function initEditMode() {
     const bar = document.createElement('div');
     bar.id = 'edit-bar';
     bar.innerHTML = `
+      <span id="edit-status" aria-live="polite"></span>
       <button id="edit-toggle" type="button" title="Edit text and images">Edit</button>
       <button id="edit-save" type="button" hidden title="Download a new HTML file with your edits">Save HTML</button>
-      <button id="edit-discard" type="button" hidden title="Reload and discard unsaved edits">Discard</button>
+      <button id="edit-clear" type="button" hidden title="Clear local-only edits and reload">Clear local</button>
+      <button id="edit-discard" type="button" hidden title="Reload (drafts saved locally remain)">Reload</button>
     `;
     document.body.appendChild(bar);
 
     const toggle = bar.querySelector('#edit-toggle');
     const saveBtn = bar.querySelector('#edit-save');
     const discardBtn = bar.querySelector('#edit-discard');
+    const clearBtn = bar.querySelector('#edit-clear');
+
+    if (hasLocalEdits()) flashSavedHint('Local draft loaded');
 
     let editing = false;
-
-    const EDITABLE_SEL = [
-      '.slide h1', '.slide h2', '.slide h3',
-      '.slide p:not(.bow-contact)',
-      '.space-eyebrow', '.space-image-cap',
-      '.space-meta-item dt', '.space-meta-item dd',
-      '.eyebrow', '.section-title', '.section-sub',
-      '.zone-body strong', '.zone-body span',
-      '.bow-tagline', '.bow-contact',
-      '.lobby-img-cap',
-      '.drawer-head h2', '.drawer-head-eyebrow',
-      '.beat-title', '.beat-desc', '.tag',
-      '.cover-tagline', '.cover-credit', '.cover-mark',
-      '.numbers .num-row .num', '.numbers .num-row .label',
-      '.argument-quote', '.argument-attrib'
-    ].join(',');
 
     function setEditing(on) {
       editing = on;
@@ -318,6 +405,7 @@
       toggle.textContent = on ? 'Done' : 'Edit';
       saveBtn.hidden = !on;
       discardBtn.hidden = !on;
+      clearBtn.hidden = !on;
 
       document.querySelectorAll(EDITABLE_SEL).forEach((el) => {
         if (on) el.setAttribute('contenteditable', 'true');
@@ -326,7 +414,20 @@
 
       document.querySelectorAll('.space-carousel').forEach((root) => decorateCarousel(root, on));
       document.querySelectorAll('.lobby-img img').forEach((img) => decorateLobbyImg(img, on));
+      document.querySelectorAll('.venue-image img').forEach((img) => decorateLobbyImg(img, on));
     }
+
+    document.addEventListener('input', (e) => {
+      const el = e.target.closest('[contenteditable="true"]');
+      if (el) saveText(el);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Clear all local drafts and reload? This wipes any text/image edits saved in this browser.')) {
+        clearLocalEdits();
+        location.reload();
+      }
+    });
 
     toggle.addEventListener('click', () => setEditing(!editing));
     discardBtn.addEventListener('click', () => {
@@ -410,6 +511,7 @@
           const file = await pickImage();
           if (!file) return;
           img.src = await readFileAsDataURL(file);
+          saveImage(img);
         });
       }
     }
@@ -445,7 +547,10 @@
       const url = await readFileAsDataURL(file);
       const slides = root.querySelectorAll('.carousel-slide');
       const thumbs = root.querySelectorAll('.thumb:not(.thumb-add)');
-      if (slides[slideIdx]) slides[slideIdx].src = url;
+      if (slides[slideIdx]) {
+        slides[slideIdx].src = url;
+        saveImage(slides[slideIdx]);
+      }
       const thumbImg = thumbs[slideIdx]?.querySelector('img');
       if (thumbImg) thumbImg.src = url;
     }
