@@ -373,12 +373,16 @@ function makeFnbInput(idx, field, value, step, opts={}) {
   return wrap;
 }
 
+// Hide editorial breakdown rows that aren't useful for what-if testing
+const HIDDEN_ASSUMPTIONS = new Set(['of which AEA', 'of which non-union']);
+
 function renderAssumptions() {
   const left = $('#asm-left');
-  const right = $('#asm-right');
-  left.innerHTML = ''; right.innerHTML = '';
-  state.assumptionsLeft.forEach((a, i) => left.appendChild(makeAsmRow('left', i, a)));
-  state.assumptionsRight.forEach((a, i) => right.appendChild(makeAsmRow('right', i, a)));
+  left.innerHTML = '';
+  state.assumptionsLeft.forEach((a, i) => {
+    if (HIDDEN_ASSUMPTIONS.has(a.label.trim())) return;
+    left.appendChild(makeAsmRow('left', i, a));
+  });
 }
 
 function makeAsmRow(col, idx, a) {
@@ -414,23 +418,25 @@ function refreshGrand(cats, grandSel) {
   $(grandSel).innerHTML = `Grand Total<br><b>${fmtMoney(total)}</b>`;
 }
 
+// Strip parenthetical "(WEEKLY)" and trailing " — +50%" / similar editorial annotations from category names
+function cleanCategoryName(rawName) {
+  return rawName
+    .replace(/^\(\d+[a-z]?\)\s*/, '')
+    .replace(/\s*\(WEEKLY\)\s*/i, '')
+    .replace(/\s*—\s*\+\d+%\s*$/, '')
+    .trim();
+}
+
 function makeCategoryRow(cats, cat, idx) {
   const wrap = el('div', 'cat');
-  const itemSum = cat.items.reduce((a, i) => a + i.amount, 0);
-  const v7 = cat._v7;
-  const delta = (cat.total || 0) - v7;
-  const deltaClass = Math.abs(delta) < 0.5 ? '' : (delta > 0 ? 'up' : 'down');
-  const deltaTxt = Math.abs(delta) < 0.5 ? `≡ v7` : (delta > 0 ? `+${fmtMoney(delta, {compact:true})}` : `${fmtMoney(delta, {compact:true})}`);
 
   wrap.innerHTML = `
     <div class="cat-head">
       <div class="cat-toggle">＋</div>
-      <div class="cat-name"><span class="cat-id">${cat.id}</span>${escapeHtml(cat.name.replace(/^\(\d+[a-z]?\)\s*/,''))}</div>
+      <div class="cat-name">${escapeHtml(cleanCategoryName(cat.name))}</div>
       <div class="cat-total-wrap">
-        <input type="number" class="cat-total ${cat.isOverride ? 'dirty' : ''}" value="${cat.total}" step="1">
-        <button class="cat-reset" title="Reset to v7">v7</button>
+        <input type="text" inputmode="numeric" class="cat-total ${cat.isOverride ? 'dirty' : ''}" value="${fmtMoney(cat.total)}">
       </div>
-      <div class="cat-delta ${deltaClass}">${deltaTxt}</div>
     </div>
     <div class="cat-body"></div>
   `;
@@ -438,7 +444,6 @@ function makeCategoryRow(cats, cat, idx) {
   const head = $('.cat-head', wrap);
   const body = $('.cat-body', wrap);
   const totalInput = $('.cat-total', wrap);
-  const resetBtn = $('.cat-reset', wrap);
 
   // Build line item table lazily on first expand
   let built = false;
@@ -447,21 +452,21 @@ function makeCategoryRow(cats, cat, idx) {
     const lineSum = cat.items.reduce((a, i) => a + i.amount, 0);
     let rows = '';
     for (const it of cat.items) {
-      rows += `<tr><td class="code">${escapeHtml(it.code)}</td><td>${escapeHtml(it.name)}</td><td class="amt">${fmtMoney(it.amount)}</td></tr>`;
+      rows += `<tr><td>${escapeHtml(it.name)}</td><td class="amt">${fmtMoney(it.amount)}</td></tr>`;
     }
     body.innerHTML = `
       <table class="cat-items">
-        <thead><tr><th>Code</th><th>Line item (v7)</th><th class="amt">Amount</th></tr></thead>
+        <thead><tr><th>Line item (v7)</th><th class="amt">Amount</th></tr></thead>
         <tbody>${rows}</tbody>
-        <tfoot><tr><td></td><td><b>Sum of v7 line items</b></td><td class="amt"><b>${fmtMoney(lineSum)}</b></td></tr></tfoot>
+        <tfoot><tr><td><b>Sum of v7 line items</b></td><td class="amt"><b>${fmtMoney(lineSum)}</b></td></tr></tfoot>
       </table>
       <p class="cat-body-note">Line items shown for reference. Editing the category total above overrides this rollup.</p>
     `;
   };
 
   head.addEventListener('click', e => {
-    // Don't toggle if clicking on the input/button/delta
-    if (e.target.closest('input, button, .cat-delta')) return;
+    // Don't toggle if clicking on the input
+    if (e.target.closest('input')) return;
     wrap.classList.toggle('open');
     if (wrap.classList.contains('open')) {
       $('.cat-toggle', wrap).textContent = '−';
@@ -471,28 +476,23 @@ function makeCategoryRow(cats, cat, idx) {
     }
   });
 
+  // Currency-aware text input: parse digits on change, reformat on blur, plain digits on focus.
+  const parseCurrency = (s) => {
+    const n = Number(String(s).replace(/[^0-9.\-]/g, ''));
+    return isFinite(n) ? n : 0;
+  };
+  totalInput.addEventListener('focus', () => {
+    totalInput.value = String(Math.round(cat.total));
+    totalInput.select();
+  });
   totalInput.addEventListener('input', () => {
-    cat.total = +totalInput.value || 0;
+    cat.total = parseCurrency(totalInput.value);
     cat.isOverride = Math.abs(cat.total - cat._v7) > 0.5;
     totalInput.classList.toggle('dirty', cat.isOverride);
-    // Update delta display
-    const d = cat.total - cat._v7;
-    const deltaEl = $('.cat-delta', wrap);
-    deltaEl.className = 'cat-delta ' + (Math.abs(d) < 0.5 ? '' : (d > 0 ? 'up' : 'down'));
-    deltaEl.textContent = Math.abs(d) < 0.5 ? '≡ v7' : (d > 0 ? `+${fmtMoney(d,{compact:true})}` : fmtMoney(d,{compact:true}));
     refreshAll();
   });
-
-  resetBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    cat.total = cat._v7;
-    cat.isOverride = false;
-    totalInput.value = cat._v7;
-    totalInput.classList.remove('dirty');
-    const deltaEl = $('.cat-delta', wrap);
-    deltaEl.className = 'cat-delta';
-    deltaEl.textContent = '≡ v7';
-    refreshAll();
+  totalInput.addEventListener('blur', () => {
+    totalInput.value = fmtMoney(cat.total);
   });
 
   return wrap;
