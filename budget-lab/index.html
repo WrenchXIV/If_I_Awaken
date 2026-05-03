@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en" data-brand="cinema">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken — Budget Lab</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mast-rule"></div>
+  <div class="mast-row">
+    <div class="mast-brand">
+      <div class="mast-eyebrow">If I Awaken in Los Angeles</div>
+      <h1 class="mast-title">Budget Lab</h1>
+      <div class="mast-sub">Live what-if model · sourced from <span class="mono">v7</span></div>
+    </div>
+    <div class="mast-actions">
+      <button class="btn btn-ghost" id="btn-reset">Reset to v7</button>
+      <button class="btn btn-ghost" id="btn-share">Copy share link</button>
+      <button class="btn" id="btn-save">Save scenario</button>
+    </div>
+  </div>
+  <div class="mast-rule"></div>
+</header>
+
+<!-- =================== TOP SHEET =================== -->
+<section class="topsheet">
+  <div class="topsheet-grid">
+
+    <div class="ts-block">
+      <div class="ts-block-head">
+        <span class="ts-num">01</span>
+        <h2 class="ts-title">Production Details</h2>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-label">Shows / Week</div>
+          <div class="kpi-value" id="kpi-shows">—</div>
+          <div class="kpi-sub">across Thu–Sun</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Avg Ticket Price</div>
+          <div class="kpi-value" id="kpi-avgprice">—</div>
+          <div class="kpi-sub">weighted, all tiers</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Max Audience / Show</div>
+          <div class="kpi-value" id="kpi-cap">—</div>
+          <div class="kpi-sub">seat capacity</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Production Run</div>
+          <div class="kpi-value" id="kpi-run">—</div>
+          <div class="kpi-sub">performance weeks</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ts-block">
+      <div class="ts-block-head">
+        <span class="ts-num">02</span>
+        <h2 class="ts-title">Economics</h2>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi kpi-wide">
+          <div class="kpi-label">Weekly Gross (combined)</div>
+          <div class="kpi-value" id="kpi-gross">—</div>
+          <div class="kpi-breakdown">
+            <span><em>Tickets</em> <b id="kpi-gross-tix">—</b></span>
+            <span><em>F&amp;B net</em> <b id="kpi-gross-fb">—</b></span>
+            <span><em>Merch net</em> <b id="kpi-gross-mc">—</b></span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Weekly Operating</div>
+          <div class="kpi-value" id="kpi-op">—</div>
+          <div class="kpi-sub" id="kpi-op-sub">all categories</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Break-even Capacity</div>
+          <div class="kpi-value" id="kpi-be">—</div>
+          <div class="kpi-sub">% of tickets to cover op</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Weekly Investment Contribution</div>
+          <div class="kpi-value" id="kpi-contrib">—</div>
+          <div class="kpi-sub">
+            at <span id="kpi-contrib-cap">80%</span> capacity
+            <input type="range" id="cap-slider" min="40" max="110" step="1" value="80">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<main class="lab">
+
+  <!-- =================== TICKET MATRIX =================== -->
+  <section class="panel panel-ticketing" id="panel-tickets">
+    <div class="panel-head">
+      <div>
+        <div class="panel-eyebrow">House &amp; Pricing</div>
+        <h2 class="panel-title">Ticket Matrix</h2>
+        <p class="panel-sub">Tiered within-show pricing. Edit shows/week (column header), seats/show, and ticket price for any cell.</p>
+      </div>
+      <div class="panel-stats" id="ticket-stats"></div>
+    </div>
+
+    <div class="ticket-matrix" id="ticket-matrix"></div>
+
+    <div class="ticket-foot">
+      <div class="legend">
+        <span class="lg lg-c"></span>Community
+        <span class="lg lg-s"></span>Standard
+        <span class="lg lg-p"></span>Premium
+        <span class="lg lg-v"></span>VIP
+      </div>
+      <div class="warn-area" id="ticket-warnings"></div>
+    </div>
+  </section>
+
+  <!-- =================== F&B / MERCH =================== -->
+  <section class="panel" id="panel-fnb">
+    <div class="panel-head">
+      <div>
+        <div class="panel-eyebrow">Ancillary</div>
+        <h2 class="panel-title">F&amp;B &amp; Merch</h2>
+        <p class="panel-sub">Per-cap × penetration × weekly capacity, net of COGS.</p>
+      </div>
+    </div>
+    <div class="fnb-table" id="fnb-table"></div>
+  </section>
+
+  <!-- =================== ASSUMPTIONS =================== -->
+  <section class="panel" id="panel-assumptions">
+    <div class="panel-head">
+      <div>
+        <div class="panel-eyebrow">Schedule &amp; Inputs</div>
+        <h2 class="panel-title">Assumptions</h2>
+        <p class="panel-sub">Every line in the v7 Assumptions sheet, fully editable.</p>
+      </div>
+    </div>
+    <div class="asm-grid">
+      <div class="asm-col" id="asm-left"></div>
+      <div class="asm-col" id="asm-right"></div>
+    </div>
+  </section>
+
+  <!-- =================== PRODUCTION BUDGET =================== -->
+  <section class="panel" id="panel-prod">
+    <div class="panel-head">
+      <div>
+        <div class="panel-eyebrow">Capitalization (one-time)</div>
+        <h2 class="panel-title">Production Budget</h2>
+        <p class="panel-sub">Each category total is editable. Expand to see line items from v7.</p>
+      </div>
+      <div class="cat-grand" id="prod-grand"></div>
+    </div>
+    <div class="cat-list" id="prod-list"></div>
+  </section>
+
+  <!-- =================== WEEKLY OPERATING =================== -->
+  <section class="panel" id="panel-ops">
+    <div class="panel-head">
+      <div>
+        <div class="panel-eyebrow">Per-Week Costs</div>
+        <h2 class="panel-title">Weekly Operating</h2>
+        <p class="panel-sub">Each category total is editable. Expand to see line items from v7.</p>
+      </div>
+      <div class="cat-grand" id="ops-grand"></div>
+    </div>
+    <div class="cat-list" id="ops-list"></div>
+  </section>
+
+</main>
+
+<footer class="bottom">
+  <div class="bottom-rule"></div>
+  <div class="bottom-row">
+    <div>If I Awaken in Los Angeles · Budget Lab · scenario built on v7 (4/20/26)</div>
+    <div class="mono" id="hash-state">—</div>
+  </div>
+</footer>
+
+<dialog id="save-dialog">
+  <form method="dialog" class="save-form">
+    <h3>Save scenario</h3>
+    <label>Name <input type="text" id="save-name" placeholder="e.g. 14 shows / week" required></label>
+    <div class="save-actions">
+      <button value="cancel" class="btn btn-ghost">Cancel</button>
+      <button value="save" class="btn">Save</button>
+    </div>
+    <h4>Saved scenarios</h4>
+    <ul id="save-list"></ul>
+  </form>
+</dialog>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
