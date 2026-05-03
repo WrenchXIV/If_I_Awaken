@@ -338,11 +338,10 @@ body {
 .fnb-c.computed b { color: var(--ink); }
 
 /* =================== ASSUMPTIONS =================== */
-.asm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-@media (max-width: 800px) { .asm-grid { grid-template-columns: 1fr; } }
+.asm-grid { display: grid; grid-template-columns: 1fr; gap: 28px; max-width: 640px; }
 .asm-col { display: flex; flex-direction: column; gap: 0; }
 .asm-row {
-  display: grid; grid-template-columns: 1fr 130px;
+  display: grid; grid-template-columns: 1fr 160px;
   align-items: center; gap: 12px; padding: 8px 0;
   border-bottom: 1px dotted var(--rule);
 }
@@ -364,7 +363,7 @@ body {
   margin-bottom: -1px;
 }
 .cat-head {
-  display: grid; grid-template-columns: 28px 1fr 200px 90px;
+  display: grid; grid-template-columns: 28px 1fr 220px;
   gap: 12px; align-items: center; padding: 12px 0;
   cursor: pointer;
 }
@@ -388,17 +387,11 @@ body {
 }
 .cat-total {
   font-family: var(--f-mono); font-size: 18px; font-weight: 600;
-  text-align: right; padding: 6px 8px; width: 180px;
+  text-align: right; padding: 6px 10px; width: 100%;
   border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
 }
 .cat-total:focus { outline: none; border-color: var(--red); background: #fff; }
 .cat-total.dirty { color: var(--red-deep); }
-.cat-delta {
-  font-family: var(--f-mono); font-size: 11px; min-width: 80px; text-align: right;
-  color: var(--ink-soft);
-}
-.cat-delta.up { color: var(--red-deep); }
-.cat-delta.down { color: var(--good); }
 
 .cat-body { display: none; padding: 0 0 12px 36px; }
 .cat.open .cat-body { display: block; }
@@ -413,8 +406,9 @@ body {
   letter-spacing: 0.08em; color: var(--ink-soft);
   border-bottom: 1px solid var(--rule);
 }
+.cat-items th.amt,
 .cat-items td.amt { font-family: var(--f-mono); text-align: right; }
-.cat-items td.code { font-family: var(--f-mono); color: var(--red-deep); width: 70px; }
+.cat-items th.amt { font-family: var(--f-display); }
 .cat-body-note {
   font-family: var(--f-serif); font-style: italic;
   font-size: 12px; color: var(--ink-soft); margin: 8px 0 0;
