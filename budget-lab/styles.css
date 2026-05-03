@@ -336,12 +336,21 @@ body {
 .fnb-c input:focus { border-color: var(--red); background: #fff; outline: none; }
 .fnb-c.computed { font-family: var(--f-mono); text-align: right; color: var(--ink-soft); font-size: 13px; }
 .fnb-c.computed b { color: var(--ink); }
+.fnb-pct-wrap {
+  display: flex; align-items: baseline; gap: 4px; justify-content: flex-end;
+}
+.fnb-pct-wrap input { width: auto; flex: 1; min-width: 0; }
+.fnb-pct-suffix {
+  font-family: var(--f-mono); font-size: 13px; color: var(--ink-soft);
+  flex-shrink: 0;
+}
 
 /* =================== ASSUMPTIONS =================== */
-.asm-grid { display: grid; grid-template-columns: 1fr; gap: 28px; max-width: 640px; }
+.asm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+@media (max-width: 800px) { .asm-grid { grid-template-columns: 1fr; } }
 .asm-col { display: flex; flex-direction: column; gap: 0; }
 .asm-row {
-  display: grid; grid-template-columns: 1fr 160px;
+  display: grid; grid-template-columns: 1fr 140px;
   align-items: center; gap: 12px; padding: 8px 0;
   border-bottom: 1px dotted var(--rule);
 }

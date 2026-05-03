@@ -363,25 +363,38 @@ function makeFnbInput(idx, field, value, step, opts={}) {
     state.fnb[idx][field] = v;
     refreshAll();
   });
-  wrap.appendChild(input);
   if (opts.isPct) {
-    const pct = document.createElement('span');
-    pct.textContent = ' %';
-    pct.style.cssText = 'font-size:11px;color:var(--ink-soft);margin-left:4px;';
-    wrap.appendChild(pct);
+    // input + % suffix on the same row, % to the right of the number
+    const inner = el('div', 'fnb-pct-wrap');
+    inner.appendChild(input);
+    const suffix = document.createElement('span');
+    suffix.className = 'fnb-pct-suffix';
+    suffix.textContent = '%';
+    inner.appendChild(suffix);
+    wrap.appendChild(inner);
+  } else {
+    wrap.appendChild(input);
   }
   return wrap;
 }
 
 // Hide editorial breakdown rows that aren't useful for what-if testing
 const HIDDEN_ASSUMPTIONS = new Set(['of which AEA', 'of which non-union']);
+// Everything after this label in the list moves to the right column
+const ASSUMPTIONS_SPLIT_AFTER = 'Monthly Warehouse Rent';
 
 function renderAssumptions() {
   const left = $('#asm-left');
-  left.innerHTML = '';
+  const right = $('#asm-right');
+  if (left) left.innerHTML = '';
+  if (right) right.innerHTML = '';
+  let movedToRight = false;
   state.assumptionsLeft.forEach((a, i) => {
     if (HIDDEN_ASSUMPTIONS.has(a.label.trim())) return;
-    left.appendChild(makeAsmRow('left', i, a));
+    const row = makeAsmRow('left', i, a);
+    const target = movedToRight && right ? right : left;
+    if (target) target.appendChild(row);
+    if (a.label.trim() === ASSUMPTIONS_SPLIT_AFTER) movedToRight = true;
   });
 }
 
