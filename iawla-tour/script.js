@@ -291,7 +291,7 @@
     '.beat-title', '.beat-desc', '.tag',
     '.cover-tagline', '.cover-credit', '.cover-mark',
     '.numbers .num-row .num', '.numbers .num-row .label',
-    '.argument-quote', '.argument-attrib'
+    '.argument-text', '.argument-coda', '.argument-attrib'
   ].join(',');
 
   const STORE_TEXT = 'iawla-edits-text-v1';
