@@ -242,6 +242,16 @@ strong { font-weight: 500; color: var(--ink); }
   margin-bottom: 36px;
 }
 .argument-text em { color: var(--gold-bright); font-style: italic; }
+.argument-coda {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(22px, 2.4vw, 36px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--gold);
+  margin-bottom: 36px;
+}
 .argument-attrib {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
