@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v6 The Walking Tour</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v6 — THE WALKING TOUR                                          */
+  /* The pitch site IS a tour of the venue. Floor plan = nav.       */
+  /* Visual departure: architectural / wayfinding / museum guide.   */
+  /* ============================================================ */
+
+  body { background: #0d0d0d; color: var(--on-dark); }
+
+  /* Floor plan at top — persistent, always visible */
+  #floorplan {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 110;
+    width: 280px;
+    background: rgba(10, 10, 10, 0.92);
+    border: 1px solid rgba(242, 237, 226, 0.18);
+    border-radius: 8px;
+    padding: 14px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-family: var(--f-mono);
+  }
+  #floorplan .fp-h {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(242, 237, 226, 0.5);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+  #floorplan .fp-h .here {
+    color: var(--red);
+  }
+  #floorplan svg { width: 100%; display: block; }
+  #floorplan svg .room {
+    fill: rgba(242, 237, 226, 0.04);
+    stroke: rgba(242, 237, 226, 0.22);
+    stroke-width: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  #floorplan svg .room:hover {
+    fill: rgba(242, 237, 226, 0.12);
+    stroke: var(--on-dark);
+  }
+  #floorplan svg .room.current {
+    fill: rgba(214, 58, 63, 0.25);
+    stroke: var(--red);
+    stroke-width: 1.5;
+  }
+  #floorplan svg .room-label {
+    font-family: var(--f-mono);
+    font-size: 6px;
+    letter-spacing: 0.06em;
+    fill: rgba(242, 237, 226, 0.65);
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+  #floorplan svg .room.current ~ .room-label,
+  #floorplan svg .room.current + .room-label {
+    fill: var(--red);
+  }
+
+  /* Wayfinding header in each section */
+  .way-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(242, 237, 226, 0.18);
+    margin-bottom: 36px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .way-room {
+    color: var(--red);
+  }
+  .way-coord {
+    color: rgba(242, 237, 226, 0.5);
+  }
+  .way-meta {
+    color: rgba(242, 237, 226, 0.5);
+  }
+
+  .room-h {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(38px, 5.5vw, 72px);
+    line-height: 1.05;
+    color: var(--on-dark);
+    margin-bottom: 24px;
+    max-width: 24ch;
+  }
+  .room-h .red { color: var(--red); font-style: italic; }
+  .room-sub {
+    font-family: var(--f-tight);
+    font-weight: 600;
+    font-size: clamp(20px, 2vw, 26px);
+    color: rgba(242, 237, 226, 0.85);
+    margin-bottom: 28px;
+    max-width: 50ch;
+  }
+  .room-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--on-dark-mute);
+    max-width: 60ch;
+    margin-bottom: 14px;
+  }
+  .room-body strong { color: var(--on-dark); }
+
+  /* Architecture sign — large room-id chip */
+  .room-sign {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    background: var(--red);
+    color: var(--on-dark);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    border-radius: 3px;
+  }
+  .room-sign .num { font-size: 14px; font-weight: 700; }
+
+  /* Hide v1's rail + chapter dot system; floor plan does the job */
+  #rail { display: none; }
+
+  /* Push content over so floor plan doesn't overlap */
+  .slide-pad { padding-right: clamp(320px, 24vw, 360px) !important; }
+
+  @media (max-width: 900px) {
+    #floorplan { width: 180px; }
+    .slide-pad { padding-right: var(--slide-pad-x) !important; }
+  }
+  @media (max-width: 600px) {
+    #floorplan {
+      width: auto;
+      left: 12px;
+      right: 12px;
+      top: auto;
+      bottom: 56px;
+      padding: 8px 10px;
+    }
+    #floorplan svg { display: none; }
+    #floorplan .fp-h { margin-bottom: 0; }
+  }
+</style>
+</head>
+<body data-version="v6">
+
+<div id="progress"><div id="progress-fill"></div></div>
+<nav id="rail" aria-label="Chapter navigation"></nav>
+
+<div id="floorplan">
+  <div class="fp-h">
+    <span>FLOOR PLAN · 30,100 SQ FT</span>
+    <span class="here" id="fp-here">LOBBY</span>
+  </div>
+  <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Lobby (top-left) -->
+    <rect class="room" data-room="lobby" x="6" y="6" width="80" height="36" rx="2"/>
+    <text class="room-label" x="22" y="27">LOBBY</text>
+
+    <!-- Box Office -->
+    <rect class="room" data-room="box-office" x="92" y="6" width="60" height="36" rx="2"/>
+    <text class="room-label" x="106" y="27">BOX OFFICE</text>
+
+    <!-- Marquee -->
+    <rect class="room" data-room="marquee" x="158" y="6" width="96" height="36" rx="2"/>
+    <text class="room-label" x="176" y="27">RED CARPET</text>
+
+    <!-- Hollywood Blvd (long thin corridor) -->
+    <rect class="room" data-room="hollywood" x="6" y="48" width="248" height="22" rx="2"/>
+    <text class="room-label" x="92" y="63">HOLLYWOOD BOULEVARD</text>
+
+    <!-- Boyle Heights -->
+    <rect class="room" data-room="boyle" x="6" y="76" width="74" height="40" rx="2"/>
+    <text class="room-label" x="14" y="98">BOYLE HEIGHTS</text>
+
+    <!-- Asian Arc -->
+    <rect class="room" data-room="asian-arc" x="86" y="76" width="84" height="40" rx="2"/>
+    <text class="room-label" x="92" y="98">ASIAN ARC</text>
+
+    <!-- Black LA -->
+    <rect class="room" data-room="black-la" x="176" y="76" width="78" height="40" rx="2"/>
+    <text class="room-label" x="184" y="98">BLACK LA</text>
+
+    <!-- Folk LA -->
+    <rect class="room" data-room="folk" x="6" y="122" width="100" height="40" rx="2"/>
+    <text class="room-label" x="22" y="144">FOLK · LAUREL CANYON</text>
+
+    <!-- Stage -->
+    <rect class="room" data-room="stage" x="112" y="122" width="80" height="40" rx="2"/>
+    <text class="room-label" x="134" y="144">THE STAGE</text>
+
+    <!-- Real LA -->
+    <rect class="room" data-room="real-la" x="198" y="122" width="56" height="40" rx="2"/>
+    <text class="room-label" x="210" y="144">REAL LA</text>
+
+    <!-- Back of House (bottom strip) -->
+    <rect class="room" data-room="back-of-house" x="6" y="168" width="160" height="26" rx="2"/>
+    <text class="room-label" x="18" y="184">BACK OF HOUSE · NUMBERS</text>
+
+    <!-- Exit -->
+    <rect class="room" data-room="exit" x="172" y="168" width="82" height="26" rx="2"/>
+    <text class="room-label" x="188" y="184">EXIT · RESERVE</text>
+  </svg>
+</div>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg><span>ROOMS</span></button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">01 · Lobby</span>
+  </div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">ROOM 01 / 12</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
+</div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title"><span class="map-eyebrow">v6 The Walking Tour</span><h2>Room Directory</h2></div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span>Click any room on the floor plan to walk to it · <kbd>M</kbd> for full directory</span></div>
+</div>
+
+<main id="deck">
+
+<!-- 01 · LOBBY (the pitch) ====================================== -->
+<section class="slide" id="lobby" data-chapter="Lobby">
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 01 · LOBBY</span>
+      <span class="way-coord">06 W → 86 W · 06 N</span>
+      <span class="way-meta">2,880 SQ FT</span>
+    </div>
+    <div class="room-sign"><span class="num">01</span> WELCOME · YOU ARE HERE</div>
+    <h2 class="room-h">An immersive tour of <span class="red">the real Los Angeles.</span></h2>
+    <p class="room-sub">Opening June 2027 · LA Arts District · 30,000 sq ft warehouse · next to the 6th Street Bridge.</p>
+    <p class="room-body">This is a guided walk through the pitch for <em>If I Awaken in Los Angeles</em> — the immersive show LA has never had. The floor plan in the top corner is your map. Click any room to walk there. The route is suggested, but you can take any path you like.</p>
+    <p class="room-body"><strong>Each room of this pitch corresponds to a real room of the venue we are building.</strong> The walk through this site mirrors the walk through the show.</p>
+  </div>
+</section>
+
+<!-- 02 · BOX OFFICE (the ask) ==================================== -->
+<section class="slide" id="box-office" data-chapter="Box Office">
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 02 · BOX OFFICE</span>
+      <span class="way-coord">92 W · 06 N</span>
+      <span class="way-meta">CAPACITY · 50 / DAY</span>
+    </div>
+    <div class="room-sign"><span class="num">02</span> THE ASK · WHAT YOU UNLOCK</div>
+    <h2 class="room-h">Three rounds. <span class="red">$8.97M total.</span></h2>
+    <p class="room-body">Round one ($1M) opens June 1, 2026 — soft-prep, design development, venue lease, advance marketing. Round two ($6.5M) opens January 1, 2027 — production, build, technical install. Round three ($1.5M) opens June 1, 2027 — launch marketing and operating reserve through the early months of the run.</p>
+    <p class="room-body"><strong>Class A LP units. $50K minimum. First-position 110% recoupment. Then 50/50 net profit indefinitely.</strong> $2.68M of non-recoupable sponsorship and philanthropy de-risks the investor tier by 45%.</p>
+    <p class="room-body" style="margin-top: 20px;"><em>Round one closes Q3 2026. Doors open June 2027.</em></p>
+  </div>
+</section>
+
+<!-- 03 · MARQUEE (timing / Olympics) ============================ -->
+<section class="slide" id="marquee" data-chapter="Marquee">
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 03 · MARQUEE &amp; RED CARPET</span>
+      <span class="way-coord">158 W → 254 W · 06 N</span>
+      <span class="way-meta">3,456 SQ FT · OUTDOOR</span>
+    </div>
+    <div class="room-sign"><span class="num">03</span> THE WORLD ARRIVES · 2026—2028</div>
+    <h2 class="room-h">A red carpet built <span class="red">for an Olympic moment.</span></h2>
+    <p class="room-body">FIFA World Cup 2026. Super Bowl LXI 2027. Summer Olympics &amp; Paralympics 2028. Three consecutive years the entire planet looks at Los Angeles. We open June 2027 — between the Super Bowl and the Olympics — with a full year of run-time before the surge arrives.</p>
+    <p class="room-body">The marquee at the door of this venue is positioned for that surge. The red carpet courtyard outside doubles as a premiere venue when the show isn't running. <em>Visitors will need a cultural front door that isn't a stadium. We are building it.</em></p>
+  </div>
+</section>
+
+<!-- 04 · HOLLYWOOD BLVD (timeline opens) ======================= -->
+<section class="slide chapter-dark" id="hollywood" data-chapter="Hollywood Blvd">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#hollywood" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#boyle" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#asian-arc" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#black-la" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top:64px;">
+    <div class="way-head">
+      <span class="way-room">ROOM 04 · HOLLYWOOD BOULEVARD</span>
+      <span class="way-coord">06 W → 254 W · 48 N</span>
+      <span class="way-meta">5,456 SQ FT · 110-FT LED WALL</span>
+    </div>
+    <div class="room-sign"><span class="num">04</span> THE PILOT · WHERE IT STARTED</div>
+    <h2 class="room-h">August 1, 2025. <span class="red">The Ford Theatre.</span></h2>
+    <p class="room-body">Directed by Gina Belafonte. Composed by Derrick Hodge. In partnership with the LA Philharmonic. Sold out. We held the curtain thirty minutes to let the city get in the door.</p>
+    <p class="room-body">The room verdict was unambiguous. <em>"They didn't just speak about Los Angeles — they spoke as Los Angeles."</em> — The Hollywood Times.</p>
+    <div class="bigstat" style="margin-top: 20px;">
+      <span class="num">1,000<span class="plus">+</span></span>
+      <span class="lbl">Tickets sold · sold out</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · BOYLE HEIGHTS (album) ================================= -->
+<section class="slide chapter-dark" id="boyle" data-chapter="Boyle Heights">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#hollywood" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#boyle" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#asian-arc" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#black-la" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top:64px;">
+    <div class="way-head">
+      <span class="way-room">ROOM 05 · BOYLE HEIGHTS</span>
+      <span class="way-coord">06 W → 80 W · 76 N</span>
+      <span class="way-meta">2,960 SQ FT · TIANGUIS + STAGE</span>
+    </div>
+    <div class="room-sign"><span class="num">05</span> THE ALBUM · WHERE IT GREW</div>
+    <h2 class="room-h">Derrick Hodge took the pilot and <span class="red">made it portable.</span></h2>
+    <p class="room-body">Two-time Grammy winner. He pulled in Jackson Browne (Rock &amp; Roll Hall of Fame), Joy Harjo (3× US Poet Laureate), and Cheech Marin to translate the Ford material outside the theater.</p>
+    <p class="room-body">The album extended the audience by an order of magnitude — a 30× reach expansion via a channel that scales horizontally with no marginal cost.</p>
+    <div class="bigstat" style="margin-top: 20px;">
+      <span class="num">30K<span class="plus">+</span></span>
+      <span class="lbl">Listens · first week</span>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · ASIAN ARC (awakening / contest) ======================= -->
+<section class="slide chapter-dark" id="asian-arc" data-chapter="Asian Arc">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#hollywood" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#boyle" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#asian-arc" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#black-la" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top:64px;">
+    <div class="way-head">
+      <span class="way-room">ROOM 06 · ASIAN ARC</span>
+      <span class="way-coord">86 W → 170 W · 76 N</span>
+      <span class="way-meta">3,360 SQ FT · FIVE NEIGHBORHOODS</span>
+    </div>
+    <div class="room-sign"><span class="num">06</span> THE AWAKENING · WHERE THE CITY WROTE BACK</div>
+    <h2 class="room-h">We asked one question. <span class="red">The city answered with 1,400 videos.</span></h2>
+    <p class="room-body"><em>"Tell us about your LA."</em> Partnered with the Los Angeles Unified School District and Get Lit – Words Ignite, the two-time Library of Congress winner. Judged by Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, and Gina Belafonte.</p>
+    <p class="room-body">It became the largest poetry competition in the country — by accident.</p>
+    <div class="bigstat" style="margin-top: 20px;">
+      <span class="num">1,400<span class="plus">+</span></span>
+      <span class="lbl">Video submissions · owned audience</span>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · BLACK LA (team) ====================================== -->
+<section class="slide chapter-dark producers" id="black-la" data-chapter="Black LA">
+  <div class="timeline" data-step="4">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#hollywood" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#boyle" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#asian-arc" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#black-la" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top:64px;">
+    <div class="way-head">
+      <span class="way-room">ROOM 07 · BLACK LA</span>
+      <span class="way-coord">176 W → 254 W · 76 N</span>
+      <span class="way-meta">3,120 SQ FT · CENTURY-SPAN</span>
+    </div>
+    <div class="room-sign"><span class="num">07</span> THE TEAM · WHO BUILDS IT</div>
+    <h2 class="room-h">The team that's <span class="red">done this before.</span></h2>
+    <p class="room-body" style="margin-bottom:24px;">Every adjacent category. Every adjacent scale. Names below.</p>
+    <div class="prod-grid">
+      <div class="prod-card highlight"><div class="prod-name">ANDREW SCOVILLE</div><div class="prod-title">DIRECTOR</div><p>Theater of the Mind. Here Lies Love. Money Heist: The Experience. The exact category at the exact scale.</p></div>
+      <div class="prod-card"><div class="prod-name">DERRICK HODGE</div><div class="prod-title">COMPOSER · 2× GRAMMY</div><p>Wrote the Ford pilot. Continues the show's musical language.</p></div>
+      <div class="prod-card"><div class="prod-name">DIANE LUBY LANE</div><div class="prod-title">CREATOR</div><p>Founder &amp; CEO, Get Lit (200+ schools). LA Times, CNN, NPR.</p></div>
+      <div class="prod-card"><div class="prod-name">SHANE SNOW</div><div class="prod-title">PRODUCER · TONY</div><p>Tony-winning producer, bestselling author, Pulitzer entrant.</p></div>
+      <div class="prod-card"><div class="prod-name">ROB O'NEILL</div><div class="prod-title">PRODUCER · TONY</div><p>Co-producer, The Outsiders (Broadway, 2024).</p></div>
+      <div class="prod-card"><div class="prod-name">GINA BELAFONTE</div><div class="prod-title">DIRECTED THE PILOT</div><p>Co-founder, Sankofa.org. Award-winning producer/director/activist.</p></div>
+      <div class="prod-card"><div class="prod-name">BRANDON XIV</div><div class="prod-title">LEAD PRODUCER</div><p>Co-founder, SHOWRUNNER. Film-tech operator.</p></div>
+      <div class="prod-card"><div class="prod-name">MARK CHINAPEN</div><div class="prod-title">GENERAL MANAGER</div><p>Coachella, Stagecoach, Grammys, Super Bowl-scale ops.</p></div>
+      <div class="prod-card"><div class="prod-name">MONIQUE MITCHELL</div><div class="prod-title">PRODUCER</div><p>Helped pass CA SB 933 — $50M for arts education.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · FOLK LA (creator note) =============================== -->
+<section class="slide creator" id="folk" data-chapter="Folk LA">
+  <div class="creator-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 08 · FOLK LA · LAUREL CANYON</span>
+      <span class="way-coord">06 W → 106 W · 122 N</span>
+      <span class="way-meta">4,000 SQ FT · LIVING ROOM</span>
+    </div>
+    <div class="room-sign"><span class="num">08</span> A LETTER · FROM THE CREATOR</div>
+    <div class="creator-card">
+      <p class="cr-line">In Los Angeles, things take root.</p>
+      <p class="cr-line">People from all over the world feel this — and so they flock here. The dreamers, the wanderers, the immigrants, in search of a chance, a rebirth, a fresh start. And the city receives them.</p>
+      <p class="cr-line strong">Los Angeles has loved us.</p>
+      <p class="cr-line strong"><span class="red">With this show, we offer that love back.</span></p>
+      <p class="cr-line" style="font-size: 16px; margin-top: 18px; opacity: 0.7;">— Diane Luby Lane · Creator</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · THE STAGE (show concept / journey) =================== -->
+<section class="slide journey" id="stage" data-chapter="The Stage">
+  <div class="slide-pad journey-head">
+    <div class="way-head">
+      <span class="way-room">ROOM 09 · THE STAGE</span>
+      <span class="way-coord">112 W → 192 W · 122 N</span>
+      <span class="way-meta">3,200 SQ FT · 150-SEAT PROSCENIUM</span>
+    </div>
+    <div class="room-sign"><span class="num">09</span> THE SHOW · THE WALK ITSELF</div>
+    <h2 class="room-h"><em>Seven neighborhoods, one continuous walk.</em></h2>
+    <p class="room-body">100 minutes end-to-end. 150 guests per show. 12 performances per week, Tuesday through Sunday. No seats until this stage. Below: the seven rooms inside the show, the same way you've been walking through them in this pitch.</p>
+  </div>
+  <div class="journey-stage">
+    <div class="journey-track" id="journey-track">
+      <article class="j-card" data-step="1"><div class="j-photo" style="background-image:url('assets/photos/red-carpet.jpg')"></div><div class="j-body"><div class="j-num">01</div><h3>HOLLYWOOD BOULEVARD</h3><p>110-ft LED wall. Then it pivots.</p></div></article>
+      <article class="j-card" data-step="2"><div class="j-photo" style="background-image:url('assets/photos/journey-2.jpg')"></div><div class="j-body"><div class="j-num">02</div><h3>BOYLE HEIGHTS</h3><p>Tianguis. Stone tables. Two poets meet.</p></div></article>
+      <article class="j-card" data-step="3"><div class="j-photo" style="background-image:url('assets/photos/journey-3.jpg')"></div><div class="j-body"><div class="j-num">03</div><h3>ASIAN ARC</h3><p>Five neighborhoods. One rapper-poet walking the line.</p></div></article>
+      <article class="j-card" data-step="4"><div class="j-photo" style="background-image:url('assets/photos/journey-4.jpg')"></div><div class="j-body"><div class="j-num">04</div><h3>BLACK LA</h3><p>Gospel choir to drum circle, across a century.</p></div></article>
+      <article class="j-card" data-step="5"><div class="j-photo" style="background-image:url('assets/photos/journey-5.jpg')"></div><div class="j-body"><div class="j-num">05</div><h3>FOLK LA</h3><p>The band on the floor with you.</p></div></article>
+      <article class="j-card" data-step="6"><div class="j-photo" style="background-image:url('assets/photos/journey-6.jpg')"></div><div class="j-body"><div class="j-num">06</div><h3>THE STAGE</h3><p>The only seated room. The finale.</p></div></article>
+      <article class="j-card" data-step="7"><div class="j-photo" style="background-image:url('assets/photos/journey-7.jpg')"></div><div class="j-body"><div class="j-num">07</div><h3>THE REAL LA</h3><p>The wall, made of the audience's faces.</p></div></article>
+    </div>
+  </div>
+  <div class="journey-controls">
+    <button class="j-btn" id="j-prev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg></button>
+    <div class="j-dots" id="j-dots"></div>
+    <button class="j-btn" id="j-next"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></button>
+  </div>
+</section>
+
+<!-- 10 · REAL LA (franchise) =================================== -->
+<section class="slide franchise" id="real-la" data-chapter="Real LA">
+  <div class="franchise-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 10 · REAL LA</span>
+      <span class="way-coord">198 W → 254 W · 122 N</span>
+      <span class="way-meta">2,240 SQ FT · MIRROR WALL</span>
+    </div>
+    <div class="room-sign"><span class="num">10</span> THE FRANCHISE · EVERY CITY NEXT</div>
+    <h2 class="room-h"><span class="red">If I Awaken</span> in every city.</h2>
+    <p class="room-body">The form is honest: tell the truth about a place through the people who live there. That principle scales. LA is chapter one. Same architecture, new local cast, new revenue line per city.</p>
+    <div class="fr-grid">
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span class="red">CHICAGO</span></div><p>South Side house music to the lakefront.</p><div class="fr-foot">FESTIVAL PARTNERSHIPS</div></div>
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span class="red">NEW YORK</span></div><p>Five boroughs, one breath.</p><div class="fr-foot">MUSEUM INSTALLATIONS</div></div>
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span class="red">LONDON</span></div><p>Brixton to Brick Lane, every postcode a song.</p><div class="fr-foot">EDUCATIONAL PROGRAMS</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · BACK OF HOUSE (economics) ============================ -->
+<section class="slide economics" id="back-of-house" data-chapter="Back of House">
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 11 · BACK OF HOUSE</span>
+      <span class="way-coord">06 W → 166 W · 168 N</span>
+      <span class="way-meta">4,160 SQ FT · OPERATIONS</span>
+    </div>
+    <div class="room-sign"><span class="num">11</span> THE NUMBERS · BACK OF HOUSE</div>
+    <h2 class="room-h">Breakeven at <span class="red">61% capacity.</span> Pilot oversold at 100%+.</h2>
+    <div class="econ-grid">
+      <div class="econ-cell"><div class="econ-meta">WEEKLY TICKET GROSS</div><div class="econ-num">$163K</div><div class="econ-sub">100% · 1,800 seats/wk</div></div>
+      <div class="econ-cell"><div class="econ-meta">WEEKLY OPERATING</div><div class="econ-num">$102K</div><div class="econ-sub">All-in</div></div>
+      <div class="econ-cell"><div class="econ-meta">+ BAR &amp; MERCH</div><div class="econ-num">$27K</div><div class="econ-sub">Per-cap data</div></div>
+      <div class="econ-cell"><div class="econ-meta">WEEKLY CONTRIBUTION</div><div class="econ-num">$88K</div><div class="econ-sub">At 100% w/ concessions</div></div>
+      <div class="econ-cell"><div class="econ-meta">BREAKEVEN</div><div class="econ-num">61%</div><div class="econ-sub">~92 of 150 avg/show</div></div>
+      <div class="econ-cell"><div class="econ-meta">EVENTS UPSIDE</div><div class="econ-num">$1.37M</div><div class="econ-sub">Aggressive net · 65%</div></div>
+    </div>
+    <p class="room-body" style="margin-top: 22px;">Plus an events business on the dark days the show doesn't run — ~210 day-equivalents of premium rentable real estate. The venue has all six differentiators most LA venues lack.</p>
+  </div>
+</section>
+
+<!-- 12 · EXIT (reserve) ======================================= -->
+<section class="slide reserve" id="exit" data-chapter="Exit">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad">
+    <div class="way-head">
+      <span class="way-room">ROOM 12 · EXIT · RESERVE</span>
+      <span class="way-coord">172 W → 254 W · 168 N</span>
+      <span class="way-meta">DOORS OPEN · JUNE 2027</span>
+    </div>
+    <div class="room-sign"><span class="num">12</span> THE EXIT · STAY IN TOUCH</div>
+    <h2 class="reserve-h">Be part of<br><span class="huge">the <em class="red">awakening.</em></span></h2>
+    <div class="reserve-grid">
+      <div class="reserve-col"><div class="rc-h">TO RESERVE OR LEARN MORE</div><a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a><div class="rc-sub">ifiawaken.la · @ifiawaken</div></div>
+      <div class="reserve-col"><div class="rc-h">ROUND ONE CLOSES</div><div class="rc-big">Q3 2026</div><div class="rc-sub"><em>Doors open · June 2027</em></div></div>
+    </div>
+    <div class="reserve-foot"><span>If I Awaken in Los Angeles · v6 The Walking Tour</span><span>The pitch site as a walk through the venue itself</span></div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script>
+  // Floor plan room nav + current-room sync
+  (function () {
+    const fp = document.getElementById('floorplan');
+    const here = document.getElementById('fp-here');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    fp.querySelectorAll('.room').forEach(r => {
+      r.addEventListener('click', () => {
+        location.hash = '#' + r.dataset.room;
+      });
+    });
+    function sync() {
+      const id = location.hash.replace('#', '') || slides[0].id;
+      const slide = document.getElementById(id);
+      fp.querySelectorAll('.room').forEach(r => {
+        r.classList.toggle('current', r.dataset.room === id);
+      });
+      if (slide && slide.dataset.chapter) here.textContent = slide.dataset.chapter.toUpperCase();
+    }
+    window.addEventListener('hashchange', sync);
+    const chapterLabel = document.getElementById('chapter-label');
+    if (chapterLabel) new MutationObserver(sync).observe(chapterLabel, { childList: true, characterData: true, subtree: true });
+    setTimeout(sync, 100);
+  })();
+</script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>

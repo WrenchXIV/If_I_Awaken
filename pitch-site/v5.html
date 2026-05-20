@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v5 Two-Track</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v5 — TWO-TRACK                                                 */
+  /* Every section has TWO voices side-by-side: artist + investor.  */
+  /* A toggle lets the viewer emphasize one side or the other.      */
+  /* ============================================================ */
+
+  body { background: var(--ink); }
+
+  /* The two-track scaffold inside each slide */
+  .tt {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 0;
+    align-items: start;
+    width: 100%;
+    transition: grid-template-columns 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tt-divider {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--red) 12%, var(--red) 88%, transparent);
+    align-self: stretch;
+    min-height: 60vh;
+    position: relative;
+  }
+  .tt-divider::after {
+    content: "—";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    font-family: var(--f-mono);
+    color: var(--red);
+    font-size: 18px;
+    background: var(--ink);
+    padding: 4px;
+  }
+  .tt-side {
+    padding: 0 28px;
+  }
+  .tt-side.artist { padding-right: 36px; }
+  .tt-side.investor { padding-left: 36px; }
+  .tt-tag {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid currentColor;
+    display: inline-block;
+  }
+  .tt-side.artist .tt-tag { color: #d4b478; }
+  .tt-side.investor .tt-tag { color: var(--red); }
+
+  .tt-h {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.1;
+    margin-bottom: 18px;
+    color: var(--on-dark);
+  }
+  .tt-side.investor .tt-h {
+    font-family: var(--f-tight);
+    font-style: normal;
+    font-weight: 700;
+    color: var(--on-dark);
+  }
+  .tt-h .red { color: var(--red); }
+  .tt-h em { color: #d4b478; }
+
+  .tt-body p {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--on-dark-mute);
+    margin-bottom: 12px;
+    max-width: none;
+  }
+  .tt-body strong { color: var(--on-dark); }
+
+  .tt-stat {
+    display: block;
+    font-family: var(--f-tight);
+    font-weight: 800;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1;
+    color: var(--red);
+    margin-top: 14px;
+  }
+  .tt-stat .lbl {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--on-dark-mute);
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+
+  /* Mode toggles — lens emphasis */
+  body[data-lens="artist"] .tt { grid-template-columns: 1.8fr 1px 1fr; }
+  body[data-lens="artist"] .tt-side.investor { opacity: 0.55; }
+  body[data-lens="investor"] .tt { grid-template-columns: 1fr 1px 1.8fr; }
+  body[data-lens="investor"] .tt-side.artist { opacity: 0.55; }
+  .tt-side { transition: opacity 0.3s ease; }
+
+  /* Persistent lens switcher at top */
+  #lens-switch {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 110;
+    display: inline-flex;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid rgba(242, 237, 226, 0.22);
+    border-radius: 999px;
+    padding: 3px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  #lens-switch button {
+    padding: 6px 14px;
+    border-radius: 999px;
+    color: rgba(242, 237, 226, 0.55);
+    transition: all 0.15s ease;
+    background: transparent;
+  }
+  #lens-switch button.active { background: var(--red); color: var(--on-dark); }
+  #lens-switch button:not(.active):hover { color: var(--on-dark); }
+
+  /* Mobile: stack the two tracks */
+  @media (max-width: 900px) {
+    .tt {
+      grid-template-columns: 1fr !important;
+      gap: 32px;
+    }
+    .tt-divider {
+      width: 100%;
+      height: 1px;
+      min-height: 0;
+      background: linear-gradient(to right, transparent, var(--red), transparent);
+      margin: 16px 0;
+    }
+    .tt-divider::after { display: none; }
+    .tt-side { padding: 0; opacity: 1 !important; }
+  }
+
+  /* Hide v1's left rail on v5 (lens switch + chrome are enough) */
+  #rail { display: none; }
+</style>
+</head>
+<body data-version="v5" data-lens="both">
+
+<div id="progress"><div id="progress-fill"></div></div>
+<nav id="rail" aria-label="Chapter navigation"></nav>
+
+<div id="lens-switch" role="tablist" aria-label="Lens">
+  <button data-lens="artist">ARTIST</button>
+  <button data-lens="both" class="active">BOTH</button>
+  <button data-lens="investor">INVESTOR</button>
+</div>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg><span>MAP</span></button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">01 · The Premise</span>
+  </div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">01 / 12</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
+</div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title"><span class="map-eyebrow">v5 Two-Track · Artist + Investor</span><h2>Chapter Map</h2></div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span><kbd>A</kbd> Artist · <kbd>B</kbd> Both · <kbd>I</kbd> Investor · <kbd>M</kbd> map</span></div>
+</div>
+
+<main id="deck">
+
+<!-- 01 · PREMISE ============================================== -->
+<section class="slide" id="premise" data-chapter="The Premise">
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST VIEW</span>
+        <h2 class="tt-h">An iconic American city, without an iconic show <em>about itself.</em></h2>
+        <div class="tt-body">
+          <p>Los Angeles is the world's storyteller. It writes the films, scores the music, broadcasts the news, mints the celebrities. It is, in every measurable way, the city that tells the world's story.</p>
+          <p>And yet it has never told <em>its own.</em></p>
+          <p>We are making the show LA has been missing — a 100-minute walking immersive that puts an audience inside the actual neighborhoods, with the actual people, with the actual music. At theatre scale. In a 30,000 sq ft warehouse in the Arts District.</p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR VIEW</span>
+        <h2 class="tt-h">A 50M-visitor market with no iconic immersive show <span class="red">to its own brand.</span></h2>
+        <div class="tt-body">
+          <p>Greater LA metro: 18M population. 50M+ annual visitors. Largest entertainment industry in human history.</p>
+          <p>Comp categories at scale: <strong>Sleep No More</strong> (13 years, NYC + Shanghai), <strong>Meow Wolf</strong> ($300M+ franchise), <strong>Here Lies Love</strong>, <strong>Money Heist: The Experience</strong>.</p>
+          <p>LA has nothing in the slot. A 30,000 sq ft venue in the Arts District opening June 2027 ahead of the 2028 Olympic surge.</p>
+          <span class="tt-stat">$8.97M<span class="lbl">Total raise · three rounds</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · TIMELINE — PILOT ===================================== -->
+<section class="slide chapter-dark" id="pilot" data-chapter="The Pilot">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE PILOT</span>
+        <h2 class="tt-h">August 1, 2025. The Ford Theatre. <em>The first read on whether the city wanted us.</em></h2>
+        <div class="tt-body">
+          <p>Directed by Gina Belafonte. Composed by Derrick Hodge. On stage: <strong>Luis J. Rodriguez</strong>, <strong>Samantha Rios</strong>, <strong>Dante Basco</strong>, <strong>Mendeleyev.</strong></p>
+          <p><em>The line stretched around the block. We held the curtain thirty minutes.</em></p>
+          <p>"They didn't just speak <em>about</em> LA — they spoke <em>as</em> LA." — The Hollywood Times</p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · PROOF POINT 1</span>
+        <h2 class="tt-h">Sold-out premiere. Oversold. <span class="red">Hard demand signal at venue scale.</span></h2>
+        <div class="tt-body">
+          <p>The pilot was a controlled experiment in demand. In partnership with the LA Philharmonic. Verified attendance.</p>
+          <p>Pre-sales filled the house. Walk-up overflowed it. The 30-minute curtain hold is a clean data point: the room was capacity-constrained, not demand-constrained.</p>
+          <span class="tt-stat">1,000<span style="font-size:0.7em;">+</span><span class="lbl">tickets sold · Ford Theatre · August 2025</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · TIMELINE — ALBUM ===================================== -->
+<section class="slide chapter-dark" id="album" data-chapter="The Album">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE ALBUM</span>
+        <h2 class="tt-h">Hodge took the room and made it <em>portable.</em></h2>
+        <div class="tt-body">
+          <p>Two-time Grammy winner Derrick Hodge translated the Ford material outside the theater — and pulled in <strong>Jackson Browne</strong> (Rock &amp; Roll Hall of Fame), <strong>Joy Harjo</strong> (3× US Poet Laureate), and <strong>Cheech Marin</strong> to make it happen.</p>
+          <p>The album is the show's <em>broadcast voice.</em> The proof that the form translates beyond the room.</p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · PROOF POINT 2</span>
+        <h2 class="tt-h">An order-of-magnitude expansion of the audience <span class="red">at zero marketing spend.</span></h2>
+        <div class="tt-body">
+          <p>The pilot reached ~1,000 people in the room. The album reached <strong>30,000+ people</strong> in week one — a 30× expansion of the addressable audience via a marketing channel (album/listen) that scales horizontally.</p>
+          <span class="tt-stat">30K<span style="font-size:0.7em;">+</span><span class="lbl">listens · first week</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · TIMELINE — AWAKENING ================================= -->
+<section class="slide chapter-dark" id="awakening" data-chapter="The Awakening">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE AWAKENING</span>
+        <h2 class="tt-h">Then the city <em>wrote back.</em></h2>
+        <div class="tt-body">
+          <p>We asked one question — <em>"Tell us about your LA"</em> — and inadvertently started the largest poetry competition in the country.</p>
+          <p>Partnered with the Los Angeles Unified School District and Get Lit — Words Ignite. Judged by Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, and Gina Belafonte. Schools, classrooms, community centers, cafeterias. <em>Voice answered voice.</em></p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · PROOF POINT 3</span>
+        <h2 class="tt-h">User-generated audience activation at <span class="red">institutional scale.</span></h2>
+        <div class="tt-body">
+          <p>1,400+ video submissions in the contest window. Distribution via LAUSD (largest school district in California; one of largest in US) and Get Lit's 200-school network. Press coverage in LA Times, CNN, NPR.</p>
+          <p>This is owned audience. We can recontact every submitter, every teacher, every judge for opening night.</p>
+          <span class="tt-stat">1,400<span style="font-size:0.7em;">+</span><span class="lbl">contest submissions · owned audience pool</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · TIMELINE — SHOW ====================================== -->
+<section class="slide chapter-dark" id="show" data-chapter="The Verdict">
+  <div class="timeline" data-step="4">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE NEXT CHAPTER</span>
+        <h2 class="tt-h"><em>What could LA need next…?</em></h2>
+        <div class="tt-body">
+          <p>"A rich, moving experience. The poetry, dance, and film came together beautifully." — <strong>Jodie Foster &amp; Alex Hedison</strong></p>
+          <p>"Brilliant storytelling. A groundbreaking approach to history, modernity, place, and people. <strong>This show changes everything.</strong>" — <strong>Aloe Blacc</strong></p>
+          <p>The form is ready. The team is ready. The city is ready. <em>Now we build the room.</em></p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · SYNTHESIS</span>
+        <h2 class="tt-h">Three independent demand signals. <span class="red">All pointing the same direction.</span></h2>
+        <div class="tt-body">
+          <p>Verified attendance signal (pilot). Verified broadcast signal (album). Verified user-generation signal (contest). Each measured in a different medium, each at scale, each consistent.</p>
+          <p>The remaining variable is execution — and the team has executed this exact category at exactly this scale before.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · TEAM ================================================ -->
+<section class="slide" id="producers" data-chapter="The Team">
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · OUR PEOPLE</span>
+        <h2 class="tt-h">The team that's actually <em>making this.</em></h2>
+        <div class="tt-body">
+          <p><strong>Diane Luby Lane</strong> created it. <strong>Andrew Scoville</strong> is directing. <strong>Derrick Hodge</strong> is composing. <strong>Gina Belafonte</strong> directed the pilot. <strong>Shane Snow</strong> and <strong>Rob O'Neill</strong> bring Tony Awards. <strong>Brandon XIV</strong> leads production. <strong>Mark Chinapen</strong> runs operations. <strong>Monique Mitchell</strong> drives reach.</p>
+          <p><em>Nine people who have been waiting for the right show to do together.</em></p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · TRACK RECORD</span>
+        <h2 class="tt-h">Done this. Done it again. <span class="red">Done it at scale.</span></h2>
+        <div class="tt-body">
+          <p><strong>Scoville</strong> — <em>Here Lies Love</em> (Broadway), <em>Theater of the Mind</em> (David Byrne), <em>Money Heist: The Experience</em> (Netflix). The exact category, at exactly the scale we're building.</p>
+          <p><strong>Hodge</strong> — 2× Grammy. <strong>Snow</strong> — Tony. <strong>O'Neill</strong> — Tony (<em>The Outsiders</em> 2024). <strong>Chinapen</strong> — Coachella, Stagecoach, Grammys, Super Bowl-scale ops. <strong>Mitchell</strong> — California SB 933, $50M for arts ed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · THE SHOW (JOURNEY) ================================== -->
+<section class="slide" id="journey" data-chapter="The Show">
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE WALK</span>
+        <h2 class="tt-h"><em>Seven neighborhoods, one continuous walk.</em></h2>
+        <div class="tt-body">
+          <p>Hollywood Boulevard → Boyle Heights → the Asian Arc → Black LA → Folk LA → the Stage → the Real LA.</p>
+          <p>No seats until the finale. No proscenium until the proscenium earns it. A 110-foot LED wall that pivots into faces. A church wall that opens into a drum circle. A door that becomes a Laurel Canyon living room.</p>
+          <p><em>The audience does not watch a show. They take a walk.</em></p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · THE ASSET</span>
+        <h2 class="tt-h">A 30,000 sq ft venue with <span class="red">six monetizable assets</span> in one building.</h2>
+        <div class="tt-body">
+          <p>110-ft LED wall (LA's most dramatic indoor screen). 64-ft bar program. 150-seat proscenium theater. Outdoor red-carpet courtyard with marquee. 30,000 sq ft cocktail-cap floor. Arts District ZIP.</p>
+          <p>Most LA venues offer one or two of these. We have all six — which underwrites both the show AND a meaningful events business on dark days.</p>
+          <span class="tt-stat">7<span class="lbl">built environments + lobby that doubles as theatre</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · TIMING ============================================== -->
+<section class="slide global" id="global" data-chapter="The Stakes">
+  <div class="global-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE STAKES</span>
+        <h2 class="tt-h"><em>The world is about to look at LA. Three years in a row.</em></h2>
+        <div class="tt-body">
+          <p>FIFA World Cup '26. Super Bowl LXI '27. The 2028 Summer Olympics &amp; Paralympics. Tens of millions of visitors. Tens of billions of media impressions.</p>
+          <p>The spotlight isn't going to be on the games. It's going to be on the city itself. <em>The only question is what story the world hears.</em></p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · TIMING</span>
+        <h2 class="tt-h">Structural tailwind. <span class="red">Once-in-a-generation window.</span></h2>
+        <div class="tt-body">
+          <p>We open <strong>June 2027</strong> — a full year of run-time before the Olympic surge. Olympic visitor projections: 15M+ unique attendees, 2B+ media impressions.</p>
+          <p>The 2028 Olympic surge is not a demand assumption. It is a scheduled event with international airline capacity already being built around it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · ECONOMICS ============================================ -->
+<section class="slide" id="economics" data-chapter="The Numbers">
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · WHAT IT TAKES</span>
+        <h2 class="tt-h">The room. The sound. The walk. <em>Built to last 14+ months and then to travel.</em></h2>
+        <div class="tt-body">
+          <p>12 performances a week, Tuesday through Sunday. 150 guests per show. 100 minutes end-to-end. The same arc, performed every show, lived by a different audience each time.</p>
+          <p>This is the budget that makes that night possible. Eighteen months of build-out, then eighteen months of run.</p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · THE MODEL</span>
+        <h2 class="tt-h">Breakeven at <span class="red">61% capacity.</span> Pilot oversold at 100%+.</h2>
+        <div class="tt-body" style="font-family: var(--f-mono); font-size: 13px; line-height: 1.7;">
+          <p style="font-family: var(--f-mono);"><strong>$163K</strong> · weekly ticket gross at 100% (1,800 seats/wk)</p>
+          <p style="font-family: var(--f-mono);"><strong>$102K</strong> · weekly operating (all-in)</p>
+          <p style="font-family: var(--f-mono);"><strong>$27K</strong> · weekly bar &amp; merch contribution</p>
+          <p style="font-family: var(--f-mono);"><strong>$88K</strong> · weekly contribution at 100%</p>
+          <p style="font-family: var(--f-mono);"><strong>$90.56</strong> · weighted avg ticket (Community / Standard / Premium / VIP)</p>
+          <span class="tt-stat">61%<span class="lbl">capacity to breakeven</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · ASK ================================================= -->
+<section class="slide rounds" id="rounds" data-chapter="The Ask">
+  <div class="slide-pad rounds-head">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · WHAT YOU MAKE POSSIBLE</span>
+        <h2 class="tt-h">$8.97M opens the doors and <em>keeps them open</em> through opening night.</h2>
+        <div class="tt-body">
+          <p>Round one ($1M) gets the design out of the studio and into the room. Round two ($6.5M) builds the seven environments and the team that runs them. Round three ($1.5M) gets us through the first months of the run.</p>
+          <p>By the close of round three, every dollar you put in is touching a chair, a speaker, a wall, an actor's pay.</p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · THE TERMS</span>
+        <h2 class="tt-h"><span class="red">$8.97M total</span> · three rounds · 110% first-position recoupment.</h2>
+        <div class="tt-body" style="font-family: var(--f-mono); font-size: 13px; line-height: 1.7;">
+          <p style="font-family: var(--f-mono);"><strong>R1 · $1M</strong> · June 1, 2026 · build-out &amp; opening</p>
+          <p style="font-family: var(--f-mono);"><strong>R2 · $6.5M</strong> · January 1, 2027 · production</p>
+          <p style="font-family: var(--f-mono);"><strong>R3 · $1.5M</strong> · June 1, 2027 · launch &amp; reserve</p>
+          <p style="font-family: var(--f-mono); margin-top: 16px;"><strong>Class A LP units</strong> · $50K min · first-position 110% · 50/50 net profit post-recoup</p>
+          <p style="font-family: var(--f-mono);"><strong>+$2.68M</strong> · non-recoupable sponsorship + philanthropy · de-risks investor tier by 45%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · FRANCHISE ============================================ -->
+<section class="slide franchise" id="franchise" data-chapter="The Franchise">
+  <div class="franchise-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE FORM TRAVELS</span>
+        <h2 class="tt-h"><em>If I Awaken</em> in every city.</h2>
+        <div class="tt-body">
+          <p>At its core, the form is honest: tell the truth about a place through the people who live there. That principle scales.</p>
+          <p>Chicago — house music, South Side to lakefront. New York — five boroughs, one breath. London — every postcode a different song. Each city, its own local cast, its own local truth, the same architecture underneath.</p>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · THE FRANCHISE</span>
+        <h2 class="tt-h">LA is chapter one of a <span class="red">replicable IP model.</span></h2>
+        <div class="tt-body">
+          <p>Production architecture (lighting, sound, projection, walk-through staging) is the IP. Each new city = new local cast, new revenue line, lower marginal CapEx.</p>
+          <p>Comp: <strong>Meow Wolf</strong> $300M+ across Santa Fe, Las Vegas, Denver, Houston, Grapevine. <strong>Sleep No More</strong> NYC + Shanghai + planned Shanghai 2.0.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · RESERVE ============================================== -->
+<section class="slide reserve" id="reserve" data-chapter="Reserve">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad">
+    <div class="tt">
+      <div class="tt-side artist">
+        <span class="tt-tag">ARTIST · THE INVITATION</span>
+        <h2 class="tt-h">Be part of <em>the awakening.</em></h2>
+        <div class="tt-body">
+          <p>The pilot proved the city wanted it. The album proved the form scaled. The contest proved the city would speak. The team has done it elsewhere; the room has been chosen; the dates are set.</p>
+          <p>What's missing is you.</p>
+          <div class="reserve-grid" style="margin-top: 24px;">
+            <div class="reserve-col"><div class="rc-h">REACH OUT</div><a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a><div class="rc-sub">ifiawaken.la · @ifiawaken</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="tt-divider"></div>
+      <div class="tt-side investor">
+        <span class="tt-tag">INVESTOR · NEXT STEP</span>
+        <h2 class="tt-h"><span class="red">Round one closes Q3 2026.</span> $1M available · 110% first-position.</h2>
+        <div class="tt-body">
+          <p>Round one is the smallest round. Best terms. First-in. Class A LP units at $50K minimum. Recoups at 110% before any other distribution; 50/50 net profit thereafter, across the LA run and every franchise chapter that follows.</p>
+          <div class="reserve-grid" style="margin-top: 24px;">
+            <div class="reserve-col"><div class="rc-h">ROUND ONE CLOSES</div><div class="rc-big">Q3 2026</div><div class="rc-sub"><em>Doors open · June 2027</em></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reserve-foot" style="margin-top: 36px;"><span>If I Awaken in Los Angeles · v5 Two-Track</span><span>Artist view + Investor view · pitch 2026</span></div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script>
+  // Lens switcher logic
+  (function () {
+    const sw = document.getElementById('lens-switch');
+    const saved = localStorage.getItem('iia-lens') || 'both';
+    document.body.setAttribute('data-lens', saved);
+    sw.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.lens === saved);
+      b.addEventListener('click', () => {
+        const lens = b.dataset.lens;
+        document.body.setAttribute('data-lens', lens);
+        localStorage.setItem('iia-lens', lens);
+        sw.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      const tag = e.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (e.key === 'a' || e.key === 'A') { sw.querySelector('[data-lens="artist"]').click(); }
+      if (e.key === 'b' || e.key === 'B') {
+        if (!e.shiftKey) sw.querySelector('[data-lens="both"]').click();
+      }
+      if (e.key === 'i' || e.key === 'I') { sw.querySelector('[data-lens="investor"]').click(); }
+    });
+  })();
+</script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>

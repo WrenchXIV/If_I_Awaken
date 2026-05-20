@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v7 The Receipts</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v7 — THE RECEIPTS                                              */
+  /* Data-driven dashboard aesthetic. Comparables. Evidence-led.    */
+  /* Visual departure: monospace, hairlines, fintech-grade tables.  */
+  /* ============================================================ */
+
+  :root { --f-display: var(--f-tight); }
+  body { background: #0a0a0a; color: var(--on-dark); font-family: var(--f-tight); }
+  .slide { background: #0a0a0a; padding-top: 130px; }
+
+  /* KPI dashboard — sticky top */
+  #kpi-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(8, 8, 8, 0.96);
+    border-bottom: 1px solid rgba(242, 237, 226, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    font-family: var(--f-mono);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #kpi-bar::-webkit-scrollbar { display: none; }
+  #kpi-bar .kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    white-space: nowrap;
+  }
+  #kpi-bar .kpi-lbl {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: rgba(242, 237, 226, 0.5);
+    text-transform: uppercase;
+  }
+  #kpi-bar .kpi-val {
+    font-family: var(--f-tight);
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--on-dark);
+    letter-spacing: -0.01em;
+  }
+  #kpi-bar .kpi-val.red { color: var(--red); }
+  #kpi-bar .kpi-val.green { color: var(--green); }
+  #kpi-bar .kpi-delta {
+    font-size: 9px;
+    color: var(--green);
+    margin-left: 2px;
+  }
+  #kpi-bar .kpi-sep {
+    width: 1px;
+    height: 26px;
+    background: rgba(242, 237, 226, 0.15);
+  }
+  #kpi-bar .kpi-brand {
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+
+  /* Section headers — sub-monospace */
+  .rcpt-head {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: baseline;
+    gap: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(242, 237, 226, 0.18);
+    margin-bottom: 32px;
+    font-family: var(--f-mono);
+  }
+  .rcpt-num {
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 0.18em;
+  }
+  .rcpt-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(242, 237, 226, 0.55);
+    text-transform: uppercase;
+  }
+  .rcpt-meta {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(242, 237, 226, 0.4);
+  }
+
+  .rcpt-h {
+    font-family: var(--f-tight);
+    font-weight: 800;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+    color: var(--on-dark);
+  }
+  .rcpt-h .red { color: var(--red); }
+  .rcpt-h .green { color: var(--green); }
+
+  .rcpt-sub {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-size: clamp(17px, 1.5vw, 21px);
+    color: rgba(242, 237, 226, 0.7);
+    margin-bottom: 28px;
+    max-width: 60ch;
+  }
+
+  /* Data cells / KPIs in body */
+  .rcpt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .rcpt-cell {
+    padding: 18px;
+    background: rgba(242, 237, 226, 0.03);
+    border: 1px solid rgba(242, 237, 226, 0.12);
+    border-radius: 4px;
+  }
+  .rcpt-cell .rc-lbl {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(242, 237, 226, 0.5);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .rcpt-cell .rc-val {
+    font-family: var(--f-tight);
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--red);
+    letter-spacing: -0.02em;
+  }
+  .rcpt-cell .rc-val.white { color: var(--on-dark); }
+  .rcpt-cell .rc-val.green { color: var(--green); }
+  .rcpt-cell .rc-delta {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    color: var(--green);
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+  .rcpt-cell .rc-source {
+    font-family: var(--f-mono);
+    font-size: 9px;
+    color: rgba(242, 237, 226, 0.4);
+    margin-top: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  /* Comparable table */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    font-family: var(--f-mono);
+    font-size: 13px;
+  }
+  .comp-table th, .comp-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(242, 237, 226, 0.12);
+  }
+  .comp-table th {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--red);
+    text-transform: uppercase;
+    border-bottom-color: rgba(214, 58, 63, 0.4);
+  }
+  .comp-table th:not(:first-child), .comp-table td:not(:first-child) {
+    text-align: right;
+  }
+  .comp-table tr.us td {
+    background: rgba(214, 58, 63, 0.08);
+    color: var(--on-dark);
+    font-weight: 600;
+  }
+  .comp-table tr.us td:first-child {
+    color: var(--red);
+  }
+
+  /* Horizontal bar charts */
+  .bar-chart {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    font-family: var(--f-mono);
+    font-size: 12px;
+  }
+  .bar-row .bar-lbl {
+    color: rgba(242, 237, 226, 0.75);
+  }
+  .bar-row.us .bar-lbl { color: var(--red); font-weight: 600; }
+  .bar-track {
+    position: relative;
+    height: 14px;
+    background: rgba(242, 237, 226, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    position: absolute;
+    inset: 0;
+    background: rgba(242, 237, 226, 0.35);
+    width: var(--w, 0%);
+    transition: width 0.6s ease;
+  }
+  .bar-row.us .bar-fill { background: var(--red); }
+  .bar-row .bar-val {
+    font-weight: 700;
+    color: var(--on-dark);
+  }
+
+  /* Hide v1's rail */
+  #rail { display: none; }
+
+  /* Pad top under KPI bar; tighten chrome */
+  #chrome-bottom { padding: 10px 20px; }
+
+  @media (max-width: 900px) {
+    .slide { padding-top: 160px; }
+    #kpi-bar { gap: 20px; padding: 8px 14px; }
+    #kpi-bar .kpi-val { font-size: 14px; }
+    #kpi-bar .kpi-sep { display: none; }
+  }
+</style>
+</head>
+<body data-version="v7">
+
+<div id="progress"><div id="progress-fill"></div></div>
+<nav id="rail" aria-label="Chapter navigation"></nav>
+
+<div id="kpi-bar">
+  <span class="kpi-brand">IIA · LA · 2027</span>
+  <div class="kpi"><span class="kpi-lbl">RAISE</span><span class="kpi-val">$8.97M</span></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><span class="kpi-lbl">PILOT</span><span class="kpi-val red">1,000+</span></div>
+  <div class="kpi"><span class="kpi-lbl">ALBUM</span><span class="kpi-val red">30K+</span></div>
+  <div class="kpi"><span class="kpi-lbl">CONTEST</span><span class="kpi-val red">1,400+</span></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><span class="kpi-lbl">BREAKEVEN</span><span class="kpi-val green">61%</span></div>
+  <div class="kpi"><span class="kpi-lbl">WK GROSS</span><span class="kpi-val">$163K</span></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><span class="kpi-lbl">OPEN</span><span class="kpi-val">06/2027</span></div>
+</div>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg><span>INDEX</span></button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">01 · Receipts</span>
+  </div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">01 / 11</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
+</div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title"><span class="map-eyebrow">v7 The Receipts</span><h2>Index</h2></div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span>The receipts: data first. Story second.</span></div>
+</div>
+
+<main id="deck">
+
+<!-- 01 · OPENING ============================================== -->
+<section class="slide" id="receipts" data-chapter="The Receipts">
+  <div class="slide-pad">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 01</span>
+      <span class="rcpt-eyebrow">PITCH 2026 · INVESTOR DECK · DATA-FIRST CUT</span>
+      <span class="rcpt-meta">v7 / 10</span>
+    </div>
+    <h1 class="rcpt-h">Three independent demand signals. <span class="red">All measured. All consistent.</span></h1>
+    <p class="rcpt-sub">If I Awaken in Los Angeles is the immersive theatrical investment for the 2026–2028 Los Angeles window. Below: the receipts.</p>
+    <div class="rcpt-grid">
+      <div class="rcpt-cell">
+        <div class="rc-lbl">FORD PILOT · AUG 2025</div>
+        <div class="rc-val">1,000+</div>
+        <div class="rc-delta">↑ oversold · 30-min curtain hold</div>
+        <div class="rc-source">SRC · LA PHILHARMONIC / FORD</div>
+      </div>
+      <div class="rcpt-cell">
+        <div class="rc-lbl">ALBUM · WEEK ONE</div>
+        <div class="rc-val">30K+</div>
+        <div class="rc-delta">↑ 30× pilot reach</div>
+        <div class="rc-source">SRC · STREAMING PLATFORMS</div>
+      </div>
+      <div class="rcpt-cell">
+        <div class="rc-lbl">CONTEST · JAN 2026</div>
+        <div class="rc-val">1,400+</div>
+        <div class="rc-delta">↑ largest poetry contest · US</div>
+        <div class="rc-source">SRC · LAUSD / GET LIT</div>
+      </div>
+      <div class="rcpt-cell">
+        <div class="rc-lbl">CRITICS · PRESS POOL</div>
+        <div class="rc-val white">7+</div>
+        <div class="rc-delta">↑ LA Times / CNN / NPR / Hollywood Times</div>
+        <div class="rc-source">SRC · CONFIRMED CLIPPINGS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · TIMELINE — PILOT ===================================== -->
+<section class="slide chapter-dark" id="pilot" data-chapter="Pilot Data">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 02</span>
+      <span class="rcpt-eyebrow">PROOF · DEMAND SIGNAL 1 · ROOM</span>
+      <span class="rcpt-meta">FORD THEATRE · AUG 1, 2025</span>
+    </div>
+    <h2 class="rcpt-h">Pilot oversold the house. <span class="red">Curtain held 30 minutes.</span></h2>
+    <div class="rcpt-grid">
+      <div class="rcpt-cell"><div class="rc-lbl">TICKETS SOLD</div><div class="rc-val">1,000+</div><div class="rc-delta">100% pre-sale</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">WALK-UP DEMAND</div><div class="rc-val">excess</div><div class="rc-delta">overflow turned away</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">CURTAIN DELAY</div><div class="rc-val">30 min</div><div class="rc-delta">to accommodate line</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">CRITICAL RECEPTION</div><div class="rc-val white">✓</div><div class="rc-delta">"They spoke AS LA" — Hollywood Times</div></div>
+    </div>
+    <p class="rcpt-sub" style="margin-top: 20px;">In partnership with LA Philharmonic. Directed by Gina Belafonte. Composed by Derrick Hodge. Verified attendance. No marketing spend beyond LAPhil channels.</p>
+  </div>
+</section>
+
+<!-- 03 · TIMELINE — ALBUM ===================================== -->
+<section class="slide chapter-dark" id="album" data-chapter="Album Data">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 03</span>
+      <span class="rcpt-eyebrow">PROOF · DEMAND SIGNAL 2 · BROADCAST</span>
+      <span class="rcpt-meta">ALBUM · OCT 2025</span>
+    </div>
+    <h2 class="rcpt-h">30K+ listens, week one. <span class="red">30× pilot reach.</span></h2>
+    <div class="rcpt-grid">
+      <div class="rcpt-cell"><div class="rc-lbl">WEEK 1 LISTENS</div><div class="rc-val">30K+</div><div class="rc-delta">↑ vs. 1K pilot reach</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">FEATURED ARTISTS</div><div class="rc-val white">3 marquee</div><div class="rc-delta">Browne / Harjo / Marin</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">PRODUCER</div><div class="rc-val white">D. Hodge</div><div class="rc-delta">2× Grammy</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">CAC</div><div class="rc-val green">~$0</div><div class="rc-delta">organic / artist channels</div></div>
+    </div>
+    <p class="rcpt-sub" style="margin-top: 20px;">The album extended pilot reach by an order of magnitude through a channel that scales horizontally. Marketing cost approximately zero (artists' organic channels). Strong unit economics signal for the broader content / merch tier.</p>
+  </div>
+</section>
+
+<!-- 04 · TIMELINE — CONTEST =================================== -->
+<section class="slide chapter-dark" id="awakening" data-chapter="Contest Data">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 04</span>
+      <span class="rcpt-eyebrow">PROOF · DEMAND SIGNAL 3 · OWNED AUDIENCE</span>
+      <span class="rcpt-meta">CONTEST · JAN 2026</span>
+    </div>
+    <h2 class="rcpt-h">1,400+ video submissions. <span class="red">Largest poetry contest in the US.</span></h2>
+    <div class="rcpt-grid">
+      <div class="rcpt-cell"><div class="rc-lbl">SUBMISSIONS</div><div class="rc-val">1,400+</div><div class="rc-delta">↑ largest in US</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">DISTRIBUTION</div><div class="rc-val white">LAUSD</div><div class="rc-delta">largest school district in CA</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">PARTNER REACH</div><div class="rc-val white">200+</div><div class="rc-delta">Get Lit school network</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">OWNED AUDIENCE</div><div class="rc-val green">recontact</div><div class="rc-delta">submitters / teachers / judges</div></div>
+    </div>
+    <p class="rcpt-sub" style="margin-top: 20px;">Every contest submitter is a recontactable lead for the opening. Press coverage in LA Times, CNN, NPR. Judges: Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, Gina Belafonte.</p>
+  </div>
+</section>
+
+<!-- 05 · COMPARABLES ========================================= -->
+<section class="slide chapter-dark" id="show" data-chapter="Comparables">
+  <div class="timeline" data-step="4">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#show" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 05</span>
+      <span class="rcpt-eyebrow">MARKET · COMPARABLES · IMMERSIVE CATEGORY</span>
+      <span class="rcpt-meta">CAT SIZE · $300M+</span>
+    </div>
+    <h2 class="rcpt-h">The category has scaled. <span class="red">No one has done it for LA yet.</span></h2>
+    <table class="comp-table">
+      <thead>
+        <tr><th>SHOW</th><th>CITY</th><th>RUN</th><th>FRANCHISE VAL</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sleep No More</td><td>NYC + Shanghai</td><td>13+ years</td><td>$100M+ est</td></tr>
+        <tr><td>Meow Wolf</td><td>SF / LV / DEN / HOU / DFW</td><td>10+ years</td><td>$300M+</td></tr>
+        <tr><td>Here Lies Love</td><td>Broadway</td><td>2023-24 run</td><td>n/a (Broadway)</td></tr>
+        <tr><td>Money Heist: The Experience</td><td>NYC / LDN / MEX</td><td>2022-24</td><td>~$50M est</td></tr>
+        <tr><td>Theater of the Mind</td><td>DEN (Denver Center)</td><td>2022 run</td><td>n/a (commission)</td></tr>
+        <tr class="us"><td>IF I AWAKEN IN LA</td><td>LA Arts District</td><td>18-mo opening run</td><td>Chapter one of a franchise</td></tr>
+      </tbody>
+    </table>
+    <p class="rcpt-sub" style="margin-top: 18px;">The category has demonstrated 10+ year runs, multi-city replication, and franchise-level enterprise value. <strong>Our director (Andrew Scoville) and composer (Derrick Hodge) have direct credits on three of the comparables above.</strong></p>
+  </div>
+</section>
+
+<!-- 06 · MARKET SIZING ====================================== -->
+<section class="slide global" id="global" data-chapter="Market Sizing">
+  <div class="global-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 06</span>
+      <span class="rcpt-eyebrow">MARKET · TAM · LOS ANGELES + EVENT WINDOW</span>
+      <span class="rcpt-meta">2026 — 2028</span>
+    </div>
+    <h2 class="rcpt-h">LA = 50M+ visitors / yr. <span class="red">Olympic surge: +15M unique.</span></h2>
+    <div class="rcpt-grid">
+      <div class="rcpt-cell"><div class="rc-lbl">LA METRO POP.</div><div class="rc-val white">18M</div><div class="rc-delta">2nd US metro</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">ANNUAL VISITORS</div><div class="rc-val white">50M+</div><div class="rc-delta">pre-Olympic baseline</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">OLYMPIC SURGE</div><div class="rc-val red">+15M</div><div class="rc-delta">2028 unique attendees</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">MEDIA IMPRESSIONS</div><div class="rc-val red">2B+</div><div class="rc-delta">2028 Games · LA-tagged</div></div>
+    </div>
+    <p class="rcpt-sub" style="margin-top: 16px;">Three consecutive years of structural media attention: FIFA World Cup '26, Super Bowl LXI '27, Summer Olympics + Paralympics '28. <strong>The 2028 Olympics is the largest scheduled cultural-attention event in modern LA history.</strong> We open June 2027 — 12 months prior — to find rhythm before the surge.</p>
+    <h3 style="font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--red); margin-top: 24px; margin-bottom: 12px; text-transform: uppercase;">CAPTURE MODEL · CONSERVATIVE</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-lbl">LA metro pop.</span><div class="bar-track"><div class="bar-fill" style="--w:100%"></div></div><span class="bar-val">18M</span></div>
+      <div class="bar-row"><span class="bar-lbl">Cultural-show TAM</span><div class="bar-track"><div class="bar-fill" style="--w:18%"></div></div><span class="bar-val">~3.2M</span></div>
+      <div class="bar-row"><span class="bar-lbl">Reachable (yr 1)</span><div class="bar-track"><div class="bar-fill" style="--w:6%"></div></div><span class="bar-val">~1M</span></div>
+      <div class="bar-row us"><span class="bar-lbl">Needed (yr 1)</span><div class="bar-track"><div class="bar-fill" style="--w:0.6%"></div></div><span class="bar-val">~93K</span></div>
+    </div>
+    <p class="rcpt-sub" style="margin-top: 12px; font-size: 13px;">Year-one steady state requires capturing <strong>~0.5% of LA metro</strong> — well inside what comparable single-venue shows have captured in similar markets.</p>
+  </div>
+</section>
+
+<!-- 07 · OPERATING MODEL ==================================== -->
+<section class="slide economics" id="economics" data-chapter="Operating Model">
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 07</span>
+      <span class="rcpt-eyebrow">MODEL · WEEKLY OPERATING · STEADY-STATE</span>
+      <span class="rcpt-meta">61% BREAKEVEN · 100% UPSIDE</span>
+    </div>
+    <h2 class="rcpt-h">Breakeven at <span class="red">61%.</span> Pilot oversold at 100%+. <span class="green">3,900 bps of cushion.</span></h2>
+    <div class="econ-grid">
+      <div class="econ-cell"><div class="econ-meta">WK TICKET GROSS</div><div class="econ-num">$163K</div><div class="econ-sub">1,800 seats · 100%</div></div>
+      <div class="econ-cell"><div class="econ-meta">WK OPERATING</div><div class="econ-num">$102K</div><div class="econ-sub">All-in</div></div>
+      <div class="econ-cell"><div class="econ-meta">+ BAR &amp; MERCH</div><div class="econ-num">$27K</div><div class="econ-sub">Per-cap industry</div></div>
+      <div class="econ-cell"><div class="econ-meta">WK CONTRIBUTION</div><div class="econ-num">$88K</div><div class="econ-sub">100% w/ concessions</div></div>
+      <div class="econ-cell"><div class="econ-meta">BREAKEVEN</div><div class="econ-num">61%</div><div class="econ-sub">~92 / 150 seats</div></div>
+      <div class="econ-cell"><div class="econ-meta">WT AVG TICKET</div><div class="econ-num">$90.56</div><div class="econ-sub">Com / Std / Pre / VIP</div></div>
+    </div>
+    <table class="tier-table">
+      <thead><tr><th>TIER</th><th>SEATS / WK</th><th>AVG $</th><th>WEEKLY $</th></tr></thead>
+      <tbody>
+        <tr><td><span class="sw sw-com"></span> Community</td><td>520</td><td>$50</td><td>$26,400</td></tr>
+        <tr><td><span class="sw sw-std"></span> Standard</td><td>720</td><td>$83</td><td>$58,800</td></tr>
+        <tr><td><span class="sw sw-pre"></span> Premium</td><td>480</td><td>$132</td><td>$63,000</td></tr>
+        <tr><td><span class="sw sw-vip"></span> VIP · Saturday only</td><td>80</td><td>$185</td><td>$14,800</td></tr>
+        <tr class="tier-total"><td>WEEKLY GROSS</td><td>1,800</td><td>$90.56</td><td>$163,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 08 · EVENTS BUSINESS / DARK DAYS ======================== -->
+<section class="slide additional" id="additional" data-chapter="Events Upside">
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 08</span>
+      <span class="rcpt-eyebrow">UPSIDE · EVENTS BUSINESS · DARK-DAY UTILIZATION</span>
+      <span class="rcpt-meta">~210 DAY-EQUIVALENTS / RUN</span>
+    </div>
+    <h2 class="rcpt-h">Events on dark days. <span class="red">$405K—$1.37M net</span> across the run.</h2>
+    <div class="rcpt-grid">
+      <div class="rcpt-cell"><div class="rc-lbl">DARK DAYS/WK</div><div class="rc-val">3.5</div><div class="rc-delta">Mon — Wed + weekday daytime</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">RUN-PERIOD DEs</div><div class="rc-val">~210</div><div class="rc-delta">14-mo opening run</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">DIFFERENTIATORS</div><div class="rc-val white">6 / 6</div><div class="rc-delta">most LA venues have 1—2</div></div>
+      <div class="rcpt-cell"><div class="rc-lbl">RUN UPSIDE · MOD</div><div class="rc-val green">+$847K</div><div class="rc-delta">~50% utilization · net</div></div>
+    </div>
+    <table class="add-table" style="margin-top: 20px;">
+      <thead><tr><th>SCENARIO</th><th>UTILIZATION</th><th>GROSS</th><th>NET</th></tr></thead>
+      <tbody>
+        <tr><td>Conservative</td><td>~30%</td><td>$540K</td><td>+$405K</td></tr>
+        <tr><td>Moderate</td><td>~50%</td><td>$1.13M</td><td>+$847K</td></tr>
+        <tr class="ag"><td>Aggressive</td><td>~65%</td><td>$1.82M</td><td>+$1.37M</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 09 · CAPITAL STRUCTURE ================================== -->
+<section class="slide rounds" id="rounds" data-chapter="Cap Structure">
+  <div class="slide-pad rounds-head" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 09</span>
+      <span class="rcpt-eyebrow">CAP STRUCTURE · THE ASK</span>
+      <span class="rcpt-meta">3 ROUNDS · 110% / 50/50</span>
+    </div>
+    <h2 class="rcpt-h">$8.97M raise. <span class="red">$2.68M non-recoupable</span> de-risks investor tier by 45%.</h2>
+    <div class="rounds-tabs" id="rounds-tabs">
+      <button class="r-tab active" data-round="1"><span class="r-num">01</span><span class="r-meta">R1 · BUILD</span><span class="r-amt">$1M</span><span class="r-when">06/01/2026</span></button>
+      <button class="r-tab" data-round="2"><span class="r-num">02</span><span class="r-meta">R2 · PROD</span><span class="r-amt">$6.5M</span><span class="r-when">01/01/2027</span></button>
+      <button class="r-tab" data-round="3"><span class="r-num">03</span><span class="r-meta">R3 · LAUNCH</span><span class="r-amt">$1.5M</span><span class="r-when">06/01/2027</span></button>
+    </div>
+  </div>
+  <div class="round-panels">
+    <div class="round-panel active" data-round="1">
+      <div class="rp-left">
+        <div class="rp-eyebrow">R1 · BUILD-OUT &amp; OPENING</div>
+        <div class="rp-amt">$1M</div>
+        <div class="rp-when">06/01/2026 · CLOSES Q3/2026</div>
+        <p>Earliest capital, best terms. Soft-prep: design development, venue lease, advance marketing.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST-RECOUP</div><div class="rp-v">50 / 50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Venue · production · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">EXIT</div><div class="rp-v">Open 06/27 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="2">
+      <div class="rp-left">
+        <div class="rp-eyebrow">R2 · PRODUCTION</div>
+        <div class="rp-amt">$6.5M</div>
+        <div class="rp-when">01/01/2027</div>
+        <p>Production raise: seven built environments, full creative team, technical install.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST-RECOUP</div><div class="rp-v">50 / 50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Venue · production · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">EXIT</div><div class="rp-v">Open 06/27 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="3">
+      <div class="rp-left">
+        <div class="rp-eyebrow">R3 · LAUNCH &amp; STEADY-STATE</div>
+        <div class="rp-amt">$1.5M</div>
+        <div class="rp-when">06/01/2027</div>
+        <p>Launch marketing + operating reserve through the first months of the run.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST-RECOUP</div><div class="rp-v">50 / 50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Marketing · reserve · contingency</div></div>
+        <div class="rp-row"><div class="rp-k">EXIT</div><div class="rp-v">Open 06/27 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · TEAM (data-led) ==================================== -->
+<section class="slide producers" id="producers" data-chapter="Team Credentials">
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 10</span>
+      <span class="rcpt-eyebrow">TEAM · DIRECT CATEGORY CREDITS</span>
+      <span class="rcpt-meta">9 PRODUCERS · 5 AWARDS · 3 COMP-SHOW CREDITS</span>
+    </div>
+    <h2 class="rcpt-h">Direct credits on <span class="red">3 of 5 listed comps.</span></h2>
+    <div class="prod-grid">
+      <div class="prod-card highlight"><div class="prod-name">ANDREW SCOVILLE</div><div class="prod-title">DIR · 3 DIRECT COMP CREDITS</div><p>Here Lies Love (assoc). Theater of the Mind (dir). Money Heist: The Experience (dir).</p></div>
+      <div class="prod-card"><div class="prod-name">DERRICK HODGE</div><div class="prod-title">COMP · 2× GRAMMY</div><p>Pilot composer. Continues musical direction.</p></div>
+      <div class="prod-card"><div class="prod-name">SHANE SNOW</div><div class="prod-title">PROD · 1× TONY</div><p>Tony-winning producer + bestselling author + Pulitzer entrant.</p></div>
+      <div class="prod-card"><div class="prod-name">ROB O'NEILL</div><div class="prod-title">PROD · 1× TONY</div><p>The Outsiders (2024). The Who's Tommy. Burlesque.</p></div>
+      <div class="prod-card"><div class="prod-name">DIANE LUBY LANE</div><div class="prod-title">FOUNDER · GET LIT (200+ SCHOOLS)</div><p>Patterson Award. Presidential Lifetime Volunteer.</p></div>
+      <div class="prod-card"><div class="prod-name">GINA BELAFONTE</div><div class="prod-title">PILOT DIRECTOR · SANKOFA</div><p>Award-winning producer/director. Sankofa.org E.D.</p></div>
+      <div class="prod-card"><div class="prod-name">BRANDON XIV</div><div class="prod-title">LEAD PROD · SHOWRUNNER CO-FOUNDER</div><p>Film-tech operator.</p></div>
+      <div class="prod-card"><div class="prod-name">MARK CHINAPEN</div><div class="prod-title">GM · SUPER BOWL-SCALE OPS</div><p>Coachella. Stagecoach. Grammys. World of Dance.</p></div>
+      <div class="prod-card"><div class="prod-name">MONIQUE MITCHELL</div><div class="prod-title">PROD · $50M CA SB 933</div><p>Puma / Lexus / Fox / A24 / NY Times.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · RESERVE ============================================ -->
+<section class="slide reserve" id="reserve" data-chapter="Close">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="rcpt-head">
+      <span class="rcpt-num">§ 11</span>
+      <span class="rcpt-eyebrow">CLOSE · NEXT STEP</span>
+      <span class="rcpt-meta">R1 CLOSES Q3/2026</span>
+    </div>
+    <h2 class="reserve-h">$1M Round One. <span class="red"><em>Closes Q3 2026.</em></span></h2>
+    <div class="reserve-grid" style="margin-top: 28px;">
+      <div class="reserve-col"><div class="rc-h">DD / DECK / TERMS</div><a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a><div class="rc-sub">ifiawaken.la · @ifiawaken</div></div>
+      <div class="reserve-col"><div class="rc-h">CLOSE</div><div class="rc-big">Q3 2026</div><div class="rc-sub"><em>Doors open · 06/27</em></div></div>
+    </div>
+    <div class="reserve-foot"><span>If I Awaken in Los Angeles · v7 The Receipts</span><span>Data-first cut · pitch 2026</span></div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>
