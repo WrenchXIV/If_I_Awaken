@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v4 Hero's Journey</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v4 — HERO'S JOURNEY                                            */
+  /* Storybook / chapter-book metaphor.                             */
+  /* Diane is the protagonist; the investor is the guide.           */
+  /* ============================================================ */
+
+  :root {
+    --f-narrative: "EB Garamond", "Fraunces", Georgia, serif;
+  }
+  body { background: #0d0a08; }
+
+  .slide { background: #0d0a08; }
+  .slide.paper-page { background: #f4ecd8; color: #1a140e; }
+
+  /* Chapter marker — "CHAPTER I" etc. */
+  .chap-mark {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: var(--red);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--red);
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  /* Big narrative serif headlines */
+  .ny-h {
+    font-family: var(--f-narrative);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(38px, 5.5vw, 78px);
+    line-height: 1.05;
+    color: #f4ecd8;
+    margin-bottom: 28px;
+    max-width: 22ch;
+    letter-spacing: -0.005em;
+  }
+  .paper-page .ny-h { color: #1a140e; }
+  .ny-h .red { color: var(--red); font-style: italic; }
+
+  .ny-body {
+    font-family: var(--f-narrative);
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.55;
+    color: rgba(244, 236, 216, 0.82);
+    max-width: 56ch;
+    margin-bottom: 18px;
+  }
+  .paper-page .ny-body { color: rgba(26, 20, 14, 0.85); }
+  .ny-body em { color: #f4ecd8; }
+  .paper-page .ny-body em { color: #1a140e; }
+  .ny-body .red { color: var(--red); font-style: italic; font-weight: 500; }
+
+  .ny-quote {
+    font-family: var(--f-narrative);
+    font-style: italic;
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.3;
+    color: #d4b478;
+    border-left: 3px solid var(--red);
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    max-width: 36ch;
+  }
+
+  /* Page-turn affordance */
+  .turn-page {
+    position: fixed;
+    right: 22px;
+    bottom: 80px;
+    z-index: 100;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(244, 236, 216, 0.7);
+    pointer-events: none;
+  }
+  .paper-page-active ~ .turn-page { color: rgba(26, 20, 14, 0.7); }
+
+  /* Drop cap */
+  .ny-body.dc::first-letter {
+    font-family: var(--f-narrative);
+    font-weight: 500;
+    font-size: 4.5em;
+    line-height: 0.85;
+    float: left;
+    padding: 8px 12px 0 0;
+    color: var(--red);
+  }
+
+  /* Stage marker — for act breaks */
+  .act-break {
+    text-align: center;
+  }
+  .act-break .ab-num {
+    font-family: var(--f-narrative);
+    font-style: italic;
+    font-size: clamp(80px, 14vw, 200px);
+    line-height: 1;
+    color: #5c4a32;
+  }
+  .act-break .ab-name {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--red);
+    margin-top: 16px;
+    text-transform: uppercase;
+  }
+  .act-break .ab-sub {
+    font-family: var(--f-narrative);
+    font-style: italic;
+    font-size: 24px;
+    color: #d4b478;
+    margin-top: 22px;
+  }
+
+  /* Override v1 styles for narrative voice */
+  .display, .show-h, .thesis-h, .global-h, .fr-h, .rounds-h, .econ-h, .reserve-h, .why-h {
+    font-family: var(--f-narrative);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Investor as guide block */
+  .guide-block {
+    margin-top: 36px;
+    padding: 24px 28px;
+    background: rgba(244, 236, 216, 0.07);
+    border: 1px solid rgba(244, 236, 216, 0.18);
+    border-radius: 6px;
+    max-width: 60ch;
+  }
+  .paper-page .guide-block { background: rgba(26, 20, 14, 0.05); border-color: rgba(26, 20, 14, 0.18); }
+  .guide-block .gb-h {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--red);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .guide-block p {
+    font-family: var(--f-narrative);
+    font-size: 18px;
+    line-height: 1.5;
+    color: rgba(244, 236, 216, 0.85);
+    margin: 0;
+  }
+  .paper-page .guide-block p { color: rgba(26, 20, 14, 0.85); }
+</style>
+</head>
+<body data-version="v4">
+
+<div id="progress"><div id="progress-fill"></div></div>
+<nav id="rail" aria-label="Chapter navigation"></nav>
+<div class="turn-page">TURN PAGE ↓</div>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg><span>CHAPTERS</span></button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">Prologue</span>
+  </div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">PAGE 01 / 14</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
+</div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title"><span class="map-eyebrow">v4 Hero's Journey</span><h2>Table of Contents</h2></div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span>Use <kbd>↑</kbd><kbd>↓</kbd> to turn pages · <kbd>M</kbd> for contents</span></div>
+</div>
+
+<main id="deck">
+
+<!-- 01 · PROLOGUE ================================================ -->
+<section class="slide" id="prologue" data-chapter="Prologue">
+  <div class="slide-pad">
+    <span class="chap-mark">PROLOGUE</span>
+    <h1 class="ny-h">In a city of stories, no one had told <span class="red">this one.</span></h1>
+    <p class="ny-body dc">In Los Angeles, things take root. People from all over the world feel this — and so they flock here. The dreamers, the wanderers, the immigrants, in search of a chance, a rebirth, a fresh start. And the city receives them.</p>
+    <p class="ny-body">There has never been a show that told that LA. Not the Hollywood postcard. Not the Walk of Fame. <em>The city itself.</em> The languages, the music, the neighborhoods, the people who actually live here.</p>
+    <p class="ny-body">This is the story of how that show is being built — and the chapter you're being invited into.</p>
+  </div>
+</section>
+
+<!-- 02 · ACT I BREAK ============================================ -->
+<section class="slide" id="act-1" data-chapter="Act I · The Ordinary World">
+  <div class="slide-pad act-break">
+    <div class="ab-num">I</div>
+    <div class="ab-name">ACT ONE</div>
+    <div class="ab-sub">The Ordinary World</div>
+  </div>
+</section>
+
+<!-- 03 · THE HERO ================================================ -->
+<section class="slide" id="hero" data-chapter="Our Hero">
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER ONE · OUR HERO</span>
+    <h2 class="ny-h">A teacher in Los Angeles named <span class="red">Diane Luby Lane.</span></h2>
+    <p class="ny-body dc">Diane is the founder of Get Lit — Words Ignite. For two decades she has been putting poetry in the hands of LA students. Her curriculum is now in over two hundred schools worldwide. The James Patterson Page Turner Award. The Presidential Lifetime Volunteer Service Award. LA Times, CNN, NPR.</p>
+    <p class="ny-body">But the curriculum was only ever a means. The real project was always the city — listening to LA tell itself, in its own voices, in its own words.</p>
+    <p class="ny-quote">"Los Angeles has loved us. With this show, we offer that love back."</p>
+  </div>
+</section>
+
+<!-- 04 · THE CALL =============================================== -->
+<section class="slide" id="call" data-chapter="The Call">
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER TWO · THE CALL TO ADVENTURE</span>
+    <h2 class="ny-h">An idea, simple enough to fit on a single page.</h2>
+    <p class="ny-body">A tour of the real Los Angeles — not the Hollywood backdrop, but the city underneath. The audience wouldn't sit. They would <em>walk.</em> Through seven neighborhoods. With the actual people. With the actual music. At theatre scale.</p>
+    <p class="ny-body">Diane brought it to <strong>Andrew Scoville</strong> (director, <em>Theater of the Mind</em>; associate director, <em>Here Lies Love</em>; director, <em>Money Heist: The Experience</em>). To <strong>Derrick Hodge</strong> (two-time Grammy). To <strong>Gina Belafonte</strong> (Sankofa). To Tony-winning producers <strong>Shane Snow</strong> and <strong>Rob O'Neill.</strong></p>
+    <p class="ny-body"><span class="red">The team said yes.</span> Then the city had to.</p>
+  </div>
+</section>
+
+<!-- 05 · ACT II BREAK ========================================== -->
+<section class="slide" id="act-2" data-chapter="Act II · The Threshold">
+  <div class="slide-pad act-break">
+    <div class="ab-num">II</div>
+    <div class="ab-name">ACT TWO</div>
+    <div class="ab-sub">Crossing the Threshold</div>
+  </div>
+</section>
+
+<!-- 06 · TIMELINE BEGINS — PILOT =============================== -->
+<section class="slide chapter-dark" id="pilot" data-chapter="The Pilot">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">Ford Theatre · sold out</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">the city wrote back</span></a>
+    <a href="#return" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE RETURN</span><span class="tl-stat">the show opens</span></a>
+  </div>
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER THREE · THE FIRST TEST</span>
+    <h2 class="ny-h">August 1, 2025. <span class="red">The Ford Theatre.</span></h2>
+    <p class="ny-body">In partnership with the LA Philharmonic. Directed by Gina. Composed by Derrick. On stage: <strong>Luis J. Rodriguez</strong> (former LA Poet Laureate), <strong>Samantha Rios</strong> (current LA Youth Poet Laureate), <strong>Dante Basco</strong>, <strong>Mendeleyev.</strong></p>
+    <p class="ny-body">The line stretched around the block. The show held the curtain thirty minutes to let people in. <em>The Ford had not seen a night like it in years.</em></p>
+    <p class="ny-quote">"They didn't just speak about Los Angeles — they spoke as Los Angeles." — The Hollywood Times</p>
+    <div class="bigstat">
+      <span class="num">1,000<span class="plus">+</span></span>
+      <span class="lbl">Tickets sold · sold out</span>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · ALBUM ================================================= -->
+<section class="slide chapter-dark" id="album" data-chapter="The Album">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">Ford Theatre · sold out</span></a>
+    <a href="#album" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">the city wrote back</span></a>
+    <a href="#return" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE RETURN</span><span class="tl-stat">the show opens</span></a>
+  </div>
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER FOUR · THE BROADCAST</span>
+    <h2 class="ny-h">The pilot was the room. The album was <span class="red">the city listening back.</span></h2>
+    <p class="ny-body">Hodge took the score and pulled in <strong>Jackson Browne</strong> (Rock &amp; Roll Hall of Fame), <strong>Joy Harjo</strong> (three-time US Poet Laureate), and <strong>Cheech Marin.</strong> The album was the format's translation outside the theater — and it scaled.</p>
+    <div class="bigstat">
+      <span class="num">30K<span class="plus">+</span></span>
+      <span class="lbl">Listens · first week</span>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · AWAKENING ============================================ -->
+<section class="slide chapter-dark" id="awakening" data-chapter="The Awakening">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">Ford Theatre · sold out</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">the city wrote back</span></a>
+    <a href="#return" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE RETURN</span><span class="tl-stat">the show opens</span></a>
+  </div>
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER FIVE · THE CITY ANSWERS</span>
+    <h2 class="ny-h">Then we asked one question — and the city <span class="red">wrote back.</span></h2>
+    <p class="ny-body"><em>"Tell us about your LA."</em></p>
+    <p class="ny-body">We had no idea what we were starting. Partnered with the Los Angeles Unified School District and Get Lit — Words Ignite, the question went into schools, classrooms, cafeterias, community centers. Judged by Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, and Gina Belafonte.</p>
+    <p class="ny-body">By January, it had become <span class="red">the largest poetry competition in the country</span> — by accident.</p>
+    <div class="bigstat">
+      <span class="num">1,400<span class="plus">+</span></span>
+      <span class="lbl">Video submissions · from across the city</span>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · ACT III BREAK ========================================= -->
+<section class="slide" id="act-3" data-chapter="Act III · The Road Forward">
+  <div class="slide-pad act-break">
+    <div class="ab-num">III</div>
+    <div class="ab-name">ACT THREE</div>
+    <div class="ab-sub">The Road Forward</div>
+  </div>
+</section>
+
+<!-- 10 · THE SHOW ============================================== -->
+<section class="slide journey" id="journey" data-chapter="The Show">
+  <div class="slide-pad journey-head">
+    <span class="chap-mark">CHAPTER SIX · WHAT WE'RE BUILDING</span>
+    <h2 class="ny-h">A 30,000 sq ft warehouse, seven neighborhoods, <span class="red">one continuous walk.</span></h2>
+    <p class="ny-body" style="max-width: 56ch;">No seats until the finale. No proscenium until the proscenium earns it. 150 guests per show. 100 minutes end-to-end. Opens June 2027 in the Arts District, next to the 6th Street Bridge.</p>
+  </div>
+  <div class="journey-stage">
+    <div class="journey-track" id="journey-track">
+      <article class="j-card" data-step="1"><div class="j-photo" style="background-image:url('assets/photos/red-carpet.jpg')"></div><div class="j-body"><div class="j-num">01</div><h3>HOLLYWOOD BOULEVARD</h3><p>A 110-foot LED wall. Then it pivots.</p></div></article>
+      <article class="j-card" data-step="2"><div class="j-photo" style="background-image:url('assets/photos/journey-2.jpg')"></div><div class="j-body"><div class="j-num">02</div><h3>BOYLE HEIGHTS</h3><p>A tianguis. Two poets meet across a generation.</p></div></article>
+      <article class="j-card" data-step="3"><div class="j-photo" style="background-image:url('assets/photos/journey-3.jpg')"></div><div class="j-body"><div class="j-num">03</div><h3>THE ASIAN ARC</h3><p>Chinatown · Little Tokyo · Koreatown · Filipinotown · Thai Town.</p></div></article>
+      <article class="j-card" data-step="4"><div class="j-photo" style="background-image:url('assets/photos/journey-4.jpg')"></div><div class="j-body"><div class="j-num">04</div><h3>BLACK LA · A CENTURY</h3><p>Gospel choir to drum circle.</p></div></article>
+      <article class="j-card" data-step="5"><div class="j-photo" style="background-image:url('assets/photos/journey-5.jpg')"></div><div class="j-body"><div class="j-num">05</div><h3>FOLK LA · LAUREL CANYON</h3><p>The band on the floor with the audience.</p></div></article>
+      <article class="j-card" data-step="6"><div class="j-photo" style="background-image:url('assets/photos/journey-6.jpg')"></div><div class="j-body"><div class="j-num">06</div><h3>THE STAGE</h3><p>The only seated room. The finale.</p></div></article>
+      <article class="j-card" data-step="7"><div class="j-photo" style="background-image:url('assets/photos/journey-7.jpg')"></div><div class="j-body"><div class="j-num">07</div><h3>THE REAL LA</h3><p>The wall, now made of the audience's faces.</p></div></article>
+    </div>
+  </div>
+  <div class="journey-controls">
+    <button class="j-btn" id="j-prev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg></button>
+    <div class="j-dots" id="j-dots"></div>
+    <button class="j-btn" id="j-next"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></button>
+  </div>
+</section>
+
+<!-- 11 · THE GUIDE (YOU) ======================================= -->
+<section class="slide" id="guide" data-chapter="The Guide">
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER SEVEN · THE GUIDE</span>
+    <h2 class="ny-h">Every hero needs a guide. <span class="red">This is the part you play.</span></h2>
+    <p class="ny-body">In every story, the moment the hero crosses the threshold, the world expects them to fail. They can't go alone. They need someone to hand them the sword.</p>
+    <p class="ny-body">The pilot is proven. The album is proven. The competition is proven. The team is proven. <em>The only thing missing is the build.</em></p>
+    <p class="ny-body">$8.97M total — across three rounds — opens the doors in June 2027, lands the show squarely inside the FIFA World Cup, Super Bowl LXI, and the 2028 Summer Olympics. Capital recoups first-position at 110%. Then 50/50 net profit, indefinitely, across the LA run and every chapter that follows it.</p>
+    <div class="guide-block">
+      <div class="gb-h">WHAT YOU UNLOCK</div>
+      <p><strong>Round One: $1M</strong> — opens June 1, 2026. Earliest capital, best terms, first into the cap stack. Class A LP units, $50K minimum.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · THE STAKES (TIMING) =================================== -->
+<section class="slide global" id="global" data-chapter="The Stakes">
+  <div class="global-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad two-col">
+    <div class="left">
+      <span class="chap-mark">CHAPTER EIGHT · THE STAKES</span>
+      <h2 class="ny-h"><span class="red">The world is about to look at LA.</span> Three years in a row.</h2>
+      <p class="ny-body">FIFA World Cup '26. Super Bowl LXI '27. The 2028 Summer Olympics &amp; Paralympics. Tens of millions of visitors. A cultural front door is going to open — and there is currently no theatre piece prepared to be that door.</p>
+      <p class="ny-body"><em>We open June 2027. With twelve months to find our rhythm before the Olympic surge arrives.</em></p>
+    </div>
+    <div class="right">
+      <div class="event-list">
+        <div class="event"><span class="year">'26</span><span class="ev">FIFA WORLD CUP</span></div>
+        <div class="event"><span class="year">'27</span><span class="ev">SUPER BOWL LXI</span></div>
+        <div class="event"><span class="year">'28</span><span class="ev">SUMMER OLYMPICS</span></div>
+        <div class="event"><span class="year">'28</span><span class="ev">PARALYMPIC GAMES</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · THE NUMBERS (briefly) ================================= -->
+<section class="slide economics" id="economics" data-chapter="The Numbers">
+  <div class="slide-pad">
+    <span class="chap-mark">CHAPTER NINE · THE NUMBERS</span>
+    <h2 class="ny-h"><span class="red">61%</span> capacity to break even. <em>The pilot oversold at 100%+.</em></h2>
+    <div class="econ-grid">
+      <div class="econ-cell"><div class="econ-meta">WEEKLY TICKET GROSS</div><div class="econ-num">$163K</div><div class="econ-sub">At 100% · 1,800 seats / wk</div></div>
+      <div class="econ-cell"><div class="econ-meta">WEEKLY OPERATING</div><div class="econ-num">$102K</div><div class="econ-sub">All-in</div></div>
+      <div class="econ-cell"><div class="econ-meta">+ BAR &amp; MERCH</div><div class="econ-num">$27K</div><div class="econ-sub">Per-cap industry data</div></div>
+      <div class="econ-cell"><div class="econ-meta">WEEKLY CONTRIBUTION</div><div class="econ-num">$88K</div><div class="econ-sub">At 100% · w/ concessions</div></div>
+      <div class="econ-cell"><div class="econ-meta">BREAKEVEN CAPACITY</div><div class="econ-num">61%</div><div class="econ-sub">~92 of 150 avg seats</div></div>
+      <div class="econ-cell"><div class="econ-meta">EVENTS UPSIDE</div><div class="econ-num">$1.37M</div><div class="econ-sub">Aggressive net · ~65% utilization</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · THE RETURN (RESERVE) ================================== -->
+<section class="slide reserve" id="return" data-chapter="The Return">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad">
+    <span class="chap-mark">EPILOGUE · THE RETURN</span>
+    <h2 class="ny-h"><span class="red">Round one closes Q3 2026.</span><br>The hero returns June 2027.</h2>
+    <p class="ny-body">LA is chapter one. After LA, the same architecture replicates — Chicago's house music. New York's five-borough breath. London's Brixton-to-Brick-Lane song. Each city, a new chapter. Each chapter, a new revenue line.</p>
+    <div class="reserve-grid" style="margin-top: 36px;">
+      <div class="reserve-col"><div class="rc-h">TO RESERVE OR LEARN MORE</div><a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a><div class="rc-sub">ifiawaken.la · @ifiawaken</div></div>
+      <div class="reserve-col"><div class="rc-h">ROUND ONE CLOSES</div><div class="rc-big">Q3 2026</div><div class="rc-sub"><em>Doors open · June 2027</em></div></div>
+    </div>
+    <div class="reserve-foot"><span>If I Awaken in Los Angeles · v4 Hero's Journey</span><span>An immersive theatrical tour of the real Los Angeles</span></div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>

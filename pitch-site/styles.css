@@ -642,7 +642,105 @@ p.sub {
 }
 .track-rail a.active .dot { background: var(--red); box-shadow: 0 0 0 4px rgba(214, 58, 63, 0.2); }
 
-.chapter-dark .slide-pad { margin-top: 36px; }
+.chapter-dark .slide-pad { margin-top: 64px; }
+
+/* Persistent timeline across pilot → album → awakening → show.
+   Identical position on every slide so it FEELS continuous as you scroll. */
+.timeline {
+  position: absolute;
+  top: 32px;
+  left: var(--slide-pad-x);
+  right: var(--slide-pad-x);
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  padding-top: 24px;
+}
+.timeline .tl-line {
+  position: absolute;
+  top: 24px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: rgba(214, 58, 63, 0.22);
+  z-index: 0;
+}
+.timeline .tl-fill {
+  position: absolute;
+  inset: 0 100% 0 0;
+  background: var(--red);
+  transition: right 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.timeline[data-step="1"] .tl-fill { right: 100%; }
+.timeline[data-step="2"] .tl-fill { right: 66.7%; }
+.timeline[data-step="3"] .tl-fill { right: 33.3%; }
+.timeline[data-step="4"] .tl-fill { right: 0; }
+
+.timeline .tl-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  text-align: center;
+  color: var(--on-dark-mute);
+  transition: color 0.2s ease;
+}
+.timeline .tl-step:hover { color: var(--on-dark); }
+.timeline .tl-step.active { color: var(--red); }
+.timeline .tl-dot {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid rgba(214, 58, 63, 0.4);
+  margin-top: -23px;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+.timeline .tl-step:hover .tl-dot { border-color: var(--on-dark); }
+.timeline .tl-step.active .tl-dot {
+  background: var(--red);
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px rgba(214, 58, 63, 0.18);
+}
+.timeline .tl-when {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--on-dark-mute);
+  margin-top: 8px;
+}
+.timeline .tl-step.active .tl-when { color: var(--red); }
+.timeline .tl-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.timeline .tl-stat {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--on-dark-mute);
+  line-height: 1.3;
+  max-width: 16ch;
+}
+
+@media (max-width: 900px) {
+  .timeline .tl-stat { display: none; }
+  .timeline .tl-when { font-size: 8px; }
+  .timeline .tl-name { font-size: 11px; }
+}
+@media (max-width: 600px) {
+  .timeline .tl-when { display: none; }
+  .timeline .tl-name { font-size: 10px; }
+  .chapter-dark .slide-pad { margin-top: 50px; }
+}
 
 .display {
   font-size: clamp(54px, 7vw, 96px);

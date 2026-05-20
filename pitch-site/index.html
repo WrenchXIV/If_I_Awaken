@@ -11,8 +11,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
 </head>
-<body>
+<body data-version="v1">
 
 <!-- ============================================================ -->
 <!-- PROGRESS BAR + CHAPTER RAIL -->
@@ -116,11 +117,32 @@
 
 <!-- 03 PILOT ==================================================== -->
 <section class="slide chapter-dark" id="pilot" data-chapter="The Pilot" data-eyebrow="03">
-  <div class="track-rail">
-    <a href="#pilot" class="active"><span class="dot"></span>THE PILOT</a>
-    <a href="#album"><span class="dot"></span>THE ALBUM</a>
-    <a href="#awakening"><span class="dot"></span>THE AWAKENING</a>
-    <a href="#show"><span class="dot"></span>THE SHOW</a>
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step active">
+      <span class="tl-dot"></span>
+      <span class="tl-when">AUG 2025</span>
+      <span class="tl-name">THE PILOT</span>
+      <span class="tl-stat">1,000+ tickets · Ford Theatre</span>
+    </a>
+    <a href="#album" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">OCT 2025</span>
+      <span class="tl-name">THE ALBUM</span>
+      <span class="tl-stat">30K listens · first week</span>
+    </a>
+    <a href="#awakening" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JAN 2026</span>
+      <span class="tl-name">THE AWAKENING</span>
+      <span class="tl-stat">1,400+ video submissions</span>
+    </a>
+    <a href="#show" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JUN 2027</span>
+      <span class="tl-name">THE SHOW</span>
+      <span class="tl-stat">opens · 18-mo run</span>
+    </a>
   </div>
   <div class="slide-pad two-col">
     <div class="left">
@@ -160,11 +182,32 @@
 
 <!-- 04 ALBUM ==================================================== -->
 <section class="slide chapter-dark" id="album" data-chapter="The Album" data-eyebrow="04">
-  <div class="track-rail">
-    <a href="#pilot"><span class="dot"></span>THE PILOT</a>
-    <a href="#album" class="active"><span class="dot"></span>THE ALBUM</a>
-    <a href="#awakening"><span class="dot"></span>THE AWAKENING</a>
-    <a href="#show"><span class="dot"></span>THE SHOW</a>
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">AUG 2025</span>
+      <span class="tl-name">THE PILOT</span>
+      <span class="tl-stat">1,000+ tickets · Ford Theatre</span>
+    </a>
+    <a href="#album" class="tl-step active">
+      <span class="tl-dot"></span>
+      <span class="tl-when">OCT 2025</span>
+      <span class="tl-name">THE ALBUM</span>
+      <span class="tl-stat">30K listens · first week</span>
+    </a>
+    <a href="#awakening" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JAN 2026</span>
+      <span class="tl-name">THE AWAKENING</span>
+      <span class="tl-stat">1,400+ video submissions</span>
+    </a>
+    <a href="#show" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JUN 2027</span>
+      <span class="tl-name">THE SHOW</span>
+      <span class="tl-stat">opens · 18-mo run</span>
+    </a>
   </div>
   <div class="slide-pad two-col">
     <div class="left">
@@ -196,11 +239,32 @@
 
 <!-- 05 AWAKENING ================================================ -->
 <section class="slide chapter-dark" id="awakening" data-chapter="The Awakening" data-eyebrow="05">
-  <div class="track-rail">
-    <a href="#pilot"><span class="dot"></span>THE PILOT</a>
-    <a href="#album"><span class="dot"></span>THE ALBUM</a>
-    <a href="#awakening" class="active"><span class="dot"></span>THE AWAKENING</a>
-    <a href="#show"><span class="dot"></span>THE SHOW</a>
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">AUG 2025</span>
+      <span class="tl-name">THE PILOT</span>
+      <span class="tl-stat">1,000+ tickets · Ford Theatre</span>
+    </a>
+    <a href="#album" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">OCT 2025</span>
+      <span class="tl-name">THE ALBUM</span>
+      <span class="tl-stat">30K listens · first week</span>
+    </a>
+    <a href="#awakening" class="tl-step active">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JAN 2026</span>
+      <span class="tl-name">THE AWAKENING</span>
+      <span class="tl-stat">1,400+ video submissions</span>
+    </a>
+    <a href="#show" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JUN 2027</span>
+      <span class="tl-name">THE SHOW</span>
+      <span class="tl-stat">opens · 18-mo run</span>
+    </a>
   </div>
   <div class="slide-pad two-col">
     <div class="left">
@@ -235,11 +299,32 @@
 
 <!-- 06 SHOW QUOTES =============================================== -->
 <section class="slide chapter-dark show-wall" id="show" data-chapter="The Show" data-eyebrow="06">
-  <div class="track-rail">
-    <a href="#pilot"><span class="dot"></span>THE PILOT</a>
-    <a href="#album"><span class="dot"></span>THE ALBUM</a>
-    <a href="#awakening"><span class="dot"></span>THE AWAKENING</a>
-    <a href="#show" class="active"><span class="dot"></span>THE SHOW</a>
+  <div class="timeline" data-step="4">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">AUG 2025</span>
+      <span class="tl-name">THE PILOT</span>
+      <span class="tl-stat">1,000+ tickets · Ford Theatre</span>
+    </a>
+    <a href="#album" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">OCT 2025</span>
+      <span class="tl-name">THE ALBUM</span>
+      <span class="tl-stat">30K listens · first week</span>
+    </a>
+    <a href="#awakening" class="tl-step">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JAN 2026</span>
+      <span class="tl-name">THE AWAKENING</span>
+      <span class="tl-stat">1,400+ video submissions</span>
+    </a>
+    <a href="#show" class="tl-step active">
+      <span class="tl-dot"></span>
+      <span class="tl-when">JUN 2027</span>
+      <span class="tl-name">THE SHOW</span>
+      <span class="tl-stat">opens · 18-mo run</span>
+    </a>
   </div>
   <div class="show-bg" style="background-image:url('assets/photos/finale.jpg')"></div>
   <div class="slide-pad">
@@ -919,5 +1004,6 @@
 </main>
 
 <script src="script.js"></script>
+<script src="shared/switcher.js"></script>
 </body>
 </html>
