@@ -1,0 +1,423 @@
+/* ================================================================
+   PITCH SITE · EDITOR LAYER
+   Squarespace-style in-browser editor. Hidden until ?edit=1 or Shift+E.
+   ================================================================ */
+
+/* All editor UI hidden by default. Visible only in edit mode. */
+.ed-only { display: none !important; }
+body.edit-mode .ed-only { display: revert !important; }
+body.edit-mode .ed-only.flex { display: flex !important; }
+body.edit-mode .ed-only.grid { display: grid !important; }
+body.edit-mode .ed-only.inline-flex { display: inline-flex !important; }
+
+/* ---- Top edit toolbar ------------------------------------------------ */
+
+#ed-toolbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  background: rgba(8, 8, 8, 0.96);
+  border-bottom: 1px solid rgba(242, 237, 226, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9000;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #F2EDE2;
+}
+body.edit-mode #deck { margin-top: 44px; height: calc(100vh - 44px); }
+body.edit-mode #chrome-bottom { display: none; }
+body.edit-mode #rail { display: none; }
+body.edit-mode #progress { top: 44px; }
+
+.ed-group { display: inline-flex; align-items: center; gap: 4px; }
+.ed-sep { width: 1px; height: 22px; background: rgba(242, 237, 226, 0.18); }
+.ed-btn {
+  padding: 6px 10px;
+  background: rgba(242, 237, 226, 0.06);
+  border: 1px solid rgba(242, 237, 226, 0.18);
+  border-radius: 4px;
+  color: #F2EDE2;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.12s ease;
+}
+.ed-btn:hover { background: rgba(242, 237, 226, 0.14); border-color: rgba(242, 237, 226, 0.36); }
+.ed-btn.active {
+  background: #D63A3F;
+  border-color: #D63A3F;
+  color: #fff;
+}
+.ed-btn.danger:hover {
+  background: rgba(214, 58, 63, 0.2);
+  border-color: #D63A3F;
+}
+.ed-btn svg { display: block; }
+
+.ed-spacer { flex: 1; }
+
+.ed-tag {
+  padding: 4px 8px;
+  background: rgba(214, 58, 63, 0.18);
+  border: 1px solid #D63A3F;
+  border-radius: 3px;
+  color: #ff8a8e;
+  font-weight: 600;
+}
+
+/* Device preview frame */
+body.edit-mode[data-device="mobile"] #deck > .slide,
+body.edit-mode[data-device="tablet"] #deck > .slide {
+  max-width: var(--ed-device-w);
+  margin-left: auto;
+  margin-right: auto;
+  border-left: 1px dashed rgba(242, 237, 226, 0.2);
+  border-right: 1px dashed rgba(242, 237, 226, 0.2);
+}
+body.edit-mode[data-device="mobile"] { --ed-device-w: 390px; }
+body.edit-mode[data-device="tablet"] { --ed-device-w: 820px; }
+
+/* Make the body bg show the "device" boundary */
+body.edit-mode[data-device="mobile"] #deck,
+body.edit-mode[data-device="tablet"] #deck {
+  background: #050505;
+}
+
+/* When in mobile/tablet preview, re-apply the mobile media query rules
+   even though the actual viewport is wide. These mirror the breakpoints
+   in styles.css and site.css so layouts visibly respond. */
+body.edit-mode[data-device="mobile"] {
+  --slide-pad-x: 22px;
+  --slide-pad-y: 70px;
+}
+body.edit-mode[data-device="mobile"] #rail { display: none; }
+body.edit-mode[data-device="mobile"] .cover-line { font-size: 38px; letter-spacing: -0.02em; }
+body.edit-mode[data-device="mobile"] .two-col { grid-template-columns: 1fr !important; gap: 36px; }
+body.edit-mode[data-device="mobile"] .aud-grid,
+body.edit-mode[data-device="mobile"] .market-grid,
+body.edit-mode[data-device="mobile"] .team-grid,
+body.edit-mode[data-device="mobile"] .threshold-grid,
+body.edit-mode[data-device="mobile"] .build-grid,
+body.edit-mode[data-device="mobile"] .quote-grid,
+body.edit-mode[data-device="mobile"] .fr-grid,
+body.edit-mode[data-device="mobile"] .ft-row,
+body.edit-mode[data-device="mobile"] .team-pillars,
+body.edit-mode[data-device="mobile"] .reserve-grid,
+body.edit-mode[data-device="mobile"] .add-two,
+body.edit-mode[data-device="mobile"] .rounds-tabs,
+body.edit-mode[data-device="mobile"] .round-panel { grid-template-columns: 1fr !important; gap: 20px; }
+body.edit-mode[data-device="mobile"] .ret-row { grid-template-columns: 1fr; gap: 6px; }
+body.edit-mode[data-device="mobile"] .j-card { flex: 0 0 86vw; height: 320px; }
+body.edit-mode[data-device="mobile"] .timeline .tl-stat,
+body.edit-mode[data-device="mobile"] .timeline .tl-when { display: none; }
+body.edit-mode[data-device="mobile"] .timeline .tl-name { font-size: 10px; }
+body.edit-mode[data-device="mobile"] .display { font-size: 44px; }
+body.edit-mode[data-device="mobile"] .market-h,
+body.edit-mode[data-device="mobile"] .team-h,
+body.edit-mode[data-device="mobile"] .round1-h,
+body.edit-mode[data-device="mobile"] .fin-h { font-size: 32px; }
+body.edit-mode[data-device="mobile"] .econ-h { font-size: 44px; }
+body.edit-mode[data-device="mobile"] .reserve-h { font-size: 54px; }
+
+body.edit-mode[data-device="tablet"] #rail { display: none; }
+body.edit-mode[data-device="tablet"] .two-col { gap: 32px; }
+body.edit-mode[data-device="tablet"] .team-grid,
+body.edit-mode[data-device="tablet"] .market-grid,
+body.edit-mode[data-device="tablet"] .build-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+/* ---- Block selection / hover affordances ---------------------------- */
+
+body.edit-mode .block {
+  position: relative;
+  outline: 1px dashed transparent;
+  outline-offset: 4px;
+  transition: outline-color 0.12s ease;
+}
+body.edit-mode[data-tool="move"] .block:hover,
+body.edit-mode[data-tool="text"] .block:hover {
+  outline-color: rgba(214, 58, 63, 0.55);
+}
+body.edit-mode .block.selected {
+  outline: 1px solid #D63A3F;
+  outline-offset: 4px;
+}
+
+/* Drag handle (move tool) */
+body.edit-mode[data-tool="move"] .block::before {
+  content: "⋮⋮";
+  position: absolute;
+  top: -2px;
+  left: -28px;
+  width: 22px;
+  height: 22px;
+  background: rgba(214, 58, 63, 0.92);
+  color: #fff;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  z-index: 100;
+  letter-spacing: -1px;
+}
+body.edit-mode[data-tool="move"] .block:hover::before,
+body.edit-mode[data-tool="move"] .block.selected::before {
+  opacity: 1;
+}
+body.edit-mode .block.dragging {
+  opacity: 0.4;
+  outline: 2px solid #D63A3F !important;
+}
+body.edit-mode .drop-target {
+  outline: 2px solid rgba(214, 58, 63, 0.6) !important;
+  outline-offset: 8px !important;
+  background: rgba(214, 58, 63, 0.06) !important;
+}
+
+/* ---- Text edit affordances ------------------------------------------ */
+
+body.edit-mode[data-tool="text"] [contenteditable="true"] {
+  outline: 1px dashed rgba(214, 58, 63, 0.5);
+  outline-offset: 2px;
+  border-radius: 2px;
+  cursor: text;
+}
+body.edit-mode[data-tool="text"] [contenteditable="true"]:focus {
+  outline: 1px solid #D63A3F;
+  outline-offset: 2px;
+  background: rgba(214, 58, 63, 0.03);
+}
+
+/* Floating text formatting toolbar */
+#ed-text-toolbar {
+  position: absolute;
+  z-index: 10000;
+  background: rgba(8, 8, 8, 0.98);
+  border: 1px solid rgba(242, 237, 226, 0.22);
+  border-radius: 6px;
+  padding: 6px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: #F2EDE2;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+#ed-text-toolbar.show { display: inline-flex; }
+#ed-text-toolbar button,
+#ed-text-toolbar select,
+#ed-text-toolbar input {
+  background: rgba(242, 237, 226, 0.06);
+  border: 1px solid rgba(242, 237, 226, 0.18);
+  color: #F2EDE2;
+  font-family: inherit;
+  font-size: 10px;
+  border-radius: 3px;
+  padding: 4px 7px;
+  cursor: pointer;
+}
+#ed-text-toolbar button:hover { background: rgba(242, 237, 226, 0.16); }
+#ed-text-toolbar button.active { background: #D63A3F; border-color: #D63A3F; }
+#ed-text-toolbar .ed-tb-sep { width: 1px; height: 18px; background: rgba(242,237,226,0.18); }
+#ed-text-toolbar input[type="color"] {
+  width: 24px; height: 24px; padding: 0;
+  border-radius: 3px;
+}
+#ed-text-toolbar select { min-width: 64px; }
+
+/* ---- Annotations ---------------------------------------------------- */
+
+.ed-pin {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #D63A3F;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 9500;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: transform 0.15s ease;
+}
+.ed-pin:hover { transform: translate(-50%, -50%) scale(1.18); }
+.ed-pin.expanded {
+  transform: translate(-50%, -50%) scale(1.18);
+}
+
+.ed-note-bubble {
+  position: absolute;
+  z-index: 9600;
+  background: rgba(8, 8, 8, 0.97);
+  color: #F2EDE2;
+  border: 1px solid #D63A3F;
+  border-radius: 8px;
+  padding: 12px 14px;
+  width: 280px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+}
+.ed-note-bubble .nb-h {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #D63A3F;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+}
+.ed-note-bubble .nb-h button {
+  background: transparent;
+  border: 0;
+  color: rgba(242,237,226,0.55);
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+.ed-note-bubble .nb-h button:hover { color: #D63A3F; }
+.ed-note-bubble textarea {
+  width: 100%;
+  min-height: 80px;
+  background: rgba(242, 237, 226, 0.05);
+  border: 1px solid rgba(242, 237, 226, 0.18);
+  color: #F2EDE2;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  resize: vertical;
+}
+.ed-note-bubble textarea:focus {
+  outline: none;
+  border-color: #D63A3F;
+}
+.ed-note-bubble .nb-meta {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: rgba(242, 237, 226, 0.45);
+  margin-top: 8px;
+  letter-spacing: 0.08em;
+}
+
+body.edit-mode[data-tool="annotate"] {
+  cursor: crosshair !important;
+}
+body.edit-mode[data-tool="annotate"] * {
+  cursor: crosshair !important;
+}
+
+/* ---- Modals (export, notes list, help) ------------------------------ */
+
+.ed-modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 9700;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.ed-modal-bg.show { display: flex; }
+.ed-modal {
+  background: #0a0a0a;
+  border: 1px solid rgba(242, 237, 226, 0.22);
+  border-radius: 10px;
+  padding: 28px;
+  max-width: 560px;
+  width: 92%;
+  max-height: 86vh;
+  overflow-y: auto;
+  font-family: "Inter", system-ui, sans-serif;
+  color: #F2EDE2;
+}
+.ed-modal h2 {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+.ed-modal p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(242, 237, 226, 0.75);
+  margin-bottom: 14px;
+}
+.ed-modal .ed-btn { padding: 10px 18px; font-size: 11px; }
+.ed-modal .row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.ed-modal kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(242,237,226,0.08);
+  border: 1px solid rgba(242,237,226,0.22);
+  border-radius: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  margin: 0 2px;
+}
+.ed-notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.ed-notes-list .nl-item {
+  padding: 12px;
+  background: rgba(242, 237, 226, 0.04);
+  border: 1px solid rgba(242, 237, 226, 0.14);
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.ed-notes-list .nl-meta {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: #D63A3F;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ed-notes-list .nl-item a {
+  color: #D63A3F;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  #ed-toolbar { height: auto; padding: 8px; flex-wrap: wrap; }
+  body.edit-mode #deck { margin-top: 88px; height: calc(100vh - 88px); }
+  .ed-btn { padding: 5px 8px; }
+  .ed-btn .label { display: none; }
+}

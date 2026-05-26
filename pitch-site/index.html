@@ -2,114 +2,732 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>If I Awaken in Los Angeles — Pitch 2026 · in progress</title>
+<title>If I Awaken in Los Angeles — Pitch 2026</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="An immersive theatrical tour of the real Los Angeles. Opening June 2027 in the LA Arts District.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;500&family=Fraunces:ital,wght@1,400;1,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #0A0A0A;
-    --paper: #F2EDE2;
-    --red: #D63A3F;
-    --gold: #C7A86A;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    background: var(--ink);
-    color: var(--paper);
-    font-family: "Inter", system-ui, sans-serif;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px;
-  }
-  .wrap {
-    max-width: 640px;
-    text-align: center;
-  }
-  .eyebrow {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.24em;
-    color: var(--red);
-    margin-bottom: 28px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--red);
-    display: inline-block;
-    text-transform: uppercase;
-  }
-  h1 {
-    font-family: "Fraunces", Georgia, serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(36px, 6vw, 64px);
-    line-height: 1.1;
-    margin-bottom: 24px;
-    color: var(--paper);
-    letter-spacing: -0.01em;
-  }
-  h1 .red { color: var(--red); }
-  p {
-    font-size: 17px;
-    line-height: 1.55;
-    color: rgba(242, 237, 226, 0.75);
-    margin-bottom: 18px;
-  }
-  .links {
-    margin-top: 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    align-items: center;
-  }
-  a.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 22px;
-    background: var(--red);
-    color: var(--paper);
-    font-family: "Oswald", sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: all 0.15s ease;
-  }
-  a.btn:hover { background: #b82228; transform: translateY(-1px); }
-  a.btn.alt {
-    background: transparent;
-    color: rgba(242, 237, 226, 0.7);
-    border: 1px solid rgba(242, 237, 226, 0.25);
-  }
-  a.btn.alt:hover { color: var(--paper); border-color: var(--paper); background: rgba(242, 237, 226, 0.06); }
-  .foot {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    color: rgba(242, 237, 226, 0.4);
-    margin-top: 56px;
-    text-transform: uppercase;
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="editor.css">
 </head>
 <body>
-<div class="wrap">
-  <span class="eyebrow">IN PROGRESS</span>
-  <h1>The next pitch site<br>is being built <span class="red">here.</span></h1>
-  <p>A new <em>If I Awaken in Los Angeles</em> pitch, currently being built on notes from the first pass.</p>
-  <p>The first-pass draft — with all ten alternate approaches — lives at the link below while this site is under construction.</p>
-  <div class="links">
-    <a class="btn alt" href="../pitch-draft/">VIEW THE FIRST-PASS DRAFT &nbsp;→</a>
+
+<div id="progress"><div id="progress-fill"></div></div>
+
+<nav id="rail" aria-label="Chapter navigation"></nav>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn" aria-label="Open chapter map">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg>
+      <span>MAP</span>
+    </button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">01 · Cover</span>
   </div>
-  <div class="foot">IF I AWAKEN IN LOS ANGELES · PITCH 2026</div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">01 / 19</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
 </div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title">
+      <span class="map-eyebrow">If I Awaken in Los Angeles · Pitch 2026</span>
+      <h2>Chapter Map</h2>
+    </div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span>Use <kbd>↑</kbd> <kbd>↓</kbd> · <kbd>M</kbd> toggles · <kbd>Shift+E</kbd> editor</span></div>
+</div>
+
+<main id="deck">
+
+<!-- 01 · COVER ============================================================ -->
+<section class="slide cover" id="cover" data-chapter="Cover">
+  <div class="cover-photo" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="cover-grid">
+    <div class="cover-meta block">
+      <span>PITCH 2026</span>
+      <span>An immersive theatrical tour of the real Los Angeles</span>
+    </div>
+    <h1 class="cover-title block">
+      <span class="cover-line">IF I AWAKEN IN</span>
+      <span class="cover-line">LOS ANGELES</span>
+    </h1>
+    <div class="cover-foot block">
+      <span class="cover-dot">●</span>
+      <span>OPENING JUNE 2027 · ARTS DISTRICT · LOS ANGELES</span>
+      <span class="cover-spacer"></span>
+      <span class="cover-scroll">SCROLL TO BEGIN ↓</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · OPENING HOOK ===================================================== -->
+<section class="slide missing" id="hook" data-chapter="The Hook">
+  <div class="missing-photo" style="background-image:url('assets/photos/cover.jpg')"></div>
+  <div class="slide-pad">
+    <p class="lede block">An iconic American city without an iconic show. That <em>must-see experience</em> you just have to see when you're in town.</p>
+    <h2 class="missing-h1 block">
+      <span class="red">This is the show</span><br>
+      Los Angeles has been missing.
+    </h2>
+    <p class="lede block">Unlike anything that's come before, and unlike anything you'll see again.</p>
+    <p class="sub block">But first, let me catch you up on what <em>If I Awaken</em> has accomplished so far…</p>
+    <div class="story-track block">
+      <a class="story-step" href="#pilot"><span class="dot"></span><span>THE PILOT</span></a>
+      <a class="story-step" href="#album"><span class="dot"></span><span>THE ALBUM</span></a>
+      <a class="story-step" href="#awakening"><span class="dot"></span><span>THE AWAKENING</span></a>
+      <a class="story-step" href="#verdict"><span class="dot"></span><span>THE SHOW</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · THE PILOT ======================================================== -->
+<section class="slide chapter-dark" id="pilot" data-chapter="The Pilot">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets · Ford Theatre</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ video submissions</span></a>
+    <a href="#verdict" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad two-col">
+    <div class="left">
+      <div class="eyebrow block">CHAPTER ONE · AUGUST 2025</div>
+      <h2 class="display block">THE PILOT.</h2>
+      <p class="lede block"><em>If I Awaken in Los Angeles</em> premiered at LA's iconic <strong>Ford Theatre</strong>, in partnership with the <strong>LA Philharmonic</strong>.</p>
+      <p class="body block">Directed by <strong>Gina Belafonte</strong>, with musical direction from multiple Grammy Award–winning composer <strong>Derrick Hodge</strong>. The show premiered to a sold-out house — with lines so long the show started thirty minutes late to accommodate the crowd trying to get in.</p>
+      <div class="bigstat block">
+        <span class="num">1,000<span class="plus">+</span></span>
+        <span class="lbl">Tickets sold</span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="pilot-photo block" style="background-image:url('assets/photos/oscar.jpg')"></div>
+      <div class="cast block">
+        <div class="cast-h">FEATURED ON STAGE</div>
+        <div class="cast-row"><span>LUIS J. RODRIGUEZ</span><span>Former LA Poet Laureate</span></div>
+        <div class="cast-row"><span>SAMANTHA RIOS</span><span>Current LA Youth Poet Laureate</span></div>
+        <div class="cast-row"><span>DANTE BASCO</span><span>Hook, Avatar: The Last Airbender</span></div>
+        <div class="cast-row"><span>MENDELEYEV</span><span>NBC's The Voice</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="pullquote block">
+    <span class="lq">"</span>
+    They didn't just speak <em>about</em> Los Angeles — they spoke <em>as</em> Los Angeles.
+    <span class="rq">"</span>
+    <span class="cite">— THE HOLLYWOOD TIMES</span>
+  </div>
+</section>
+
+<!-- 04 · THE ALBUM ======================================================== -->
+<section class="slide chapter-dark" id="album" data-chapter="The Album">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets · Ford Theatre</span></a>
+    <a href="#album" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ video submissions</span></a>
+    <a href="#verdict" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad two-col">
+    <div class="left">
+      <div class="eyebrow block">CHAPTER TWO · FIRST WEEK</div>
+      <h2 class="display block">THE ALBUM.</h2>
+      <p class="lede block">Demand didn't stop at the stage. <span class="red-i">It surged.</span></p>
+      <p class="body block">2× Grammy-winning composer <strong>Derrick Hodge</strong> partnered with some of the most iconic voices in LA — <strong>Jackson Browne</strong>, <strong>Cheech Marin</strong>, and <strong>Joy Harjo</strong> — to expand the show's impact far beyond the theater.</p>
+      <div class="bigstat block">
+        <span class="num">30K<span class="plus">+</span></span>
+        <span class="lbl">Listens · first week</span>
+      </div>
+      <div class="album-links block">
+        <a class="al-link spotify" href="#" aria-label="Listen on Spotify">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.94-.6-.12-.421.18-.84.6-.94 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.282 1.121zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          <span>SPOTIFY</span>
+        </a>
+        <a class="al-link apple" href="#" aria-label="Listen on Apple Music">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124c-.118-2.165-.523-4.243-2.05-5.83C20.31-1.354 18.013-1.6 16.156-1.6H7.844C5.987-1.6 3.69-1.354 2.056.294.529 1.881.124 3.959.006 6.124-.006 6.296 0 6.469 0 6.642v10.716c0 .173-.006.346.006.518.118 2.165.523 4.243 2.05 5.83 1.634 1.648 3.931 1.894 5.788 1.894h8.312c1.857 0 4.154-.246 5.788-1.894 1.527-1.587 1.932-3.665 2.05-5.83.012-.172.006-.345.006-.518V6.642c0-.173.006-.346-.006-.518zm-6.341 11.054c-.46.7-1.142 1.117-1.939 1.117-.787 0-1.469-.417-1.93-1.117-.46-.7-.69-1.654-.69-2.857V8.602c0-1.203.23-2.157.69-2.857.46-.7 1.143-1.117 1.93-1.117.797 0 1.479.417 1.939 1.117.46.7.69 1.654.69 2.857v5.719c0 1.203-.23 2.157-.69 2.857zm-6.49.005l-2.91-9.78c-.04-.13-.106-.184-.222-.184h-1.49c-.116 0-.182.054-.222.184l-2.91 9.78c-.04.13.014.205.144.205h1.345c.116 0 .175-.054.214-.184l.62-2.139h3.108l.62 2.139c.04.13.098.184.214.184h1.345c.13 0 .184-.075.144-.205zm-2.482-3.5h-2.252l1.122-3.928h.008l1.122 3.928z"/></svg>
+          <span>APPLE MUSIC</span>
+        </a>
+        <a class="al-link youtube" href="#" aria-label="Listen on YouTube Music">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 4.8a7.2 7.2 0 1 1 0 14.4 7.2 7.2 0 0 1 0-14.4zm-1.5 4.05v6.3l5.4-3.15-5.4-3.15z"/></svg>
+          <span>YOUTUBE MUSIC</span>
+        </a>
+      </div>
+    </div>
+    <div class="right">
+      <div class="album-cover block" aria-label="If I Awaken in Los Angeles · Album">
+        <div class="album-mark">IF I AWAKEN IN LOS ANGELES</div>
+        <div class="album-photo" style="background-image:url('assets/photos/canyon.jpg')"></div>
+      </div>
+      <div class="voices-block block">
+        <div class="voices-h">ADDED ICONIC LA VOICES</div>
+        <div class="voices-tally">
+          <div class="vt-row"><span class="vt-n">5</span><span class="vt-l">Grammy winning &amp; nominated artists</span></div>
+          <div class="vt-row"><span class="vt-n">3</span><span class="vt-l">U.S. Poet Laureates</span></div>
+          <div class="vt-row"><span class="vt-n">2×</span><span class="vt-l">Library of Congress–winning producing team</span></div>
+          <div class="vt-row"><span class="vt-n">1</span><span class="vt-l">Rock &amp; Roll Hall of Fame inductee</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · THE AWAKENING ==================================================== -->
+<section class="slide chapter-dark" id="awakening" data-chapter="The Awakening">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets · Ford Theatre</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ video submissions</span></a>
+    <a href="#verdict" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="slide-pad two-col">
+    <div class="left">
+      <div class="eyebrow block">CHAPTER THREE · THE CITY ANSWERED</div>
+      <h2 class="display block">THE AWAKENING.</h2>
+      <p class="lede block">Then the entire city got involved.</p>
+      <p class="body block">We inadvertently kick-started the <span class="red">largest poetry competition in the country</span> by asking one question:</p>
+      <p class="quoteline block"><em>Tell us about your LA.</em></p>
+      <p class="body block">Partnering with the Los Angeles Unified School District and Get Lit – Words Ignite, students, teachers, classrooms, and community centers across LA added their voice.</p>
+      <div class="bigstat block">
+        <span class="num">1,400<span class="plus">+</span></span>
+        <span class="lbl">Video submissions</span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="cast block">
+        <div class="cast-h">JUDGED BY</div>
+        <div class="cast-row"><span>ALOE BLACC</span><span>Grammy-nominated singer-songwriter</span></div>
+        <div class="cast-row"><span>GINA BELAFONTE</span><span>Producer · co-founder, Sankofa.org</span></div>
+        <div class="cast-row"><span>SAFIA ELHILLO</span><span>Sudanese-American poet · Ruth Lilly Fellow</span></div>
+        <div class="cast-row"><span>JOSÉ OLIVAREZ</span><span>NYT bestselling author, <em>Promises of Gold</em></span></div>
+        <div class="cast-row"><span>CHEN CHEN</span><span>Poet</span></div>
+        <div class="cast-row"><span>OLIVIA GATWOOD</span><span>Poet &amp; novelist · <em>Life of the Party</em></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · THE SHOW (verdict) =============================================== -->
+<section class="slide chapter-dark show-wall" id="verdict" data-chapter="The Show">
+  <div class="timeline" data-step="4">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">THE PILOT</span><span class="tl-stat">1,000+ tickets · Ford Theatre</span></a>
+    <a href="#album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">THE ALBUM</span><span class="tl-stat">30K listens · first week</span></a>
+    <a href="#awakening" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">THE AWAKENING</span><span class="tl-stat">1,400+ video submissions</span></a>
+    <a href="#verdict" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">THE SHOW</span><span class="tl-stat">opens · 18-mo run</span></a>
+  </div>
+  <div class="show-bg" style="background-image:url('assets/photos/finale.jpg')"></div>
+  <div class="slide-pad">
+    <div class="eyebrow red block">THE SIGNAL IS CLEAR. THE DEMAND IS VERIFIED.</div>
+    <h2 class="show-h block"><span class="red">This is the show</span> Los Angeles has been missing.</h2>
+    <p class="show-sub block">Three chapters in, the city's verdict was unambiguous — and the press said it back.</p>
+    <div class="quote-grid">
+      <blockquote class="block">
+        <p><span class="red">A rich, moving experience.</span><br>The poetry, dance, and film came together beautifully.</p>
+        <cite>— Jodie Foster &amp; Alex Hedison</cite>
+      </blockquote>
+      <blockquote class="block">
+        <p>A powerful celebration of LA's diversity and resilience. <em>Unforgettable.</em></p>
+        <cite>— Reina Pereira</cite>
+      </blockquote>
+      <blockquote class="block">
+        <p><span class="red">Brilliant storytelling.</span> A groundbreaking approach to history, modernity, place, and people. <span class="red">This show changes everything.</span></p>
+        <cite>— Aloe Blacc</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · THE EXPERIENCE =================================================== -->
+<section class="slide experience" id="experience" data-chapter="The Experience">
+  <div class="experience-bg" style="background-image:url('assets/photos/venue.jpg')"></div>
+  <div class="slide-pad">
+    <div class="eyebrow block">AN IMMERSIVE THEATRE EXPERIENCE · LOS ANGELES · 2027</div>
+    <h2 class="experience-h serif block"><em>If I Awaken in Los Angeles.</em></h2>
+    <p class="lede big block">
+      A <span class="red">90-minute immersive theatrical experience</span>
+      that walks guests through the real Los Angeles — captured inside a
+      <span class="red">30,000-sq-ft converted studio</span> in the Arts District,
+      next to the iconic 6th Street Bridge.
+    </p>
+    <p class="body block">An LA recreated and reimagined. Guests are guided through built sets and live performances spanning every neighborhood and culture that makes the city what it is.</p>
+  </div>
+</section>
+
+<!-- 08 · THE JOURNEY ====================================================== -->
+<section class="slide journey" id="journey" data-chapter="The Journey">
+  <div class="slide-pad journey-head">
+    <div class="eyebrow block">THE WALK</div>
+    <h2 class="journey-h serif block"><em>Seven neighborhoods, one continuous walk.</em></h2>
+    <p class="journey-sub block">From the red carpet to the real LA. Use the dots below or arrow keys to walk the tour.</p>
+  </div>
+  <div class="journey-stage">
+    <div class="journey-track" id="journey-track">
+      <article class="j-card block" data-step="1"><div class="j-photo" style="background-image:url('assets/photos/red-carpet.jpg')"></div><div class="j-body"><div class="j-num">01</div><h3>HOLLYWOOD BOULEVARD</h3><p>A 110-foot LED wall. Dancers as tourists. The Walk of Fame underfoot. The wall pivots — and the tour breaks open.</p></div></article>
+      <article class="j-card block" data-step="2"><div class="j-photo" style="background-image:url('assets/photos/journey-2.jpg')"></div><div class="j-body"><div class="j-num">02</div><h3>BOYLE HEIGHTS</h3><p>A tianguis with stone tables and a band stage where two poets meet across a generation.</p></div></article>
+      <article class="j-card block" data-step="3"><div class="j-photo" style="background-image:url('assets/photos/journey-3.jpg')"></div><div class="j-body"><div class="j-num">03</div><h3>THE ASIAN ARC</h3><p>Chinatown · Little Tokyo · Koreatown · Historic Filipinotown · Thai Town. One rapper-poet walking the line.</p></div></article>
+      <article class="j-card block" data-step="4"><div class="j-photo" style="background-image:url('assets/photos/journey-4.jpg')"></div><div class="j-body"><div class="j-num">04</div><h3>BLACK LA · A CENTURY</h3><p>A church wall opens — gospel choir, swing dance at Dunbar, a hip-hop cypher, a Leimert Park drum circle.</p></div></article>
+      <article class="j-card block" data-step="5"><div class="j-photo" style="background-image:url('assets/photos/journey-5.jpg')"></div><div class="j-body"><div class="j-num">05</div><h3>FOLK LA · LAUREL CANYON</h3><p>A knock at a door becomes a living room. The band joins the audience on the floor for a sing-along.</p></div></article>
+      <article class="j-card block" data-step="6"><div class="j-photo" style="background-image:url('assets/photos/journey-6.jpg')"></div><div class="j-body"><div class="j-num">06</div><h3>THE STAGE</h3><p>A classical proscenium. The only seated room. A finale that earns its formality.</p></div></article>
+      <article class="j-card block" data-step="7"><div class="j-photo" style="background-image:url('assets/photos/journey-7.jpg')"></div><div class="j-body"><div class="j-num">07</div><h3>THE REAL LA</h3><p>Back through the corridor we entered — but this time the wall is made of the audience's own faces.</p></div></article>
+    </div>
+  </div>
+  <div class="journey-controls">
+    <button class="j-btn" id="j-prev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg></button>
+    <div class="j-dots" id="j-dots"></div>
+    <button class="j-btn" id="j-next"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></button>
+  </div>
+</section>
+
+<!-- 09 · BUILDING STATS =================================================== -->
+<section class="slide building" id="building" data-chapter="What We're Building">
+  <div class="slide-pad">
+    <div class="eyebrow green block">WHAT WE ARE BUILDING</div>
+    <h2 class="build-h block"><em>A single, continuous, 100-minute room.</em></h2>
+    <div class="build-grid">
+      <div class="build-cell block"><div class="build-meta">SQ&nbsp;FT</div><div class="build-num">30.1<span class="k">K</span></div><div class="build-lbl">WAREHOUSE FOOTPRINT</div><div class="build-sub">ARTS DISTRICT, LOS ANGELES</div></div>
+      <div class="build-cell block"><div class="build-meta">GUESTS</div><div class="build-num">150</div><div class="build-lbl">PER SHOW</div><div class="build-sub">WALKING, IMMERSIVE,<br>SINGLE-DIRECTION LOOP</div></div>
+      <div class="build-cell block"><div class="build-meta">MINS</div><div class="build-num">100</div><div class="build-lbl">RUN TIME</div><div class="build-sub">SEVEN SPACES<br>ONE CONTINUOUS ARC</div></div>
+      <div class="build-cell block"><div class="build-meta">SHOWS</div><div class="build-num">12</div><div class="build-lbl">PER WEEK</div><div class="build-sub">TUESDAY THROUGH SUNDAY</div></div>
+      <div class="build-cell block"><div class="build-meta">MONTH</div><div class="build-num">14<span class="k">+</span></div><div class="build-lbl">PROD. RUN</div><div class="build-sub">JUNE 2027 — AUGUST 2028</div></div>
+      <div class="build-cell block"><div class="build-meta">STAGES</div><div class="build-num">7</div><div class="build-lbl">BUILT ENVIRONMENTS</div><div class="build-sub">+LOBBY THAT DOUBLES<br>AS THEATRE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · THE TEAM ========================================================= -->
+<section class="slide team-slide" id="team" data-chapter="The Team">
+  <div class="slide-pad">
+    <div class="eyebrow red block">THE TEAM</div>
+    <h2 class="team-h block">The credentials behind <span class="red">building the room</span> and <span class="red">representing the city.</span></h2>
+
+    <div class="team-pillars">
+      <div class="team-pillar block">
+        <div class="tp-eyebrow">TO BUILD AT THIS SCALE</div>
+        <p class="tp-body">From <strong>Tony Award–winning</strong> producers, <strong>Grammy-winning</strong> music, <strong>Broadway immersive theatre</strong>, <strong>Coachella</strong>, <strong>Stagecoach</strong>, <strong>the Grammys</strong>, <strong>the Super Bowl</strong>, and <strong>the White House</strong> — we have the team to <span class="red">handle the scale.</span></p>
+      </div>
+      <div class="team-pillar block">
+        <div class="tp-eyebrow">TO REPRESENT LOS ANGELES</div>
+        <p class="tp-body">With <strong>two decades of LA community trust</strong>, <strong>LAUSD-approved programs</strong>, the country's <strong>largest live spoken-word events</strong>, and <strong>multi-stage festival production</strong> — we have the team to <span class="red">represent Los Angeles.</span></p>
+      </div>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card highlight block"><div class="tc-name">ANDREW SCOVILLE</div><div class="tc-role">DIRECTOR</div><p>Director, <em>Theater of the Mind</em> (David Byrne). Associate director, Broadway's <em>Here Lies Love</em>. Director, Netflix's <em>Money Heist: The Experience</em>.</p></div>
+      <div class="team-card block"><div class="tc-name">DERRICK HODGE</div><div class="tc-role">COMPOSER · 2× GRAMMY</div><p>Wrote the Ford pilot. Continues to shape the show's musical language through the album and the run.</p></div>
+      <div class="team-card block"><div class="tc-name">DIANE LUBY LANE</div><div class="tc-role">CREATOR &amp; LEAD PRODUCER</div><p>Founder &amp; CEO of Get Lit – Words Ignite (200+ schools). Patterson Award. Presidential Lifetime Volunteer Service Award.</p></div>
+      <div class="team-card block"><div class="tc-name">SHANE SNOW</div><div class="tc-role">PRODUCER · TONY</div><p>Tony Award–winning producer. Bestselling author. Pulitzer Prize entrant for journalism.</p></div>
+      <div class="team-card block"><div class="tc-name">ROB O'NEILL</div><div class="tc-role">PRODUCER · TONY</div><p>Tony winner as co-producer of Broadway's <em>The Outsiders</em> (2024). Co-producer, <em>The Who's Tommy</em>, <em>Burlesque, The Musical</em>.</p></div>
+      <div class="team-card block"><div class="tc-name">GINA BELAFONTE</div><div class="tc-role">PRODUCER · DIRECTED THE PILOT</div><p>Award-winning producer, director, activist. Co-founder &amp; Executive Director, Sankofa.org.</p></div>
+      <div class="team-card block"><div class="tc-name">BRANDON XIV</div><div class="tc-role">LEAD PRODUCER</div><p>Co-founder, SHOWRUNNER. Award-winning across film, tech, and the seam between.</p></div>
+      <div class="team-card block"><div class="tc-name">MARK CHINAPEN</div><div class="tc-role">GENERAL MANAGER</div><p>Multi-stage ops for Coachella and Stagecoach. Custom staging for the Grammys and World of Dance. Super Bowl-scale event execution.</p></div>
+      <div class="team-card block"><div class="tc-name">MONIQUE MITCHELL</div><div class="tc-role">PRODUCER</div><p>Global campaigns (Puma, Lexus, Fox), A24, NY Times. Helped pass California SB 933 — $50M for arts education.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · MARKET — OTHER CITIES ============================================ -->
+<section class="slide market" id="market-cities" data-chapter="Market · Other Cities">
+  <div class="slide-pad">
+    <div class="eyebrow red block">MARKET OPPORTUNITY · COMPARABLES</div>
+    <h2 class="market-h block"><span class="red">This is the show</span> Los Angeles has been missing.</h2>
+    <p class="lede block">Every great cultural capital has its iconic live experience — the must-see, the staple, the show built for that city. Here's what those shows are worth in their markets:</p>
+    <div class="market-grid">
+      <div class="m-card block">
+        <div class="m-city">NEW YORK CITY</div>
+        <div class="m-show">Sleep No More</div>
+        <div class="m-stats">
+          <div class="ms"><span class="ms-n">2M<span class="plus">+</span></span><span class="ms-l">total visitors</span></div>
+          <div class="ms"><span class="ms-n">$200M<span class="plus">+</span></span><span class="ms-l">lifetime ticket gross</span></div>
+        </div>
+      </div>
+      <div class="m-card block">
+        <div class="m-city">LAS VEGAS</div>
+        <div class="m-show">Meow Wolf</div>
+        <div class="m-stats">
+          <div class="ms"><span class="ms-n">3M</span><span class="ms-l">annual visitors</span></div>
+          <div class="ms"><span class="ms-n">$300M<span class="plus">+</span></span><span class="ms-l">raised · scaled from a $9.2M single location to a national platform</span></div>
+        </div>
+      </div>
+      <div class="m-card block">
+        <div class="m-city">NASHVILLE</div>
+        <div class="m-show">Grand Ole Opry</div>
+        <div class="m-stats">
+          <div class="ms"><span class="ms-n">250K<span class="plus">+</span></span><span class="ms-l">annual visitors</span></div>
+          <div class="ms"><span class="ms-n">$15M</span><span class="ms-l">annual revenue</span></div>
+        </div>
+      </div>
+      <div class="m-card block">
+        <div class="m-city">LONDON</div>
+        <div class="m-show">Secret Cinema</div>
+        <div class="m-stats">
+          <div class="ms"><span class="ms-n">1M<span class="plus">+</span></span><span class="ms-l">tickets sold</span></div>
+          <div class="ms"><span class="ms-n">$100M<span class="plus">+</span></span><span class="ms-l">acquisition</span></div>
+        </div>
+      </div>
+      <div class="m-card block">
+        <div class="m-city">PARIS</div>
+        <div class="m-show">Moulin Rouge</div>
+        <div class="m-stats">
+          <div class="ms"><span class="ms-n">600K</span><span class="ms-l">annual guests</span></div>
+          <div class="ms"><span class="ms-n">$68M</span><span class="ms-l">annual revenue</span></div>
+        </div>
+      </div>
+      <div class="m-card us block">
+        <div class="m-city">LOS ANGELES</div>
+        <div class="m-show"><em>If I Awaken in Los Angeles</em></div>
+        <div class="m-stats">
+          <div class="ms"><span class="ms-n">—</span><span class="ms-l">opens June 2027</span></div>
+          <div class="ms"><span class="ms-n">$9.5M</span><span class="ms-l">raise · chapter one</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · MARKET — LOS ANGELES ============================================ -->
+<section class="slide market" id="market-la" data-chapter="Market · LA + Olympics">
+  <div class="slide-pad">
+    <div class="eyebrow red block">MARKET OPPORTUNITY · LOS ANGELES</div>
+    <h2 class="market-h block">The entertainment capital of the world — <span class="red">about to enter its global spotlight.</span></h2>
+    <p class="lede block">Greater Los Angeles is home to <strong>18M+ people</strong>, nearly <strong>50M annual visitors</strong>, with LA tourism generating <strong>$40.4B annually</strong> in business sales — and currently has no defining live experience of its own.</p>
+
+    <table class="city-table block">
+      <thead>
+        <tr><th>CITY</th><th>RESIDENT MARKET</th><th>ANNUAL VISITORS</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>New York City</td><td>20M–22M</td><td>64M</td></tr>
+        <tr class="us"><td>Los Angeles</td><td>18M+</td><td>49M / nearly 50M</td></tr>
+        <tr><td>Paris</td><td>12M–15M metro</td><td>48.7M</td></tr>
+        <tr><td>Las Vegas</td><td>2.3M+</td><td>40M+</td></tr>
+        <tr><td>London</td><td>9M city / 15M metro</td><td>~30M total / 21M intl</td></tr>
+        <tr><td>Nashville</td><td>2.2M+</td><td>16.9M</td></tr>
+      </tbody>
+    </table>
+
+    <div class="olympic-box block">
+      <div class="ob-eyebrow">AND LA IS ABOUT TO BE ON THE BIGGEST STAGE</div>
+      <div class="ob-stats">
+        <div class="ob-row"><span class="ob-n">15M</span><span class="ob-l">additional visitors / spectators projected for 2028 Olympics</span></div>
+        <div class="ob-row"><span class="ob-n">5B</span><span class="ob-l">global viewers</span></div>
+        <div class="ob-row"><span class="ob-n">$18B</span><span class="ob-l">estimated economic impact</span></div>
+      </div>
+    </div>
+
+    <h3 class="finale-line block">
+      We have <span class="red">a show built for an Olympic moment.</span><br>
+      In a <span class="red">once-in-a-generation window</span> of opportunity.
+    </h3>
+  </div>
+</section>
+
+<!-- 13 · MARKET — FRANCHISE =============================================== -->
+<section class="slide market franchise-slide" id="franchise" data-chapter="The Franchise">
+  <div class="franchise-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="eyebrow red block">IF I AWAKEN… IN EVERY CITY</div>
+    <h2 class="market-h block">LA is chapter one of a <span class="red">replicable franchise.</span></h2>
+    <p class="lede block">The form travels because the form is honest: tell the truth about a place through the people who live there. Same architecture, new local cast, new revenue line — every city is a new chapter.</p>
+
+    <table class="city-table block">
+      <thead>
+        <tr><th>CITY</th><th>RESIDENT MARKET</th><th>ANNUAL VISITORS</th></tr>
+      </thead>
+      <tbody class="all-us">
+        <tr class="us"><td>New York City</td><td>20M–22M</td><td>64M</td></tr>
+        <tr class="us"><td>Los Angeles</td><td>18M+</td><td>49M / nearly 50M</td></tr>
+        <tr class="us"><td>Paris</td><td>12M–15M metro</td><td>48.7M</td></tr>
+        <tr class="us"><td>Las Vegas</td><td>2.3M+</td><td>40M+</td></tr>
+        <tr class="us"><td>London</td><td>9M city / 15M metro</td><td>~30M total / 21M intl</td></tr>
+        <tr class="us"><td>Nashville</td><td>2.2M+</td><td>16.9M</td></tr>
+      </tbody>
+    </table>
+
+    <div class="fr-titles block">
+      <div class="ft-eyebrow">CHAPTERS TO COME</div>
+      <div class="ft-row">
+        <div class="ft-item"><em>If I Awaken in</em> <span class="red">New York</span></div>
+        <div class="ft-item"><em>If I Awaken in</em> <span class="red">Chicago</span></div>
+        <div class="ft-item"><em>If I Awaken in</em> <span class="red">London</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · INVESTMENT ROUNDS ================================================ -->
+<section class="slide rounds" id="rounds" data-chapter="Investment Rounds">
+  <div class="slide-pad rounds-head">
+    <div class="eyebrow red block">THE ASK · 3 ROUNDS OF INVESTMENT</div>
+    <h2 class="rounds-h block">We are seeking <span class="red">$9.5M total</span>, split across three rounds.</h2>
+    <p class="rounds-sub block">Switch between rounds with the tabs below.</p>
+    <div class="rounds-tabs" id="rounds-tabs">
+      <button class="r-tab active" data-round="1">
+        <span class="r-num">01</span>
+        <span class="r-meta">ROUND ONE · PREPRODUCTION</span>
+        <span class="r-amt">$1M</span>
+        <span class="r-when">opens June 1, 2026</span>
+      </button>
+      <button class="r-tab" data-round="2">
+        <span class="r-num">02</span>
+        <span class="r-meta">ROUND TWO · PRODUCTION</span>
+        <span class="r-amt">$7M</span>
+        <span class="r-when">opens January 1, 2027</span>
+      </button>
+      <button class="r-tab" data-round="3">
+        <span class="r-num">03</span>
+        <span class="r-meta">ROUND THREE · LAUNCH</span>
+        <span class="r-amt">$1.5M</span>
+        <span class="r-when">opens June 1, 2027</span>
+      </button>
+    </div>
+  </div>
+  <div class="round-panels">
+    <div class="round-panel active" data-round="1">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND ONE · PREPRODUCTION</div>
+        <div class="rp-amt">$1M</div>
+        <div class="rp-when">opens June 1, 2026 · closes Q3 2026</div>
+        <p>An <strong>equity + profit-sharing</strong> round. The only round in which equity is offered. Earliest in, best terms, only seat at the table for ownership upside.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">STRUCTURE</div><div class="rp-v">Equity + profit-sharing</div></div>
+        <div class="rp-row"><div class="rp-k">EQUITY OFFERED</div><div class="rp-v">$1M for 10%</div></div>
+        <div class="rp-row"><div class="rp-k">USE OF FUNDS</div><div class="rp-v">Design dev · venue lease · advance marketing</div></div>
+        <div class="rp-row"><div class="rp-k">UPSIDE</div><div class="rp-v">Equity participates in acquisition / licensing / expansion</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="2">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND TWO · PRODUCTION</div>
+        <div class="rp-amt">$7M</div>
+        <div class="rp-when">opens January 1, 2027 · closes Q2 2027</div>
+        <p>The <strong>profit-sharing only</strong> round (no equity offered). Funds seven built environments, full creative team, technical install, run-up to opening night.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">STRUCTURE</div><div class="rp-v">Profit-sharing only · no equity</div></div>
+        <div class="rp-row"><div class="rp-k">MINIMUM</div><div class="rp-v">$50K · Class A LP units</div></div>
+        <div class="rp-row"><div class="rp-k">USE OF FUNDS</div><div class="rp-v">Venue build · production · cast · install · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUPMENT</div><div class="rp-v">First-position · 110% of invested capital</div></div>
+        <div class="rp-row"><div class="rp-k">AFTER RECOUP</div><div class="rp-v">50 / 50 net profit · investors / company</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="3">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND THREE · LAUNCH</div>
+        <div class="rp-amt">$1.5M</div>
+        <div class="rp-when">opens June 1, 2027 · closes Q4 2027</div>
+        <p>Launch marketing &amp; operating reserve through the first months of the run. Funds the show through the moment it earns its money.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">STRUCTURE</div><div class="rp-v">Profit-sharing only · no equity</div></div>
+        <div class="rp-row"><div class="rp-k">MINIMUM</div><div class="rp-v">$50K · Class A LP units</div></div>
+        <div class="rp-row"><div class="rp-k">USE OF FUNDS</div><div class="rp-v">Launch marketing · operating reserve · contingency</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUPMENT</div><div class="rp-v">First-position · 110% of invested capital</div></div>
+        <div class="rp-row"><div class="rp-k">AFTER RECOUP</div><div class="rp-v">50 / 50 net profit · investors / company</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · ROUND 1 — EQUITY MODEL ========================================== -->
+<section class="slide round1" id="round1" data-chapter="Round 1 · Equity Model">
+  <div class="slide-pad">
+    <div class="eyebrow red block">ROUND ONE · EQUITY INVESTMENT</div>
+    <h2 class="round1-h block"><span class="red">Only Round One investors</span> get equity in the show.</h2>
+
+    <div class="r1-headline block">
+      <div class="r1-h-num">$1M</div>
+      <div class="r1-h-sep">for</div>
+      <div class="r1-h-pct">10%</div>
+      <div class="r1-h-tag">EQUITY UP FOR GRABS</div>
+    </div>
+    <p class="lede block">Round One investors hold equity through the LA run, the events business, the franchise, and any liquidity event that follows. They also participate in the profit-share. Rounds Two and Three are <em>profit-share only.</em></p>
+
+    <div class="r1-section block">
+      <h3 class="r1-sub">HOW EQUITY MAKES MONEY · ACQUISITION COMPARABLES</h3>
+      <table class="acq-table">
+        <thead><tr><th>COMPANY / PROPERTY</th><th>BUYER / INVESTOR</th><th>REPORTED AMOUNT</th></tr></thead>
+        <tbody>
+          <tr><td>Cirque du Soleil</td><td>TPG / Fosun / CDPQ</td><td>~$1.5B for majority stake</td></tr>
+          <tr><td>Secret Cinema</td><td>TodayTix Group</td><td>$100M+ / ~£88M</td></tr>
+          <tr><td>Blue Man Group</td><td>Cirque du Soleil</td><td>~$65.5M</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="r1-section block">
+      <h3 class="r1-sub">HOW EQUITY MAKES MONEY · EXPANSION &amp; LICENSING</h3>
+      <ul class="expansion-list">
+        <li><strong>Sleep No More</strong> — expanded to Shanghai and Seoul.</li>
+        <li><strong>Meow Wolf</strong> — six permanent immersive art installations across the U.S.</li>
+        <li><strong>Secret Cinema</strong> — 50+ immersive productions; partnered with Disney, Marvel, Netflix.</li>
+      </ul>
+    </div>
+
+    <p class="r1-foot block"><span class="red">Round One investors also participate in the profit-share</span> alongside Rounds Two and Three.</p>
+  </div>
+</section>
+
+<!-- 16 · FINANCIAL — TICKET SALES ======================================== -->
+<section class="slide financials" id="financials-tickets" data-chapter="Financials · Tickets">
+  <div class="slide-pad">
+    <div class="eyebrow red block">FINANCIAL PROJECTIONS · TICKET SALES</div>
+    <h2 class="fin-h block">Two thresholds. <span class="red">One investor return curve.</span></h2>
+
+    <div class="threshold-grid block">
+      <div class="thresh">
+        <div class="th-label">TO KEEP THE SHOW RUNNING</div>
+        <div class="th-num">61%</div>
+        <div class="th-sub">capacity · ~92 of 150 avg seats / show · breakeven</div>
+      </div>
+      <div class="thresh investor">
+        <div class="th-label">FOR INVESTORS TO RECOUP</div>
+        <div class="th-num">75%</div>
+        <div class="th-sub">capacity · the threshold at which investors recoup 110% within the 18-mo run</div>
+      </div>
+      <div class="thresh upside">
+        <div class="th-label">PILOT-LEVEL DEMAND</div>
+        <div class="th-num">100%+</div>
+        <div class="th-sub">capacity · what the Ford pilot actually did · oversold</div>
+      </div>
+    </div>
+
+    <div class="returns block">
+      <h3 class="ret-h">RETURN PROJECTIONS — AFTER 14 MONTHS</h3>
+      <div class="ret-rows">
+        <div class="ret-row">
+          <div class="ret-label">If we sell <strong>80% of tickets</strong></div>
+          <div class="ret-bar"><div class="ret-fill" style="--w: 50%;"></div></div>
+          <div class="ret-val">~$3.2M net contribution</div>
+        </div>
+        <div class="ret-row">
+          <div class="ret-label">If we sell <strong>90% of tickets</strong></div>
+          <div class="ret-bar"><div class="ret-fill" style="--w: 75%;"></div></div>
+          <div class="ret-val">~$4.4M net contribution</div>
+        </div>
+        <div class="ret-row us">
+          <div class="ret-label">If we sell <strong>100% of tickets</strong></div>
+          <div class="ret-bar"><div class="ret-fill" style="--w: 100%;"></div></div>
+          <div class="ret-val">~$5.5M net contribution</div>
+        </div>
+      </div>
+      <p class="ret-foot">Net contribution after operating costs &amp; recoupment. Pilot at the Ford oversold at 100%+. Projections assume the run begins June 2027; numbers expand further with events business (see next slide).</p>
+    </div>
+
+    <table class="tier-table block">
+      <thead><tr><th>TIER</th><th>SEATS / WK</th><th>AVG $</th><th>WEEKLY $</th></tr></thead>
+      <tbody>
+        <tr><td><span class="sw sw-com"></span> Community</td><td>520</td><td>$50</td><td>$26,400</td></tr>
+        <tr><td><span class="sw sw-std"></span> Standard</td><td>720</td><td>$83</td><td>$58,800</td></tr>
+        <tr><td><span class="sw sw-pre"></span> Premium</td><td>480</td><td>$132</td><td>$63,000</td></tr>
+        <tr><td><span class="sw sw-vip"></span> VIP · Saturday only</td><td>80</td><td>$185</td><td>$14,800</td></tr>
+        <tr class="tier-total"><td>WEEKLY GROSS</td><td>1,800</td><td>$90.56</td><td>$163,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 17 · FINANCIAL — CORPORATE EVENTS ==================================== -->
+<section class="slide additional" id="financials-events" data-chapter="Financials · Events">
+  <div class="slide-pad">
+    <div class="eyebrow red block">FINANCIAL PROJECTIONS · CORPORATE EVENTS</div>
+    <h2 class="add-h block">210 dark day-equivalents. <span class="red">All six differentiators.</span></h2>
+    <p class="lede block">The show occupies the venue Thursday–Sunday evenings and weekend afternoons. Monday through Wednesday — and weekday daytime — sit dark. Roughly 3.5 fully rentable days per week × 60 weeks = <strong>~210 day-equivalents</strong> of unused premium real estate.</p>
+
+    <div class="add-two">
+      <div class="add-block block">
+        <div class="add-h2">WHAT WE HAVE</div>
+        <ul class="add-list">
+          <li><strong>110-ft permanent LED wall</strong> — LA's most dramatic indoor screen<span class="add-val">$5K–$20K / day</span></li>
+          <li><strong>Real bar program</strong> — 64-ft bar, neon, leather booths, VIP zone<span class="add-val">$8K–$15K / day</span></li>
+          <li><strong>150-seat proscenium theater</strong> — with stage<span class="add-val">$5K–$10K / day</span></li>
+          <li><strong>Outdoor red-carpet courtyard</strong> — with marquee<span class="add-val">Premiere-tier, rare in LA</span></li>
+          <li><strong>30,000 sq ft of versatile space</strong> — 500+ guest cocktail capacity<span class="add-val">$10K+ / day at comp venues</span></li>
+          <li><strong>Arts District location</strong> — premium real estate for entertainment-industry clients<span class="add-val">Premium tier</span></li>
+        </ul>
+        <div class="add-callout">MOST LA VENUES OFFER ONE OR TWO. <span class="red">WE HAVE ALL SIX.</span></div>
+      </div>
+
+      <div class="add-block block">
+        <div class="add-h2">RUN-PERIOD REVENUE</div>
+        <table class="add-table">
+          <thead><tr><th>SCENARIO</th><th>GROSS</th><th>NET</th></tr></thead>
+          <tbody>
+            <tr><td>Conservative <span class="m">~30%</span></td><td>$540K</td><td>+$405K</td></tr>
+            <tr><td>Moderate <span class="m">~50%</span></td><td>$1.13M</td><td>+$847K</td></tr>
+            <tr class="ag"><td>Aggressive <span class="m">~65%</span></td><td>$1.82M</td><td>+$1.37M</td></tr>
+          </tbody>
+        </table>
+        <div class="add-h2 second">WHAT WE SELL</div>
+        <ul class="add-list small">
+          <li>Full venue buyout · premieres / activations<span class="add-val">$25K–$45K</span></li>
+          <li>Single-space rental · launches<span class="add-val">$6K–$12K</span></li>
+          <li>Production / filming · videos, commercials<span class="add-val">$8K–$18K / day</span></li>
+          <li>Recurring programs · comedy, podcasts<span class="add-val">$2K–$5K</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 · NOTE FROM CREATOR (PDF-deck style) ============================== -->
+<section class="slide creator pdf-style" id="creator" data-chapter="Note from the Creator">
+  <div class="creator-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="creator-card pdf-card block">
+      <div class="cc-byline">A NOTE FROM THE CREATOR · DIANE LUBY LANE</div>
+      <p class="cc-line first">In Los Angeles, things take root.</p>
+      <p class="cc-line">People from all over the world feel this — and so they flock here, the dreamers, the wanderers, the immigrants, in search of a chance, a rebirth, a fresh start. And the city receives them.</p>
+      <p class="cc-line emph">Los Angeles has loved us.</p>
+      <p class="cc-line emph red-line">With this show, we offer that love back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · CONCLUSION / RESERVE ============================================ -->
+<section class="slide reserve" id="reserve" data-chapter="Reserve">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad">
+    <div class="eyebrow red block">RESERVE YOUR PLACE IN ROUND ONE</div>
+    <h2 class="reserve-h block">
+      Be part of<br>
+      <span class="huge">the <em class="red">awakening.</em></span>
+    </h2>
+    <div class="reserve-grid">
+      <div class="reserve-col block">
+        <div class="rc-h">TO RESERVE OR LEARN MORE</div>
+        <a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a>
+        <div class="rc-sub">ifiawaken.la · @ifiawaken</div>
+      </div>
+      <div class="reserve-col block">
+        <div class="rc-h">ROUND ONE CLOSES</div>
+        <div class="rc-big">Q3 2026</div>
+        <div class="rc-sub"><em>Doors open · June 2027</em></div>
+      </div>
+    </div>
+    <div class="reserve-foot block">
+      <span>If I Awaken in Los Angeles · Pitch 2026</span>
+      <span>An immersive theatrical tour of the real Los Angeles</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script src="editor.js"></script>
 </body>
 </html>
