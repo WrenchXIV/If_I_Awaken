@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v10 The Whisper</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v10 — THE WHISPER                                              */
+  /* Berkshire Hathaway letter aesthetic. Type-led, restrained.     */
+  /* No photos in body. Hairline rules. Numbered paragraphs.        */
+  /* For investors who hate flashy decks.                           */
+  /* ============================================================ */
+
+  :root {
+    --paper: #f4f0e6;
+    --paper-dark: #ebe6d6;
+    --ink: #14110d;
+    --rule: rgba(20, 17, 13, 0.18);
+    --red: #B82228;
+    --gold: #806620;
+    --f-letter: "EB Garamond", "Georgia", serif;
+    --f-mono: "JetBrains Mono", ui-monospace, monospace;
+    --f-sans: "Inter", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-letter);
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 1.55em, rgba(20,17,13,0.018) 1.55em, rgba(20,17,13,0.018) calc(1.55em + 1px));
+  }
+
+  a { color: var(--ink); text-decoration: underline; text-decoration-color: rgba(20,17,13,0.3); text-underline-offset: 3px; }
+  a:hover { color: var(--red); text-decoration-color: var(--red); }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* Letter container — fixed measure, like a printed memo */
+  .letter {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 80px clamp(20px, 5vw, 60px) 140px;
+  }
+
+  /* Masthead */
+  .head {
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 48px;
+  }
+  .head .pub {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .head h1 {
+    font-family: var(--f-letter);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(34px, 4.5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    margin-bottom: 14px;
+  }
+  .head .sub {
+    font-family: var(--f-letter);
+    font-style: italic;
+    color: rgba(20,17,13,0.7);
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .head .meta {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(20,17,13,0.55);
+    text-transform: uppercase;
+    margin-top: 16px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .head .meta .sep { color: var(--red); }
+
+  /* Numbered sections */
+  .sec {
+    padding: 48px 0;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: 24px;
+  }
+  .sec:first-of-type { border-top: 0; padding-top: 0; }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+    align-items: baseline;
+  }
+  .sec-num {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 0.14em;
+    padding-top: 8px;
+  }
+  .sec-h {
+    font-family: var(--f-letter);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  .sec p {
+    margin-bottom: 16px;
+    text-indent: 1.2em;
+  }
+  .sec p:first-of-type { text-indent: 0; }
+  .sec p.lead {
+    text-indent: 0;
+    font-style: italic;
+    font-size: 19px;
+    color: rgba(20,17,13,0.85);
+    margin-bottom: 22px;
+  }
+  .sec p strong { font-weight: 600; }
+  .sec p .red { color: var(--red); }
+  .sec p em { font-style: italic; }
+
+  /* Footnote markers — link to related sections */
+  .fn {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 9px;
+    color: var(--red);
+    vertical-align: super;
+    margin-left: 1px;
+    text-decoration: none;
+    border-bottom: 0;
+  }
+  .fn:hover { color: var(--ink); }
+
+  /* Numbered paragraph blocks (Berkshire style) */
+  .pts {
+    list-style: none;
+    counter-reset: pt;
+    margin: 18px 0;
+    padding: 0;
+  }
+  .pts li {
+    counter-increment: pt;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    line-height: 1.5;
+  }
+  .pts li::before {
+    content: "(" counter(pt) ")";
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--red);
+    padding-top: 4px;
+  }
+
+  /* Inline data table — restrained ledger style */
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 22px 0;
+    font-family: var(--f-mono);
+    font-size: 13px;
+  }
+  .ledger th, .ledger td {
+    padding: 8px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ledger th {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--red);
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom-color: var(--red);
+  }
+  .ledger th:not(:first-child), .ledger td:not(:first-child) {
+    text-align: right;
+  }
+  .ledger tr.tot td {
+    border-top: 1px solid var(--ink);
+    border-bottom: none;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* Stat callout — minimal */
+  .stat-call {
+    margin: 24px 0;
+    padding: 16px 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 22px;
+    align-items: baseline;
+  }
+  .stat-call .n {
+    font-family: var(--f-letter);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--red);
+  }
+  .stat-call .l {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(20,17,13,0.65);
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* Signature block */
+  .signoff {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--ink);
+  }
+  .signoff p {
+    text-indent: 0;
+    font-style: italic;
+  }
+  .signoff .sig {
+    margin-top: 24px;
+    font-family: var(--f-letter);
+    font-style: italic;
+    font-size: 22px;
+  }
+  .signoff .sig-title {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(20,17,13,0.6);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  /* Sidebar TOC — fixed, type-only */
+  #toc {
+    position: fixed;
+    top: 80px;
+    left: 16px;
+    width: 180px;
+    z-index: 80;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  #toc .toc-h {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: rgba(20,17,13,0.55);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    text-transform: uppercase;
+  }
+  #toc a {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 6px;
+    padding: 4px 0;
+    color: rgba(20,17,13,0.7);
+    text-decoration: none;
+    line-height: 1.35;
+    text-transform: uppercase;
+    border-bottom: 0;
+  }
+  #toc a:hover { color: var(--ink); }
+  #toc a.current { color: var(--red); }
+  #toc a .tn { color: rgba(20,17,13,0.4); }
+  #toc a.current .tn { color: var(--red); }
+
+  /* Bottom chrome - thin */
+  #w-chrome {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 18px;
+    background: rgba(244, 240, 230, 0.92);
+    border-top: 1px solid var(--rule);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(20,17,13,0.7);
+    z-index: 95;
+    text-transform: uppercase;
+  }
+  #w-chrome .right { display: flex; gap: 12px; align-items: center; }
+  #w-chrome button {
+    padding: 5px 8px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  #w-chrome button:hover { background: var(--paper-dark); }
+
+  /* Switcher fits the cream theme */
+  #vsw .vsw-pill,
+  #vsw .vsw-panel {
+    background: rgba(20, 17, 13, 0.92) !important;
+    color: #f4f0e6 !important;
+  }
+
+  @media (max-width: 1100px) {
+    #toc { display: none; }
+  }
+  @media (max-width: 700px) {
+    body { font-size: 16px; }
+    .letter { padding: 60px 18px 100px; }
+    .head h1 { font-size: 28px; }
+    .stat-call { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+</head>
+<body data-version="v10">
+
+<aside id="toc">
+  <div class="toc-h">SECTIONS</div>
+  <a href="#preamble" class="current"><span class="tn">¶ 1</span><span>The Preamble</span></a>
+  <a href="#thesis"><span class="tn">¶ 2</span><span>The Thesis</span></a>
+  <a href="#pilot"><span class="tn">¶ 3</span><span>The Pilot</span></a>
+  <a href="#album"><span class="tn">¶ 4</span><span>The Album</span></a>
+  <a href="#contest"><span class="tn">¶ 5</span><span>The Contest</span></a>
+  <a href="#timing"><span class="tn">¶ 6</span><span>The Window</span></a>
+  <a href="#team"><span class="tn">¶ 7</span><span>The Team</span></a>
+  <a href="#show"><span class="tn">¶ 8</span><span>The Show</span></a>
+  <a href="#economics"><span class="tn">¶ 9</span><span>The Model</span></a>
+  <a href="#additional"><span class="tn">¶ 10</span><span>Events Upside</span></a>
+  <a href="#risk"><span class="tn">¶ 11</span><span>Risk</span></a>
+  <a href="#franchise"><span class="tn">¶ 12</span><span>The Franchise</span></a>
+  <a href="#terms"><span class="tn">¶ 13</span><span>Terms</span></a>
+  <a href="#close"><span class="tn">¶ 14</span><span>Close</span></a>
+</aside>
+
+<div id="w-chrome">
+  <div>IF I AWAKEN IN LOS ANGELES · LETTER TO INVESTORS · 2026</div>
+  <div class="right">
+    <button onclick="window.print()">PRINT</button>
+    <button onclick="document.getElementById('vsw').classList.toggle('open')">v10 · WHISPER</button>
+  </div>
+</div>
+
+<main class="letter">
+
+<!-- HEAD -->
+<header class="head">
+  <div class="pub">A LETTER FROM THE PRODUCERS · MAY 2026</div>
+  <h1>If I Awaken in Los Angeles</h1>
+  <div class="sub">A 90-minute walking immersive in 30,000 sq ft of the LA Arts District, opening June 2027.</div>
+  <div class="meta">
+    <span>RAISE · $8.97M</span><span class="sep">·</span>
+    <span>R1 CLOSES Q3/2026</span><span class="sep">·</span>
+    <span>DOORS OPEN 06/27</span><span class="sep">·</span>
+    <span>110% / 50-50</span>
+  </div>
+</header>
+
+<!-- ¶1 PREAMBLE -->
+<section class="sec" id="preamble">
+  <div class="sec-head"><span class="sec-num">¶ 1</span><h2 class="sec-h">A note before the numbers.</h2></div>
+  <p class="lead">This is a long letter. It contains no slides, no photographs, and no music. If that does not interest you, we apologize for taking your time. If it does, what follows is the most direct presentation we can write of what we are building, why now, and the terms on which you might join.</p>
+  <p>Theatrical investment is not for everyone. The most honest way to discuss it, in our view, is the way Warren Buffett discusses paper mills and railroads: plainly, in complete sentences, with the data first and the persuasion last. This document tries to do that.</p>
+  <p>We will tell you what we are building (¶8<a class="fn" href="#show">↗</a>), what we have already proven (¶3<a class="fn" href="#pilot">↗</a>–¶5<a class="fn" href="#contest">↗</a>), what the operating model looks like (¶9<a class="fn" href="#economics">↗</a>), what could go wrong (¶11<a class="fn" href="#risk">↗</a>), and what we are offering (¶13<a class="fn" href="#terms">↗</a>). The sequence is intentional; the conclusion is at the end where it should be.</p>
+</section>
+
+<!-- ¶2 THESIS -->
+<section class="sec" id="thesis">
+  <div class="sec-head"><span class="sec-num">¶ 2</span><h2 class="sec-h">The thesis, in one sentence.</h2></div>
+  <p>Los Angeles is the largest entertainment market in the world without an iconic immersive show about itself, and the next three years contain the largest sustained cultural-attention event in modern LA history. We propose to occupy that gap.</p>
+  <p>To be plain: New York has <em>Sleep No More</em> (13+ years across NYC and Shanghai). Santa Fe has <em>Meow Wolf</em> ($300M+ across five US cities). Las Vegas has Cirque (multiple billion-dollar resident shows). Los Angeles — 18 million metropolitan, 50 million-plus annual visitors, the largest entertainment industry in human history — has nothing in the same slot. Not for residents. Not for visitors. Not for the press the city is about to receive.</p>
+  <p>The form we are building, <em>If I Awaken in Los Angeles</em>, is designed to fit it: a 90-minute walking immersive theatrical experience that places 150 guests per show inside the actual neighborhoods of LA — Hollywood Boulevard, Boyle Heights, the Asian Arc, Black LA across a century, Folk LA, the Stage, the Real LA — with the actual people and the actual music. 30,000 sq ft in the Arts District, next to the 6th Street Bridge. Twelve performances per week. Opening <strong>June 2027</strong>.</p>
+</section>
+
+<!-- ¶3 PILOT -->
+<section class="sec" id="pilot">
+  <div class="sec-head"><span class="sec-num">¶ 3</span><h2 class="sec-h">The pilot.</h2></div>
+  <p class="lead">August 1, 2025. The Ford Theatre. In partnership with the Los Angeles Philharmonic.</p>
+  <p>A test of the form's room appeal. Directed by Gina Belafonte. Composed by two-time Grammy winner Derrick Hodge. On stage: Luis J. Rodriguez (former LA Poet Laureate), Samantha Rios (current LA Youth Poet Laureate), Dante Basco, and Mendeleyev. The verdict was unambiguous: <strong>sold out, oversold</strong>, with the curtain held thirty minutes to accommodate the line outside.</p>
+  <p>The Hollywood Times wrote: "<em>They didn't just speak about Los Angeles — they spoke as Los Angeles.</em>" Jodie Foster and Alex Hedison called it "a rich, moving experience. The poetry, dance, and film came together beautifully." Aloe Blacc wrote that it changes "everything."</p>
+  <div class="stat-call"><span class="n">1,000+</span><span class="l">Tickets sold · sold out<br>Ford Theatre · August 1, 2025</span></div>
+</section>
+
+<!-- ¶4 ALBUM -->
+<section class="sec" id="album">
+  <div class="sec-head"><span class="sec-num">¶ 4</span><h2 class="sec-h">The album.</h2></div>
+  <p>A test of the form's reach outside the room. Hodge produced an album extending the pilot's material, with featured contributions from Jackson Browne (Rock &amp; Roll Hall of Fame), Joy Harjo (3× US Poet Laureate), and Cheech Marin.</p>
+  <p>Result: <strong>30,000+ listens in the first week</strong>. This is a 30× expansion of the addressable audience via a channel that scales horizontally and was reached at essentially zero marginal marketing cost. We treat it as a hard signal of demand persistence outside the room.</p>
+  <div class="stat-call"><span class="n">30K+</span><span class="l">Listens · first week<br>Order-of-magnitude expansion vs. pilot</span></div>
+</section>
+
+<!-- ¶5 CONTEST -->
+<section class="sec" id="contest">
+  <div class="sec-head"><span class="sec-num">¶ 5</span><h2 class="sec-h">The contest.</h2></div>
+  <p>A test of the form's pull from the city itself. We asked a single question — <em>"Tell us about your LA"</em> — through a partnership with the Los Angeles Unified School District and Get Lit – Words Ignite (a two-time Library of Congress winner with a 200-school footprint). The contest was judged by Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, and Gina Belafonte.</p>
+  <p>By January 2026 we had — by accident — produced <strong>the largest poetry competition in the United States</strong>, with 1,400+ video submissions from across the city. Coverage in the LA Times, CNN, and NPR. Every submitter is now a recontactable lead for opening night.</p>
+  <div class="stat-call"><span class="n">1,400+</span><span class="l">Video submissions · owned audience pool<br>Largest poetry contest in the US</span></div>
+</section>
+
+<!-- ¶6 TIMING -->
+<section class="sec" id="timing">
+  <div class="sec-head"><span class="sec-num">¶ 6</span><h2 class="sec-h">The window.</h2></div>
+  <p>The next three years are not an ordinary three years for Los Angeles. The FIFA World Cup arrives in 2026; the Super Bowl in 2027; and the Summer Olympics, with the Paralympic Games immediately after, in 2028. Olympic visitor projections from the LA28 organizing committee place unique attendees in the range of <strong>15 million</strong>, with media impressions estimated to exceed <strong>two billion</strong>.</p>
+  <p>We open in June 2027. That gives the show roughly twelve months to find its rhythm before the Olympic surge arrives — and positions the venue to anchor festival programming, cultural pavilions, and international arts showcases during the surge itself.</p>
+  <p>The fact is not lost on us that this is the same window the city has been waiting on for forty years. We do not think it should pass without a permanent piece of cultural infrastructure that represents the city to the world.</p>
+</section>
+
+<!-- ¶7 TEAM -->
+<section class="sec" id="team">
+  <div class="sec-head"><span class="sec-num">¶ 7</span><h2 class="sec-h">The team.</h2></div>
+  <p>Nine producers. Five awards between them. We list the relevant credentials only — full bios available on request.</p>
+  <ul class="pts">
+    <li><strong>Andrew Scoville · Director.</strong> Associate director, <em>Here Lies Love</em> (Broadway). Director, <em>Theater of the Mind</em> (David Byrne). Director, <em>Money Heist: The Experience</em> (Netflix). Direct credits on three of the comparable shows in this category.</li>
+    <li><strong>Derrick Hodge · Composer.</strong> Two-time Grammy winner. Composed the Ford pilot.</li>
+    <li><strong>Diane Luby Lane · Creator &amp; Lead Producer.</strong> Founder and CEO of Get Lit – Words Ignite (200+ schools globally). Patterson Award. Presidential Lifetime Volunteer Service Award.</li>
+    <li><strong>Shane Snow · Producer.</strong> Tony Award–winning producer; bestselling author; Pulitzer Prize entrant for journalism.</li>
+    <li><strong>Rob O'Neill · Producer.</strong> Tony Award winner as co-producer of <em>The Outsiders</em> (Broadway, 2024); co-producer of <em>The Who's Tommy</em> and <em>Burlesque, The Musical</em>.</li>
+    <li><strong>Gina Belafonte · Producer.</strong> Directed the Ford pilot. Co-founder and Executive Director of Sankofa.org.</li>
+    <li><strong>Brandon XIV · Lead Producer.</strong> Co-founder of SHOWRUNNER. Award-winning across film, technology, and the seam between.</li>
+    <li><strong>Mark Chinapen · General Manager.</strong> Multi-stage operations for Coachella and Stagecoach. Custom staging and technical production for the Grammys and World of Dance.</li>
+    <li><strong>Monique Mitchell · Producer.</strong> Helped pass California Senate Bill 933, securing $50M for arts education in the state.</li>
+  </ul>
+</section>
+
+<!-- ¶8 SHOW -->
+<section class="sec" id="show">
+  <div class="sec-head"><span class="sec-num">¶ 8</span><h2 class="sec-h">The show.</h2></div>
+  <p>One hundred minutes, end-to-end. Seven built environments plus a lobby that doubles as a theatre. 150 guests per show. Twelve performances a week, Tuesday through Sunday. The audience does not sit until the finale. They walk.</p>
+  <p>The arc, briefly: <em>Hollywood Boulevard</em> (a 110-ft LED wall that pivots), <em>Boyle Heights</em> (a tianguis with stone tables; two poets meeting across a generation), <em>the Asian Arc</em> (Chinatown, Little Tokyo, Koreatown, Historic Filipinotown, Thai Town — five neighborhoods, one rapper-poet walking the line), <em>Black LA across a century</em> (a church wall opening into gospel, swing dance at Dunbar, a hip-hop cypher, a Leimert Park drum circle), <em>Folk LA / Laurel Canyon</em> (a knock at a door becoming a living-room sing-along), <em>the Stage</em> (the only seated room — a classical proscenium that has earned its formality), and <em>the Real LA</em> (a return to the opening corridor, the wall this time made of the audience's own faces).</p>
+  <p>Each room has its own scenic register, its own cast, its own sound design.</p>
+</section>
+
+<!-- ¶9 ECONOMICS -->
+<section class="sec" id="economics">
+  <div class="sec-head"><span class="sec-num">¶ 9</span><h2 class="sec-h">The operating model.</h2></div>
+  <p class="lead">Breakeven at 61% capacity. The pilot oversold at 100%+.</p>
+  <table class="ledger">
+    <thead><tr><th>Line</th><th>Wk @ 100%</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Weekly ticket gross</td><td>$163,000</td><td>1,800 seats / wk</td></tr>
+      <tr><td>Weekly operating</td><td>$(102,000)</td><td>all-in (salaries, rent, mktg, COGS)</td></tr>
+      <tr><td>Bar &amp; merch contribution</td><td>$27,000</td><td>per-cap, industry data</td></tr>
+      <tr class="tot"><td>Weekly contribution</td><td>$88,000</td><td>at 100% capacity</td></tr>
+      <tr><td>Breakeven capacity</td><td>61%</td><td>~92 of 150 avg seats per show</td></tr>
+      <tr><td>Weighted avg ticket</td><td>$90.56</td><td>Community / Standard / Premium / VIP</td></tr>
+    </tbody>
+  </table>
+  <p>The ticket tiering is structured to keep the demand floor high while preserving high-margin upside. The four tiers: <strong>Community</strong> ($50, 520 seats/wk), <strong>Standard</strong> ($83, 720), <strong>Premium</strong> ($132, 480), and <strong>VIP</strong> ($185, 80 — Saturday-only).</p>
+  <p>The gap between the breakeven (61%) and the pilot's measured demand (100%+) is the margin of safety. The model does not require the pilot's performance to be profitable.</p>
+</section>
+
+<!-- ¶10 ADDITIONAL -->
+<section class="sec" id="additional">
+  <div class="sec-head"><span class="sec-num">¶ 10</span><h2 class="sec-h">The events business — and why the venue itself is worth more than the show.</h2></div>
+  <p>The show runs Thursday–Sunday evenings and weekend afternoons. Monday through Wednesday and weekday daytime — approximately 3.5 days per week — the venue sits dark. Across a 60-week opening run, that is ~210 day-equivalents of premium rentable real estate.</p>
+  <p>The venue, as designed, will have six things most LA venues do not have under one roof:</p>
+  <ul class="pts">
+    <li>A 110-ft permanent LED wall — by some measure the most dramatic indoor screen in the city.</li>
+    <li>A real bar program (64-ft bar, VIP zone, neon).</li>
+    <li>A 150-seat proscenium theater with a working stage.</li>
+    <li>An outdoor red-carpet courtyard with a marquee — premiere-tier, rare in LA.</li>
+    <li>30,000 sq ft of versatile space (500+ cocktail-cap).</li>
+    <li>Arts District location — premium real estate for entertainment-industry clients.</li>
+  </ul>
+  <p>Modeled dark-day utilization yields the following run-period upside:</p>
+  <table class="ledger">
+    <thead><tr><th>Scenario</th><th>Utilization</th><th>Gross</th><th>Net</th></tr></thead>
+    <tbody>
+      <tr><td>Conservative</td><td>~30%</td><td>$540K</td><td>+$405K</td></tr>
+      <tr><td>Moderate</td><td>~50%</td><td>$1.13M</td><td>+$847K</td></tr>
+      <tr class="tot"><td>Aggressive</td><td>~65%</td><td>$1.82M</td><td>+$1.37M</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ¶11 RISK -->
+<section class="sec" id="risk">
+  <div class="sec-head"><span class="sec-num">¶ 11</span><h2 class="sec-h">What could go wrong.</h2></div>
+  <p>Theatrical investment carries risk of loss. We list the risks we take most seriously, in order:</p>
+  <ul class="pts">
+    <li><strong>Build / permit timing.</strong> A 30,000 sq ft custom buildout to a fixed opening date is the biggest schedule risk. Mitigation: our GM ran the Coachella, Stagecoach, and Grammys buildouts; the schedule includes two months of contingency before the Olympic surge.</li>
+    <li><strong>Cast retention across an 18-month run.</strong> Immersive shows that grind down their performers underdeliver. Mitigation: union scale, swing cast, the rotational programming Scoville used on <em>Here Lies Love</em>.</li>
+    <li><strong>Macro / consumer discretionary softness.</strong> Mitigation: the tiered pricing structure (Community $50) keeps the demand floor high; the events business adds a non-ticket revenue line independent of consumer ticket spending.</li>
+    <li><strong>National / international concept fit.</strong> An LA-specific story has to land for non-LA visitors. Mitigation: the form's universal frame ("a real city told by its real people") is built into the concept, and the pilot drew critical acclaim from non-LA names (Foster, Hedison).</li>
+  </ul>
+  <p>We are happy to send the full risk register and the operating model with sensitivity tabs on request.</p>
+</section>
+
+<!-- ¶12 FRANCHISE -->
+<section class="sec" id="franchise">
+  <div class="sec-head"><span class="sec-num">¶ 12</span><h2 class="sec-h">After Los Angeles.</h2></div>
+  <p>LA is the first chapter. The production architecture — lighting, projection, sound, walk-through staging — is the intellectual property; the local cast and the local truth are what change per city. The marginal CapEx for a second city is materially below the first.</p>
+  <p>Three candidate next cities, each with the local cultural particulars that make them obvious: <em>Chicago</em> (house music, South Side to lakefront), <em>New York</em> (five boroughs, subway rhythms, diaspora), and <em>London</em> (Brixton to Brick Lane). The comparable franchise — Meow Wolf at $300M+ across five US locations — is the precedent.</p>
+</section>
+
+<!-- ¶13 TERMS -->
+<section class="sec" id="terms">
+  <div class="sec-head"><span class="sec-num">¶ 13</span><h2 class="sec-h">The terms.</h2></div>
+  <p>The full raise is $8.97M, structured across three rounds:</p>
+  <table class="ledger">
+    <thead><tr><th>Round</th><th>Size</th><th>Opens</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td>One · Build-out &amp; Opening</td><td>$1M</td><td>06/01/2026</td><td>Design, lease, advance mktg</td></tr>
+      <tr><td>Two · Production</td><td>$6.5M</td><td>01/01/2027</td><td>Seven environments, full team, install</td></tr>
+      <tr><td>Three · Launch &amp; Reserve</td><td>$1.5M</td><td>06/01/2027</td><td>Launch mktg, operating reserve</td></tr>
+      <tr class="tot"><td>Total</td><td>$9.0M</td><td></td><td></td></tr>
+    </tbody>
+  </table>
+  <p>All rounds: <strong>Class A LP units</strong>, $50,000 minimum. <strong>First-position recoupment at 110%</strong> of invested capital. Post-recoup: <strong>50/50 net profit share</strong> between investors and the company, indefinitely, across both the LA run and every franchise chapter that follows it.</p>
+  <p>Additionally, $2.68M of non-recoupable capital (sponsorship + philanthropy) sits below the investor tier, de-risking your position by approximately 45%.</p>
+  <p>Round One is the smallest round, the earliest in, and carries the best position in the cap stack. <strong>Round One closes Q3 2026.</strong></p>
+</section>
+
+<!-- ¶14 CLOSE -->
+<section class="sec" id="close">
+  <div class="sec-head"><span class="sec-num">¶ 14</span><h2 class="sec-h">In closing.</h2></div>
+  <p>What we are proposing is straightforward: build the show Los Angeles has never had, in time for the world to see it, on terms that pay the earliest capital out first.</p>
+  <p>We have run the experiment three different ways — in the room (¶3<a class="fn" href="#pilot">↗</a>), on the broadcast (¶4<a class="fn" href="#album">↗</a>), and through the city itself (¶5<a class="fn" href="#contest">↗</a>) — and the answer was consistent each time. The team has built every adjacent category, at adjacent scale (¶7<a class="fn" href="#team">↗</a>). The model breaks even well below what the pilot already produced (¶9<a class="fn" href="#economics">↗</a>). The venue itself has six monetizable assets independent of the show (¶10<a class="fn" href="#additional">↗</a>). The window is structural and dated (¶6<a class="fn" href="#timing">↗</a>).</p>
+  <p>The risks (¶11<a class="fn" href="#risk">↗</a>) are real but bounded. The terms (¶13<a class="fn" href="#terms">↗</a>) are first-position 110% recoupment with a 50/50 profit share that runs across both LA and every chapter that follows. If you find yourself interested at this point, the next step is a conversation.</p>
+  <div class="signoff">
+    <p>Yours sincerely,</p>
+    <div class="sig">Diane Luby Lane &amp; Brandon XIV</div>
+    <div class="sig-title">CREATOR · LEAD PRODUCER · ON BEHALF OF THE TEAM</div>
+    <p style="margin-top: 28px;">For the full DD pack, financial model, term sheet, or a venue walk-through: <a href="mailto:press@ifiawaken.la">press@ifiawaken.la</a>.</p>
+    <p style="text-indent: 0; margin-top: 8px; font-style: normal; font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; color: rgba(20,17,13,0.6);">IFIAWAKEN.LA · @IFIAWAKEN</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // TOC scroll-spy
+  (function () {
+    const toc = document.getElementById('toc');
+    const links = Array.from(toc.querySelectorAll('a'));
+    const ids = links.map(a => a.getAttribute('href').slice(1));
+
+    function update() {
+      const scrollY = window.scrollY + 80;
+      let activeId = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) activeId = id;
+      }
+      links.forEach(a => a.classList.toggle('current', a.getAttribute('href').slice(1) === activeId));
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v8 The FAQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v8 — THE FAQ                                                   */
+  /* Conversational. Each section answers a question                */
+  /* an investor would actually ask. Sidebar of questions.          */
+  /* ============================================================ */
+
+  body { background: #0a0a0a; }
+
+  /* Question list — fixed left sidebar */
+  #q-list {
+    position: fixed;
+    top: 14px;
+    bottom: 56px;
+    left: 14px;
+    width: 280px;
+    z-index: 90;
+    background: rgba(10, 10, 10, 0.92);
+    border: 1px solid rgba(242, 237, 226, 0.16);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-y: auto;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: var(--f-mono);
+    font-size: 11px;
+  }
+  #q-list .q-h {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: rgba(242, 237, 226, 0.5);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(242, 237, 226, 0.14);
+    text-transform: uppercase;
+  }
+  #q-list .q-row {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    padding: 9px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: rgba(242, 237, 226, 0.7);
+    transition: all 0.15s ease;
+    line-height: 1.35;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  #q-list .q-row:hover {
+    background: rgba(242, 237, 226, 0.06);
+    color: var(--on-dark);
+  }
+  #q-list .q-row.current {
+    background: rgba(214, 58, 63, 0.12);
+    color: var(--red);
+  }
+  #q-list .q-row .qn {
+    font-weight: 700;
+    color: rgba(242, 237, 226, 0.4);
+    letter-spacing: 0.1em;
+  }
+  #q-list .q-row.current .qn { color: var(--red); }
+  #q-list .q-foot {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(242, 237, 226, 0.14);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(242, 237, 226, 0.4);
+  }
+  #q-list .q-foot a { color: var(--red); }
+
+  /* Push slide content past sidebar */
+  .slide-pad { padding-left: clamp(320px, 22vw, 360px) !important; }
+
+  /* Question + answer layout */
+  .qa-tag {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--red);
+    margin-bottom: 16px;
+    padding: 4px 10px;
+    border: 1px solid var(--red);
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .qa-q {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.2;
+    color: var(--on-dark);
+    margin-bottom: 36px;
+    max-width: 30ch;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(242, 237, 226, 0.18);
+  }
+  .qa-q::before {
+    content: "Q.";
+    color: var(--red);
+    font-weight: 600;
+    margin-right: 12px;
+    font-style: normal;
+  }
+  .qa-a {
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(242, 237, 226, 0.85);
+    max-width: 60ch;
+    margin-bottom: 16px;
+  }
+  .qa-a::before {
+    content: "A. ";
+    color: var(--red);
+    font-family: var(--f-mono);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    margin-right: 4px;
+  }
+  .qa-a:not(:first-of-type)::before { content: ""; margin: 0; }
+  .qa-a strong { color: var(--on-dark); }
+
+  .qa-points {
+    list-style: none;
+    margin: 18px 0;
+    padding: 0;
+    max-width: 60ch;
+  }
+  .qa-points li {
+    padding: 8px 0 8px 22px;
+    position: relative;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(242, 237, 226, 0.78);
+  }
+  .qa-points li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    color: var(--red);
+    font-weight: 700;
+  }
+  .qa-points li strong { color: var(--on-dark); }
+
+  /* Compact stat callout */
+  .qa-stat {
+    display: inline-grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: center;
+    margin-top: 22px;
+    padding: 18px 22px;
+    background: rgba(214, 58, 63, 0.08);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+  }
+  .qa-stat .num {
+    font-family: var(--f-tight);
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--red);
+    letter-spacing: -0.02em;
+  }
+  .qa-stat .lbl {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: rgba(242, 237, 226, 0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* Hide v1's left rail; q-list replaces it */
+  #rail { display: none; }
+
+  @media (max-width: 1000px) {
+    #q-list {
+      position: fixed;
+      top: auto;
+      bottom: 56px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-height: 40vh;
+      transform: translateY(calc(100% - 40px));
+      transition: transform 0.25s ease;
+    }
+    #q-list.open { transform: translateY(0); }
+    #q-list .q-h::after {
+      content: " · TAP TO EXPAND";
+      color: var(--red);
+    }
+    .slide-pad { padding-left: var(--slide-pad-x) !important; }
+  }
+</style>
+</head>
+<body data-version="v8">
+
+<div id="progress"><div id="progress-fill"></div></div>
+<nav id="rail" aria-label="Chapter navigation"></nav>
+<aside id="q-list" aria-label="Questions"></aside>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg><span>QUESTIONS</span></button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">Q01</span>
+  </div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">01 / 15</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
+</div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title"><span class="map-eyebrow">v8 The FAQ</span><h2>Questions</h2></div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span>15 questions an investor would actually ask</span></div>
+</div>
+
+<main id="deck">
+
+<!-- Q01 ===================================================== -->
+<section class="slide" id="q01" data-chapter="Q01 · What are you raising?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q01 · THE ASK</span>
+    <h2 class="qa-q">What are you raising and what do I get?</h2>
+    <p class="qa-a"><strong>$8.97M total</strong>, across three rounds: $1M (June 2026), $6.5M (January 2027), $1.5M (June 2027). All rounds are <strong>Class A LP units, $50K minimum</strong>.</p>
+    <p class="qa-a"><strong>First-position recoupment at 110%</strong> of invested capital — meaning your money comes out first, with a 10% premium, before any other distribution. Then <strong>50/50 net profit share</strong> between investors and the company, indefinitely, across both the LA run and every franchise chapter that follows.</p>
+    <p class="qa-a">Additionally, <strong>$2.68M of non-recoupable capital</strong> from sponsorship and philanthropy sits below the investor tier, de-risking your position by ~45%.</p>
+    <div class="qa-stat"><span class="num">110%</span><span class="lbl">First-position<br>recoupment</span></div>
+  </div>
+</section>
+
+<!-- Q02 ===================================================== -->
+<section class="slide" id="q02" data-chapter="Q02 · Why LA, why now?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q02 · TIMING &amp; PLACE</span>
+    <h2 class="qa-q">Why Los Angeles, and why now?</h2>
+    <p class="qa-a"><strong>LA is the largest entertainment market in the world without an iconic show about itself.</strong> New York has <em>Sleep No More</em>. Santa Fe has <em>Meow Wolf</em>. Vegas has Cirque. LA — 18M metro, 50M+ annual visitors, the largest entertainment industry in human history — has nothing in the slot.</p>
+    <p class="qa-a">Now, because of <strong>three consecutive years of structural attention</strong> on Los Angeles:</p>
+    <ul class="qa-points">
+      <li><strong>FIFA World Cup '26.</strong> First major influx.</li>
+      <li><strong>Super Bowl LXI '27.</strong> Mid-cycle.</li>
+      <li><strong>Summer Olympics &amp; Paralympics '28.</strong> 15M+ unique attendees, 2B+ media impressions.</li>
+    </ul>
+    <p class="qa-a">We open <strong>June 2027</strong> — with a full year of run-time before the Olympic surge arrives. The window is once-in-a-generation. Visitors will need a cultural front door that isn't a stadium.</p>
+  </div>
+</section>
+
+<!-- Q03 ===================================================== -->
+<section class="slide chapter-dark" id="q03" data-chapter="Q03 · What have you proven?">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#q03" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#q03b" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens</span></a>
+    <a href="#q03c" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ subs</span></a>
+    <a href="#q04" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <span class="qa-tag">Q03 · PROOF · ROOM</span>
+    <h2 class="qa-q">What have you already proven?</h2>
+    <p class="qa-a">Three independent demand signals, each measured in a different medium. The first: a sold-out Ford Theatre pilot in August 2025.</p>
+    <p class="qa-a">In partnership with the LA Philharmonic. Directed by Gina Belafonte. Composed by Derrick Hodge. <strong>Sold out, oversold, curtain held 30 minutes</strong> to accommodate the line outside. On stage: Luis J. Rodriguez (former LA Poet Laureate), Samantha Rios, Dante Basco, Mendeleyev.</p>
+    <p class="qa-a">"They didn't just speak <em>about</em> LA — they spoke <em>as</em> LA." — The Hollywood Times.</p>
+    <div class="qa-stat"><span class="num">1,000+</span><span class="lbl">Tickets sold<br>Sold out</span></div>
+  </div>
+</section>
+
+<!-- Q03B ==================================================== -->
+<section class="slide chapter-dark" id="q03b" data-chapter="Q03b · The album">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#q03" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#q03b" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens</span></a>
+    <a href="#q03c" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ subs</span></a>
+    <a href="#q04" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <span class="qa-tag">Q03 · PROOF · BROADCAST</span>
+    <h2 class="qa-q">…and outside the room?</h2>
+    <p class="qa-a">The album scaled the form outside the theater. Derrick Hodge brought in Jackson Browne (Rock &amp; Roll Hall of Fame), Joy Harjo (3× US Poet Laureate), and Cheech Marin.</p>
+    <p class="qa-a"><strong>30,000+ listens in the first week</strong> — a 30× expansion of the addressable audience via a channel that scales horizontally at essentially zero marginal cost.</p>
+    <div class="qa-stat"><span class="num">30K+</span><span class="lbl">Album listens<br>first week</span></div>
+  </div>
+</section>
+
+<!-- Q03C ==================================================== -->
+<section class="slide chapter-dark" id="q03c" data-chapter="Q03c · The contest">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#q03" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#q03b" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens</span></a>
+    <a href="#q03c" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ subs</span></a>
+    <a href="#q04" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <span class="qa-tag">Q03 · PROOF · CITY</span>
+    <h2 class="qa-q">…and from the city itself?</h2>
+    <p class="qa-a">The contest. We asked one question — <em>"Tell us about your LA"</em> — and accidentally started the largest poetry competition in the country. Partnered with the LA Unified School District and Get Lit – Words Ignite. Judged by Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, and Gina Belafonte.</p>
+    <p class="qa-a"><strong>1,400+ video submissions</strong> from schools, classrooms, community centers across LA. Every one is now an owned, recontactable audience pool for opening night.</p>
+    <div class="qa-stat"><span class="num">1,400+</span><span class="lbl">Contest submissions<br>owned audience</span></div>
+  </div>
+</section>
+
+<!-- Q04 ===================================================== -->
+<section class="slide" id="q04" data-chapter="Q04 · Why won't this overpromise?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q04 · THE FEAR</span>
+    <h2 class="qa-q">Why won't this just be another LA arts project that overpromises and under-delivers?</h2>
+    <p class="qa-a">Fair question. Three things make this different:</p>
+    <ul class="qa-points">
+      <li><strong>The pilot already happened.</strong> Most projects pitch the demand. We measured it. Ford Theatre. Sold out. August 1, 2025. There is a video record.</li>
+      <li><strong>The director has built this exact category before.</strong> Andrew Scoville: <em>Here Lies Love</em> (Broadway), <em>Theater of the Mind</em> (David Byrne), <em>Money Heist: The Experience</em> (Netflix). Not adjacent — the same form, at the same scale.</li>
+      <li><strong>The model breaks even at 61% capacity.</strong> The pilot oversold at 100%+. There is a margin of safety inside the operating model that does not require best-case assumptions.</li>
+    </ul>
+    <p class="qa-a">Our position is not "trust us." It is <strong>"here are the receipts."</strong></p>
+  </div>
+</section>
+
+<!-- Q05 ===================================================== -->
+<section class="slide producers" id="q05" data-chapter="Q05 · Who is making this?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q05 · TEAM</span>
+    <h2 class="qa-q">Who is actually making this?</h2>
+    <p class="qa-a">Nine producers. Five awards. Three direct comparable-show credits between them.</p>
+    <div class="prod-grid">
+      <div class="prod-card highlight"><div class="prod-name">ANDREW SCOVILLE</div><div class="prod-title">DIRECTOR</div><p>Here Lies Love (assoc dir, Broadway). Theater of the Mind (dir, David Byrne). Money Heist: The Experience (dir, Netflix). The category, at the scale.</p></div>
+      <div class="prod-card"><div class="prod-name">DERRICK HODGE</div><div class="prod-title">COMPOSER · 2× GRAMMY</div><p>Composed the Ford pilot. Continues the musical direction.</p></div>
+      <div class="prod-card"><div class="prod-name">DIANE LUBY LANE</div><div class="prod-title">CREATOR</div><p>Founder, Get Lit (200+ schools). Patterson Award. Presidential Lifetime Volunteer.</p></div>
+      <div class="prod-card"><div class="prod-name">SHANE SNOW</div><div class="prod-title">PROD · TONY</div><p>Tony-winning producer + bestselling author + Pulitzer entrant.</p></div>
+      <div class="prod-card"><div class="prod-name">ROB O'NEILL</div><div class="prod-title">PROD · TONY</div><p>Co-producer, The Outsiders (Broadway 2024).</p></div>
+      <div class="prod-card"><div class="prod-name">GINA BELAFONTE</div><div class="prod-title">PILOT DIRECTOR</div><p>Co-founder, Sankofa.org. Award-winning producer/director/activist.</p></div>
+      <div class="prod-card"><div class="prod-name">BRANDON XIV</div><div class="prod-title">LEAD PRODUCER</div><p>SHOWRUNNER co-founder. Film-tech operator.</p></div>
+      <div class="prod-card"><div class="prod-name">MARK CHINAPEN</div><div class="prod-title">GM</div><p>Coachella, Stagecoach, Grammys, Super Bowl-scale ops.</p></div>
+      <div class="prod-card"><div class="prod-name">MONIQUE MITCHELL</div><div class="prod-title">PRODUCER</div><p>$50M California SB 933 for arts education.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Q06 ===================================================== -->
+<section class="slide journey" id="q06" data-chapter="Q06 · What is the show?">
+  <div class="slide-pad journey-head">
+    <span class="qa-tag">Q06 · WHAT WE'RE BUILDING</span>
+    <h2 class="qa-q">What exactly is the show?</h2>
+    <p class="qa-a"><strong>A 90-minute walking immersive that takes 150 guests through seven built environments</strong> — a tour of the real Los Angeles, captured inside a 30,000 sq ft converted studio in the Arts District. No seats until the finale. No proscenium until the proscenium earns it.</p>
+    <p class="qa-a">Each space has its own scenic register, its own cast, its own sound. Below: the seven rooms.</p>
+  </div>
+  <div class="journey-stage">
+    <div class="journey-track" id="journey-track">
+      <article class="j-card" data-step="1"><div class="j-photo" style="background-image:url('assets/photos/red-carpet.jpg')"></div><div class="j-body"><div class="j-num">01</div><h3>HOLLYWOOD BOULEVARD</h3><p>110-ft LED wall. Then it pivots.</p></div></article>
+      <article class="j-card" data-step="2"><div class="j-photo" style="background-image:url('assets/photos/journey-2.jpg')"></div><div class="j-body"><div class="j-num">02</div><h3>BOYLE HEIGHTS</h3><p>Tianguis. Two poets across a generation.</p></div></article>
+      <article class="j-card" data-step="3"><div class="j-photo" style="background-image:url('assets/photos/journey-3.jpg')"></div><div class="j-body"><div class="j-num">03</div><h3>ASIAN ARC</h3><p>Five neighborhoods, one rapper-poet.</p></div></article>
+      <article class="j-card" data-step="4"><div class="j-photo" style="background-image:url('assets/photos/journey-4.jpg')"></div><div class="j-body"><div class="j-num">04</div><h3>BLACK LA</h3><p>Gospel to drum circle, across a century.</p></div></article>
+      <article class="j-card" data-step="5"><div class="j-photo" style="background-image:url('assets/photos/journey-5.jpg')"></div><div class="j-body"><div class="j-num">05</div><h3>FOLK LA</h3><p>The band on the floor.</p></div></article>
+      <article class="j-card" data-step="6"><div class="j-photo" style="background-image:url('assets/photos/journey-6.jpg')"></div><div class="j-body"><div class="j-num">06</div><h3>THE STAGE</h3><p>Only seated room. The finale.</p></div></article>
+      <article class="j-card" data-step="7"><div class="j-photo" style="background-image:url('assets/photos/journey-7.jpg')"></div><div class="j-body"><div class="j-num">07</div><h3>THE REAL LA</h3><p>The wall, made of you.</p></div></article>
+    </div>
+  </div>
+  <div class="journey-controls">
+    <button class="j-btn" id="j-prev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg></button>
+    <div class="j-dots" id="j-dots"></div>
+    <button class="j-btn" id="j-next"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></button>
+  </div>
+</section>
+
+<!-- Q07 ===================================================== -->
+<section class="slide economics" id="q07" data-chapter="Q07 · How do economics work?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q07 · UNIT ECONOMICS</span>
+    <h2 class="qa-q">How does the unit economics work?</h2>
+    <p class="qa-a">12 shows per week. 150 guests per show. 1,800 seats / week. Weighted-average ticket: $90.56 (mix of Community $50, Standard $83, Premium $132, VIP $185).</p>
+    <div class="econ-grid">
+      <div class="econ-cell"><div class="econ-meta">WK GROSS @ 100%</div><div class="econ-num">$163K</div><div class="econ-sub">tickets only</div></div>
+      <div class="econ-cell"><div class="econ-meta">WK OPERATING</div><div class="econ-num">$102K</div><div class="econ-sub">all-in</div></div>
+      <div class="econ-cell"><div class="econ-meta">+ BAR / MERCH</div><div class="econ-num">$27K</div><div class="econ-sub">per-cap</div></div>
+      <div class="econ-cell"><div class="econ-meta">CONTRIBUTION</div><div class="econ-num">$88K</div><div class="econ-sub">100% / wk</div></div>
+      <div class="econ-cell"><div class="econ-meta">BREAKEVEN</div><div class="econ-num">61%</div><div class="econ-sub">~92 / 150 / show</div></div>
+      <div class="econ-cell"><div class="econ-meta">PILOT %</div><div class="econ-num">100%+</div><div class="econ-sub">oversold at Ford</div></div>
+    </div>
+    <p class="qa-a" style="margin-top: 24px;"><strong>The gap between breakeven (61%) and the pilot signal (100%+) is the margin of safety.</strong> The model does not require the pilot's full performance to be profitable.</p>
+  </div>
+</section>
+
+<!-- Q08 ===================================================== -->
+<section class="slide" id="q08" data-chapter="Q08 · What if it doesn't sell?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q08 · DOWNSIDE</span>
+    <h2 class="qa-q">What happens to my money if it doesn't sell?</h2>
+    <p class="qa-a">Honest answer: this is theatrical investment. There is risk of loss. We are not selling around it.</p>
+    <p class="qa-a">What we have done to reduce the downside:</p>
+    <ul class="qa-points">
+      <li><strong>$2.68M of non-recoupable capital</strong> (sponsorship + philanthropy) sits below the investor tier. The first ~30% of any underperformance is absorbed there, not by you.</li>
+      <li><strong>First-position 110% recoupment.</strong> Investors come out before anyone else takes a distribution.</li>
+      <li><strong>61% breakeven, vs. pilot at 100%+.</strong> The model has 39 points of cushion vs. the only real-world data point we have.</li>
+      <li><strong>$405K—$1.37M of net upside from the events business</strong> on dark days, independent of ticket sales. This is a real, comp-based number — six monetizable assets in one building in a market most LA venues have one or two of.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Q09 ===================================================== -->
+<section class="slide additional" id="q09" data-chapter="Q09 · Revenue beyond tickets?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q09 · ADDITIONAL REVENUE</span>
+    <h2 class="qa-q">How does this make money beyond tickets?</h2>
+    <p class="qa-a">The show occupies the venue Thursday–Sunday evenings + weekend afternoons. Monday through Wednesday and weekday daytime — ~3.5 days per week, ~210 day-equivalents across a 60-week run — sit dark. <strong>That's premium real estate.</strong></p>
+    <p class="qa-a">The venue has all six things most LA venues don't:</p>
+    <ul class="qa-points">
+      <li>110-ft permanent LED wall</li>
+      <li>Full bar program (64-ft bar, VIP zone, neon)</li>
+      <li>150-seat proscenium theater</li>
+      <li>Outdoor red-carpet courtyard + marquee</li>
+      <li>30,000 sq ft versatile floor (500+ cocktail-cap)</li>
+      <li>Arts District location</li>
+    </ul>
+    <div class="qa-stat"><span class="num">$1.37M</span><span class="lbl">Aggressive net<br>events upside / run</span></div>
+  </div>
+</section>
+
+<!-- Q10 ===================================================== -->
+<section class="slide opportunity" id="q10" data-chapter="Q10 · Comparables?">
+  <div class="opportunity-bg" style="background-image:url('assets/photos/finale.jpg')"></div>
+  <div class="slide-pad">
+    <span class="qa-tag">Q10 · COMPARABLES</span>
+    <h2 class="qa-q">Where are the comparables and how have they done?</h2>
+    <p class="qa-a">Three categories of comp:</p>
+    <ul class="qa-points">
+      <li><strong>Sleep No More</strong> (Punchdrunk · NYC + Shanghai) — 13+ years, multiple sites, $100M+ estimated lifetime gross. The original walking-immersive benchmark.</li>
+      <li><strong>Meow Wolf</strong> (Santa Fe / Vegas / Denver / Houston / Grapevine) — $300M+ franchise. The strongest replication case in the category.</li>
+      <li><strong>Here Lies Love</strong> (Broadway, 2023–24) and <strong>Money Heist: The Experience</strong> (NYC / LDN / MEX) — proved immersive scales as IP and as franchise. <strong>Our director directed both.</strong></li>
+    </ul>
+    <p class="qa-a">Our model takes the demonstrated playbook and applies it to the largest unfilled market in the category.</p>
+  </div>
+</section>
+
+<!-- Q11 ===================================================== -->
+<section class="slide franchise" id="q11" data-chapter="Q11 · Upside if it works?">
+  <div class="franchise-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <span class="qa-tag">Q11 · UPSIDE</span>
+    <h2 class="qa-q">What's the upside if this works?</h2>
+    <p class="qa-a">Three layers, compounding:</p>
+    <ul class="qa-points">
+      <li><strong>Run extension.</strong> The 14-month opening run has built-in extension optionality through the Olympic close. Sleep No More extended its first run from 18 months to 13+ years.</li>
+      <li><strong>Franchise.</strong> Same architecture, new local cast, new revenue line per city. Chicago → New York → London → others.</li>
+      <li><strong>IP &amp; secondary monetization.</strong> Album / merch / educational programming / film &amp; TV rights / documentary on the build — all proven in the contest phase already.</li>
+    </ul>
+    <div class="fr-grid" style="margin-top: 28px;">
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span class="red">CHICAGO</span></div><p>South Side house to lakefront.</p><div class="fr-foot">FESTIVAL PARTNERSHIPS</div></div>
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span class="red">NEW YORK</span></div><p>Five boroughs, one breath.</p><div class="fr-foot">MUSEUM INSTALLATIONS</div></div>
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span class="red">LONDON</span></div><p>Brixton to Brick Lane.</p><div class="fr-foot">EDUCATIONAL PROGRAMS</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Q12 ===================================================== -->
+<section class="slide" id="q12" data-chapter="Q12 · Real risks?">
+  <div class="slide-pad">
+    <span class="qa-tag">Q12 · RISK</span>
+    <h2 class="qa-q">What are the real risks?</h2>
+    <p class="qa-a">In order of how seriously we take them:</p>
+    <ul class="qa-points">
+      <li><strong>Build/permit timing.</strong> 30,000 sq ft of custom buildout on a fixed opening date is the biggest schedule risk. Mitigation: GM Mark Chinapen has run buildouts for Coachella, Stagecoach, the Grammys; opening date built with two months of contingency before Olympic surge.</li>
+      <li><strong>Cast retention across an 18-month run.</strong> Immersive shows that grind down their performers underdeliver. Mitigation: union scale, swing cast, scoville-style rotational programming used on <em>Here Lies Love</em>.</li>
+      <li><strong>Macro / consumer discretionary.</strong> Ticket price softness in a downturn. Mitigation: tiered pricing structure (Community $50) keeps demand floor high; events business adds a non-ticket revenue line.</li>
+      <li><strong>Concept fit for a national/international audience.</strong> LA-specific story has to land for visitors. Mitigation: the universal frame ("a real city told by its real people") is built into the concept, and the pilot drew critical acclaim from non-LA names (Jodie Foster, Alex Hedison).</li>
+    </ul>
+    <p class="qa-a">If you want the full risk register, ask — we'll send the DD pack.</p>
+  </div>
+</section>
+
+<!-- Q13 ===================================================== -->
+<section class="slide global" id="q13" data-chapter="Q13 · Why is this a 2026 decision?">
+  <div class="global-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <span class="qa-tag">Q13 · TIMING (B)</span>
+    <h2 class="qa-q">Why does this decision have to happen in 2026?</h2>
+    <p class="qa-a">Three lockstep constraints:</p>
+    <ul class="qa-points">
+      <li><strong>Round one closes Q3 2026.</strong> The early capital we need for venue lease, design development, and advance marketing has a window.</li>
+      <li><strong>Buildout schedule.</strong> 30,000 sq ft of custom immersive buildout takes roughly 14 months from green-light to doors. June 2027 open requires us starting now.</li>
+      <li><strong>The Olympic window.</strong> The 2028 Summer Olympics is the largest scheduled cultural-attention event in modern LA. A show that opens June 2027 has 12 months to find its rhythm before the surge. A show that opens later misses it.</li>
+    </ul>
+    <p class="qa-a">Round one is also the round with the best terms — earliest in, first into the cap stack.</p>
+  </div>
+</section>
+
+<!-- Q14 ===================================================== -->
+<section class="slide rounds" id="q14" data-chapter="Q14 · What do you need first?">
+  <div class="slide-pad rounds-head">
+    <span class="qa-tag">Q14 · NEXT STEP</span>
+    <h2 class="qa-q">What do you need from me, when, and what happens first?</h2>
+    <p class="qa-a">For now: <strong>an indication of interest at $50K minimum, Class A LP units, Round One ($1M tranche, closing Q3 2026).</strong> First-position 110% recoupment, 50/50 net profit post-recoup.</p>
+    <p class="qa-a">If you reach out, we send: the full DD pack, the operating model with sensitivity tabs, the term sheet, references from the pilot. We'll happily get on a call with the team.</p>
+    <div class="rounds-tabs" id="rounds-tabs">
+      <button class="r-tab active" data-round="1"><span class="r-num">01</span><span class="r-meta">ROUND ONE · OPEN NOW</span><span class="r-amt">$1M</span><span class="r-when">closes Q3 2026</span></button>
+      <button class="r-tab" data-round="2"><span class="r-num">02</span><span class="r-meta">ROUND TWO</span><span class="r-amt">$6.5M</span><span class="r-when">opens Jan 2027</span></button>
+      <button class="r-tab" data-round="3"><span class="r-num">03</span><span class="r-meta">ROUND THREE</span><span class="r-amt">$1.5M</span><span class="r-when">opens Jun 2027</span></button>
+    </div>
+  </div>
+  <div class="round-panels">
+    <div class="round-panel active" data-round="1">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND ONE · OPEN NOW</div>
+        <div class="rp-amt">$1M</div>
+        <div class="rp-when">closes Q3 2026</div>
+        <p>The smallest round. Best terms. Earliest in. The dollars that get design out of the studio and into the room.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position · 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST-RECOUP</div><div class="rp-v">50 / 50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Venue · production · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="2">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND TWO · PRODUCTION</div>
+        <div class="rp-amt">$6.5M</div>
+        <div class="rp-when">opens Jan 2027</div>
+        <p>The production round: seven built environments, full creative team, technical install.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position · 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST-RECOUP</div><div class="rp-v">50 / 50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Venue · production · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="3">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND THREE · LAUNCH</div>
+        <div class="rp-amt">$1.5M</div>
+        <div class="rp-when">opens Jun 2027</div>
+        <p>Launch marketing + operating reserve through the first months of the run.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position · 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST-RECOUP</div><div class="rp-v">50 / 50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Marketing · reserve · contingency</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run · then franchise</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Q15 ===================================================== -->
+<section class="slide reserve" id="q15" data-chapter="Q15 · How do I learn more?">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad">
+    <span class="qa-tag">Q15 · MORE DETAIL</span>
+    <h2 class="qa-q">How do I learn more, see the room, talk to the team?</h2>
+    <p class="qa-a">Easiest path: email <strong>press@ifiawaken.la</strong>. Mention you came from the FAQ, and we'll send the DD pack and propose a time. If you'd like to walk the proposed venue site in person, we'll arrange it.</p>
+    <div class="reserve-grid" style="margin-top: 32px;">
+      <div class="reserve-col"><div class="rc-h">REACH OUT</div><a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a><div class="rc-sub">ifiawaken.la · @ifiawaken</div></div>
+      <div class="reserve-col"><div class="rc-h">ROUND ONE CLOSES</div><div class="rc-big">Q3 2026</div><div class="rc-sub"><em>Doors open · June 2027</em></div></div>
+    </div>
+    <div class="reserve-foot"><span>If I Awaken in Los Angeles · v8 The FAQ</span><span>Conversational pitch · pitch 2026</span></div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script>
+  // Build question list sidebar
+  (function () {
+    const list = document.getElementById('q-list');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    list.innerHTML = '<div class="q-h">QUESTIONS · 15</div>' +
+      slides.map((s, i) =>
+        '<div class="q-row" data-target="' + s.id + '">' +
+          '<span class="qn">' + String(i + 1).padStart(2, '0') + '</span>' +
+          '<span>' + s.dataset.chapter.replace(/^Q\d+[a-z]?\s·\s/, '') + '</span>' +
+        '</div>'
+      ).join('') +
+      '<div class="q-foot">Don\'t see your question?<br><a href="mailto:press@ifiawaken.la">press@ifiawaken.la</a></div>';
+
+    list.querySelectorAll('.q-row').forEach(r => {
+      r.addEventListener('click', () => { location.hash = '#' + r.dataset.target; });
+    });
+    function sync() {
+      const id = location.hash.replace('#', '') || slides[0].id;
+      list.querySelectorAll('.q-row').forEach(r => r.classList.toggle('current', r.dataset.target === id));
+    }
+    window.addEventListener('hashchange', sync);
+    const chapterLabel = document.getElementById('chapter-label');
+    if (chapterLabel) new MutationObserver(sync).observe(chapterLabel, { childList: true, characterData: true, subtree: true });
+    setTimeout(sync, 100);
+
+    // Mobile: tap header to expand
+    const head = list.querySelector('.q-h');
+    head.addEventListener('click', () => list.classList.toggle('open'));
+  })();
+</script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>

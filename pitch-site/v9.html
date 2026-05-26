@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>If I Awaken in Los Angeles — Pitch 2026 · v9 The Triptych</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shared/switcher.css">
+
+<style>
+  /* ============================================================ */
+  /* v9 — THE TRIPTYCH                                              */
+  /* Three acts. Each act has a color signature.                    */
+  /* ACT I  — The Invitation (red signature)                        */
+  /* ACT II — The Proof (gold signature)                            */
+  /* ACT III — The Opportunity (white/cream signature)              */
+  /* ============================================================ */
+
+  body { background: #0a0a0a; }
+
+  /* Act color tokens */
+  body { --act: var(--red); --act-deep: var(--red-deep); }
+  body[data-act="1"] { --act: #D63A3F; --act-deep: #B82228; }
+  body[data-act="2"] { --act: #C7A86A; --act-deep: #9A7E48; }
+  body[data-act="3"] { --act: #F2EDE2; --act-deep: #C8C2B6; }
+
+  /* Top act bar — shows current act */
+  #act-bar {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    background: rgba(8, 8, 8, 0.9);
+    border: 1px solid rgba(242, 237, 226, 0.2);
+    border-radius: 999px;
+    padding: 3px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+  #act-bar .act-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: rgba(242, 237, 226, 0.55);
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+  }
+  #act-bar .act-pill .act-num { font-weight: 700; }
+  #act-bar .act-pill:hover { color: var(--on-dark); }
+  #act-bar .act-pill.current {
+    background: var(--act);
+    color: #0a0a0a;
+  }
+  body[data-act="3"] #act-bar .act-pill.current { color: #0a0a0a; }
+
+  /* Hide v1's left rail; act bar is the nav */
+  #rail { display: none; }
+
+  /* Act break slides */
+  .act-break {
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+  }
+  .act-break::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, var(--act) 0%, transparent 60%);
+    opacity: 0.12;
+  }
+  .act-break .ab-content {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+  }
+  .act-break .ab-roman {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(140px, 22vw, 280px);
+    line-height: 0.85;
+    color: var(--act);
+    letter-spacing: -0.04em;
+  }
+  .act-break .ab-tag {
+    font-family: var(--f-mono);
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    color: rgba(242, 237, 226, 0.7);
+    margin-top: 32px;
+    text-transform: uppercase;
+  }
+  .act-break .ab-name {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 64px);
+    color: var(--on-dark);
+    margin-top: 24px;
+    letter-spacing: -0.01em;
+  }
+  .act-break .ab-name .accent { color: var(--act); }
+  .act-break .ab-blurb {
+    font-family: var(--f-body);
+    font-size: 17px;
+    color: rgba(242, 237, 226, 0.7);
+    margin-top: 28px;
+    max-width: 56ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  /* Scene markers within an act */
+  .scene-h {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 20px;
+    padding-bottom: 14px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--act);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(242, 237, 226, 0.65);
+  }
+  .scene-h .scene-num { color: var(--act); font-weight: 600; }
+  .scene-h .scene-name { color: var(--act); font-weight: 600; }
+  .scene-h .scene-meta { color: rgba(242, 237, 226, 0.4); }
+
+  .scene-headline {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    color: var(--on-dark);
+    margin-bottom: 24px;
+    max-width: 28ch;
+  }
+  .scene-headline .accent { color: var(--act); }
+
+  .scene-body {
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(242, 237, 226, 0.82);
+    margin-bottom: 14px;
+    max-width: 60ch;
+  }
+  .scene-body strong { color: var(--on-dark); }
+  .scene-body em { color: var(--act); font-style: italic; }
+</style>
+</head>
+<body data-version="v9" data-act="1">
+
+<div id="progress"><div id="progress-fill"></div></div>
+<nav id="rail" aria-label="Chapter navigation"></nav>
+
+<div id="act-bar" role="tablist" aria-label="Acts">
+  <div class="act-pill current" data-act="1" data-target="act1"><span class="act-num">I</span> THE INVITATION</div>
+  <div class="act-pill" data-act="2" data-target="act2"><span class="act-num">II</span> THE PROOF</div>
+  <div class="act-pill" data-act="3" data-target="act3"><span class="act-num">III</span> THE OPPORTUNITY</div>
+</div>
+
+<div id="chrome-bottom">
+  <div class="chrome-left">
+    <button id="map-btn" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h12M1 7h12M1 11h12"/></svg><span>SCENES</span></button>
+    <span class="chrome-divider"></span>
+    <span id="chapter-label" class="chrome-text">Act I · Prologue</span>
+  </div>
+  <div class="chrome-right">
+    <button id="prev-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l-4 4 4 4"/></svg></button>
+    <span id="chapter-counter" class="chrome-text">SCENE 01 / 15</span>
+    <button id="next-btn" class="chrome-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg></button>
+  </div>
+</div>
+
+<div id="map-overlay" aria-hidden="true">
+  <div class="map-header">
+    <div class="map-title"><span class="map-eyebrow">v9 The Triptych · Three Acts</span><h2>Scene Map</h2></div>
+    <button id="map-close" class="chrome-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg><span>CLOSE</span></button>
+  </div>
+  <div id="map-grid"></div>
+  <div class="map-footer"><span>Three acts: <kbd>1</kbd> Invitation · <kbd>2</kbd> Proof · <kbd>3</kbd> Opportunity</span></div>
+</div>
+
+<main id="deck">
+
+<!-- ============================================================ -->
+<!-- ACT I · THE INVITATION                                       -->
+<!-- ============================================================ -->
+
+<section class="slide act-break" id="act1" data-chapter="Act I · The Invitation" data-act="1">
+  <div class="ab-content">
+    <div class="ab-tag">ACT ONE</div>
+    <div class="ab-roman">I</div>
+    <div class="ab-name">The <span class="accent">Invitation</span></div>
+    <p class="ab-blurb">The premise. The city. The window. Three years the world will look at Los Angeles, and an immersive theatrical experience built for that moment.</p>
+  </div>
+</section>
+
+<!-- SCENE I.1 · PREMISE -->
+<section class="slide" id="s1-premise" data-chapter="Scene I.1 · The Premise" data-act="1">
+  <div class="slide-pad">
+    <div class="scene-h">
+      <span class="scene-num">I.1</span>
+      <span class="scene-name">THE PREMISE</span>
+      <span class="scene-meta">RAISE · $8.97M · OPEN · JUNE 2027</span>
+    </div>
+    <h2 class="scene-headline"><span class="accent">An iconic American city</span> without an iconic show about itself.</h2>
+    <p class="scene-body">Los Angeles is the largest entertainment market in the world without an iconic immersive show about itself. New York has <em>Sleep No More</em>. Vegas has Cirque. Santa Fe has <em>Meow Wolf</em>. LA — 18M metro, 50M+ annual visitors — has nothing in the slot.</p>
+    <p class="scene-body"><strong>If I Awaken in Los Angeles</strong> is the show built to fill it: a 90-minute walking immersive that puts 150 guests inside the actual neighborhoods, with the actual people, with the actual music. 30,000 sq ft in the Arts District. Opening June 2027.</p>
+  </div>
+</section>
+
+<!-- SCENE I.2 · WHY NOW (TIMING) -->
+<section class="slide global" id="s2-timing" data-chapter="Scene I.2 · Why Now" data-act="1">
+  <div class="global-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad two-col">
+    <div class="left">
+      <div class="scene-h">
+        <span class="scene-num">I.2</span>
+        <span class="scene-name">WHY NOW</span>
+        <span class="scene-meta">2026 · 2027 · 2028</span>
+      </div>
+      <h2 class="scene-headline"><span class="accent">The world is about to look at LA.</span> Three years in a row.</h2>
+      <p class="scene-body">FIFA World Cup '26. Super Bowl LXI '27. The 2028 Summer Olympics &amp; Paralympics. <strong>Tens of millions of visitors. Tens of billions of media impressions.</strong></p>
+      <p class="scene-body">We open <em>June 2027</em> — a full year of run-time before the Olympic surge arrives. The window is structural, scheduled, and once-in-a-generation.</p>
+    </div>
+    <div class="right">
+      <div class="event-list">
+        <div class="event"><span class="year">'26</span><span class="ev">FIFA WORLD CUP</span></div>
+        <div class="event"><span class="year">'27</span><span class="ev">SUPER BOWL LXI</span></div>
+        <div class="event"><span class="year">'28</span><span class="ev">SUMMER OLYMPICS</span></div>
+        <div class="event"><span class="year">'28</span><span class="ev">PARALYMPIC GAMES</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE I.3 · THE INVITATION (terms preview) -->
+<section class="slide" id="s3-terms" data-chapter="Scene I.3 · The Invitation" data-act="1">
+  <div class="slide-pad">
+    <div class="scene-h">
+      <span class="scene-num">I.3</span>
+      <span class="scene-name">THE INVITATION</span>
+      <span class="scene-meta">R1 · $1M · CLOSES Q3 2026</span>
+    </div>
+    <h2 class="scene-headline"><em>You are being invited</em> into round one.</h2>
+    <p class="scene-body">$8.97M total raise. Three rounds. Round one is the smallest, earliest, and best-termed: <strong>$1M, opening June 2026, closing Q3 2026.</strong> Class A LP units, $50K minimum.</p>
+    <p class="scene-body"><strong>First-position recoupment at 110% of invested capital.</strong> Then 50/50 net profit indefinitely — across the LA run and every franchise chapter that follows.</p>
+    <p class="scene-body">$2.68M of non-recoupable sponsorship and philanthropy sits below the investor tier, <em>de-risking your position by ~45%.</em></p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ACT II · THE PROOF                                           -->
+<!-- ============================================================ -->
+
+<section class="slide act-break" id="act2" data-chapter="Act II · The Proof" data-act="2">
+  <div class="ab-content">
+    <div class="ab-tag">ACT TWO</div>
+    <div class="ab-roman">II</div>
+    <div class="ab-name">The <span class="accent">Proof</span></div>
+    <p class="ab-blurb">The pilot. The album. The contest. The team. The model. Every line of this act is supported by a measurement that already happened.</p>
+  </div>
+</section>
+
+<!-- SCENE II.1 · PILOT -->
+<section class="slide chapter-dark" id="s4-pilot" data-chapter="Scene II.1 · The Pilot" data-act="2">
+  <div class="timeline" data-step="1">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#s4-pilot" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#s5-album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#s6-contest" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#s7-press" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="scene-h">
+      <span class="scene-num">II.1</span>
+      <span class="scene-name">THE PILOT</span>
+      <span class="scene-meta">FORD THEATRE · AUG 1, 2025</span>
+    </div>
+    <h2 class="scene-headline"><span class="accent">Sold out.</span> Oversold. Curtain held thirty minutes.</h2>
+    <p class="scene-body">In partnership with the LA Philharmonic. Directed by Gina Belafonte. Composed by Derrick Hodge. <strong>Luis J. Rodriguez</strong> (former LA Poet Laureate). <strong>Samantha Rios</strong> (current LA Youth Poet Laureate). <strong>Dante Basco. Mendeleyev.</strong></p>
+    <div class="bigstat" style="margin-top: 22px;">
+      <span class="num" style="color: var(--act);">1,000<span class="plus">+</span></span>
+      <span class="lbl">Tickets sold · sold out</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE II.2 · ALBUM -->
+<section class="slide chapter-dark" id="s5-album" data-chapter="Scene II.2 · The Album" data-act="2">
+  <div class="timeline" data-step="2">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#s4-pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#s5-album" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#s6-contest" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#s7-press" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="scene-h">
+      <span class="scene-num">II.2</span>
+      <span class="scene-name">THE ALBUM</span>
+      <span class="scene-meta">OCT 2025 · WK 1</span>
+    </div>
+    <h2 class="scene-headline">An order-of-magnitude expansion <span class="accent">at zero marketing spend.</span></h2>
+    <p class="scene-body">Two-time Grammy winner Derrick Hodge pulled in <strong>Jackson Browne</strong> (R&amp;R Hall of Fame), <strong>Joy Harjo</strong> (3× US Poet Laureate), and <strong>Cheech Marin.</strong></p>
+    <div class="bigstat" style="margin-top: 22px;">
+      <span class="num" style="color: var(--act);">30K<span class="plus">+</span></span>
+      <span class="lbl">Listens · first week</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE II.3 · CONTEST -->
+<section class="slide chapter-dark" id="s6-contest" data-chapter="Scene II.3 · The Contest" data-act="2">
+  <div class="timeline" data-step="3">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#s4-pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#s5-album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#s6-contest" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#s7-press" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="scene-h">
+      <span class="scene-num">II.3</span>
+      <span class="scene-name">THE CONTEST</span>
+      <span class="scene-meta">JAN 2026 · LARGEST IN US</span>
+    </div>
+    <h2 class="scene-headline">We asked one question. <span class="accent">The city wrote back.</span></h2>
+    <p class="scene-body"><em>"Tell us about your LA."</em> Partnered with the Los Angeles Unified School District and Get Lit – Words Ignite. Judged by Aloe Blacc, José Olivarez, Olivia Gatwood, Safia Elhillo, Chen Chen, and Gina Belafonte.</p>
+    <div class="bigstat" style="margin-top: 22px;">
+      <span class="num" style="color: var(--act);">1,400<span class="plus">+</span></span>
+      <span class="lbl">Video submissions · owned audience</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE II.4 · CRITICS -->
+<section class="slide chapter-dark show-wall" id="s7-press" data-chapter="Scene II.4 · The Verdict" data-act="2">
+  <div class="timeline" data-step="4">
+    <div class="tl-line"><div class="tl-fill"></div></div>
+    <a href="#s4-pilot" class="tl-step"><span class="tl-dot"></span><span class="tl-when">AUG 2025</span><span class="tl-name">PILOT</span><span class="tl-stat">1,000+ tickets</span></a>
+    <a href="#s5-album" class="tl-step"><span class="tl-dot"></span><span class="tl-when">OCT 2025</span><span class="tl-name">ALBUM</span><span class="tl-stat">30K listens · wk one</span></a>
+    <a href="#s6-contest" class="tl-step"><span class="tl-dot"></span><span class="tl-when">JAN 2026</span><span class="tl-name">CONTEST</span><span class="tl-stat">1,400+ submissions</span></a>
+    <a href="#s7-press" class="tl-step active"><span class="tl-dot"></span><span class="tl-when">JUN 2027</span><span class="tl-name">OPEN</span><span class="tl-stat">18-mo run</span></a>
+  </div>
+  <div class="show-bg" style="background-image:url('assets/photos/finale.jpg')"></div>
+  <div class="slide-pad" style="margin-top: 64px;">
+    <div class="scene-h">
+      <span class="scene-num">II.4</span>
+      <span class="scene-name">THE VERDICT</span>
+      <span class="scene-meta">PRESS · PEERS · CRITICS</span>
+    </div>
+    <h2 class="scene-headline"><em>What could LA need next…?</em></h2>
+    <div class="quote-grid">
+      <blockquote><p><span style="color: var(--act);">A rich, moving experience.</span> The poetry, dance, and film came together beautifully.</p><cite>— Jodie Foster &amp; Alex Hedison</cite></blockquote>
+      <blockquote><p><em>They didn't just speak about LA — they spoke as LA.</em></p><cite>— The Hollywood Times</cite></blockquote>
+      <blockquote><p><span style="color: var(--act);">Brilliant storytelling.</span> A groundbreaking approach. <span style="color: var(--act);">This show changes everything.</span></p><cite>— Aloe Blacc</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE II.5 · TEAM -->
+<section class="slide producers" id="s8-team" data-chapter="Scene II.5 · The Team" data-act="2">
+  <div class="slide-pad">
+    <div class="scene-h">
+      <span class="scene-num">II.5</span>
+      <span class="scene-name">THE TEAM</span>
+      <span class="scene-meta">9 PRODUCERS · 5 AWARDS</span>
+    </div>
+    <h2 class="scene-headline">The team has built every adjacent category. <span class="accent">At scale.</span></h2>
+    <div class="prod-grid">
+      <div class="prod-card highlight"><div class="prod-name">ANDREW SCOVILLE</div><div class="prod-title">DIRECTOR</div><p>Here Lies Love. Theater of the Mind. Money Heist: The Experience. The exact category, the exact scale.</p></div>
+      <div class="prod-card"><div class="prod-name">DERRICK HODGE</div><div class="prod-title">COMPOSER · 2× GRAMMY</div><p>Wrote the pilot. Continues the show's musical language.</p></div>
+      <div class="prod-card"><div class="prod-name">DIANE LUBY LANE</div><div class="prod-title">CREATOR</div><p>Founder, Get Lit (200+ schools). Patterson Award.</p></div>
+      <div class="prod-card"><div class="prod-name">SHANE SNOW</div><div class="prod-title">PROD · TONY</div><p>Tony-winning producer. Pulitzer entrant.</p></div>
+      <div class="prod-card"><div class="prod-name">ROB O'NEILL</div><div class="prod-title">PROD · TONY</div><p>The Outsiders (Broadway 2024).</p></div>
+      <div class="prod-card"><div class="prod-name">GINA BELAFONTE</div><div class="prod-title">DIRECTED THE PILOT</div><p>Sankofa.org. Producer/director/activist.</p></div>
+      <div class="prod-card"><div class="prod-name">BRANDON XIV</div><div class="prod-title">LEAD PRODUCER</div><p>SHOWRUNNER co-founder.</p></div>
+      <div class="prod-card"><div class="prod-name">MARK CHINAPEN</div><div class="prod-title">GENERAL MANAGER</div><p>Super Bowl-scale ops.</p></div>
+      <div class="prod-card"><div class="prod-name">MONIQUE MITCHELL</div><div class="prod-title">PRODUCER</div><p>$50M California SB 933 for arts ed.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE II.6 · THE SHOW (journey) -->
+<section class="slide journey" id="s9-show" data-chapter="Scene II.6 · The Show" data-act="2">
+  <div class="slide-pad journey-head">
+    <div class="scene-h">
+      <span class="scene-num">II.6</span>
+      <span class="scene-name">THE SHOW</span>
+      <span class="scene-meta">7 ROOMS · 100 MIN · 150 GUESTS</span>
+    </div>
+    <h2 class="scene-headline" style="max-width: 36ch;"><em>Seven neighborhoods, one continuous walk.</em></h2>
+  </div>
+  <div class="journey-stage">
+    <div class="journey-track" id="journey-track">
+      <article class="j-card" data-step="1"><div class="j-photo" style="background-image:url('assets/photos/red-carpet.jpg')"></div><div class="j-body"><div class="j-num">01</div><h3>HOLLYWOOD BOULEVARD</h3><p>110-ft LED wall. Then it pivots.</p></div></article>
+      <article class="j-card" data-step="2"><div class="j-photo" style="background-image:url('assets/photos/journey-2.jpg')"></div><div class="j-body"><div class="j-num">02</div><h3>BOYLE HEIGHTS</h3><p>Tianguis. Two poets across a generation.</p></div></article>
+      <article class="j-card" data-step="3"><div class="j-photo" style="background-image:url('assets/photos/journey-3.jpg')"></div><div class="j-body"><div class="j-num">03</div><h3>ASIAN ARC</h3><p>Five neighborhoods, one rapper-poet.</p></div></article>
+      <article class="j-card" data-step="4"><div class="j-photo" style="background-image:url('assets/photos/journey-4.jpg')"></div><div class="j-body"><div class="j-num">04</div><h3>BLACK LA</h3><p>Gospel to drum circle, across a century.</p></div></article>
+      <article class="j-card" data-step="5"><div class="j-photo" style="background-image:url('assets/photos/journey-5.jpg')"></div><div class="j-body"><div class="j-num">05</div><h3>FOLK LA</h3><p>The band on the floor.</p></div></article>
+      <article class="j-card" data-step="6"><div class="j-photo" style="background-image:url('assets/photos/journey-6.jpg')"></div><div class="j-body"><div class="j-num">06</div><h3>THE STAGE</h3><p>Only seated room. The finale.</p></div></article>
+      <article class="j-card" data-step="7"><div class="j-photo" style="background-image:url('assets/photos/journey-7.jpg')"></div><div class="j-body"><div class="j-num">07</div><h3>THE REAL LA</h3><p>The wall, made of the audience.</p></div></article>
+    </div>
+  </div>
+  <div class="journey-controls">
+    <button class="j-btn" id="j-prev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg></button>
+    <div class="j-dots" id="j-dots"></div>
+    <button class="j-btn" id="j-next"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></button>
+  </div>
+</section>
+
+<!-- SCENE II.7 · ECONOMICS -->
+<section class="slide economics" id="s10-econ" data-chapter="Scene II.7 · The Model" data-act="2">
+  <div class="slide-pad">
+    <div class="scene-h">
+      <span class="scene-num">II.7</span>
+      <span class="scene-name">THE MODEL</span>
+      <span class="scene-meta">61% BREAKEVEN · 100%+ PILOT</span>
+    </div>
+    <h2 class="scene-headline">Breakeven at <span class="accent">61%.</span> Pilot oversold at 100%+.</h2>
+    <div class="econ-grid">
+      <div class="econ-cell"><div class="econ-meta">WK TICKET GROSS</div><div class="econ-num" style="color: var(--act);">$163K</div><div class="econ-sub">1,800 seats · 100%</div></div>
+      <div class="econ-cell"><div class="econ-meta">WK OPERATING</div><div class="econ-num" style="color: var(--act);">$102K</div><div class="econ-sub">All-in</div></div>
+      <div class="econ-cell"><div class="econ-meta">+ BAR / MERCH</div><div class="econ-num" style="color: var(--act);">$27K</div><div class="econ-sub">Per-cap</div></div>
+      <div class="econ-cell"><div class="econ-meta">WK CONTRIBUTION</div><div class="econ-num" style="color: var(--act);">$88K</div><div class="econ-sub">100% / wk</div></div>
+      <div class="econ-cell"><div class="econ-meta">BREAKEVEN</div><div class="econ-num" style="color: var(--act);">61%</div><div class="econ-sub">~92 / 150 / show</div></div>
+      <div class="econ-cell"><div class="econ-meta">EVENTS UPSIDE</div><div class="econ-num" style="color: var(--act);">$1.37M</div><div class="econ-sub">Aggressive net · 65%</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ACT III · THE OPPORTUNITY                                    -->
+<!-- ============================================================ -->
+
+<section class="slide act-break" id="act3" data-chapter="Act III · The Opportunity" data-act="3">
+  <div class="ab-content">
+    <div class="ab-tag">ACT THREE</div>
+    <div class="ab-roman">III</div>
+    <div class="ab-name">The <span class="accent">Opportunity</span></div>
+    <p class="ab-blurb">The terms. The franchise. The next step. What is being offered, to whom, and when.</p>
+  </div>
+</section>
+
+<!-- SCENE III.1 · ROUNDS -->
+<section class="slide rounds" id="s11-rounds" data-chapter="Scene III.1 · The Ask" data-act="3">
+  <div class="slide-pad rounds-head">
+    <div class="scene-h">
+      <span class="scene-num">III.1</span>
+      <span class="scene-name">THE ASK</span>
+      <span class="scene-meta">3 ROUNDS · $8.97M</span>
+    </div>
+    <h2 class="scene-headline">$8.97M total. <span class="accent">Three rounds.</span></h2>
+    <div class="rounds-tabs" id="rounds-tabs">
+      <button class="r-tab active" data-round="1"><span class="r-num">01</span><span class="r-meta">ROUND ONE</span><span class="r-amt">$1M</span><span class="r-when">opening June 1, 2026</span></button>
+      <button class="r-tab" data-round="2"><span class="r-num">02</span><span class="r-meta">ROUND TWO</span><span class="r-amt">$6.5M</span><span class="r-when">opening January 1, 2027</span></button>
+      <button class="r-tab" data-round="3"><span class="r-num">03</span><span class="r-meta">ROUND THREE</span><span class="r-amt">$1.5M</span><span class="r-when">opening June 1, 2027</span></button>
+    </div>
+  </div>
+  <div class="round-panels">
+    <div class="round-panel active" data-round="1">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND ONE · BUILD-OUT &amp; OPENING</div>
+        <div class="rp-amt">$1M</div>
+        <div class="rp-when">opening June 1, 2026</div>
+        <p>Earliest capital. Best terms.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST</div><div class="rp-v">50/50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Venue · production · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="2">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND TWO · PRODUCTION</div>
+        <div class="rp-amt">$6.5M</div>
+        <div class="rp-when">opening January 1, 2027</div>
+        <p>Seven built environments, full creative team.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST</div><div class="rp-v">50/50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Venue · production · marketing · reserve</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run</div></div>
+      </div>
+    </div>
+    <div class="round-panel" data-round="3">
+      <div class="rp-left">
+        <div class="rp-eyebrow">ROUND THREE · LAUNCH</div>
+        <div class="rp-amt">$1.5M</div>
+        <div class="rp-when">opening June 1, 2027</div>
+        <p>Launch marketing + operating reserve.</p>
+      </div>
+      <div class="rp-right">
+        <div class="rp-row"><div class="rp-k">CLASS</div><div class="rp-v">Class A LP · $50K min</div></div>
+        <div class="rp-row"><div class="rp-k">RECOUP</div><div class="rp-v">First-position 110%</div></div>
+        <div class="rp-row"><div class="rp-k">POST</div><div class="rp-v">50/50 net profit</div></div>
+        <div class="rp-row"><div class="rp-k">USE</div><div class="rp-v">Marketing · reserve · contingency</div></div>
+        <div class="rp-row"><div class="rp-k">TIMELINE</div><div class="rp-v">Open June 2027 · 18-mo run</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE III.2 · FRANCHISE -->
+<section class="slide franchise" id="s12-franchise" data-chapter="Scene III.2 · The Franchise" data-act="3">
+  <div class="franchise-bg" style="background-image:url('assets/photos/stage.jpg')"></div>
+  <div class="slide-pad">
+    <div class="scene-h">
+      <span class="scene-num">III.2</span>
+      <span class="scene-name">THE FRANCHISE</span>
+      <span class="scene-meta">CHAPTER ONE OF MANY</span>
+    </div>
+    <h2 class="scene-headline" style="max-width: 32ch;"><em>If I Awaken</em> in <span class="accent">every city.</span></h2>
+    <p class="scene-body">The form is honest: tell the truth about a place through the people who live there. That principle scales. LA is chapter one — same architecture, new local cast, new revenue line per city.</p>
+    <div class="fr-grid">
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span style="color: var(--act);">CHICAGO</span></div><p>South Side house to lakefront.</p><div class="fr-foot">FESTIVAL PARTNERSHIPS</div></div>
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span style="color: var(--act);">NEW YORK</span></div><p>Five boroughs, one breath.</p><div class="fr-foot">MUSEUM INSTALLATIONS</div></div>
+      <div class="fr-card"><div class="fr-title">IF I AWAKEN IN<br><span style="color: var(--act);">LONDON</span></div><p>Brixton to Brick Lane, every postcode a song.</p><div class="fr-foot">EDUCATIONAL PROGRAMS</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE III.3 · CLOSE -->
+<section class="slide reserve" id="s13-close" data-chapter="Scene III.3 · The Curtain" data-act="3">
+  <div class="reserve-bg" style="background-image:url('assets/photos/crowd.jpg')"></div>
+  <div class="slide-pad">
+    <div class="scene-h">
+      <span class="scene-num">III.3</span>
+      <span class="scene-name">THE CURTAIN</span>
+      <span class="scene-meta">R1 CLOSES Q3 2026</span>
+    </div>
+    <h2 class="reserve-h">Be part of<br><span class="huge">the <em class="red">awakening.</em></span></h2>
+    <div class="reserve-grid">
+      <div class="reserve-col"><div class="rc-h">TO RESERVE OR LEARN MORE</div><a class="rc-mail" href="mailto:press@ifiawaken.la">press@ifiawaken.la</a><div class="rc-sub">ifiawaken.la · @ifiawaken</div></div>
+      <div class="reserve-col"><div class="rc-h">ROUND ONE CLOSES</div><div class="rc-big">Q3 2026</div><div class="rc-sub"><em>Doors open · June 2027</em></div></div>
+    </div>
+    <div class="reserve-foot"><span>If I Awaken in Los Angeles · v9 The Triptych</span><span>Three acts · pitch 2026</span></div>
+  </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+<script>
+  // Act bar sync
+  (function () {
+    const bar = document.getElementById('act-bar');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    bar.querySelectorAll('.act-pill').forEach(p => {
+      p.addEventListener('click', () => {
+        location.hash = '#' + p.dataset.target;
+      });
+    });
+    function sync() {
+      const id = location.hash.replace('#', '') || slides[0].id;
+      const slide = document.getElementById(id);
+      const act = (slide && slide.dataset.act) || '1';
+      document.body.setAttribute('data-act', act);
+      bar.querySelectorAll('.act-pill').forEach(p => {
+        p.classList.toggle('current', p.dataset.act === act);
+      });
+    }
+    window.addEventListener('hashchange', sync);
+    const chapterLabel = document.getElementById('chapter-label');
+    if (chapterLabel) new MutationObserver(sync).observe(chapterLabel, { childList: true, characterData: true, subtree: true });
+    setTimeout(sync, 100);
+
+    // Keys 1/2/3 jump to acts
+    document.addEventListener('keydown', (e) => {
+      const tag = e.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (e.key === '1') { location.hash = '#act1'; }
+      if (e.key === '2') { location.hash = '#act2'; }
+      if (e.key === '3') { location.hash = '#act3'; }
+    });
+  })();
+</script>
+<script src="shared/switcher.js"></script>
+</body>
+</html>
