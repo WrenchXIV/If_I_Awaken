@@ -127,13 +127,13 @@ A shared discreet bottom-right pill loads on every version (`shared/switcher.js`
 
 Live (once GitHub Pages is on `main`):
 
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/` — v1 (the Tour)
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v2.html` — Cold Open
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v3.html` — The Memo
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v4.html` — Hero's Journey
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v5.html` — Two-Track
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v6.html` — Walking Tour
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v7.html` — The Receipts
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v8.html` — The FAQ
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v9.html` — The Triptych
-- `wrenchxiv.github.io/If_I_Awaken/pitch-site/v10.html` — The Whisper
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/` — v1 (the Tour)
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v2.html` — Cold Open
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v3.html` — The Memo
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v4.html` — Hero's Journey
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v5.html` — Two-Track
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v6.html` — Walking Tour
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v7.html` — The Receipts
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v8.html` — The FAQ
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v9.html` — The Triptych
+- `wrenchxiv.github.io/If_I_Awaken/pitch-draft/v10.html` — The Whisper

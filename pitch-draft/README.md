@@ -43,13 +43,16 @@ A cinematic pitch site for the immersive theatre production. Built as a slide-de
 Plain HTML / CSS / JS, no build step. Drop the folder on any static host (S3, Netlify, Vercel, Cloudflare Pages, GitHub Pages).
 
 ```
-pitch-site/
-├── index.html        # all content
+pitch-draft/
+├── index.html        # v1, the original
+├── v2.html ... v10.html   # nine alternates
 ├── styles.css        # design system + per-section styles
 ├── script.js         # nav, hash routing, journey, rounds, map
-└── assets/
-    ├── photos/       # cover, journey, team, etc.
-    └── brand/        # logos
+├── shared/
+│   ├── switcher.js   # bottom-right version switcher
+│   └── switcher.css
+├── VERSIONS.md       # design notes per version
+└── assets/photos/    # cover, journey, team, etc.
 ```
 
 ## Running locally
