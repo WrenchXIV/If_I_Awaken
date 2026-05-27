@@ -248,6 +248,11 @@ window.V7_DEFAULTS = {
       { "name": "Recurring programs (comedy, podcasts)",        "price": 3500,  "cost": 500,  "perMonth": 4 }
     ]
   },
+  "cashReserve": {
+    "weeks": 8,
+    "useFormula": true,
+    "amountOverride": 1090000
+  },
   "preproductionBudget": [
     {
       "id": "010",
@@ -293,7 +298,7 @@ window.V7_DEFAULTS = {
         {
           "code": "(101)",
           "name": "Scenery \u2014 Spaces 2/3/4/5 (4 neighborhood builds)",
-          "amount": 750000.0
+          "amount": 950000.0
         },
         {
           "code": "(102)",
@@ -328,7 +333,7 @@ window.V7_DEFAULTS = {
         {
           "code": "(108)",
           "name": "Props / Furniture (7 spaces)",
-          "amount": 140000.0
+          "amount": 215000.0
         },
         {
           "code": "(109)",
@@ -366,7 +371,7 @@ window.V7_DEFAULTS = {
           "amount": 32000.0
         }
       ],
-      "v7Total": 1445600.0
+      "v7Total": 1720600.0
     },
     {
       "id": "200",
@@ -594,10 +599,10 @@ window.V7_DEFAULTS = {
         {
           "code": "(411)",
           "name": "Developmental \u2014 design workshops, site-specific R&D, community engagement",
-          "amount": 75000.0
+          "amount": 125000.0
         }
       ],
-      "v7Total": 699800.0
+      "v7Total": 749800.0
     },
     {
       "id": "500",
@@ -606,7 +611,7 @@ window.V7_DEFAULTS = {
         {
           "code": "(501)",
           "name": "Marketing creative production (key art, photography, B-roll, signage, printing, OOH)",
-          "amount": 274500.0
+          "amount": 324500.0
         },
         {
           "code": "(502)",
@@ -654,7 +659,7 @@ window.V7_DEFAULTS = {
           "amount": 75000.0
         }
       ],
-      "v7Total": 906000.0
+      "v7Total": 956000.0
     },
     {
       "id": "600",
@@ -717,11 +722,11 @@ window.V7_DEFAULTS = {
         },
         {
           "code": "(612)",
-          "name": "Contingency (10% of production costs)",
-          "amount": 604000.0
+          "name": "Contingency (18% — first-of-its-kind immersive)",
+          "amount": 1139000.0
         }
       ],
-      "v7Total": 1544700.0
+      "v7Total": 2079700.0
     }
   ],
   "weeklyOperating": [

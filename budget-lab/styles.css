@@ -488,6 +488,56 @@ dialog::backdrop { background: rgba(17,17,17,0.5); }
 .save-form li button:hover { color: var(--red); }
 .save-form li button.load { color: var(--ink); }
 
+/* =================== CASH ON HAND / RESERVE =================== */
+.cash-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 800px) {
+  .cash-grid { grid-template-columns: 1fr; }
+}
+.cash-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+.cash-field label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.cash-field input,
+.cash-field select {
+  font-family: var(--f-mono);
+  font-size: 16px;
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+}
+.cash-field input:disabled {
+  background: rgba(0,0,0,0.04);
+  color: var(--ink-soft);
+}
+.cash-field input:focus,
+.cash-field select:focus {
+  outline: none;
+  border-color: var(--red);
+}
+.cash-hint {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
 /* =================== CORPORATE EVENTS =================== */
 .events-grid {
   display: grid;

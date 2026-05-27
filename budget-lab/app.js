@@ -66,6 +66,11 @@ function freshStateFromV7() {
         name: t.name, price: t.price, cost: t.cost, perMonth: t.perMonth,
       })),
     },
+    cashReserve: {
+      weeks: d.cashReserve.weeks,
+      useFormula: d.cashReserve.useFormula,
+      amountOverride: d.cashReserve.amountOverride,
+    },
     preproductionBudget: d.preproductionBudget.map(c => ({
       id: c.id, name: c.name, items: c.items, total: c.v7Total, isOverride: false, _v7: c.v7Total,
     })),
@@ -154,6 +159,12 @@ function compute() {
   const eventsRunGross = eventsMonthlyGross * runMonths;
   const eventsRunNet = eventsMonthlyNet * runMonths;
 
+  // Cash on hand / operating reserve
+  const cashFormula = (+state.cashReserve.weeks || 0) * opTotal;
+  const cashReserveAmount = state.cashReserve.useFormula
+    ? cashFormula
+    : (+state.cashReserve.amountOverride || 0);
+
   // Break-even: % of capacity at which combined weekly revenue covers weekly op.
   // Credit-card fees scale with ticket revenue (3% of GWBOR); rest is fixed.
   // F&B/Merch net is real revenue every show, so it offsets op cost.
@@ -185,6 +196,8 @@ function compute() {
     runMonths,
     eventsMonthlyGross, eventsMonthlyCost, eventsMonthlyNet,
     eventsRunGross, eventsRunNet,
+    cashReserveAmount,
+    cashFormula,
   };
 }
 
@@ -213,24 +226,31 @@ function renderTopSheet(c) {
   contribEl.className = 'kpi-value ' + (c.contribAtCap < 0 ? 'kpi-negative' : 'kpi-positive');
   $('#kpi-contrib-cap').textContent = (c.capacityPct * 100).toFixed(0) + '%';
 
-  // Capitalization block — Preprod (R1) + Production (R2) + Operating run
+  // Capitalization block — Preprod (R1) + Production (R2) + Cash Reserve (R3)
   const opRun = c.opTotal * c.runWeeks;
-  const totalCap = c.preprodTotal + c.prodTotal;
+  const totalCap = c.preprodTotal + c.prodTotal + c.cashReserveAmount;
+  const valuation = c.preprodTotal > 0 ? Math.round(c.preprodTotal / 0.10) : 0;
   $('#kpi-preprod').textContent = fmtMoney(c.preprodTotal, { compact: true });
   const preprodDelta = c.preprodTotal - 1_000_000;
   $('#kpi-preprod-sub').innerHTML =
-    'Round 1 target $1.0M · ' +
+    'Round 1 · ' +
     (Math.abs(preprodDelta) < 500
-      ? '<b style="color:var(--accent-pos)">on target</b>'
+      ? '<b style="color:var(--accent-pos)">$1M for 10% equity</b>'
       : preprodDelta > 0
-        ? `<b style="color:var(--accent-neg)">+${fmtMoney(preprodDelta, { compact: true })} over</b>`
-        : `<b>${fmtMoney(-preprodDelta, { compact: true })} under</b>`);
+        ? `$1M for 10% · <b style="color:var(--accent-neg)">+${fmtMoney(preprodDelta, { compact: true })}</b>`
+        : `$1M for 10% · <b>${fmtMoney(-preprodDelta, { compact: true })} under</b>`);
   $('#kpi-prod').textContent = fmtMoney(c.prodTotal, { compact: true });
-  $('#kpi-prod-sub').textContent = 'Round 2+3 build · one-time';
+  $('#kpi-prod-sub').textContent = 'Round 2 · one-time build';
   $('#kpi-oprun').textContent = fmtMoney(opRun, { compact: true });
   $('#kpi-oprun-sub').textContent = fmtInt(c.runWeeks) + '-wk run · operating';
   $('#kpi-totalcap').textContent = fmtMoney(totalCap, { compact: true });
-  $('#kpi-totalcap-sub').textContent = 'Preprod + Production (capitalized)';
+  $('#kpi-totalcap-sub').innerHTML = `Total raise · post-money <b>${fmtMoney(valuation, { compact: true })}</b>`;
+
+  // Cash on Hand KPI (R3)
+  const cashEl = $('#kpi-cash');
+  if (cashEl) cashEl.textContent = fmtMoney(c.cashReserveAmount, { compact: true });
+  const cashSubEl = $('#kpi-cash-sub');
+  if (cashSubEl) cashSubEl.innerHTML = `Round 3 · ${state.cashReserve.weeks} wks × weekly op`;
 
   // Corporate Events KPI (Economics block)
   const eventsEl = $('#kpi-events');
@@ -529,6 +549,71 @@ function renderEvents() {
   refreshEventsComputed(compute());
 }
 
+function renderCashReserve() {
+  const wks = $('#cash-weeks');
+  const mode = $('#cash-mode');
+  const amt = $('#cash-amount');
+  if (!wks || !mode || !amt) return;
+
+  wks.value = state.cashReserve.weeks;
+  mode.value = state.cashReserve.useFormula ? 'formula' : 'manual';
+  // amount filled by refresh function below
+
+  const parseCurrency = s => {
+    const n = Number(String(s).replace(/[^0-9.\-]/g, ''));
+    return isFinite(n) ? n : 0;
+  };
+
+  wks.addEventListener('input', () => {
+    state.cashReserve.weeks = Math.max(0, Math.round(+wks.value || 0));
+    refreshAll();
+  });
+  mode.addEventListener('change', () => {
+    state.cashReserve.useFormula = mode.value === 'formula';
+    refreshAll();
+  });
+  amt.addEventListener('focus', () => {
+    if (!state.cashReserve.useFormula) {
+      amt.value = String(Math.round(state.cashReserve.amountOverride || 0));
+      amt.select();
+    }
+  });
+  amt.addEventListener('input', () => {
+    if (!state.cashReserve.useFormula) {
+      state.cashReserve.amountOverride = parseCurrency(amt.value);
+      refreshAll();
+    }
+  });
+  amt.addEventListener('blur', () => {
+    amt.value = fmtMoney(state.cashReserve.useFormula
+      ? compute().cashReserveAmount
+      : state.cashReserve.amountOverride);
+  });
+
+  refreshCashComputed(compute());
+}
+
+function refreshCashComputed(c) {
+  const wks = $('#cash-weeks');
+  const mode = $('#cash-mode');
+  const amt = $('#cash-amount');
+  const grand = $('#cash-grand');
+  const formHint = $('#cash-formula-hint');
+  const amtHint = $('#cash-amount-hint');
+  if (!wks) return;
+
+  if (wks !== document.activeElement) wks.value = state.cashReserve.weeks;
+  if (mode) mode.value = state.cashReserve.useFormula ? 'formula' : 'manual';
+  if (amt && amt !== document.activeElement) amt.value = fmtMoney(c.cashReserveAmount);
+  if (amt) amt.disabled = state.cashReserve.useFormula;
+
+  if (formHint) formHint.textContent = `${state.cashReserve.weeks} wks × ${fmtMoney(c.opTotal)}/wk = ${fmtMoney(c.cashFormula)}`;
+  if (amtHint) amtHint.textContent = state.cashReserve.useFormula
+    ? 'Locked — change to Manual override to edit.'
+    : 'Type any amount — overrides the formula.';
+  if (grand) grand.innerHTML = `Reserve Total<br><b>${fmtMoney(c.cashReserveAmount)}</b>`;
+}
+
 function refreshEventsComputed(c) {
   const root = $('#events-grid');
   if (!root) return;
@@ -701,6 +786,7 @@ function rerender() {
   renderCategoryList(state.preproductionBudget, '#prepro-list', '#prepro-grand');
   renderCategoryList(state.productionBudget, '#prod-list', '#prod-grand');
   renderCategoryList(state.weeklyOperating, '#ops-list', '#ops-grand');
+  renderCashReserve();
   updateHash();
 }
 function rerenderSilent() {
@@ -712,6 +798,7 @@ function refreshAll() {
   // Refresh F&B computed cells live (they depend on weekly capacity)
   refreshFnbComputed(c);
   refreshEventsComputed(c);
+  refreshCashComputed(c);
   refreshGrand(state.preproductionBudget, '#prepro-grand');
   refreshGrand(state.productionBudget, '#prod-grand');
   refreshGrand(state.weeklyOperating, '#ops-grand');
@@ -757,6 +844,10 @@ function updateHash() {
   const ev = state.corporateEvents.types.map(t => [t.name, t.price, t.cost, t.perMonth]);
   const v7ev = v7.corporateEvents.types.map(t => [t.name, t.price, t.cost, t.perMonth]);
   if (JSON.stringify(ev) !== JSON.stringify(v7ev)) diff.e = ev;
+
+  const cr = [state.cashReserve.weeks, state.cashReserve.useFormula ? 1 : 0, state.cashReserve.amountOverride];
+  const v7cr = [v7.cashReserve.weeks, v7.cashReserve.useFormula ? 1 : 0, v7.cashReserve.amountOverride];
+  if (JSON.stringify(cr) !== JSON.stringify(v7cr)) diff.cr = cr;
 
   const preproOv = {}, prodOv = {}, opsOv = {};
   state.preproductionBudget.forEach(c => { if (c.isOverride) preproOv[c.id] = c.total; });
@@ -806,6 +897,11 @@ function loadFromHash() {
           state.corporateEvents.types[i].perMonth = row[3];
         }
       });
+    }
+    if (d.cr) {
+      state.cashReserve.weeks = d.cr[0];
+      state.cashReserve.useFormula = !!d.cr[1];
+      state.cashReserve.amountOverride = d.cr[2];
     }
     if (d.pp) state.preproductionBudget.forEach(c => { if (d.pp[c.id] != null) { c.total = d.pp[c.id]; c.isOverride = true; } });
     if (d.p) state.productionBudget.forEach(c => { if (d.p[c.id] != null) { c.total = d.p[c.id]; c.isOverride = true; } });
