@@ -240,6 +240,43 @@ window.V7_DEFAULTS = {
       "cogs": 0.45
     }
   ],
+  "preproductionBudget": [
+    {
+      "id": "010",
+      "name": "(010) PEOPLE",
+      "v7Total": 510000,
+      "items": [
+        {"code": "(010a)", "name": "Director (preproduction fee)",                "amount": 60000},
+        {"code": "(010b)", "name": "Producer Fees (lead producers, preprod)",     "amount": 250000},
+        {"code": "(010c)", "name": "Writing",                                     "amount": 75000},
+        {"code": "(010d)", "name": "Sales team",                                  "amount": 50000},
+        {"code": "(010e)", "name": "Set/scenic design retainers",                 "amount": 50000},
+        {"code": "(010f)", "name": "Project management",                          "amount": 25000}
+      ]
+    },
+    {
+      "id": "020",
+      "name": "(020) VENDORS & OUTSIDE SERVICES",
+      "v7Total": 385000,
+      "items": [
+        {"code": "(020a)", "name": "Production Company (TMO)",                    "amount": 125000},
+        {"code": "(020b)", "name": "Marketing Company (Grapple)",                 "amount": 125000},
+        {"code": "(020c)", "name": "Production consulting",                       "amount": 50000},
+        {"code": "(020d)", "name": "Legal (PPM, LP docs, partnerships)",          "amount": 65000},
+        {"code": "(020e)", "name": "Accounting (setup, bookkeeping, K-1 prep)",   "amount": 20000}
+      ]
+    },
+    {
+      "id": "030",
+      "name": "(030) OPERATIONS & RISK",
+      "v7Total": 105000,
+      "items": [
+        {"code": "(030a)", "name": "Venue deposit",                               "amount": 60000},
+        {"code": "(030b)", "name": "Insurance (general liability, D&O)",          "amount": 20000},
+        {"code": "(030c)", "name": "Contingency",                                 "amount": 25000}
+      ]
+    }
+  ],
   "productionBudget": [
     {
       "id": "100",

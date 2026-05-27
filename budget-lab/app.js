@@ -61,6 +61,9 @@ function freshStateFromV7() {
       penetration: f.penetration,
       cogs: f.cogs,
     })),
+    preproductionBudget: d.preproductionBudget.map(c => ({
+      id: c.id, name: c.name, items: c.items, total: c.v7Total, isOverride: false, _v7: c.v7Total,
+    })),
     productionBudget: d.productionBudget.map(c => ({
       id: c.id, name: c.name, items: c.items, total: c.v7Total, isOverride: false, _v7: c.v7Total,
     })),
@@ -128,6 +131,7 @@ function compute() {
   const grossCombined = ticketGross + fnbNet + merchNet;
 
   // Op costs
+  const preprodTotal = state.preproductionBudget.reduce((a, c) => a + (+c.total || 0), 0);
   const prodTotal = state.productionBudget.reduce((a, c) => a + (+c.total || 0), 0);
   const opTotal = state.weeklyOperating.reduce((a, c) => a + (+c.total || 0), 0);
 
@@ -154,7 +158,7 @@ function compute() {
     ticketGross, avgTicket, totalTickets,
     fnbGross, fnbNet, merchGross, merchNet,
     grossCombined,
-    prodTotal, opTotal,
+    preprodTotal, prodTotal, opTotal,
     breakevenPct,
     contribAtCap,
     capacityPct: cap,
@@ -186,6 +190,25 @@ function renderTopSheet(c) {
   contribEl.textContent = fmtMoney(c.contribAtCap);
   contribEl.className = 'kpi-value ' + (c.contribAtCap < 0 ? 'kpi-negative' : 'kpi-positive');
   $('#kpi-contrib-cap').textContent = (c.capacityPct * 100).toFixed(0) + '%';
+
+  // Capitalization block — Preprod (R1) + Production (R2) + Operating run
+  const opRun = c.opTotal * c.runWeeks;
+  const totalCap = c.preprodTotal + c.prodTotal;
+  $('#kpi-preprod').textContent = fmtMoney(c.preprodTotal, { compact: true });
+  const preprodDelta = c.preprodTotal - 1_000_000;
+  $('#kpi-preprod-sub').innerHTML =
+    'Round 1 target $1.0M · ' +
+    (Math.abs(preprodDelta) < 500
+      ? '<b style="color:var(--accent-pos)">on target</b>'
+      : preprodDelta > 0
+        ? `<b style="color:var(--accent-neg)">+${fmtMoney(preprodDelta, { compact: true })} over</b>`
+        : `<b>${fmtMoney(-preprodDelta, { compact: true })} under</b>`);
+  $('#kpi-prod').textContent = fmtMoney(c.prodTotal, { compact: true });
+  $('#kpi-prod-sub').textContent = 'Round 2+3 build · one-time';
+  $('#kpi-oprun').textContent = fmtMoney(opRun, { compact: true });
+  $('#kpi-oprun-sub').textContent = fmtInt(c.runWeeks) + '-wk run · operating';
+  $('#kpi-totalcap').textContent = fmtMoney(totalCap, { compact: true });
+  $('#kpi-totalcap-sub').textContent = 'Preprod + Production (capitalized)';
 }
 
 function renderTicketMatrix() {
@@ -527,6 +550,7 @@ function rerender() {
   renderTicketMatrix();
   renderFnb();
   renderAssumptions();
+  renderCategoryList(state.preproductionBudget, '#prepro-list', '#prepro-grand');
   renderCategoryList(state.productionBudget, '#prod-list', '#prod-grand');
   renderCategoryList(state.weeklyOperating, '#ops-list', '#ops-grand');
   updateHash();
@@ -539,6 +563,7 @@ function refreshAll() {
   renderTopSheet(c);
   // Refresh F&B computed cells live (they depend on weekly capacity)
   refreshFnbComputed(c);
+  refreshGrand(state.preproductionBudget, '#prepro-grand');
   refreshGrand(state.productionBudget, '#prod-grand');
   refreshGrand(state.weeklyOperating, '#ops-grand');
   updateHash();
@@ -580,9 +605,11 @@ function updateHash() {
   const v7fnb = v7.fnb.map(f => [f.perCap, f.penetration, f.cogs]);
   if (JSON.stringify(fnb) !== JSON.stringify(v7fnb)) diff.f = fnb;
 
-  const prodOv = {}, opsOv = {};
+  const preproOv = {}, prodOv = {}, opsOv = {};
+  state.preproductionBudget.forEach(c => { if (c.isOverride) preproOv[c.id] = c.total; });
   state.productionBudget.forEach(c => { if (c.isOverride) prodOv[c.id] = c.total; });
   state.weeklyOperating.forEach(c => { if (c.isOverride) opsOv[c.id] = c.total; });
+  if (Object.keys(preproOv).length) diff.pp = preproOv;
   if (Object.keys(prodOv).length) diff.p = prodOv;
   if (Object.keys(opsOv).length) diff.o = opsOv;
 
@@ -617,6 +644,7 @@ function loadFromHash() {
         }
       });
     }
+    if (d.pp) state.preproductionBudget.forEach(c => { if (d.pp[c.id] != null) { c.total = d.pp[c.id]; c.isOverride = true; } });
     if (d.p) state.productionBudget.forEach(c => { if (d.p[c.id] != null) { c.total = d.p[c.id]; c.isOverride = true; } });
     if (d.o) state.weeklyOperating.forEach(c => { if (d.o[c.id] != null) { c.total = d.o[c.id]; c.isOverride = true; } });
     return true;

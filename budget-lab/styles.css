@@ -91,6 +91,7 @@ body {
   .topsheet-grid { grid-template-columns: 1fr; }
 }
 .ts-block { border-top: 2px solid var(--ink); padding-top: 10px; }
+.ts-block-wide { grid-column: 1 / -1; margin-top: 12px; }
 .ts-block-head {
   display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;
 }
