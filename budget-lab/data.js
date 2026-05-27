@@ -338,6 +338,11 @@ window.V7_DEFAULTS = {
           "amount": 3000.0
         },
         {
+          "code": "(105a)",
+          "name": "Wardrobe Maintenance Reserve (pre-opening repairs)",
+          "amount": 8000.0
+        },
+        {
           "code": "(106)",
           "name": "Electrics Purchase (premium install \u2014 6 spaces)",
           "amount": 200000.0
@@ -349,8 +354,8 @@ window.V7_DEFAULTS = {
         },
         {
           "code": "(108)",
-          "name": "Sound Purchase (install \u2014 6 spaces)",
-          "amount": 65000.0
+          "name": "Sound Purchase (spatial audio install \u2014 7 spaces)",
+          "amount": 150000.0
         },
         {
           "code": "(109)",
@@ -375,7 +380,7 @@ window.V7_DEFAULTS = {
         {
           "code": "(113)",
           "name": "LED Wall \u2014 Purchase (110 ft x 14 ft)",
-          "amount": 385000.0
+          "amount": 460000.0
         },
         {
           "code": "(113a)",
@@ -388,14 +393,19 @@ window.V7_DEFAULTS = {
           "amount": 75000.0
         },
         {
+          "code": "(113c)",
+          "name": "Immersive Tech Development \u2014 photo-mosaic capture, real-time engine, LED integration, spare rig",
+          "amount": 450000.0
+        },
+        {
           "code": "(114)",
           "name": "Hair / Wigs / Makeup",
           "amount": 12000.0
         },
         {
           "code": "(115)",
-          "name": "Designer Expenses",
-          "amount": 6750.0
+          "name": "Designer Expenses (materials, mock-ups, travel)",
+          "amount": 22000.0
         },
         {
           "code": "(116)",
@@ -424,7 +434,7 @@ window.V7_DEFAULTS = {
         }
       ],
       "totalCoord": null,
-      "v7Total": 2314250.0
+      "v7Total": 2947500.0
     },
     {
       "id": "200",
@@ -502,8 +512,8 @@ window.V7_DEFAULTS = {
         },
         {
           "code": "(217)",
-          "name": "Projections / Video Designer (LED content + projection)",
-          "amount": 25000.0
+          "name": "Projections / Video Designer (LED content + projection + photo-mosaic)",
+          "amount": 50000.0
         },
         {
           "code": "(218)",
@@ -597,8 +607,8 @@ window.V7_DEFAULTS = {
         },
         {
           "code": "(232)",
-          "name": "Technical Director",
-          "amount": 15000.0
+          "name": "Technical Director (7-environment immersive build)",
+          "amount": 40000.0
         },
         {
           "code": "(233)",
@@ -657,7 +667,7 @@ window.V7_DEFAULTS = {
         }
       ],
       "totalCoord": null,
-      "v7Total": 1008879.0
+      "v7Total": 1058879.0
     },
     {
       "id": "300",
@@ -819,6 +829,11 @@ window.V7_DEFAULTS = {
           "amount": 5400.0
         },
         {
+          "code": "(325a)",
+          "name": "Tour Guide Hire & Onboarding (~20 guides recruited + trained)",
+          "amount": 45000.0
+        },
+        {
           "code": "(326)",
           "name": "AEA Overtime Contingency",
           "amount": 5000.0
@@ -865,7 +880,7 @@ window.V7_DEFAULTS = {
         }
       ],
       "totalCoord": null,
-      "v7Total": 394919.48
+      "v7Total": 439919.48
     },
     {
       "id": "400",
@@ -880,6 +895,11 @@ window.V7_DEFAULTS = {
           "code": "(402)",
           "name": "Rehearsal Space Rental (LA \u2014 2 wks)",
           "amount": 9000.0
+        },
+        {
+          "code": "(402a)",
+          "name": "Multi-City Audition Expansion (NYC + LA, callbacks, travel)",
+          "amount": 30000.0
         },
         {
           "code": "(403)",
@@ -923,7 +943,7 @@ window.V7_DEFAULTS = {
         }
       ],
       "totalCoord": null,
-      "v7Total": 53500.0
+      "v7Total": 83500.0
     },
     {
       "id": "500",
@@ -1201,12 +1221,12 @@ window.V7_DEFAULTS = {
         {
           "code": "(805)",
           "name": "Insurance (immersive: high GL + participant coverage)",
-          "amount": 65000.0
+          "amount": 80000.0
         },
         {
           "code": "(806)",
           "name": "Visa Costs / Travel for key creatives",
-          "amount": 4000.0
+          "amount": 14000.0
         },
         {
           "code": "(807)",
@@ -1216,7 +1236,7 @@ window.V7_DEFAULTS = {
         {
           "code": "(808)",
           "name": "Travel & Housing (NY creatives to LA)",
-          "amount": 18000.0
+          "amount": 48000.0
         },
         {
           "code": "(809)",
@@ -1227,10 +1247,20 @@ window.V7_DEFAULTS = {
           "code": "(810)",
           "name": "Miscellaneous / Office Supplies",
           "amount": 5000.0
+        },
+        {
+          "code": "(811)",
+          "name": "ADA / Accessibility Consulting & Accommodations",
+          "amount": 20000.0
+        },
+        {
+          "code": "(812)",
+          "name": "Ticketing Platform Setup + CRM Integration",
+          "amount": 30000.0
         }
       ],
       "totalCoord": null,
-      "v7Total": 174700.0
+      "v7Total": 279700.0
     },
     {
       "id": "900",
@@ -1335,11 +1365,11 @@ window.V7_DEFAULTS = {
         {
           "code": "(1002)",
           "name": "Contingency (10% of Production Costs)",
-          "amount": 503894.208
+          "amount": 589000.0
         }
       ],
       "totalCoord": null,
-      "v7Total": 775408.21
+      "v7Total": 860514.0
     }
   ],
   "weeklyOperating": [
