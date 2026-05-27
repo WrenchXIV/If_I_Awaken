@@ -240,6 +240,14 @@ window.V7_DEFAULTS = {
       "cogs": 0.45
     }
   ],
+  "corporateEvents": {
+    "types": [
+      { "name": "Full venue buyouts (premieres / activations)", "price": 35000, "cost": 8000, "perMonth": 1 },
+      { "name": "Single-space rentals (launches, all-hands)",   "price": 9000,  "cost": 2000, "perMonth": 4 },
+      { "name": "Production / filming (videos, commercials)",   "price": 13000, "cost": 3000, "perMonth": 2 },
+      { "name": "Recurring programs (comedy, podcasts)",        "price": 3500,  "cost": 500,  "perMonth": 4 }
+    ]
+  },
   "preproductionBudget": [
     {
       "id": "010",
@@ -719,456 +727,193 @@ window.V7_DEFAULTS = {
   "weeklyOperating": [
     {
       "id": "1100",
-      "name": "(1100) PHYSICAL MAINTENANCE",
+      "name": "(1100) CAST, MUSIC & STAGE MANAGEMENT (WEEKLY)",
       "items": [
         {
           "code": "(1101)",
-          "name": "Costume Maintenance / Replacements",
-          "amount": 800.0
+          "name": "Principals \u2014 non-union poets, dancers, tour-guide actors + dance captain premium",
+          "amount": 20500.0
         },
         {
           "code": "(1102)",
-          "name": "Hair / Makeup Supplies",
-          "amount": 500.0
+          "name": "Optional cast \u2014 Teenage Singer + Studio Teacher (when minor on-site)",
+          "amount": 2120.0
         },
         {
           "code": "(1103)",
-          "name": "Prop Replacements / Perishables",
-          "amount": 600.0
+          "name": "Musicians \u2014 AFM (5) + contractor premium",
+          "amount": 2120.0
         },
         {
           "code": "(1104)",
-          "name": "Electrics Maintenance (premium lighting, 6 spaces)",
-          "amount": 800.0
-        },
-        {
-          "code": "(1105)",
-          "name": "LED Wall Service Contract / Parts",
-          "amount": 1500.0
-        },
-        {
-          "code": "(1106)",
-          "name": "Sound Maintenance / Batteries / Parts",
-          "amount": 400.0
-        },
-        {
-          "code": "(1107)",
-          "name": "Scenic Repair / Paint / Hardware",
-          "amount": 600.0
-        },
-        {
-          "code": "(1108)",
-          "name": "Cleaning / Janitorial (30K sqft)",
-          "amount": 2500.0
-        },
-        {
-          "code": "(1109)",
-          "name": "Sanitation / Restroom Supplies",
-          "amount": 300.0
-        },
-        {
-          "code": "(1110)",
-          "name": "Load-Out Accrual (weekly)",
-          "amount": 500.0
-        },
-        {
-          "code": "(1111)",
-          "name": "Bar / Gift Shop \u2014 Restocking Allowance",
-          "amount": 800.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 9300.0
-    },
-    {
-      "id": "1200",
-      "name": "(1200) FEES (WEEKLY)",
-      "items": [
-        {
-          "code": "(1201)",
-          "name": "General Management (50% \u2014 other 50% in prod budget)",
-          "amount": 1250.0
-        },
-        {
-          "code": "(1202)",
-          "name": "Production Supervisor / Resident Director \u2014 ELIMINATED",
-          "amount": 0.0
-        },
-        {
-          "code": "(1203)",
-          "name": "Music Director (weekly) \u2014 CUT",
-          "amount": 0.0
-        },
-        {
-          "code": "(1204)",
-          "name": "Press Agent (weekly)",
-          "amount": 2000.0
-        },
-        {
-          "code": "(1205)",
-          "name": "Advertising Agency (weekly)",
-          "amount": 1500.0
-        },
-        {
-          "code": "(1206)",
-          "name": "Marketing / Social Media Agency",
-          "amount": 1500.0
-        },
-        {
-          "code": "(1207)",
-          "name": "Casting Director (ongoing) \u2014 CUT",
-          "amount": 0.0
-        },
-        {
-          "code": "(1208)",
-          "name": "Accounting / Bookkeeping (weekly)",
-          "amount": 1000.0
-        },
-        {
-          "code": "(1209)",
-          "name": "Legal Retainer",
-          "amount": 400.0
-        },
-        {
-          "code": "(1210)",
-          "name": "Payroll Service",
-          "amount": 250.0
-        },
-        {
-          "code": "(1211)",
-          "name": "Property Manager (weekly)",
-          "amount": 500.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 8400.0
-    },
-    {
-      "id": "1300",
-      "name": "(1300) SALARIES (WEEKLY)",
-      "items": [
-        {
-          "code": "(1300a)",
-          "name": "Producer - Diane Lane",
-          "amount": 6730.0
-        },
-        {
-          "code": "(1300a)",
-          "name": "Producer - Brandon Jordan",
-          "amount": 4807.0
-        },
-        {
-          "code": "(1300a)",
-          "name": "Producer - Gina Belafonte",
-          "amount": 961.0
-        },
-        {
-          "code": "(1300a)",
-          "name": "Director - Scoville (50% \u2014 other 50% in prod budget)",
-          "amount": 1250.0
-        },
-        {
-          "code": "(1300b)",
-          "name": "Writer - Monique (50% \u2014 other 50% in prod budget)",
-          "amount": 2885.0
-        },
-        {
-          "code": "(1301)",
-          "name": "Principals \u2014 AEA \u2014 ELIMINATED (cast now all non-union)",
-          "amount": 0.0
-        },
-        {
-          "code": "(1301a)",
-          "name": "Principals \u2014 Non-union Poets (6)",
-          "amount": 8400.0
-        },
-        {
-          "code": "(1301b)",
-          "name": "Dancers \u2014 Non-union (5)",
-          "amount": 6500.0
-        },
-        {
-          "code": "(1301c)",
-          "name": "Tour Guide Actors (non-union, 2 \u2014 in-cast guides)",
-          "amount": 2800.0
-        },
-        {
-          "code": "(1301d)",
-          "name": "Teenage Singer (minor, non-union) \u2014 OPTIONAL",
-          "amount": 1400.0
-        },
-        {
-          "code": "(1301e)",
-          "name": "Studio Teacher (required when minor is on-site) \u2014 OPTIONAL",
-          "amount": 720.0
-        },
-        {
-          "code": "(1302)",
-          "name": "Dance Captain premium (18%)",
-          "amount": 2800.0
-        },
-        {
-          "code": "(1303)",
-          "name": "Musicians \u2014 AFM (5)",
-          "amount": 1400.0
-        },
-        {
-          "code": "(1304)",
-          "name": "Musician Contractor Premium",
-          "amount": 720.0
-        },
-        {
-          "code": "(1305)",
           "name": "Swings / Understudies (4)",
           "amount": 234.0
         },
         {
-          "code": "(1306)",
-          "name": "Stage Manager (PSM, AEA)",
-          "amount": 5500.0
+          "code": "(1105)",
+          "name": "Stage Management \u2014 PSM + 2 ASMs + 2 Production Assistants",
+          "amount": 11300.0
         },
         {
-          "code": "(1307)",
-          "name": "Assistant Stage Managers (AEA, 2)",
-          "amount": 200.0
-        },
-        {
-          "code": "(1308)",
-          "name": "Production Assistants (2)",
-          "amount": 5600.0
-        },
-        {
-          "code": "(1309)",
-          "name": "Company / House Manager",
-          "amount": 1900.0
-        },
-        {
-          "code": "(1310)",
-          "name": "LED Wall / Media Server Tech",
-          "amount": 3500.0
-        },
-        {
-          "code": "(1311)",
-          "name": "Lighting Board Op (premium design)",
-          "amount": 1600.0
-        },
-        {
-          "code": "(1311a)",
-          "name": "Associate Lighting Designer (running \u2014 weekly)",
+          "code": "(1106)",
+          "name": "AEA + crew overtime reserves",
           "amount": 1400.0
-        },
-        {
-          "code": "(1312)",
-          "name": "Sound A1",
-          "amount": 1500.0
-        },
-        {
-          "code": "(1313)",
-          "name": "Sound A2",
-          "amount": 1500.0
-        },
-        {
-          "code": "(1314)",
-          "name": "Wardrobe Supervisor",
-          "amount": 1200.0
-        },
-        {
-          "code": "(1315)",
-          "name": "Dressers (2)",
-          "amount": 1400.0
-        },
-        {
-          "code": "(1316)",
-          "name": "Props Crew",
-          "amount": 1100.0
-        },
-        {
-          "code": "(1317)",
-          "name": "Scenic / Running Crew",
-          "amount": 1100.0
-        },
-        {
-          "code": "(1318)",
-          "name": "Audience Shepherd (1 per show \u00d7 12 shows \u00d7 $225 \u2014 with radio)",
-          "amount": 1800.0
-        },
-        {
-          "code": "(1319)",
-          "name": "Front of House Staff / Ushers",
-          "amount": 2500.0
-        },
-        {
-          "code": "(1320)",
-          "name": "Box Office / Ticketing Staff",
-          "amount": 1500.0
-        },
-        {
-          "code": "(1320a)",
-          "name": "Bar Staff (2-3 on shift)",
-          "amount": 1800.0
-        },
-        {
-          "code": "(1320b)",
-          "name": "Gift Shop Staff (1-2 on shift)",
-          "amount": 900.0
-        },
-        {
-          "code": "(1321)",
-          "name": "Security (ongoing \u2014 event staff)",
-          "amount": 2000.0
-        },
-        {
-          "code": "(1322)",
-          "name": "AEA Overtime Reserve",
-          "amount": 800.0
-        },
-        {
-          "code": "(1323)",
-          "name": "Crew Overtime Reserve",
-          "amount": 600.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 81007.0
+      "v7Total": 37674.0
+    },
+    {
+      "id": "1200",
+      "name": "(1200) TECH & MAINTENANCE (WEEKLY)",
+      "items": [
+        {
+          "code": "(1201)",
+          "name": "Tech crew \u2014 LED tech, Lighting board op, Assoc LD, Sound A1/A2",
+          "amount": 9500.0
+        },
+        {
+          "code": "(1202)",
+          "name": "Backstage crew \u2014 Wardrobe Sup + Dressers + Props + Running Crew",
+          "amount": 4800.0
+        },
+        {
+          "code": "(1203)",
+          "name": "Costume / wig / makeup maintenance & replacements",
+          "amount": 1300.0
+        },
+        {
+          "code": "(1204)",
+          "name": "Equipment maintenance \u2014 Lighting + LED service + Sound + Scenic + Props",
+          "amount": 3900.0
+        },
+        {
+          "code": "(1205)",
+          "name": "Cleaning / janitorial / sanitation (30K sqft)",
+          "amount": 2800.0
+        },
+        {
+          "code": "(1206)",
+          "name": "Load-out accrual + Bar / Gift Shop restocking",
+          "amount": 1300.0
+        },
+        {
+          "code": "(1207)",
+          "name": "Equipment rental continuing + expendables + pest control",
+          "amount": 1100.0
+        }
+      ],
+      "v7Total": 24700.0
+    },
+    {
+      "id": "1300",
+      "name": "(1300) FRONT OF HOUSE & AUDIENCE (WEEKLY)",
+      "items": [
+        {
+          "code": "(1301)",
+          "name": "House Manager + Audience Shepherds (1 per show \u00d7 12 shows)",
+          "amount": 3700.0
+        },
+        {
+          "code": "(1302)",
+          "name": "Front-of-house staff \u2014 ushers + box office + ticketing",
+          "amount": 4000.0
+        },
+        {
+          "code": "(1303)",
+          "name": "Concessions staff \u2014 Bar (2\u20133) + Gift Shop (1\u20132)",
+          "amount": 2700.0
+        },
+        {
+          "code": "(1304)",
+          "name": "Security (ongoing \u2014 event staff)",
+          "amount": 2000.0
+        }
+      ],
+      "v7Total": 12400.0
     },
     {
       "id": "1400",
-      "name": "(1400) ADVERTISING (WEEKLY)",
+      "name": "(1400) MARKETING & SALES (WEEKLY)",
       "items": [
         {
           "code": "(1401)",
-          "name": "Digital / Social Media Ad Spend",
+          "name": "Marketing fees & retainers (Press Agent, Ad Agency, Marketing / Social)",
           "amount": 5000.0
         },
         {
           "code": "(1402)",
-          "name": "OOH / Transit / Billboard",
-          "amount": 2000.0
+          "name": "Digital / social ad spend",
+          "amount": 5000.0
         },
         {
           "code": "(1403)",
-          "name": "Print / Newspaper / Magazine",
-          "amount": 1500.0
+          "name": "Out-of-home / print / radio / podcast",
+          "amount": 4700.0
         },
         {
           "code": "(1404)",
-          "name": "Radio / Podcast",
-          "amount": 1200.0
+          "name": "Photography / video refresh + programs & printing",
+          "amount": 10000.0
         },
         {
           "code": "(1405)",
-          "name": "Photography / Video Refresh",
+          "name": "Press events / openings",
           "amount": 5000.0
         },
         {
           "code": "(1406)",
-          "name": "Programs & Printing",
-          "amount": 5000.0
-        },
-        {
-          "code": "(1407)",
-          "name": "Press Events / Openings",
-          "amount": 5000.0
-        },
-        {
-          "code": "(1408)",
-          "name": "Group Sales Commissions",
+          "name": "Group sales commissions",
           "amount": 800.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 25500.0
+      "v7Total": 30500.0
     },
     {
       "id": "1500",
-      "name": "(1500) VENUE & TECH (WEEKLY)",
+      "name": "(1500) OPERATIONS, ADMIN & OVERHEAD (WEEKLY)",
       "items": [
         {
           "code": "(1501)",
-          "name": "Warehouse Rent ($20K/mo \u00f7 4)",
-          "amount": 5000.0
+          "name": "Producer fees \u2014 Diane + Brandon + Gina",
+          "amount": 12498.0
         },
         {
           "code": "(1502)",
-          "name": "Utilities \u2014 Electricity (HVAC for large warehouse)",
-          "amount": 1800.0
+          "name": "Director Scoville (50%) + Writer Monique (50%)",
+          "amount": 4135.0
         },
         {
           "code": "(1503)",
-          "name": "Utilities \u2014 Water / Gas / Trash",
-          "amount": 300.0
+          "name": "General Manager (50%) + Property Manager",
+          "amount": 1750.0
         },
         {
           "code": "(1504)",
-          "name": "Internet / Phone / Tech Infrastructure",
-          "amount": 200.0
+          "name": "Accounting + Legal retainer + Payroll service",
+          "amount": 1650.0
         },
         {
           "code": "(1505)",
-          "name": "Equipment Rental Continuing",
-          "amount": 400.0
+          "name": "Warehouse rent ($20K/mo \u00f7 4)",
+          "amount": 5000.0
         },
         {
           "code": "(1506)",
-          "name": "Expendables (gel, gaff, batteries, consumables)",
-          "amount": 500.0
+          "name": "Utilities \u2014 electricity, water/gas/trash, internet/phone",
+          "amount": 2300.0
         },
         {
           "code": "(1507)",
-          "name": "Pest Control / Maintenance Service",
-          "amount": 200.0
-        },
-        {
-          "code": "(1508)",
-          "name": "Credit Card / Ticketing Processing (3% GWBOR)",
-          "amount": 0.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 8400.0
-    },
-    {
-      "id": "1600",
-      "name": "(1600) GENERAL & ADMINISTRATIVE (WEEKLY)",
-      "items": [
-        {
-          "code": "(1601)",
-          "name": "Insurance Accrual (GL, participant, WC)",
+          "name": "Insurance accrual (GL + participant + WC)",
           "amount": 1500.0
         },
         {
-          "code": "(1602)",
-          "name": "Office / Supplies",
-          "amount": 300.0
-        },
-        {
-          "code": "(1603)",
-          "name": "Travel & Housing (continuing)",
-          "amount": 500.0
-        },
-        {
-          "code": "(1604)",
-          "name": "Per Diem (out-of-town creatives)",
-          "amount": 400.0
-        },
-        {
-          "code": "(1605)",
-          "name": "Storage",
-          "amount": 200.0
-        },
-        {
-          "code": "(1606)",
-          "name": "Bank Fees / Misc",
-          "amount": 150.0
-        },
-        {
-          "code": "(1607)",
-          "name": "Union Dues Administration",
-          "amount": 100.0
+          "code": "(1508)",
+          "name": "Office / travel / per diem / storage / bank / union dues",
+          "amount": 1650.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 3150.0
+      "v7Total": 30483.0
     }
   ]
 };

@@ -85,13 +85,10 @@ body {
   border-bottom: 1px solid var(--ink);
 }
 .topsheet-grid {
-  display: grid; grid-template-columns: 1fr 1.5fr; gap: 28px;
-}
-@media (max-width: 1100px) {
-  .topsheet-grid { grid-template-columns: 1fr; }
+  display: grid; grid-template-columns: 1fr; gap: 18px;
 }
 .ts-block { border-top: 2px solid var(--ink); padding-top: 10px; }
-.ts-block-wide { grid-column: 1 / -1; margin-top: 12px; }
+.ts-block-wide { grid-column: 1 / -1; margin-top: 0; } /* legacy: now no-op */
 .ts-block-head {
   display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;
 }
@@ -105,12 +102,19 @@ body {
 }
 
 .kpi-row {
-  display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 0; border: 1px solid var(--rule-strong); background: var(--paper);
 }
 @media (max-width: 700px) {
-  .kpi-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .kpi-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
+@media (max-width: 460px) {
+  .kpi-row { grid-template-columns: 1fr; }
+}
+/* Borders need adjusting when rows wrap; turn into per-cell borders */
+.kpi { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.kpi:last-child { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .kpi {
   padding: 14px 16px; border-right: 1px solid var(--rule);
   background: var(--paper);
@@ -483,3 +487,159 @@ dialog::backdrop { background: rgba(17,17,17,0.5); }
 }
 .save-form li button:hover { color: var(--red); }
 .save-form li button.load { color: var(--ink); }
+
+/* =================== CORPORATE EVENTS =================== */
+.events-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 2.2fr) repeat(3, minmax(110px, 1fr)) repeat(2, minmax(110px, 1fr));
+  gap: 1px;
+  background: var(--rule-strong);
+  border: 1px solid var(--rule-strong);
+}
+.ev-row { display: contents; }
+.ev-c {
+  background: var(--paper);
+  padding: 8px 10px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+.ev-row-head .ev-c {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--f-display);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+.ev-row-foot .ev-c {
+  background: var(--paper-dim, #ece6d6);
+  font-weight: 600;
+}
+.ev-c-name { font-family: var(--f-body); font-size: 13px; }
+.ev-c-input input,
+.ev-name-input {
+  width: 100%;
+  padding: 6px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  text-align: right;
+  border-radius: 3px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.ev-name-input {
+  text-align: left;
+  font-family: var(--f-body);
+}
+.ev-c-input input:hover,
+.ev-name-input:hover {
+  background: #fff;
+  border-color: var(--rule);
+}
+.ev-c-input input:focus,
+.ev-name-input:focus {
+  background: #fff;
+  border-color: var(--red);
+  outline: none;
+}
+.ev-c-out {
+  justify-content: flex-end;
+  font-weight: 600;
+  color: var(--ink);
+}
+.ev-c-out.computed b { color: var(--good); }
+.ev-row-foot .ev-c-out b { color: var(--ink); font-size: 14px; }
+
+#events-stats {
+  display: flex;
+  gap: 18px;
+  text-align: right;
+}
+.ev-stat {
+  border-left: 1px solid var(--rule);
+  padding-left: 14px;
+}
+.ev-stat:first-child { border-left: none; padding-left: 0; }
+.ev-stat-label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.ev-stat-val {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 2px;
+}
+.ev-stat-pos .ev-stat-val { color: var(--good); }
+
+@media (max-width: 900px) {
+  .events-grid {
+    grid-template-columns: minmax(140px, 1.6fr) repeat(2, minmax(90px, 1fr));
+    border: 1px solid var(--rule-strong);
+  }
+  .ev-row { display: contents; }
+  /* On smaller screens, drop "monthly net" column visually — still in the
+     totals, but the row layout collapses to: name, price, bookings/mo */
+  .ev-row-head .ev-c:nth-child(3),
+  .ev-row-head .ev-c:nth-child(5),
+  .ev-row .ev-c:nth-child(3),
+  .ev-row .ev-c:nth-child(5) { display: none; }
+  /* Reorder: name | price | bookings | gross net */
+  .ev-row .ev-c:nth-child(4) { grid-column: 3; }
+  .ev-row .ev-c:nth-child(6) { grid-column: 3; display: none; }
+  #events-stats { flex-direction: column; gap: 6px; }
+  .ev-stat { border-left: none; padding-left: 0; }
+}
+
+/* =================== MOBILE PASS =================== */
+@media (max-width: 900px) {
+  .masthead { padding: 14px 18px 16px; }
+  .mast-row { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .mast-title { font-size: 44px; }
+  .mast-actions { width: 100%; flex-wrap: wrap; }
+  .mast-actions .btn { flex: 1 1 auto; }
+  .topsheet { padding: 16px 16px 8px; }
+  .lab { padding: 18px 16px; gap: 28px; }
+  .panel-head { flex-direction: column; gap: 12px; }
+  .panel-stats { text-align: left; }
+  .panel-title { font-size: 24px; }
+  .ticket-matrix {
+    grid-template-columns: 110px repeat(4, minmax(0, 1fr));
+    font-size: 11px;
+  }
+  .tm-cell { padding: 6px 6px; }
+  .cat-head {
+    grid-template-columns: 32px 1fr auto;
+    gap: 8px;
+  }
+  .cat-name { font-size: 13px; }
+  .cat-total { width: 110px; font-size: 13px; }
+  .cat-grand { font-size: 13px; padding: 6px 10px; }
+}
+@media (max-width: 600px) {
+  .mast-title { font-size: 36px; }
+  .panel-title { font-size: 20px; }
+  .kpi-value { font-size: 28px; }
+  .ticket-matrix {
+    grid-template-columns: 70px repeat(4, minmax(0, 1fr));
+    font-size: 10px;
+  }
+  .tm-corner, .tm-day-name { font-size: 10px; }
+  .tm-day-shows input { width: 36px; }
+  /* Make assumption grid stack */
+  .asm-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 460px) {
+  /* Stack ticket matrix completely — each day becomes its own block */
+  .ticket-matrix { grid-template-columns: 1fr; }
+  .tm-day { padding: 8px 4px; }
+}

@@ -61,6 +61,11 @@ function freshStateFromV7() {
       penetration: f.penetration,
       cogs: f.cogs,
     })),
+    corporateEvents: {
+      types: d.corporateEvents.types.map(t => ({
+        name: t.name, price: t.price, cost: t.cost, perMonth: t.perMonth,
+      })),
+    },
     preproductionBudget: d.preproductionBudget.map(c => ({
       id: c.id, name: c.name, items: c.items, total: c.v7Total, isOverride: false, _v7: c.v7Total,
     })),
@@ -135,6 +140,20 @@ function compute() {
   const prodTotal = state.productionBudget.reduce((a, c) => a + (+c.total || 0), 0);
   const opTotal = state.weeklyOperating.reduce((a, c) => a + (+c.total || 0), 0);
 
+  // Corporate events (dark-day rentals)
+  const runWeeks = +asmGet('Performance Weeks (run)') || 0;
+  const runMonths = runWeeks / (52 / 12);  // ~4.333 weeks/month
+  let eventsMonthlyGross = 0, eventsMonthlyCost = 0;
+  for (const t of state.corporateEvents.types) {
+    const gross = (+t.price || 0) * (+t.perMonth || 0);
+    const cost = (+t.cost || 0) * (+t.perMonth || 0);
+    eventsMonthlyGross += gross;
+    eventsMonthlyCost += cost;
+  }
+  const eventsMonthlyNet = eventsMonthlyGross - eventsMonthlyCost;
+  const eventsRunGross = eventsMonthlyGross * runMonths;
+  const eventsRunNet = eventsMonthlyNet * runMonths;
+
   // Break-even: % of capacity at which combined weekly revenue covers weekly op.
   // Credit-card fees scale with ticket revenue (3% of GWBOR); rest is fixed.
   // F&B/Merch net is real revenue every show, so it offsets op cost.
@@ -162,7 +181,10 @@ function compute() {
     breakevenPct,
     contribAtCap,
     capacityPct: cap,
-    runWeeks: +asmGet('Performance Weeks (run)') || 0,
+    runWeeks,
+    runMonths,
+    eventsMonthlyGross, eventsMonthlyCost, eventsMonthlyNet,
+    eventsRunGross, eventsRunNet,
   };
 }
 
@@ -209,6 +231,18 @@ function renderTopSheet(c) {
   $('#kpi-oprun-sub').textContent = fmtInt(c.runWeeks) + '-wk run · operating';
   $('#kpi-totalcap').textContent = fmtMoney(totalCap, { compact: true });
   $('#kpi-totalcap-sub').textContent = 'Preprod + Production (capitalized)';
+
+  // Corporate Events KPI (Economics block)
+  const eventsEl = $('#kpi-events');
+  if (eventsEl) {
+    eventsEl.textContent = fmtMoney(c.eventsRunNet, { compact: true });
+    eventsEl.className = 'kpi-value ' + (c.eventsRunNet > 0 ? 'kpi-positive' : '');
+  }
+  const eventsSubEl = $('#kpi-events-sub');
+  if (eventsSubEl) {
+    const bookings = state.corporateEvents.types.reduce((a, t) => a + (+t.perMonth || 0), 0);
+    eventsSubEl.textContent = `${bookings}/mo · ${fmtInt(c.runMonths)} mo run`;
+  }
 }
 
 function renderTicketMatrix() {
@@ -406,6 +440,119 @@ const HIDDEN_ASSUMPTIONS = new Set(['of which AEA', 'of which non-union']);
 // Everything after this label in the list moves to the right column
 const ASSUMPTIONS_SPLIT_AFTER = 'Monthly Warehouse Rent';
 
+function renderEvents() {
+  const root = $('#events-grid');
+  if (!root) return;
+  root.innerHTML = '';
+
+  // Header row
+  const head = el('div', 'ev-row ev-row-head');
+  head.innerHTML = `
+    <div class="ev-c ev-c-name">Event type</div>
+    <div class="ev-c ev-c-input">Avg price / booking</div>
+    <div class="ev-c ev-c-input">Cost to run / booking</div>
+    <div class="ev-c ev-c-input">Bookings / month</div>
+    <div class="ev-c ev-c-out">Monthly gross</div>
+    <div class="ev-c ev-c-out">Monthly net</div>
+  `;
+  root.appendChild(head);
+
+  state.corporateEvents.types.forEach((t, idx) => {
+    const row = el('div', 'ev-row');
+    row.innerHTML = `
+      <div class="ev-c ev-c-name">
+        <input type="text" class="ev-name-input" value="${escapeHtml(t.name)}">
+      </div>
+      <div class="ev-c ev-c-input"><input type="text" inputmode="numeric" class="ev-price"  value="${fmtMoney(t.price)}"></div>
+      <div class="ev-c ev-c-input"><input type="text" inputmode="numeric" class="ev-cost"   value="${fmtMoney(t.cost)}"></div>
+      <div class="ev-c ev-c-input"><input type="number" min="0" step="1"  class="ev-pmonth" value="${t.perMonth}"></div>
+      <div class="ev-c ev-c-out computed ev-gross"></div>
+      <div class="ev-c ev-c-out computed ev-net"></div>
+    `;
+    const parseCurrency = s => {
+      const n = Number(String(s).replace(/[^0-9.\-]/g, ''));
+      return isFinite(n) ? n : 0;
+    };
+    const wireNum = (sel, key, parser = parseCurrency, isCurrency = true) => {
+      const input = $(sel, row);
+      input.addEventListener('focus', () => {
+        input.value = isCurrency ? String(Math.round(t[key])) : String(t[key]);
+        input.select();
+      });
+      input.addEventListener('input', () => {
+        t[key] = parser(input.value);
+        refreshAll();
+      });
+      input.addEventListener('blur', () => {
+        input.value = isCurrency ? fmtMoney(t[key]) : String(t[key]);
+      });
+    };
+    wireNum('.ev-price',  'price');
+    wireNum('.ev-cost',   'cost');
+    wireNum('.ev-pmonth', 'perMonth', s => Math.max(0, Math.round(+s || 0)), false);
+
+    $('.ev-name-input', row).addEventListener('input', e => {
+      t.name = e.target.value;
+      updateHash();
+    });
+
+    root.appendChild(row);
+  });
+
+  // Totals footer
+  const foot = el('div', 'ev-row ev-row-foot');
+  foot.innerHTML = `
+    <div class="ev-c ev-c-name"><b>Totals</b></div>
+    <div class="ev-c"></div>
+    <div class="ev-c"></div>
+    <div class="ev-c ev-c-input"><b id="ev-total-bookings">—</b><span> /mo</span></div>
+    <div class="ev-c ev-c-out computed"><b id="ev-total-gross">—</b></div>
+    <div class="ev-c ev-c-out computed"><b id="ev-total-net">—</b></div>
+  `;
+  root.appendChild(foot);
+
+  // Stats card (run-period)
+  const stats = $('#events-stats');
+  if (stats) {
+    stats.innerHTML = `
+      <div class="ev-stat">
+        <div class="ev-stat-label">Run-period gross</div>
+        <div class="ev-stat-val" id="ev-stat-gross">—</div>
+      </div>
+      <div class="ev-stat ev-stat-pos">
+        <div class="ev-stat-label">Run-period net</div>
+        <div class="ev-stat-val" id="ev-stat-net">—</div>
+      </div>
+    `;
+  }
+
+  refreshEventsComputed(compute());
+}
+
+function refreshEventsComputed(c) {
+  const root = $('#events-grid');
+  if (!root) return;
+  const rows = $$('.ev-row:not(.ev-row-head):not(.ev-row-foot)', root);
+  state.corporateEvents.types.forEach((t, idx) => {
+    const row = rows[idx]; if (!row) return;
+    const gross = (+t.price || 0) * (+t.perMonth || 0);
+    const cost = (+t.cost || 0) * (+t.perMonth || 0);
+    const net = gross - cost;
+    $('.ev-gross', row).innerHTML = `<b>${fmtMoney(gross)}</b>`;
+    $('.ev-net', row).innerHTML = `<b>${fmtMoney(net)}</b>`;
+  });
+  const tb = $('#ev-total-bookings');
+  if (tb) tb.textContent = fmtInt(state.corporateEvents.types.reduce((a, t) => a + (+t.perMonth || 0), 0));
+  const tg = $('#ev-total-gross');
+  if (tg) tg.textContent = fmtMoney(c.eventsMonthlyGross);
+  const tn = $('#ev-total-net');
+  if (tn) tn.textContent = fmtMoney(c.eventsMonthlyNet);
+  const sg = $('#ev-stat-gross');
+  if (sg) sg.textContent = fmtMoney(c.eventsRunGross, { compact: true });
+  const sn = $('#ev-stat-net');
+  if (sn) sn.textContent = fmtMoney(c.eventsRunNet, { compact: true });
+}
+
 function renderAssumptions() {
   const left = $('#asm-left');
   const right = $('#asm-right');
@@ -549,6 +696,7 @@ function rerender() {
   renderTopSheet(compute());
   renderTicketMatrix();
   renderFnb();
+  renderEvents();
   renderAssumptions();
   renderCategoryList(state.preproductionBudget, '#prepro-list', '#prepro-grand');
   renderCategoryList(state.productionBudget, '#prod-list', '#prod-grand');
@@ -563,6 +711,7 @@ function refreshAll() {
   renderTopSheet(c);
   // Refresh F&B computed cells live (they depend on weekly capacity)
   refreshFnbComputed(c);
+  refreshEventsComputed(c);
   refreshGrand(state.preproductionBudget, '#prepro-grand');
   refreshGrand(state.productionBudget, '#prod-grand');
   refreshGrand(state.weeklyOperating, '#ops-grand');
@@ -605,6 +754,10 @@ function updateHash() {
   const v7fnb = v7.fnb.map(f => [f.perCap, f.penetration, f.cogs]);
   if (JSON.stringify(fnb) !== JSON.stringify(v7fnb)) diff.f = fnb;
 
+  const ev = state.corporateEvents.types.map(t => [t.name, t.price, t.cost, t.perMonth]);
+  const v7ev = v7.corporateEvents.types.map(t => [t.name, t.price, t.cost, t.perMonth]);
+  if (JSON.stringify(ev) !== JSON.stringify(v7ev)) diff.e = ev;
+
   const preproOv = {}, prodOv = {}, opsOv = {};
   state.preproductionBudget.forEach(c => { if (c.isOverride) preproOv[c.id] = c.total; });
   state.productionBudget.forEach(c => { if (c.isOverride) prodOv[c.id] = c.total; });
@@ -641,6 +794,16 @@ function loadFromHash() {
           state.fnb[i].perCap = row[0];
           state.fnb[i].penetration = row[1];
           state.fnb[i].cogs = row[2];
+        }
+      });
+    }
+    if (d.e) {
+      d.e.forEach((row, i) => {
+        if (state.corporateEvents.types[i]) {
+          state.corporateEvents.types[i].name = row[0];
+          state.corporateEvents.types[i].price = row[1];
+          state.corporateEvents.types[i].cost = row[2];
+          state.corporateEvents.types[i].perMonth = row[3];
         }
       });
     }
