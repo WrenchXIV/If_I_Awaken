@@ -280,1096 +280,440 @@ window.V7_DEFAULTS = {
   "productionBudget": [
     {
       "id": "100",
-      "name": "(100) PHYSICAL",
+      "name": "(100) SCENIC, COSTUME & PROPS",
       "items": [
         {
           "code": "(101)",
-          "name": "Scenery \u2014 Spaces 2/3/4/5 (neighborhood builds)",
+          "name": "Scenery \u2014 Spaces 2/3/4/5 (4 neighborhood builds)",
           "amount": 750000.0
         },
         {
-          "code": "(101a)",
-          "name": "Scenery \u2014 Space 1 (LED lobby/intro)",
+          "code": "(102)",
+          "name": "Scenery \u2014 Space 1 (LED lobby / intro corridor)",
           "amount": 35000.0
         },
         {
-          "code": "(101b)",
+          "code": "(103)",
           "name": "Scenery \u2014 Space 6 (concert stage + seating)",
           "amount": 125000.0
         },
         {
-          "code": "(101c)",
-          "name": "Lobby Bar \u2014 Build, Equipment, POS, Inventory",
-          "amount": 45000.0
+          "code": "(104)",
+          "name": "Lobby buildouts \u2014 Bar / Gift Shop / Box Office",
+          "amount": 77000.0
         },
         {
-          "code": "(101d)",
-          "name": "Lobby Gift Shop \u2014 Fixtures, Display, POS, Initial Inventory",
-          "amount": 20000.0
-        },
-        {
-          "code": "(101e)",
-          "name": "Lobby Box Office \u2014 Counter, Ticketing Hardware, Display",
-          "amount": 12000.0
-        },
-        {
-          "code": "(102)",
+          "code": "(105)",
           "name": "Automation / Moving Scenic Elements",
           "amount": 25000.0
         },
         {
-          "code": "(103)",
-          "name": "Costumes \u2014 Performers (25 total cast)",
-          "amount": 50000.0
-        },
-        {
-          "code": "(104)",
-          "name": "Understudy Costumes",
-          "amount": 8000.0
-        },
-        {
-          "code": "(104a)",
-          "name": "Wardrobe Perishables",
-          "amount": 4500.0
-        },
-        {
-          "code": "(105)",
-          "name": "Costume Maintenance (pre-show)",
-          "amount": 3000.0
-        },
-        {
-          "code": "(105a)",
-          "name": "Wardrobe Maintenance Reserve (pre-opening repairs)",
-          "amount": 8000.0
-        },
-        {
           "code": "(106)",
-          "name": "Electrics Purchase (premium install \u2014 6 spaces)",
-          "amount": 200000.0
+          "name": "Costumes \u2014 25 cast + understudies + maintenance reserves",
+          "amount": 73500.0
         },
         {
           "code": "(107)",
-          "name": "Electrics Rental (Tech)",
-          "amount": 22000.0
-        },
-        {
-          "code": "(108)",
-          "name": "Sound Purchase (spatial audio install \u2014 7 spaces)",
-          "amount": 150000.0
-        },
-        {
-          "code": "(109)",
-          "name": "Sound Rental (Tech)",
-          "amount": 15000.0
-        },
-        {
-          "code": "(110)",
-          "name": "Props / Furniture (6 spaces)",
-          "amount": 140000.0
-        },
-        {
-          "code": "(111)",
-          "name": "Special Effects (haze, fog, atmospherics)",
-          "amount": 15000.0
-        },
-        {
-          "code": "(112)",
-          "name": "Projections Equipment (non-LED)",
-          "amount": 30000.0
-        },
-        {
-          "code": "(113)",
-          "name": "LED Wall \u2014 Purchase (110 ft x 14 ft)",
-          "amount": 460000.0
-        },
-        {
-          "code": "(113a)",
-          "name": "LED Media Servers / Playback Infrastructure",
-          "amount": 55000.0
-        },
-        {
-          "code": "(113b)",
-          "name": "LED Content Creation / Video Production",
-          "amount": 75000.0
-        },
-        {
-          "code": "(113c)",
-          "name": "Immersive Tech Development \u2014 photo-mosaic capture, real-time engine, LED integration, spare rig",
-          "amount": 450000.0
-        },
-        {
-          "code": "(114)",
           "name": "Hair / Wigs / Makeup",
           "amount": 12000.0
         },
         {
-          "code": "(115)",
-          "name": "Designer Expenses (materials, mock-ups, travel)",
-          "amount": 22000.0
+          "code": "(108)",
+          "name": "Props / Furniture (7 spaces)",
+          "amount": 140000.0
         },
         {
-          "code": "(116)",
-          "name": "Departmental Expenses / Hardware",
-          "amount": 8000.0
+          "code": "(109)",
+          "name": "Special Effects (haze, fog, atmospherics)",
+          "amount": 15000.0
         },
         {
-          "code": "(117)",
+          "code": "(110)",
           "name": "Carting / Trucking / Storage",
           "amount": 18000.0
         },
         {
-          "code": "(118)",
-          "name": "Venue Permitting & Occupancy Buildout",
-          "amount": 30000.0
+          "code": "(111)",
+          "name": "Scenic / Props / SFX Designers (lead + assistants)",
+          "amount": 54000.0
         },
         {
-          "code": "(119)",
-          "name": "Security Infrastructure (cameras, access, install, training)",
-          "amount": 85000.0
+          "code": "(112)",
+          "name": "Costume + Hair/Makeup Designers (lead + assistants)",
+          "amount": 31500.0
         },
         {
-          "code": "(120)",
-          "name": "Exterior Wall Paint/Mural Wrap (front \u2014 ~3,820 sq ft)",
-          "amount": 75000.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 2947500.0
-    },
-    {
-      "id": "200",
-      "name": "(200) FIXED FEES",
-      "items": [
-        {
-          "code": "(201)",
-          "name": "Author / Book Writer (includes 50% of run-period salary)",
-          "amount": 110000.0
-        },
-        {
-          "code": "(203)",
-          "name": "Director \u2014 Andrew Scoville (includes 50% of run-period salary)",
-          "amount": 125000.0
-        },
-        {
-          "code": "(204)",
-          "name": "Assistant Director",
-          "amount": 12000.0
-        },
-        {
-          "code": "(205)",
-          "name": "Choreographer",
-          "amount": 20000.0
-        },
-        {
-          "code": "(206)",
-          "name": "Assistant Choreographer",
-          "amount": 8000.0
-        },
-        {
-          "code": "(207)",
-          "name": "Scenic Designer (6 environments)",
-          "amount": 28000.0
-        },
-        {
-          "code": "(208)",
-          "name": "Assistant Scenic Designer",
-          "amount": 9000.0
-        },
-        {
-          "code": "(209)",
-          "name": "Costume Designer",
-          "amount": 18000.0
-        },
-        {
-          "code": "(210)",
-          "name": "Assistant Costume Designer",
-          "amount": 6000.0
-        },
-        {
-          "code": "(211)",
-          "name": "Lighting Designer (premium \u2014 lead design across 6 spaces)",
-          "amount": 45000.0
-        },
-        {
-          "code": "(211a)",
-          "name": "Associate Lighting Designer",
-          "amount": 22000.0
-        },
-        {
-          "code": "(212)",
-          "name": "Assistant Lighting Designer",
-          "amount": 12000.0
-        },
-        {
-          "code": "(213)",
-          "name": "Sound Designer (spatial audio, 6 spaces)",
-          "amount": 22000.0
-        },
-        {
-          "code": "(214)",
-          "name": "Assistant Sound Designer",
-          "amount": 7000.0
-        },
-        {
-          "code": "(217)",
-          "name": "Projections / Video Designer (LED content + projection + photo-mosaic)",
-          "amount": 50000.0
-        },
-        {
-          "code": "(218)",
-          "name": "Assistant Projections Designer",
-          "amount": 8000.0
-        },
-        {
-          "code": "(215)",
-          "name": "Props Designer",
-          "amount": 9000.0
-        },
-        {
-          "code": "(216)",
-          "name": "Prop Shopper / Buyer",
-          "amount": 4000.0
-        },
-        {
-          "code": "(219)",
-          "name": "Hair / Makeup Designer",
-          "amount": 5000.0
-        },
-        {
-          "code": "(220)",
-          "name": "Assistant Hair / Makeup Designer",
-          "amount": 2500.0
-        },
-        {
-          "code": "(221)",
-          "name": "Fight Director",
-          "amount": 2500.0
-        },
-        {
-          "code": "(222)",
-          "name": "Intimacy Coordinator",
-          "amount": 3500.0
-        },
-        {
-          "code": "(223)",
-          "name": "Special Effects Designer",
-          "amount": 3500.0
-        },
-        {
-          "code": "(224)",
-          "name": "Orchestrator / Arranger (re-orch Hodge score for 5-pc)",
-          "amount": 20000.0
-        },
-        {
-          "code": "(225)",
-          "name": "Copyist",
-          "amount": 5000.0
-        },
-        {
-          "code": "(226)",
-          "name": "Music Director (pre-pro portion)",
-          "amount": 5000.0
-        },
-        {
-          "code": "(227)",
-          "name": "Vocal Director",
-          "amount": 3500.0
-        },
-        {
-          "code": "(228)",
-          "name": "Dialect / Language Coach",
-          "amount": 3000.0
-        },
-        {
-          "code": "(229)",
-          "name": "Executive Producer",
-          "amount": 20000.0
-        },
-        {
-          "code": "(229a)",
-          "name": "Producer \u2014 Gina",
-          "amount": 50000.0
-        },
-        {
-          "code": "(230)",
-          "name": "General Management \u2014 Chinapen (includes 50% of run-period weekly fee)",
-          "amount": 105000.0
-        },
-        {
-          "code": "(230a)",
-          "name": "Property Manager (pre-opening)",
-          "amount": 20000.0
-        },
-        {
-          "code": "(231)",
-          "name": "Production Manager",
-          "amount": 25000.0
-        },
-        {
-          "code": "(232)",
-          "name": "Technical Director (7-environment immersive build)",
-          "amount": 40000.0
-        },
-        {
-          "code": "(233)",
-          "name": "Master Electrician (pre-pro)",
-          "amount": 3500.0
-        },
-        {
-          "code": "(234)",
-          "name": "Casting Director",
+          "code": "(113)",
+          "name": "Designer expenses + departmental hardware (scenic share)",
           "amount": 15000.0
         },
         {
-          "code": "(235)",
-          "name": "Press Agent (startup)",
-          "amount": 8000.0
+          "code": "(114)",
+          "name": "Scenic / costume / props load-in, preview & load-out labor",
+          "amount": 42600.0
         },
         {
-          "code": "(236)",
-          "name": "Advertising Agency Startup",
-          "amount": 7500.0
-        },
-        {
-          "code": "(237)",
-          "name": "Marketing / Social Media Startup",
-          "amount": 10000.0
-        },
-        {
-          "code": "(238)",
-          "name": "SDC Pension 4.5% (on Director + Chor fees)",
-          "amount": 7425.0
-        },
-        {
-          "code": "(239)",
-          "name": "SDC Health (4 positions \u00d7 8 wks \u00d7 $187)",
-          "amount": 5984.0
-        },
-        {
-          "code": "(240)",
-          "name": "USA Health 13% (on designer fees)",
-          "amount": 26260.0
-        },
-        {
-          "code": "(241)",
-          "name": "USA Pension 9% (on designer fees)",
-          "amount": 18180.0
-        },
-        {
-          "code": "(242)",
-          "name": "USA Benefits 25% (on designer fees)",
-          "amount": 50500.0
-        },
-        {
-          "code": "(243)",
-          "name": "Payroll Taxes 18% (on W-2 creative fees)",
-          "amount": 78030.0
+          "code": "(115)",
+          "name": "USA designer benefits & payroll taxes (scenic share)",
+          "amount": 32000.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 1058879.0
+      "v7Total": 1445600.0
+    },
+    {
+      "id": "200",
+      "name": "(200) LED, SOUND, LIGHTING & IMMERSIVE TECH",
+      "items": [
+        {
+          "code": "(201)",
+          "name": "LED Wall \u2014 Purchase (110 ft \u00d7 14 ft)",
+          "amount": 460000.0
+        },
+        {
+          "code": "(202)",
+          "name": "LED Media Servers / Playback Infrastructure",
+          "amount": 55000.0
+        },
+        {
+          "code": "(203)",
+          "name": "LED Content Creation / Video Production",
+          "amount": 75000.0
+        },
+        {
+          "code": "(204)",
+          "name": "Immersive Tech Development \u2014 photo-mosaic capture, real-time engine, LED integration, spare/redundant rig",
+          "amount": 450000.0
+        },
+        {
+          "code": "(205)",
+          "name": "Electrics \u2014 Purchase (premium install \u00b7 7 spaces)",
+          "amount": 200000.0
+        },
+        {
+          "code": "(206)",
+          "name": "Electrics \u2014 Rental (Tech)",
+          "amount": 22000.0
+        },
+        {
+          "code": "(207)",
+          "name": "Sound \u2014 Purchase (spatial audio install \u00b7 7 spaces)",
+          "amount": 150000.0
+        },
+        {
+          "code": "(208)",
+          "name": "Sound \u2014 Rental (Tech)",
+          "amount": 15000.0
+        },
+        {
+          "code": "(209)",
+          "name": "Projections Equipment (non-LED)",
+          "amount": 30000.0
+        },
+        {
+          "code": "(210)",
+          "name": "Lighting Designer team (lead + associate + assistant)",
+          "amount": 79000.0
+        },
+        {
+          "code": "(211)",
+          "name": "Sound Designer team (lead + assistant)",
+          "amount": 29000.0
+        },
+        {
+          "code": "(212)",
+          "name": "Projections / Video Designer team (lead + assistant)",
+          "amount": 58000.0
+        },
+        {
+          "code": "(213)",
+          "name": "Master Electrician (pre-production)",
+          "amount": 3500.0
+        },
+        {
+          "code": "(214)",
+          "name": "Tech crew during rehearsal/tech/preview (board ops, programmers, engineers)",
+          "amount": 27200.0
+        },
+        {
+          "code": "(215)",
+          "name": "Tech load-in / preview / load-out labor (electrics, sound, LED, video)",
+          "amount": 58500.0
+        },
+        {
+          "code": "(216)",
+          "name": "Tech shop prep (electrics, audio)",
+          "amount": 8400.0
+        },
+        {
+          "code": "(217)",
+          "name": "Designer expenses + departmental hardware (tech share)",
+          "amount": 15000.0
+        },
+        {
+          "code": "(218)",
+          "name": "USA designer benefits & payroll taxes (tech share)",
+          "amount": 63000.0
+        }
+      ],
+      "v7Total": 1798600.0
     },
     {
       "id": "300",
-      "name": "(300) SALARIES \u2014 REHEARSAL / TECH / PREVIEW (2+2+2 wks)",
+      "name": "(300) CAST, MUSIC & STAGE MANAGEMENT",
       "items": [
         {
           "code": "(301)",
-          "name": "Stars",
-          "amount": 0.0
+          "name": "Performers \u2014 AEA + non-union poets/dancers (25 cast) incl. tech bumps & dance captain premium",
+          "amount": 151100.0
         },
         {
           "code": "(302)",
-          "name": "Principals \u2014 AEA (6 \u00d7 4 wks)",
-          "amount": 38400.0
-        },
-        {
-          "code": "(302a)",
-          "name": "Principals \u2014 Non-union Poets (9 \u00d7 4 wks)",
-          "amount": 50400.0
-        },
-        {
-          "code": "(302b)",
-          "name": "Dancers \u2014 Non-union (5 \u00d7 4 wks)",
-          "amount": 26000.0
+          "name": "Stage Manager team \u2014 PSM + 2 ASMs through rehearsal / tech / preview",
+          "amount": 34080.0
         },
         {
           "code": "(303)",
-          "name": "Dance Captain premium (4 wks \u00d7 18%)",
-          "amount": 936.0
-        },
-        {
-          "code": "(304)",
-          "name": "Swings / Understudies (4 \u00d7 4 wks)",
-          "amount": 22400.0
-        },
-        {
-          "code": "(305)",
-          "name": "Stage Manager (PSM, AEA) \u2014 4 wks",
-          "amount": 7600.0
-        },
-        {
-          "code": "(305.5)",
-          "name": "PSM Pre-Production Prep",
-          "amount": 1900.0
-        },
-        {
-          "code": "(305.6)",
-          "name": "PSM Tech Bump (2 wks \u00d7 33%)",
-          "amount": 1260.0
-        },
-        {
-          "code": "(306)",
-          "name": "Assistant Stage Managers (AEA, 2 \u00d7 4 wks)",
-          "amount": 14000.0
-        },
-        {
-          "code": "(306.6)",
-          "name": "ASM Tech Bumps (2 \u00d7 2 wks \u00d7 33%)",
-          "amount": 2320.0
-        },
-        {
-          "code": "(306.8)",
-          "name": "ASM Previews (2 \u00d7 2 wks)",
-          "amount": 7000.0
-        },
-        {
-          "code": "(307)",
-          "name": "Actor 10/12 Tech Bumps (25 \u00d7 2 wks)",
-          "amount": 13000.0
-        },
-        {
-          "code": "(308)",
           "name": "Production Assistants (2 \u00d7 4 wks)",
           "amount": 6400.0
         },
         {
-          "code": "(308a)",
-          "name": "Music Director (rehearsal+tech, 4 wks)",
-          "amount": 6800.0
+          "code": "(304)",
+          "name": "Musicians \u2014 5 AFM + hourly rehearsal + synth programmer + audition pianist",
+          "amount": 35400.0
         },
         {
-          "code": "(308b)",
-          "name": "Musicians \u2014 AFM (5 \u00d7 4 wks: tech+preview)",
-          "amount": 22000.0
+          "code": "(305)",
+          "name": "Music & vocal direction (Orchestrator, Copyist, MD, Vocal Dir, Dialect Coach)",
+          "amount": 43300.0
         },
         {
-          "code": "(308c)",
-          "name": "Musicians Hourly Rehearsal Calls",
-          "amount": 1900.0
+          "code": "(306)",
+          "name": "Choreographer + Assistant Choreographer",
+          "amount": 28000.0
         },
         {
-          "code": "(309)",
-          "name": "Musician Contractor Fee",
-          "amount": 3000.0
-        },
-        {
-          "code": "(311)",
-          "name": "Musicians \u2014 Synth Programmer",
-          "amount": 4500.0
-        },
-        {
-          "code": "(312)",
-          "name": "Audition / Rehearsal Pianist",
-          "amount": 4000.0
-        },
-        {
-          "code": "(313)",
-          "name": "Lighting Board Op (tech/preview hrs)",
-          "amount": 2700.0
-        },
-        {
-          "code": "(314)",
-          "name": "Lighting Programmer (premium \u2014 6 spaces)",
-          "amount": 9000.0
-        },
-        {
-          "code": "(315)",
-          "name": "LED Wall / Media Server Programmer",
-          "amount": 5100.0
-        },
-        {
-          "code": "(317)",
-          "name": "Sound Crew / A1 (tech+preview)",
-          "amount": 5600.0
-        },
-        {
-          "code": "(319)",
-          "name": "Props Crew (tech+preview)",
-          "amount": 4000.0
-        },
-        {
-          "code": "(320)",
-          "name": "Wardrobe Supervisor (tech+preview)",
-          "amount": 4400.0
-        },
-        {
-          "code": "(321)",
-          "name": "Dressers (2 \u00d7 4 wks)",
-          "amount": 7200.0
-        },
-        {
-          "code": "(322)",
-          "name": "Audio Engineer (Head A2)",
-          "amount": 4800.0
-        },
-        {
-          "code": "(323)",
-          "name": "General Manager (weekly retainer, 6 wks pre-open)",
-          "amount": 15000.0
-        },
-        {
-          "code": "(324)",
-          "name": "Company / House Manager (6 wks pre-open)",
-          "amount": 8400.0
-        },
-        {
-          "code": "(325)",
-          "name": "Tour Guide / Wrangler Training (3 \u00d7 2 wks)",
-          "amount": 5400.0
-        },
-        {
-          "code": "(325a)",
-          "name": "Tour Guide Hire & Onboarding (~20 guides recruited + trained)",
-          "amount": 45000.0
-        },
-        {
-          "code": "(326)",
-          "name": "AEA Overtime Contingency",
-          "amount": 5000.0
-        },
-        {
-          "code": "(327)",
-          "name": "AFM Overtime Contingency",
-          "amount": 3000.0
-        },
-        {
-          "code": "(328)",
-          "name": "Crew Overtime Contingency",
-          "amount": 5000.0
-        },
-        {
-          "code": "(329)",
-          "name": "AEA SM Health (3 SMs \u00d7 5 wks \u00d7 $190)",
-          "amount": 2850.0
-        },
-        {
-          "code": "(331)",
-          "name": "AEA Actor Health (8 AEA \u00d7 4 wks \u00d7 $190)",
-          "amount": 6080.0
-        },
-        {
-          "code": "(332)",
-          "name": "AEA Pension 8% (on AEA salaries)",
-          "amount": 7590.4
-        },
-        {
-          "code": "(333)",
-          "name": "AEA New Media 1.5% (on AEA salaries)",
-          "amount": 1423.2
-        },
-        {
-          "code": "(333a)",
-          "name": "AFM Pension + H&W ~15% (on musicians)",
-          "amount": 3585.0
-        },
-        {
-          "code": "(334)",
-          "name": "Payroll Taxes 18% (on W-2 salaries)",
-          "amount": 54974.88
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 439919.48
-    },
-    {
-      "id": "400",
-      "name": "(400) CASTING / REHEARSAL EXPENSES",
-      "items": [
-        {
-          "code": "(401)",
-          "name": "Audition Space Rental (40 sessions \u00d7 $125)",
-          "amount": 5000.0
-        },
-        {
-          "code": "(402)",
-          "name": "Rehearsal Space Rental (LA \u2014 2 wks)",
-          "amount": 9000.0
-        },
-        {
-          "code": "(402a)",
-          "name": "Multi-City Audition Expansion (NYC + LA, callbacks, travel)",
-          "amount": 30000.0
-        },
-        {
-          "code": "(403)",
-          "name": "Scripts / Scores / Design Blueprints",
-          "amount": 3500.0
-        },
-        {
-          "code": "(404)",
-          "name": "Stage Manager Kit / Expenses",
-          "amount": 1500.0
-        },
-        {
-          "code": "(405)",
-          "name": "Rehearsal Scenery & Mock-ups",
-          "amount": 12000.0
-        },
-        {
-          "code": "(406)",
-          "name": "Rehearsal Costumes / Shoes",
-          "amount": 4500.0
-        },
-        {
-          "code": "(407)",
-          "name": "Rehearsal Lighting / Sound",
-          "amount": 3500.0
-        },
-        {
-          "code": "(408)",
-          "name": "Rehearsal Props",
+          "code": "(307)",
+          "name": "Fight Director + Intimacy Coordinator",
           "amount": 6000.0
         },
         {
+          "code": "(308)",
+          "name": "Tour Guides \u2014 hire + onboarding + training (~20 guides)",
+          "amount": 50400.0
+        },
+        {
+          "code": "(309)",
+          "name": "Casting Director + multi-city audition (NYC + LA, callbacks, travel, expenses)",
+          "amount": 63500.0
+        },
+        {
+          "code": "(310)",
+          "name": "Rehearsal spaces, mock-ups, materials & hospitality",
+          "amount": 44000.0
+        },
+        {
+          "code": "(311)",
+          "name": "Music expenses (arrangements, copying, studio, instruments, AFM prep)",
+          "amount": 51400.0
+        },
+        {
+          "code": "(312)",
+          "name": "Overtime contingencies (AEA + AFM + crew)",
+          "amount": 13000.0
+        },
+        {
+          "code": "(313)",
+          "name": "Cast & musician union benefits, pension & payroll taxes (AEA, AFM, taxes)",
+          "amount": 78500.0
+        }
+      ],
+      "v7Total": 605080.0
+    },
+    {
+      "id": "400",
+      "name": "(400) CREATIVE LEADERSHIP & PRODUCTION MANAGEMENT",
+      "items": [
+        {
+          "code": "(401)",
+          "name": "Author / Book Writer (incl. 50% of run-period salary)",
+          "amount": 110000.0
+        },
+        {
+          "code": "(402)",
+          "name": "Director \u2014 Andrew Scoville (incl. 50% of run-period salary)",
+          "amount": 125000.0
+        },
+        {
+          "code": "(403)",
+          "name": "Assistant Director",
+          "amount": 12000.0
+        },
+        {
+          "code": "(404)",
+          "name": "Executive Producer + Producer (Gina)",
+          "amount": 70000.0
+        },
+        {
+          "code": "(405)",
+          "name": "General Manager \u2014 Chinapen (incl. 50% of run-period weekly)",
+          "amount": 105000.0
+        },
+        {
+          "code": "(406)",
+          "name": "Property Manager (pre-opening)",
+          "amount": 20000.0
+        },
+        {
+          "code": "(407)",
+          "name": "Production Manager",
+          "amount": 25000.0
+        },
+        {
+          "code": "(408)",
+          "name": "Technical Director (7-environment immersive build)",
+          "amount": 40000.0
+        },
+        {
           "code": "(409)",
-          "name": "Casting Expenses (readers, sides, sessions)",
-          "amount": 3500.0
+          "name": "GM + House Manager \u2014 pre-opening weekly retainers",
+          "amount": 23400.0
         },
         {
           "code": "(410)",
-          "name": "Hospitality / Crafty / Meals",
-          "amount": 5000.0
+          "name": "Director / Choreographer SDC benefits + Payroll taxes on creative fees",
+          "amount": 94400.0
+        },
+        {
+          "code": "(411)",
+          "name": "Developmental \u2014 design workshops, site-specific R&D, community engagement",
+          "amount": 75000.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 83500.0
+      "v7Total": 699800.0
     },
     {
       "id": "500",
-      "name": "(500) MUSIC EXPENSES",
+      "name": "(500) MARKETING, SALES & AUDIENCE TECH",
       "items": [
         {
           "code": "(501)",
-          "name": "Orchestrations \u2014 NEW (Hodge score already composed, rights owned)",
-          "amount": 0.0
-        },
-        {
-          "code": "(501a)",
-          "name": "Re-orchestration for 5-piece band (adaptation)",
-          "amount": 18000.0
+          "name": "Marketing creative production (key art, photography, B-roll, signage, printing, OOH)",
+          "amount": 274500.0
         },
         {
           "code": "(502)",
-          "name": "Vocal Arrangements",
-          "amount": 4000.0
+          "name": "Marketing fees & retainers (Marketing Director, Press Agent, Ad Agency, Social startup)",
+          "amount": 55500.0
         },
         {
           "code": "(503)",
-          "name": "Dance / Incidental Arrangements",
-          "amount": 3500.0
+          "name": "Press events + Press Agent expenses",
+          "amount": 27000.0
         },
         {
           "code": "(504)",
-          "name": "Music Copying",
-          "amount": 6500.0
-        },
-        {
-          "code": "(505)",
-          "name": "Music Maintenance",
-          "amount": 2500.0
-        },
-        {
-          "code": "(506)",
-          "name": "Synth Programming / Patch Purchase",
-          "amount": 4000.0
-        },
-        {
-          "code": "(507)",
-          "name": "Studio Rental for Music Rehearsal",
-          "amount": 2400.0
-        },
-        {
-          "code": "(508)",
-          "name": "Instruments \u2014 Purchase / Rental",
-          "amount": 6500.0
-        },
-        {
-          "code": "(509)",
-          "name": "Music Lessons / Coaching",
-          "amount": 1500.0
-        },
-        {
-          "code": "(511)",
-          "name": "AFM Music Prep Health & Welfare",
-          "amount": 2500.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 51400.0
-    },
-    {
-      "id": "600",
-      "name": "(600) ADVERTISING & PROMOTION (Pre-Opening) \u2014 +50%",
-      "items": [
-        {
-          "code": "(601)",
-          "name": "Design / Creative Production (print + digital)",
-          "amount": 52500.0
-        },
-        {
-          "code": "(602)",
-          "name": "Photography (key art, production stills)",
-          "amount": 33000.0
-        },
-        {
-          "code": "(603)",
-          "name": "B-Roll / Video Production (trailer, social)",
-          "amount": 67500.0
-        },
-        {
-          "code": "(604)",
-          "name": "Front of House Signage / Banners / Street Art",
-          "amount": 48000.0
-        },
-        {
-          "code": "(605)",
-          "name": "Website Build & Maintenance (14-mo run)",
-          "amount": 27000.0
-        },
-        {
-          "code": "(606)",
-          "name": "Printing (programs, flyers)",
-          "amount": 18000.0
-        },
-        {
-          "code": "(607)",
-          "name": "Art Production (outdoor, transit)",
-          "amount": 37500.0
-        },
-        {
-          "code": "(608)",
-          "name": "Key Art / Logo Design",
-          "amount": 18000.0
-        },
-        {
-          "code": "(609)",
-          "name": "Radio / TV / Podcast Production",
-          "amount": 30000.0
-        },
-        {
-          "code": "(610)",
-          "name": "Group Sales / Tourism Partner Outreach",
-          "amount": 22500.0
-        },
-        {
-          "code": "(611)",
-          "name": "Press Agent Expenses / Press Events",
-          "amount": 27000.0
-        },
-        {
-          "code": "(612)",
-          "name": "Marketing Director Fee (pre-opening)",
-          "amount": 30000.0
-        },
-        {
-          "code": "(613)",
           "name": "Opening Night Event",
           "amount": 67500.0
         },
         {
-          "code": "(614)",
-          "name": "Community Partner Outreach (LA neighborhood orgs)",
-          "amount": 37500.0
+          "code": "(505)",
+          "name": "Community + group sales outreach (tourism, neighborhoods, educational materials)",
+          "amount": 72000.0
         },
         {
-          "code": "(615)",
-          "name": "Educational / Discussion Guide Materials",
-          "amount": 12000.0
+          "code": "(506)",
+          "name": "Website + digital platforms (14-mo run)",
+          "amount": 27000.0
         },
         {
-          "code": "(616)",
-          "name": "Ad Spend \u2014 Pre-Opening (digital, OOH, print)",
+          "code": "(507)",
+          "name": "Radio / TV / podcast production",
+          "amount": 30000.0
+        },
+        {
+          "code": "(508)",
+          "name": "Ad Spend \u2014 pre-opening (digital, OOH, print)",
           "amount": 247500.0
+        },
+        {
+          "code": "(509)",
+          "name": "Ticketing platform setup + CRM integration",
+          "amount": 30000.0
+        },
+        {
+          "code": "(510)",
+          "name": "Exterior wall paint / mural wrap (marquee branding \u00b7 ~3,820 sq ft)",
+          "amount": 75000.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 775500.0
+      "v7Total": 906000.0
     },
     {
-      "id": "700",
-      "name": "(700) VENUE & TECH (Load-In / Tech Labor)",
+      "id": "600",
+      "name": "(600) OPERATIONS, BONDS & CONTINGENCY",
       "items": [
         {
-          "code": "(701)",
-          "name": "Warehouse Rent \u2014 Pre-Opening (2 months)",
-          "amount": 40000.0
+          "code": "(601)",
+          "name": "Warehouse rent, utilities & production tech supervision (pre-opening)",
+          "amount": 71000.0
         },
         {
-          "code": "(702)",
-          "name": "Utilities Pre-Opening (HVAC, power \u2014 large warehouse)",
-          "amount": 13000.0
+          "code": "(602)",
+          "name": "Permitting, accessibility & security infrastructure",
+          "amount": 135000.0
         },
         {
-          "code": "(703)",
-          "name": "Production Technical Supervisor (flat)",
-          "amount": 18000.0
+          "code": "(603)",
+          "name": "Producer/GM offices + accounting + legal + payroll service",
+          "amount": 74700.0
         },
         {
-          "code": "(708)",
-          "name": "Shop Prep \u2014 Scenic (crew hrs)",
-          "amount": 6720.0
-        },
-        {
-          "code": "(709)",
-          "name": "Shop Prep \u2014 Electrics",
-          "amount": 5040.0
-        },
-        {
-          "code": "(710)",
-          "name": "Shop Prep \u2014 Audio",
-          "amount": 3360.0
-        },
-        {
-          "code": "(711)",
-          "name": "Production Labor \u2014 Scenic Load-In (3 wks)",
-          "amount": 20160.0
-        },
-        {
-          "code": "(712)",
-          "name": "Production Labor \u2014 Electrics Load-In (premium install)",
-          "amount": 15360.0
-        },
-        {
-          "code": "(713)",
-          "name": "Production Labor \u2014 Audio Load-In",
-          "amount": 6720.0
-        },
-        {
-          "code": "(714)",
-          "name": "Production Labor \u2014 LED Wall Install (specialty)",
-          "amount": 10200.0
-        },
-        {
-          "code": "(715)",
-          "name": "Preview Labor \u2014 Scenic touch-ups (2 wks)",
-          "amount": 3360.0
-        },
-        {
-          "code": "(716)",
-          "name": "Preview Labor \u2014 Costume",
-          "amount": 2280.0
-        },
-        {
-          "code": "(717)",
-          "name": "Preview Labor \u2014 Lighting",
-          "amount": 4800.0
-        },
-        {
-          "code": "(718)",
-          "name": "Preview Labor \u2014 Sound",
-          "amount": 2880.0
-        },
-        {
-          "code": "(719)",
-          "name": "Load-Out \u2014 Scenic (end of run)",
-          "amount": 10080.0
-        },
-        {
-          "code": "(720)",
-          "name": "Load-Out \u2014 Electrics",
-          "amount": 5760.0
-        },
-        {
-          "code": "(721)",
-          "name": "Load-Out \u2014 Audio / LED",
-          "amount": 4800.0
-        },
-        {
-          "code": "(722)",
-          "name": "Payroll Taxes 18% (on load-in/out labor)",
-          "amount": 18273.6
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 190793.6
-    },
-    {
-      "id": "800",
-      "name": "(800) GENERAL & ADMINISTRATIVE",
-      "items": [
-        {
-          "code": "(801)",
-          "name": "Producer's Office Fee (6 mos \u00d7 $600)",
-          "amount": 3600.0
-        },
-        {
-          "code": "(802)",
-          "name": "General Management Office Fee (6 mos \u00d7 $600)",
-          "amount": 3600.0
-        },
-        {
-          "code": "(803)",
-          "name": "Accounting / Bookkeeping setup",
-          "amount": 18000.0
-        },
-        {
-          "code": "(804)",
-          "name": "Legal (LLC, contracts, permits, union negs)",
-          "amount": 45000.0
-        },
-        {
-          "code": "(805)",
+          "code": "(604)",
           "name": "Insurance (immersive: high GL + participant coverage)",
           "amount": 80000.0
         },
         {
-          "code": "(806)",
-          "name": "Visa Costs / Travel for key creatives",
-          "amount": 14000.0
+          "code": "(605)",
+          "name": "Travel & Housing (NY creatives to LA) + visa + per diem",
+          "amount": 70000.0
         },
         {
-          "code": "(807)",
-          "name": "Payroll Service setup + pre-opening",
-          "amount": 4500.0
-        },
-        {
-          "code": "(808)",
-          "name": "Travel & Housing (NY creatives to LA)",
-          "amount": 48000.0
-        },
-        {
-          "code": "(809)",
-          "name": "Per Diem Contingency",
-          "amount": 8000.0
-        },
-        {
-          "code": "(810)",
-          "name": "Miscellaneous / Office Supplies",
+          "code": "(606)",
+          "name": "Misc / office supplies",
           "amount": 5000.0
         },
         {
-          "code": "(811)",
-          "name": "ADA / Accessibility Consulting & Accommodations",
-          "amount": 20000.0
+          "code": "(607)",
+          "name": "Union bonds (AEA + AFM + SDC + USA)",
+          "amount": 93000.0
         },
         {
-          "code": "(812)",
-          "name": "Ticketing Platform Setup + CRM Integration",
-          "amount": 30000.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 279700.0
-    },
-    {
-      "id": "900",
-      "name": "(900) DEVELOPMENTAL",
-      "items": [
-        {
-          "code": "(901)",
-          "name": "Design Development Workshops (spatial/scenic)",
-          "amount": 35000.0
+          "code": "(608)",
+          "name": "Warehouse deposit + vendor deposits + shop guarantees",
+          "amount": 104000.0
         },
         {
-          "code": "(902)",
-          "name": "Site-Specific R&D (content, audience tracks)",
-          "amount": 25000.0
+          "code": "(609)",
+          "name": "Creative advances (Author + Director + Choreographer \u00b7 recoupable)",
+          "amount": 21500.0
         },
         {
-          "code": "(903)",
-          "name": "Community Engagement / Story Development",
+          "code": "(610)",
+          "name": "Closing costs bond",
           "amount": 15000.0
+        },
+        {
+          "code": "(611)",
+          "name": "Preview weeks operating reserve (2 wks \u00d7 weekly op)",
+          "amount": 271500.0
+        },
+        {
+          "code": "(612)",
+          "name": "Contingency (10% of production costs)",
+          "amount": 604000.0
         }
       ],
-      "totalCoord": null,
-      "v7Total": 75000.0
-    },
-    {
-      "id": "950",
-      "name": "(950) BONDS, DEPOSITS, ADVANCES",
-      "items": [
-        {
-          "code": "(951)",
-          "name": "Actors' Equity Bond (~2x weekly AEA salaries)",
-          "amount": 55000.0
-        },
-        {
-          "code": "(953)",
-          "name": "AFM Musicians Bond",
-          "amount": 12000.0
-        },
-        {
-          "code": "(954)",
-          "name": "SDC Bond",
-          "amount": 18000.0
-        },
-        {
-          "code": "(955)",
-          "name": "USA Bond",
-          "amount": 8000.0
-        },
-        {
-          "code": "(956)",
-          "name": "Warehouse Deposit (2 months rent)",
-          "amount": 40000.0
-        },
-        {
-          "code": "(957)",
-          "name": "Electrics Shop Guarantee",
-          "amount": 8000.0
-        },
-        {
-          "code": "(958)",
-          "name": "Sound Shop Guarantee",
-          "amount": 6000.0
-        },
-        {
-          "code": "(959)",
-          "name": "LED Vendor Deposit",
-          "amount": 50000.0
-        },
-        {
-          "code": "(964)",
-          "name": "Author Advance (recoupable \u2014 no royalty deal)",
-          "amount": 10000.0
-        },
-        {
-          "code": "(965)",
-          "name": "Director Advance \u2014 Scoville",
-          "amount": 7500.0
-        },
-        {
-          "code": "(966)",
-          "name": "Choreographer Advance",
-          "amount": 4000.0
-        },
-        {
-          "code": "(967)",
-          "name": "Closing Costs Bond",
-          "amount": 15000.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 233500.0
-    },
-    {
-      "id": "1000",
-      "name": "(1000) CONTINGENCY & RESERVE",
-      "items": [
-        {
-          "code": "(1001)",
-          "name": "Preview Weeks Operating Reserve (2 wks \u00d7 weekly op)",
-          "amount": 271514.0
-        },
-        {
-          "code": "(1002)",
-          "name": "Contingency (10% of Production Costs)",
-          "amount": 589000.0
-        }
-      ],
-      "totalCoord": null,
-      "v7Total": 860514.0
+      "v7Total": 1544700.0
     }
   ],
   "weeklyOperating": [

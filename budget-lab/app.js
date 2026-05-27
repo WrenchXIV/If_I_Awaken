@@ -655,7 +655,7 @@ function loadFromHash() {
 }
 
 // =================== SAVE / LOAD scenarios (localStorage) ===================
-const LS_KEY = 'iia_budget_lab_scenarios_v1';
+const LS_KEY = 'iia_budget_lab_scenarios_v2';
 function loadScenarios() {
   try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; }
 }
