@@ -152,34 +152,43 @@ body {
 .kpi-positive { color: var(--good); }
 .kpi-negative { color: var(--red-deep); }
 
-/* Weekly Investment Contribution — 3-scenario table */
-.kpi-scenarios-wrap { padding-top: 12px; padding-bottom: 12px; }
-.kpi-scenarios {
-  width: 100%; border-collapse: collapse; margin-top: 6px;
-  font-family: var(--f-mono);
+/* Weekly Investment Contribution — 3 compact scenario stacks */
+.kpi-label-aside {
+  font-family: var(--f-serif); font-style: italic; font-weight: 400;
+  font-size: 10px; color: var(--ink-soft); margin-left: 6px;
+  letter-spacing: 0; text-transform: none;
 }
-.kpi-scenarios th {
-  font-family: var(--f-display);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  font-size: 9.5px; font-weight: 600;
-  color: var(--ink-soft); text-align: right;
-  padding: 4px 6px 6px; border-bottom: 1px solid var(--rule);
-  white-space: nowrap;
+.kpi-scenarios-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px; background: var(--rule); margin-top: 8px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
-.kpi-scenarios th:first-child { text-align: left; }
-.kpi-scenarios td {
-  font-size: 14px; font-weight: 600;
-  padding: 5px 6px;
-  border-bottom: 1px dotted var(--rule);
-  text-align: right;
-  white-space: nowrap;
+.kpi-scn {
+  background: var(--paper);
+  padding: 4px 6px 5px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  min-width: 0;
 }
-.kpi-scenarios tr:last-child td { border-bottom: none; }
 .kpi-scn-label {
   font-family: var(--f-display);
   text-transform: uppercase; letter-spacing: 0.06em;
-  font-size: 11px; font-weight: 600;
-  color: var(--ink); text-align: left !important;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-soft);
+  line-height: 1.1;
+}
+.kpi-scn-net {
+  font-family: var(--f-mono);
+  font-size: 15px; font-weight: 700; line-height: 1.15;
+  color: var(--ink); margin-top: 3px;
+  white-space: nowrap;
+}
+.kpi-scn-mo {
+  font-family: var(--f-mono);
+  font-size: 11px; line-height: 1.1;
+  color: var(--ink-soft); margin-top: 1px;
+  white-space: nowrap;
 }
 .kpi-scn-net.pos { color: var(--good); }
 .kpi-scn-net.neg, .kpi-scn-mo.neg { color: var(--red-deep); }

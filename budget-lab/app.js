@@ -233,24 +233,25 @@ function renderTopSheet(c) {
   beEl.textContent = isFinite(c.breakevenPct) ? fmtPct(c.breakevenPct) : '—';
   beEl.className = 'kpi-value ' + (c.breakevenPct > 1 ? 'kpi-negative' : c.breakevenPct < 0.7 ? 'kpi-positive' : '');
 
-  // Weekly Investment Contribution — 3-scenario table (50/75/100% sold)
+  // Weekly Investment Contribution — 3 compact scenario stacks (50/75/100% sold)
+  const fmtMonths = (m) => {
+    if (!isFinite(m)) return '—';
+    if (m > 999) return '>999 mo';
+    if (m >= 100) return Math.round(m) + ' mo';
+    return m.toFixed(1) + ' mo';
+  };
   const renderScenario = (key, suffix) => {
     const s = c.scenarios[key];
     const netEl = $('#kpi-net-' + suffix);
     const moEl  = $('#kpi-mo-'  + suffix);
     if (netEl) {
-      netEl.textContent = fmtMoney(s.weeklyNet);
+      netEl.textContent = fmtMoney(s.weeklyNet, { compact: true });
       netEl.classList.toggle('neg', s.weeklyNet < 0);
       netEl.classList.toggle('pos', s.weeklyNet > 0);
     }
     if (moEl) {
-      if (!isFinite(s.monthsToRecoup)) {
-        moEl.textContent = '—';
-        moEl.classList.add('neg');
-      } else {
-        moEl.textContent = s.monthsToRecoup.toFixed(1) + ' mo';
-        moEl.classList.remove('neg');
-      }
+      moEl.textContent = fmtMonths(s.monthsToRecoup);
+      moEl.classList.toggle('neg', !isFinite(s.monthsToRecoup));
     }
   };
   renderScenario('s50',  '50');
