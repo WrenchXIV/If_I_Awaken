@@ -405,7 +405,12 @@
 
   function onAnnotateClick(e) {
     if (document.body.dataset.tool !== 'annotate') return;
-    if (e.target.closest('#ed-toolbar') || e.target.closest('.ed-note-bubble') || e.target.closest('.ed-pin')) return;
+    if (e.target.closest('#ed-toolbar') ||
+        e.target.closest('.ed-note-bubble') ||
+        e.target.closest('.ed-pin') ||
+        e.target.closest('.ed-modal-bg') ||
+        e.target.closest('#ed-text-toolbar') ||
+        e.target.closest('#vsw')) return;
     e.preventDefault();
     e.stopPropagation();
     const slide = e.target.closest('.slide');
