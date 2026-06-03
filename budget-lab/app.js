@@ -220,6 +220,12 @@ function renderTopSheet(c) {
   $('#kpi-avgprice').textContent = '$' + (c.avgTicket || 0).toFixed(0);
   $('#kpi-cap').textContent = fmtInt(c.seatCap);
   $('#kpi-run').textContent = fmtInt(c.runWeeks) + ' wks';
+  const runSubEl = $('#kpi-run-sub');
+  if (runSubEl) {
+    const months = c.runMonths;
+    const monthsTxt = months >= 10 ? months.toFixed(1) : months.toFixed(1);
+    runSubEl.textContent = `performance weeks · ≈ ${monthsTxt} months`;
+  }
 
   $('#kpi-gross').textContent = fmtMoney(c.grossCombined);
   $('#kpi-gross-tix').textContent = fmtMoney(c.ticketGross);
