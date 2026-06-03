@@ -239,7 +239,7 @@ function renderTopSheet(c) {
   beEl.textContent = isFinite(c.breakevenPct) ? fmtPct(c.breakevenPct) : '—';
   beEl.className = 'kpi-value ' + (c.breakevenPct > 1 ? 'kpi-negative' : c.breakevenPct < 0.7 ? 'kpi-positive' : '');
 
-  // Weekly Investment Contribution — 3 compact scenario stacks (50/75/100% sold)
+  // Weekly Investment Contribution — 3-row scenario table (50/75/100% sold)
   const fmtMonths = (m) => {
     if (!isFinite(m)) return '—';
     if (m > 999) return '>999 mo';
@@ -251,7 +251,7 @@ function renderTopSheet(c) {
     const netEl = $('#kpi-net-' + suffix);
     const moEl  = $('#kpi-mo-'  + suffix);
     if (netEl) {
-      netEl.textContent = fmtMoney(s.weeklyNet, { compact: true });
+      netEl.textContent = fmtMoney(s.weeklyNet);
       netEl.classList.toggle('neg', s.weeklyNet < 0);
       netEl.classList.toggle('pos', s.weeklyNet > 0);
     }

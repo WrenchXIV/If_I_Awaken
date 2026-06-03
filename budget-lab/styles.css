@@ -152,43 +152,38 @@ body {
 .kpi-positive { color: var(--good); }
 .kpi-negative { color: var(--red-deep); }
 
-/* Weekly Investment Contribution — 3 compact scenario stacks */
-.kpi-label-aside {
-  font-family: var(--f-serif); font-style: italic; font-weight: 400;
-  font-size: 10px; color: var(--ink-soft); margin-left: 6px;
-  letter-spacing: 0; text-transform: none;
+/* Weekly Investment Contribution — 3-row scenario table, spans 2 box widths */
+.kpi-double { grid-column: span 2; }
+.kpi-scenarios-wrap { padding: 14px 16px; }
+.kpi-scenarios {
+  width: 100%; border-collapse: collapse; margin-top: 10px;
+  font-family: var(--f-mono);
+  table-layout: fixed;
 }
-.kpi-scenarios-grid {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px; background: var(--rule); margin-top: 8px;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+.kpi-scenarios th {
+  font-family: var(--f-display);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-soft); text-align: right;
+  padding: 4px 8px 8px; border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
 }
-.kpi-scn {
-  background: var(--paper);
-  padding: 4px 6px 5px;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center;
-  min-width: 0;
+.kpi-scenarios th:first-child { text-align: left; width: 28%; }
+.kpi-scenarios th:nth-child(2), .kpi-scenarios th:nth-child(3) { width: 36%; }
+.kpi-scenarios td {
+  font-family: var(--f-mono);
+  font-size: 15px; font-weight: 600;
+  padding: 8px 8px;
+  border-bottom: 1px dotted var(--rule);
+  text-align: right;
+  white-space: nowrap;
 }
+.kpi-scenarios tr:last-child td { border-bottom: none; }
 .kpi-scn-label {
   font-family: var(--f-display);
   text-transform: uppercase; letter-spacing: 0.06em;
-  font-size: 10px; font-weight: 600;
-  color: var(--ink-soft);
-  line-height: 1.1;
-}
-.kpi-scn-net {
-  font-family: var(--f-mono);
-  font-size: 15px; font-weight: 700; line-height: 1.15;
-  color: var(--ink); margin-top: 3px;
-  white-space: nowrap;
-}
-.kpi-scn-mo {
-  font-family: var(--f-mono);
-  font-size: 11px; line-height: 1.1;
-  color: var(--ink-soft); margin-top: 1px;
-  white-space: nowrap;
+  font-size: 12px; font-weight: 600;
+  color: var(--ink); text-align: left !important;
 }
 .kpi-scn-net.pos { color: var(--good); }
 .kpi-scn-net.neg, .kpi-scn-mo.neg { color: var(--red-deep); }
