@@ -175,13 +175,26 @@ function compute() {
   const denom = 0.97 * ticketGross + fnbNet + merchNet;
   const breakevenPct = denom > 0 ? opFixed / denom : Infinity;
 
-  // Weekly investment contribution at chosen capacity %
-  const cap = state.capacityPct;
-  const ticketAtCap = ticketGross * cap;
-  const fnbNetAtCap = fnbNet * cap;
-  const merchNetAtCap = merchNet * cap;
-  const opAtCap = opFixed + 0.03 * ticketAtCap;
-  const contribAtCap = ticketAtCap + fnbNetAtCap + merchNetAtCap - opAtCap;
+  // Weekly net profit scenarios: 50% / 75% / 100% of tickets sold.
+  // Revenue at x% sold = x * (ticketGross + fnbNet + merchNet)
+  // Op at x% sold = opFixed + 0.03 * x * ticketGross  (only CC fee varies)
+  // Net = revenue - op = x*(0.97*ticketGross + fnbNet + merchNet) - opFixed
+  // Months to recoup $8M (linear, assumes no other claim on weekly net):
+  //   months = 8_000_000 / (weeklyNet * 4.33)
+  const RECOUP_TARGET = 8_000_000;
+  const WEEKS_PER_MONTH = 4.33;
+  const scenarioFor = (pct) => {
+    const weeklyNet = pct * (0.97 * ticketGross + fnbNet + merchNet) - opFixed;
+    const monthsToRecoup = weeklyNet > 0
+      ? RECOUP_TARGET / (weeklyNet * WEEKS_PER_MONTH)
+      : Infinity;
+    return { pct, weeklyNet, monthsToRecoup };
+  };
+  const scenarios = {
+    s50:  scenarioFor(0.50),
+    s75:  scenarioFor(0.75),
+    s100: scenarioFor(1.00),
+  };
 
   return {
     seatCap, totalShows, weeklyCapacity,
@@ -190,8 +203,7 @@ function compute() {
     grossCombined,
     preprodTotal, prodTotal, opTotal,
     breakevenPct,
-    contribAtCap,
-    capacityPct: cap,
+    scenarios,
     runWeeks,
     runMonths,
     eventsMonthlyGross, eventsMonthlyCost, eventsMonthlyNet,
@@ -221,10 +233,29 @@ function renderTopSheet(c) {
   beEl.textContent = isFinite(c.breakevenPct) ? fmtPct(c.breakevenPct) : '—';
   beEl.className = 'kpi-value ' + (c.breakevenPct > 1 ? 'kpi-negative' : c.breakevenPct < 0.7 ? 'kpi-positive' : '');
 
-  const contribEl = $('#kpi-contrib');
-  contribEl.textContent = fmtMoney(c.contribAtCap);
-  contribEl.className = 'kpi-value ' + (c.contribAtCap < 0 ? 'kpi-negative' : 'kpi-positive');
-  $('#kpi-contrib-cap').textContent = (c.capacityPct * 100).toFixed(0) + '%';
+  // Weekly Investment Contribution — 3-scenario table (50/75/100% sold)
+  const renderScenario = (key, suffix) => {
+    const s = c.scenarios[key];
+    const netEl = $('#kpi-net-' + suffix);
+    const moEl  = $('#kpi-mo-'  + suffix);
+    if (netEl) {
+      netEl.textContent = fmtMoney(s.weeklyNet);
+      netEl.classList.toggle('neg', s.weeklyNet < 0);
+      netEl.classList.toggle('pos', s.weeklyNet > 0);
+    }
+    if (moEl) {
+      if (!isFinite(s.monthsToRecoup)) {
+        moEl.textContent = '—';
+        moEl.classList.add('neg');
+      } else {
+        moEl.textContent = s.monthsToRecoup.toFixed(1) + ' mo';
+        moEl.classList.remove('neg');
+      }
+    }
+  };
+  renderScenario('s50',  '50');
+  renderScenario('s75',  '75');
+  renderScenario('s100', '100');
 
   // Capitalization block — Preprod (R1) + Production (R2) + Cash Reserve (R3)
   const opRun = c.opTotal * c.runWeeks;
@@ -982,16 +1013,10 @@ function bootstrap() {
   state = freshStateFromV7();
   loadFromHash();
   rerender();
-  $('#cap-slider').value = Math.round(state.capacityPct * 100);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   bootstrap();
-
-  $('#cap-slider').addEventListener('input', e => {
-    state.capacityPct = (+e.target.value) / 100;
-    refreshAll();
-  });
 
   $('#btn-reset').addEventListener('click', () => {
     if (confirm('Reset all values to v7 defaults? Any unsaved changes will be lost.')) {

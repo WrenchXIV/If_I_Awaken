@@ -149,10 +149,40 @@ body {
   color: var(--ink); font-family: var(--f-mono); font-size: 12px; font-weight: 600;
 }
 
-#cap-slider { flex: 1; max-width: 110px; }
-
 .kpi-positive { color: var(--good); }
 .kpi-negative { color: var(--red-deep); }
+
+/* Weekly Investment Contribution — 3-scenario table */
+.kpi-scenarios-wrap { padding-top: 12px; padding-bottom: 12px; }
+.kpi-scenarios {
+  width: 100%; border-collapse: collapse; margin-top: 6px;
+  font-family: var(--f-mono);
+}
+.kpi-scenarios th {
+  font-family: var(--f-display);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 9.5px; font-weight: 600;
+  color: var(--ink-soft); text-align: right;
+  padding: 4px 6px 6px; border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.kpi-scenarios th:first-child { text-align: left; }
+.kpi-scenarios td {
+  font-size: 14px; font-weight: 600;
+  padding: 5px 6px;
+  border-bottom: 1px dotted var(--rule);
+  text-align: right;
+  white-space: nowrap;
+}
+.kpi-scenarios tr:last-child td { border-bottom: none; }
+.kpi-scn-label {
+  font-family: var(--f-display);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  font-size: 11px; font-weight: 600;
+  color: var(--ink); text-align: left !important;
+}
+.kpi-scn-net.pos { color: var(--good); }
+.kpi-scn-net.neg, .kpi-scn-mo.neg { color: var(--red-deep); }
 
 /* =================== LAB / PANELS =================== */
 .lab { padding: 28px; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
