@@ -20,7 +20,7 @@ window.V7_DEFAULTS = {
     },
     {
       "label": "Performance Weeks (run)",
-      "value": 60.0
+      "value": 65.0
     },
     {
       "label": "Shows per week",
