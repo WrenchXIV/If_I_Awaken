@@ -674,6 +674,48 @@
 .cc-line.emph { font-weight: 500; }
 .cc-line.red-line { color: var(--red); }
 
+/* ---- 12/13 Market: 2-column layout for city table + side block ---- */
+.market-cols {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 28px;
+  align-items: start;
+  margin: 24px 0;
+}
+.market-cols .city-table { margin: 0; max-width: none; width: 100%; }
+.market-cols .olympic-box,
+.market-cols .fr-titles { margin: 0; }
+.market-cols .fr-titles { padding-top: 18px; border-top: 1px solid var(--red); }
+.market-cols .ft-row-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.market-cols .ft-row-stack .ft-item {
+  font-family: var(--f-tight);
+  font-weight: 700;
+  font-size: clamp(18px, 2vw, 24px);
+  color: var(--on-dark);
+  line-height: 1.15;
+  padding: 12px 16px;
+  background: rgba(242, 237, 226, 0.04);
+  border: 1px solid var(--on-dark-rule);
+  border-radius: 4px;
+}
+.market-cols .ft-row-stack .ft-item em {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.7em;
+  color: var(--on-dark-mute);
+  display: block;
+  margin-bottom: 2px;
+}
+.market-cols .ft-row-stack .ft-item .red { color: var(--red); }
+@media (max-width: 900px) {
+  .market-cols { grid-template-columns: 1fr; gap: 22px; }
+}
+
 /* ---- 15 Round 1: property cap table ---- */
 .acq-table.captable td:last-child {
   font-family: var(--f-tight);
